@@ -18,8 +18,8 @@
 
 ###### Danel Mac Donald (u18008659)
 
-Github Page: <!-- Need to add my link still -->
-LinkedIn Page: <!-- Need to add my link still -->
+Github Page: <!-- Need to add my link still --> <br/>
+LinkedIn Page: <!-- Need to add my link still --> <br/>
 
 <!-- Need to add my description still -->
 
