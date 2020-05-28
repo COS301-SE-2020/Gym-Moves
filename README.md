@@ -26,3 +26,7 @@ LinkedIn Page: <!-- Need to add my link still --> <br/>
 
 <!-- Team members to be from here onwards -->
 
+###### Longji Kang (u18115242)
+
+Github Page: [https://marinexii.github.io/](https://marinexii.github.io/) <br/>
+LinkedIn Page: [Longji Kang LinkedIn](https://www.linkedin.com/in/longji-kang-09453a1a7/)
