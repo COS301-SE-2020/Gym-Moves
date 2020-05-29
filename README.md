@@ -1,6 +1,7 @@
 # Gym-Moves
 
 <!-- Description must be added here -->
+Gym Moves is an app that will make life easier for gym members and staff. The app will allow users to see the number of people currently at the gym, the classes that have been cancelled, and information about the gym. This will inclue promotions and maintenance announcements which will be added by the gym's staff members. This will allow members to make an informed decision about visiting the gym. This project is being developed by the Lockdown Squad.
 
 ### Recorded Demo
 
