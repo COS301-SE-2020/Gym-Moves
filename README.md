@@ -30,3 +30,7 @@ LinkedIn Page: <!-- Need to add my link still --> <br/>
 
 Github Page: [https://marinexii.github.io/](https://marinexii.github.io/) <br/>
 LinkedIn Page: [Longji Kang LinkedIn](https://www.linkedin.com/in/longji-kang-09453a1a7/)
+
+##### Nthabiseng Tia Mangena(u18059903)
+Gihub Page: [https://tiamangena.github.io/](https://tiamangena.github.io/)<br/>
+LinkedIn Page [https://www.linkedin.com/in/nthabiseng-tia-aa15ba1a1/](https://www.linkedin.com/in/nthabiseng-tia-aa15ba1a1/)
