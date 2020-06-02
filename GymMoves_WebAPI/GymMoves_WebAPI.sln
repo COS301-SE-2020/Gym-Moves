@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymMoves_WebAPI", "GymMoves_WebAPI.csproj", "{59594AB6-7179-4FF5-AD3A-BD04E40AF7D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59594AB6-7179-4FF5-AD3A-BD04E40AF7D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59594AB6-7179-4FF5-AD3A-BD04E40AF7D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59594AB6-7179-4FF5-AD3A-BD04E40AF7D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59594AB6-7179-4FF5-AD3A-BD04E40AF7D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8026F13-4418-4157-B91F-5FC5E82EFDC3}
+	EndGlobalSection
+EndGlobal
