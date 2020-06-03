@@ -6,6 +6,7 @@ namespace GymMoves_WebAPI.Data.EntityModels {
     }
 
     public class UserEntity {
+        public string gymMembershipNumber { get; set; }
         public string phoneNumber { get; set; }
         public string firstName { get; set; }
         public string secondName { get; set; }

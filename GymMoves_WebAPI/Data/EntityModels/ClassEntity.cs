@@ -7,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace GymMoves_WebAPI.Data.EntityModels {
     public class ClassEntity {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int classID { get; set; }
-        public string className { get; set; }
-        public int atGym { get; set; }
-        public int classCapacity { get; set; }
-        public int currentStudentCount { get; set; }
-        public string classDays { get; set; }
-        public string classTimes { get; set; }
-        public int classType { get; set; }
-        public int classInstructor { get; set; }
+        public ClassTypeEntity classType { get; set; }
+        public UserEntity instructorId { get; set; }
+        public GymEntity atGym { get; set; }
+        public ClassTimesEntity classTime { get; set; }
+        public int maxCapacity { get; set; }
+        public int registeredCount { get; set; }
     }
 }

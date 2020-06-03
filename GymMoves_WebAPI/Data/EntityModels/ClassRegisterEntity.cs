@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace GymMoves_WebAPI.Data.EntityModels {
     public class ClassRegisterEntity {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int registerID { get; set; }
-        public int classId { get; set; }
-        public int userId { get; set; }
+        public ClassEntity classId { get; set; }
+        public UserEntity studentId { get; set; }
     }
 }
