@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GymMoves_WebAPI.Model {
-    public class TempClass {
+namespace GymMoves_WebAPI.Data.EntityModels {
+    public class ClassTimes {
     }
 }
