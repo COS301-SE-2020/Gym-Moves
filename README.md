@@ -40,3 +40,7 @@ Github Page: [tiamangena.github.io](https://tiamangena.github.io/)<br/>
 LinkedIn Page [nthabiseng-tia-aa15ba1a1](https://www.linkedin.com/in/nthabiseng-tia-aa15ba1a1/)
 
 <!-- Need to add description still -->
+
+##### raeesa Aboo (u18011251)
+Github Page: [raythedaisy.github.io](https://raythedaisy.github.io/)<br/>
+LinkedIn Page [raeesa-aboo-93093b1ab](https://www.linkedin.com/in/raeesa-aboo-93093b1ab/)
