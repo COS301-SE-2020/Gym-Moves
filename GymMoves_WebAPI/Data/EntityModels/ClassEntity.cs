@@ -7,11 +7,27 @@ using System.Threading.Tasks;
 
 namespace GymMoves_WebAPI.Data.EntityModels {
     public class ClassEntity {
-        public int classID { get; set; }
-        public ClassTypeEntity classType { get; set; }
-        public UserEntity instructorId { get; set; }
-        public GymEntity atGym { get; set; }
-        public ClassTimesEntity classTime { get; set; }
+        [Key]
+        public int ClassID { get; set; }
+
+        public int ClassTypeFK { get; set; }
+        [ForeignKey("ClassTypeFK")]
+        public ClassTypeEntity ClassType { get; set; }
+
+        public string InstructorIDFK { get; set; }
+        [ForeignKey("InstructorIDFK")]
+        public InstructorEntity Instructor { get; set; }
+
+        public int AtGymFK { get; set; }
+        [ForeignKey("AtGymFK")]
+        public GymEntity AtGym { get; set; }
+
+        public int ClassTimeFK { get; set; }
+        [ForeignKey("ClassTimeFK")]
+        public ClassTimesEntity ClassTime { get; set; }
+
+        public ICollection<UserEntity> Students { get; set; }
+
         public int maxCapacity { get; set; }
         public int registeredCount { get; set; }
     }

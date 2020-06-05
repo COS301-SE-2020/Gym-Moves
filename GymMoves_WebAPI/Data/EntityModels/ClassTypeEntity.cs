@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace GymMoves_WebAPI.Data.EntityModels {
     public class ClassTypeEntity {
-        public int typeID { get; set; }
-        public string description { get; set; }
+        [Key]
+        public int ClassTypeID { get; set; }
+        public string ClassName { get; set; }
     }
 }

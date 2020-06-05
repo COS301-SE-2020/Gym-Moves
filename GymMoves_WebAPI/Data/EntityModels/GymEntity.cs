@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace GymMoves_WebAPI.Data.EntityModels {
     public class GymEntity {
-        public int gymId { get; set; }
-        public string gymName { get; set; }
+        [Key]
+        public int GymID { get; set; }
+        public string GymName { get; set; }
+
+        public ICollection<UserEntity> Users { get; set; }
     }
 }
