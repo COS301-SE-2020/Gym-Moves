@@ -33,7 +33,9 @@ I am a final year Computer Science student at the University of Pretoria. I cons
 Github Page: [marinexii.github.io](https://marinexii.github.io/) <br/>
 LinkedIn Page: [longji-kang-09453a1a7](https://www.linkedin.com/in/longji-kang-09453a1a7/)
 
-<!-- Need to add description still -->
+<br/>
+
+I am currently studying Computer Science at the University of Pretoria. I first started coding in 2015 where I tried making plugins for the game Minecraft. I enjoy learning new things and finding ways to solve problems. I enjoy working in groups and we've had many group projects where I have had the opportunity to develop my teamwork skills. I always try to accomplish goals that I have set for myself, although it may be difficult at times. 
 
 ##### Nthabiseng Tia Mangena (u18059903)
 Github Page: [tiamangena.github.io](https://tiamangena.github.io/)<br/>
