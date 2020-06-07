@@ -43,6 +43,10 @@ LinkedIn Page [nthabiseng-tia-aa15ba1a1](https://www.linkedin.com/in/nthabiseng-
 
 <!-- Need to add description still -->
 
+
+
+<br/>
+
 ##### Raeesa Aboo (u18011251)
 Github Page: [raythedaisy.github.io](https://raythedaisy.github.io/)<br/>
 LinkedIn Page [raeesa-aboo-93093b1ab](https://www.linkedin.com/in/raeesa-aboo-93093b1ab/)
@@ -50,3 +54,5 @@ LinkedIn Page [raeesa-aboo-93093b1ab](https://www.linkedin.com/in/raeesa-aboo-93
 <br/>
 
 I'm persuing my third year of BSc Computer Science at the University of Pretoria. I've always had a passion for coding, mathematics and problem solving. Even though the degree is tough, I do enjoy the challenge as it keeps me on my feet. I learn new things every single day, and try to give my all in everything I do. I've been put in many team projects this year, and it really helped me to grow and develop new skills, which I am grateful for. 
+
+<br/>
