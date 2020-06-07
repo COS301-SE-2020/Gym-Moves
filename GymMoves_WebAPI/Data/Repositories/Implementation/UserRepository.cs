@@ -51,5 +51,16 @@ namespace GymMoves_WebAPI.Data.Repositories.Implementation {
 
             return instructor;
         }
+
+        public async Task<ClassEntity[]> GetUserClasses(string id) {
+            IQueryable<UserEntity> query = _context.Users
+                .Include(c => c.Classes);
+            ;
+            query = query.Where(u => u.UserID == id);
+
+            UserEntity user = await query.FirstOrDefaultAsync();
+
+            return user.Classes.ToArray();
+        }
     }
 }

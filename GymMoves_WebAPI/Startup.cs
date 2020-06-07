@@ -26,6 +26,8 @@ namespace GymMoves_WebAPI {
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
             services.AddScoped<UserRepositoryInterface, UserRepository>();
+            services.AddScoped<ClassRepositoryInterface, ClassRepository>();
+            services.AddScoped<GymRepositoryInterface, GymRepository>();
             services.AddDbContext<MainDatabaseContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("GymDb")));
         }
 

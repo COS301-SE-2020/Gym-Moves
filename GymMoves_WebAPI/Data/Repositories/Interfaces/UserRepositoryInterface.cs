@@ -15,5 +15,7 @@ namespace GymMoves_WebAPI.Data.Repositories {
 
         public Task<UserEntity> GetUserWithID(string id);
         public Task<InstructorEntity> GetInstructorWithID(string id);
+
+        public Task<ClassEntity[]> GetUserClasses(string id);
     }
 }
