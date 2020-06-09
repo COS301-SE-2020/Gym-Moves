@@ -41,10 +41,7 @@ I am currently studying Computer Science at the University of Pretoria. I first 
 Github Page: [tiamangena.github.io](https://tiamangena.github.io/)<br/>
 LinkedIn Page [nthabiseng-tia-aa15ba1a1](https://www.linkedin.com/in/nthabiseng-tia-aa15ba1a1/)
 
-<!-- Need to add description still -->
-
-
-
+I am currently in my third year studying Computer Science at the University of Pretoria. I chose to study Computer Science because I love coding and I love technology. So far, this degree has exposed me to different opportunities for learning and I have thoroughly enjoyed how my knowledge has been broadened. I enjoy the challenges that come with being a Computer Scientist as they allow me to learn and grow as a person.
 <br/>
 
 ##### Raeesa Aboo (u18011251)
