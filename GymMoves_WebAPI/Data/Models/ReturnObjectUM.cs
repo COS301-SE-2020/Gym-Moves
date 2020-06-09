@@ -2,8 +2,8 @@
 {
     public class ReturnObjectUM
     {
-        public string status;
-        public string user;
-        public string message;
+        public string status { get; set; }
+        public string user { get; set; }
+        public string message { get; set; }
     }
 }

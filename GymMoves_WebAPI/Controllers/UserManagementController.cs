@@ -34,13 +34,15 @@ namespace GymMoves_WebAPI.Controllers
             {
                 returnMessage.status = "successful";
                 returnMessage.user = "member";
+                returnMessage.message = "N/A";
 
                 return Ok(returnMessage);
             }
             else
             {
                 returnMessage.status = "unsuccessful";
-                returnMessage.user = "This person is not a member of the gym!";
+                returnMessage.message = "This person is not a member of the gym!";
+                returnMessage.user = "N/A";
 
                 return Unauthorized(returnMessage);
             }
@@ -60,13 +62,15 @@ namespace GymMoves_WebAPI.Controllers
             {
                 returnMessage.status = "successful";
                 returnMessage.user = "instructor";
+                returnMessage.message = "N/A";
 
                 return Ok(returnMessage);
             }
             else
             {
                 returnMessage.status = "unsuccessful";
-                returnMessage.user = "This person is not a member of the gym!";
+                returnMessage.message = "This person is not a member of the gym!";
+                returnMessage.user = "N/A";
 
                 return Unauthorized(returnMessage);
             }
@@ -86,6 +90,7 @@ namespace GymMoves_WebAPI.Controllers
             {
                 returnMessage.status = "successful";
                 returnMessage.user = "manager";
+                returnMessage.message = "N/A";
 
                 return Ok(returnMessage);
             }
@@ -93,6 +98,7 @@ namespace GymMoves_WebAPI.Controllers
             {
                 returnMessage.status = "unsuccessful";
                 returnMessage.message = "This person is not a member of the gym!";
+                returnMessage.user = "N/A";
 
                 return Unauthorized(returnMessage);
             }
@@ -114,13 +120,15 @@ namespace GymMoves_WebAPI.Controllers
             {
                 returnMessage.status = "successful";
                 returnMessage.user = "member";
+                returnMessage.message = "N/A";
 
                 return Ok(returnMessage);
             }
             else
             {
                 returnMessage.status = "unsuccessful";
-                returnMessage.user = "This person does not have an account!";
+                returnMessage.message = "This person is not a member of the gym!";
+                returnMessage.user = "N/A";
 
                 return Unauthorized(returnMessage);
             }
@@ -140,13 +148,15 @@ namespace GymMoves_WebAPI.Controllers
             {
                 returnMessage.status = "successful";
                 returnMessage.user = "instructor";
+                returnMessage.message = "N/A";
 
                 return Ok(returnMessage);
             }
             else
             {
                 returnMessage.status = "unsuccessful";
-                returnMessage.user = "This person does not have an account!";
+                returnMessage.message = "This person is not a member of the gym!";
+                returnMessage.user = "N/A";
 
                 return Unauthorized(returnMessage);
             }
@@ -166,13 +176,15 @@ namespace GymMoves_WebAPI.Controllers
             {
                 returnMessage.status = "successful";
                 returnMessage.user = "member";
+                returnMessage.message = "N/A";
 
                 return Ok(returnMessage);
             }
             else
             {
                 returnMessage.status = "unsuccessful";
-                returnMessage.user = "This person does not have an account!";
+                returnMessage.message = "This person is not a member of the gym!";
+                returnMessage.user = "N/A";
 
                 return Unauthorized(returnMessage);
             }
