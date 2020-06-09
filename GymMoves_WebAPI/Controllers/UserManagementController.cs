@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GymMoves_WebAPI.Data.Repositories.Implementation;
+using GymMoves_WebAPI.Data.Models;
 
 namespace GymMoves_WebAPI.Controllers
 {
@@ -11,68 +12,89 @@ namespace GymMoves_WebAPI.Controllers
     public class UserManagementController : Controller
     {
 
-        private readonly UserRepositoryInterface _repo;
+        private readonly UserRepositoryInterface user_repo;
 
         public UserManagementController(UserRepositoryInterface repo)
         {
-            _repo = repo;
+            user_repo = repo;
         }
-
-    
 
 
         [Route("api/signup/user")]
         [HttpPost]
-        public async Task<ActionResult<UserEntity>> SignUpUser(UserEntity user)
+        public async Task<ActionResult<ReturnObjectUM>> SignUpUser(UserEntity user)
         {
             bool added = false;
-
             
-            added = await _repo.Add(user);
-           
+            added = await user_repo.Add(user);
+
+            ReturnObjectUM returnMessage = new ReturnObjectUM();
+
             if (added)
             {
-                return Ok(user);
+                returnMessage.status = "successful";
+                returnMessage.user = "member";
+
+                return Ok(returnMessage);
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "{\"Error\" : \"Failed to find this member.\"}");
+                returnMessage.status = "unsuccessful";
+                returnMessage.user = "This person is not a member of the gym!";
+
+                return Unauthorized(returnMessage);
             }
         }
 
         [Route("api/signup/instructor")]
         [HttpPost]
-        public async Task<ActionResult<InstructorEntity>> SignUp(InstructorEntity user)
+        public async Task<ActionResult<ReturnObjectUM>> SignUp(InstructorEntity user)
         {
             bool added = false;
 
-            added = await _repo.AddInstructor(user);
+            added = await user_repo.AddInstructor(user);
+
+            ReturnObjectUM returnMessage = new ReturnObjectUM();
 
             if (added)
             {
-                return Ok(user);
+                returnMessage.status = "successful";
+                returnMessage.user = "instructor";
+
+                return Ok(returnMessage);
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "{\"Error\" : \"Failed to find this member.\"}");
+                returnMessage.status = "unsuccessful";
+                returnMessage.user = "This person is not a member of the gym!";
+
+                return Unauthorized(returnMessage);
             }
         }
 
         [Route("api/signup/manager")]
         [HttpPost]
-        public async Task<ActionResult<UserEntity>> SignUpManager(UserEntity user)
+        public async Task<ActionResult<ReturnObjectUM>> SignUpManager(UserEntity user)
         {
             bool added = false;
 
-            added = await _repo.Add(user);
+            added = await user_repo.Add(user);
+
+            ReturnObjectUM returnMessage = new ReturnObjectUM();
 
             if (added)
             {
-                return Ok(user);
+                returnMessage.status = "successful";
+                returnMessage.user = "manager";
+
+                return Ok(returnMessage);
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "{\"Error\" : \"Failed to find this member.\"}");
+                returnMessage.status = "unsuccessful";
+                returnMessage.message = "This person is not a member of the gym!";
+
+                return Unauthorized(returnMessage);
             }
         }
 
@@ -80,37 +102,53 @@ namespace GymMoves_WebAPI.Controllers
 
         [Route("api/login/user")]
         [HttpPost]
-        public async Task<ActionResult<UserEntity>> LogInUser(UserEntity user)
+        public async Task<ActionResult<ReturnObjectUM>> LogInUser(UserEntity user)
         {
             UserEntity person = null;
 
-            person = await _repo.GetUserWithID(user.UserID);
+            person = await user_repo.GetUserWithID(user.UserID);
 
-            if (person != null)
+            ReturnObjectUM returnMessage = new ReturnObjectUM();
+
+            if (person != null && person.Password == user.Password)
             {
-                return Ok(user);
+                returnMessage.status = "successful";
+                returnMessage.user = "member";
+
+                return Ok(returnMessage);
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "{\"Error\" : \"Failed to find this member.\"}");
+                returnMessage.status = "unsuccessful";
+                returnMessage.user = "This person does not have an account!";
+
+                return Unauthorized(returnMessage);
             }
         }
 
         [Route("api/login/instructor")]
         [HttpPost]
-        public async Task<ActionResult<InstructorEntity>> LogInInstructor(InstructorEntity user)
+        public async Task<ActionResult<ReturnObjectUM>> LogInInstructor(InstructorEntity user)
         {
             InstructorEntity person = null;
 
-            person = await _repo.GetInstructorWithID(user.InstructorID);
+            person = await user_repo.GetInstructorWithID(user.InstructorID);
 
-            if (person != null)
+            ReturnObjectUM returnMessage = new ReturnObjectUM();
+
+            if (person != null && person.Password == user.Password)
             {
-                return Ok(user);
+                returnMessage.status = "successful";
+                returnMessage.user = "instructor";
+
+                return Ok(returnMessage);
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "{\"Error\" : \"Failed to find this member.\"}");
+                returnMessage.status = "unsuccessful";
+                returnMessage.user = "This person does not have an account!";
+
+                return Unauthorized(returnMessage);
             }
         }
 
@@ -120,15 +158,23 @@ namespace GymMoves_WebAPI.Controllers
         {
             UserEntity person = null;
 
-            person = await _repo.GetUserWithID(user.UserID);
+            person = await user_repo.GetUserWithID(user.UserID);
 
-            if (person != null)
+            ReturnObjectUM returnMessage = new ReturnObjectUM();
+
+            if (person != null && person.Password == user.Password)
             {
-                return Ok(user);
+                returnMessage.status = "successful";
+                returnMessage.user = "member";
+
+                return Ok(returnMessage);
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "{\"Error\" : \"Failed to find this member.\"}");
+                returnMessage.status = "unsuccessful";
+                returnMessage.user = "This person does not have an account!";
+
+                return Unauthorized(returnMessage);
             }
         }
     }
