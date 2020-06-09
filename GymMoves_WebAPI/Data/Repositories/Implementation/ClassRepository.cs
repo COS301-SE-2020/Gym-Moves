@@ -33,7 +33,9 @@ namespace GymMoves_WebAPI.Data.Repositories.Implementation {
         }
 
         public async Task<ClassEntity> FindByClass(ClassEntity entity) {
-            IQueryable<ClassEntity> query = _context.Classes;
+            IQueryable<ClassEntity> query = _context.Classes
+                .Include(c => c.ClassTime)
+                .Include(c => c.ClassType);
             query = query.Where(c => c.ClassID == entity.ClassID);
 
             return await query.FirstOrDefaultAsync();
@@ -54,7 +56,9 @@ namespace GymMoves_WebAPI.Data.Repositories.Implementation {
         }
 
         public async Task<ClassEntity[]> FindByGym(GymEntity gym) {
-            IQueryable<ClassEntity> query = _context.Classes;
+            IQueryable<ClassEntity> query = _context.Classes
+                .Include(c => c.ClassTime)
+                .Include(c => c.ClassType);
             query = query.Where(c => c.AtGymFK == gym.GymID);
 
             return await query.ToArrayAsync();
