@@ -12,13 +12,19 @@ namespace GymMoves_WebAPI.Data.DBContext {
         public DbSet<ClassEntity> Classes { get; set; }
 
         private readonly IConfiguration _config;
+        private DbContextOptions<MainDatabaseContext> options;
 
         public MainDatabaseContext(DbContextOptions options, IConfiguration config) : base(options) {
             _config = config;
         }
 
+        public MainDatabaseContext(DbContextOptions<MainDatabaseContext> options) : base(options) {
+   
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlServer(_config.GetConnectionString("GymDb"));
+            /* Comment out when running unit tests */
+            //optionsBuilder.UseSqlServer(_config.GetConnectionString("GymDb"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {

@@ -7,7 +7,7 @@ namespace GymMoves_WebAPI.Data.EntityModels {
         Member, Staff, Manager
     }
 
-    public class UserEntity {
+    public class UserEntity {   
         //Gym membership number
         [Key]
         public string UserID { get; set; }
