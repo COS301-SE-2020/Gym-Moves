@@ -22,7 +22,7 @@ View only link to SRS document on overleaf: [Gym Moves Document](https://www.ove
 
 ### Project Management Tool
 
-Link to project management tool: [Clubhouse](https://app.clubhouse.io/lockdown-squad/stories/space/unsaved)
+Link to project management tool: [Clubhouse](https://app.clubhouse.io/lockdown-squad/stories/space/13/gymmoves)
 
 <br/>
 
