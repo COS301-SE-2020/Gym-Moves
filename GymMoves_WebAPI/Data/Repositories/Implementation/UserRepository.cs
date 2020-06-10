@@ -15,8 +15,12 @@ namespace GymMoves_WebAPI.Data.Repositories.Implementation {
         }
 
         public async Task<bool> Add(UserEntity entity) {
-            _context.Add(entity);
-            return (await _context.SaveChangesAsync()) > 0;
+            try {
+                _context.Add(entity);
+                return (await _context.SaveChangesAsync()) > 0;
+            } catch (InvalidOperationException e) {
+                return false;
+            }
         }
 
         public async Task<bool> RemoveUser(UserEntity entity) {
