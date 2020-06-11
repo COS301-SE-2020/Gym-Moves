@@ -65,5 +65,9 @@ LinkedIn Page: [raeesa-aboo-93093b1ab](https://www.linkedin.com/in/raeesa-aboo-9
 
 #### Ayanda Sibanda (u18061584)
 
-Github Page: <br/>
-LinkedIn Page:
+Github Page: [https://sayanda.github.io/SAyanda/](https://danelmacdonald.github.io/) <br/>
+LinkedIn Page: [ayanda-sibanda-08673a18a](https://www.linkedin.com/in/danel-mac-donald-6b5b1b1a7/) <br/>
+
+<div class=text-justify>
+    I am a final year Computer Science student at the University of Pretoria. I chose to study computer science not only because I enjoy coding but also because of the problem solving aspect of it. Every day I am exposed to a new problem and a thousand ways to approach and solve it. This degree has helped me improve my ability to react to change, pressure and learn on the job. All in all I have become a better coder and student and I now appreciate lifelong learning.
+</div>
