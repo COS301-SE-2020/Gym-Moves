@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Gym_Moves.addClass">
+    <StackLayout>
+        <!-- UI -->
+        <Label Text="ADD A NEW CLASS" 
+           HorizontalOptions="Center" FontSize="Title" Margin="20" />
+
+        <Label Text="Gym Name:" 
+           HorizontalOptions="Fill" />
+        <Editor x:Name ="gymName" FontSize="Small"  Text=" Test Gym" HorizontalOptions="Fill"/>
+        
+        <Label Text="Name:" 
+           HorizontalOptions="Fill" />
+        <Editor x:Name ="className" FontSize="Small"  Text=" Aerobics" HorizontalOptions="Fill"/>
+
+        <Label Text="Time:" 
+           HorizontalOptions="Fill" />
+        <TimePicker x:Name ="classTime" FontSize="Small" Time=" 13:00:00" HorizontalOptions="Fill"/>
+
+        <Label Text="Day:" 
+           HorizontalOptions="Fill" />
+        <Editor x:Name ="classDay" FontSize="Small"  Text=" Monday" HorizontalOptions="Fill"/>
+
+        <Label Text="Instructor:" 
+           HorizontalOptions="Fill" />
+        <Editor x:Name ="classIns" FontSize="Small" Text="Jane Doe" HorizontalOptions="Fill"/>
+
+        <Label Text="Maximum Capacity :" 
+           HorizontalOptions="Fill" />
+        <Editor x:Name ="classMax" FontSize="Small"  Keyboard="Numeric" Text="20" HorizontalOptions="Fill"/>
+
+        <Label Text="Name of class:" 
+           HorizontalOptions="Fill" />
+        <Editor x:Name ="classSize" FontSize="Small"  Keyboard="Numeric" Text="15" HorizontalOptions="Fill"/>
+
+        <Button x:Name ="btnAdd" Text="ADD CLASS" TextColor="White" BackgroundColor="Purple" Clicked="AddClass"/>
+    </StackLayout>
+
+</ContentPage>

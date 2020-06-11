@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Gym_Moves</string>
+    <string name="action_settings">Settings</string>
+    <string name="pHint">password</string>
+    <string name="uHint">uemail@email.com</string>
+    <string name="btnSignUp">Login</string>
+	
+</resources>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"   xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+    ios:Page.UseSafeArea="true" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Gym_Moves.sign">
+    <Grid BackgroundColor="#c8a2c8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="10,0,10,0" Grid.Row="0">
+            <Label Text="Welcome to the Gym moves App" TextColor="Black"/>
+        </StackLayout>
+        
+        <Grid RowSpacing="10" Grid.Row="1" Margin="20,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Text="Sign Up here" HorizontalOptions="Center" FontSize="24" TextColor="White"/>
+            <Entry x:Name ="uName" Grid.Row="1" Placeholder="Name" PlaceholderColor="White" FontSize="16"/>
+            <Entry x:Name ="uSN" Grid.Row="2" Placeholder="Surname" PlaceholderColor="White" FontSize="16"/>
+            <Entry x:Name ="uID" Grid.Row="3" Placeholder="Gym ID/card number" PlaceholderColor="White" FontSize="16"/>
+            <Entry x:Name ="uPass" IsPassword ="true" Grid.Row="4" Placeholder="Password" PlaceholderColor="White" FontSize="16"/>
+            <Label Text="What type of user are you?" Grid.Row="5" />
+            <RadioButton Text="Manager" CheckedChanged="OnChooseType" Grid.Row="6" />
+            <RadioButton Text="Instructor"  CheckedChanged="OnChooseType" Grid.Row="7"/>
+            <RadioButton Text="Gym Member" IsChecked="true"  CheckedChanged="OnChooseType" Grid.Row="8"/>
+            <Button Clicked ="UserSignUp"  Text="Signup" BackgroundColor="MediumPurple" TextColor="White" HeightRequest="50" VerticalOptions="Start" Grid.Row="9"/>
+            <Grid Grid.Row="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label BackgroundColor="#bababa" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                <Label BackgroundColor="#bababa" Grid.Column="2" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                
+            </Grid>
+
+        </Grid>
+        <StackLayout Grid.Row="2" BackgroundColor="MediumPurple">
+            <Label HeightRequest="1" BackgroundColor="MediumPurple"/>
+            <Button Clicked ="goLogin" BackgroundColor="MediumPurple" Text="Already Have an Account? LogIn" TextColor="White" VerticalOptions="FillAndExpand"/>
+        </StackLayout>
+    </Grid>
+</ContentPage>

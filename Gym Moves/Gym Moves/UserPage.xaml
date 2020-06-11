@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Gym_Moves.UserPage"
+             Title = "Welcome!">
+    
+
+    <Grid BackgroundColor="#c8a2c8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="10,0,10,0" Grid.Row="0">
+            
+        </StackLayout>
+
+        <Grid RowSpacing="5" Grid.Row="0" Margin="20,0,20,0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="700"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row =" 0" Text="Welcome!" HorizontalOptions="Center" FontSize="24" TextColor="Black"/>
+            <Label Grid.Row =" 1"  FontSize="Title" TextColor="Black" Text="Announcements" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+            <ScrollView Grid.Row ="2" VerticalOptions="Fill">
+                
+                <Grid RowSpacing="0" Margin="0,0,0,0" ColumnSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="160"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="160"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Frame Grid.Row="0" OutlineColor="White" CornerRadius="7" BackgroundColor="White">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Label TextColor="Black" Grid.Row ="0" Style="Bold" Text="Maintenance!" FontAttributes="Bold" FontSize="Large"/>
+                            <Label TextColor="Black" Grid.Row ="1" Text="TBC" />
+                            <Label TextColor="Black" Grid.Row ="2" Text="Date: TBC" />
+                            <Button  Grid.Row ="3"  BackgroundColor="MediumPurple" Text="View Details" TextColor="White"></Button>
+                        </Grid>
+
+                    </Frame>
+
+                    <Label Grid.Row="1"></Label>
+                    <Frame Grid.Row="2" OutlineColor="White" CornerRadius="7" BackgroundColor="White">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Label TextColor="Black" Grid.Row ="0" Style="Bold" Text="Maintenance!" FontAttributes="Bold" FontSize="Large"/>
+                            <Label TextColor="Black" Grid.Row ="1" Text="TBC" />
+                            <Label TextColor="Black" Grid.Row ="2" Text="Date: TBC" />
+                            <Button  Grid.Row ="3"  BackgroundColor="MediumPurple" Text="View Details" TextColor="White"></Button>
+                        </Grid>
+                    </Frame>
+                    <Label Grid.Row="3"></Label>
+                    <Frame Grid.Row="4" CornerRadius="7" BackgroundColor="White">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Label TextColor="Black" Grid.Row ="0" Text="Promotion!" FontAttributes="Bold" FontSize="Large"/>
+                            <Label TextColor="Black" Grid.Row ="1" Text="We are excited to announce our new membership deal for students! In the last few months, we have been tirelessly working to improve our product/service and we believe that this new class will help you enjoy your experience with us even more. So how will this deal work..." />
+                            <Button Grid.Row ="2"  BackgroundColor="MediumPurple" Text="View Details" TextColor="White"></Button>
+                        </Grid>
+
+                    </Frame>
+
+                    <Label Grid.Row="5"></Label>
+                    <Frame Grid.Row="6" CornerRadius="7" BackgroundColor="White">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Label TextColor="Black" Grid.Row ="0" Text="Promotion!" FontAttributes="Bold" FontSize="Large"/>
+                            <Label TextColor="Black" Grid.Row ="1" Text="We are excited to announce our new machine!In the last few months, we have been tirelessly working to improve our product/service and we believe that this new machine will help you enjoy your experience with us even more. So how will this deal work..." />
+                            <Button  Grid.Row ="2"  BackgroundColor="MediumPurple" Text="View Details" TextColor="White"></Button>
+                        </Grid>
+
+                    </Frame>
+
+                </Grid>
+                
+                
+            </ScrollView>
+
+ 
+
+        </Grid>
+        <Grid Grid.Row="2" ColumnSpacing="0">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="2" Clicked ="onLogout" BackgroundColor="MediumPurple" Text="Logout" TextColor="White" VerticalOptions="FillAndExpand"></Button>
+
+            <Button Grid.Column="0" Clicked ="" BackgroundColor="MediumPurple" Text="Dashboard" TextColor="White"></Button>
+
+            <Button Grid.Column="1" Clicked ="viewClasses" BackgroundColor="MediumPurple"  Text="View Classes" TextColor="White" ></Button>
+            
+
+        </Grid>
+    </Grid>
+        
+</ContentPage>

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"   
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d" 
+             x:Class="Gym_Moves.LoginPage">
+    <Grid BackgroundColor="#c8a2c8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,10,0,0" Grid.Row="0">
+            <Label Text="Welcome to the Gym moves App"/>
+            <Image x:Name="LOGO" Source="Resources\drawable\logo.png" HeightRequest="90" VerticalOptions="EndAndExpand"/>
+           
+        </StackLayout>
+        <Grid RowSpacing="20" Grid.Row="1" Margin="20,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Text="Log In" HorizontalOptions="Center" FontSize="24"/>
+            <Entry x:Name="mID" Grid.Row="1" Placeholder="Gym ID number" PlaceholderColor="White" FontSize="16"/>
+            <Entry x:Name="mPassword" IsPassword="true" Grid.Row="2" Placeholder="Password" PlaceholderColor="White" FontSize="16"/>
+            <Button Text="LogIn" BackgroundColor="MediumPurple" TextColor="White" HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Clicked="OnLogin"/>
+            <Label Text="Forgot password?" TextColor="White"  HorizontalOptions="Center" Grid.Row="4" Margin="0,10,0,0" FontSize="12"/>
+            <Grid Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label BackgroundColor="#bababa" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                <Image Source="p.jpg" Grid.Column="1" VerticalOptions="Center" Margin="10,0,10,0"/>
+                <Label BackgroundColor="#bababa" Grid.Column="2" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+            </Grid>
+
+        </Grid>
+        <StackLayout Grid.Row="2" BackgroundColor="MediumPurple">
+            <Label HeightRequest="1" BackgroundColor="White"/>
+            <Button Clicked ="goSignUp" Text="Don't Have an Account? Sign Up Here" TextColor="White" VerticalOptions="FillAndExpand" BackgroundColor="MediumPurple"/>
+        </StackLayout>
+    </Grid>
+</ContentPage>
