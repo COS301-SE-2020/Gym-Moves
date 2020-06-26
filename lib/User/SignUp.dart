@@ -59,7 +59,7 @@ Purpose:
  */
 
 class SignUpState extends State<SignUp> {
-  String gymId = "";
+  String gymMemberId = "";
   String password = "";
   String gym = "";
   String username = "";
@@ -83,7 +83,7 @@ class SignUpState extends State<SignUp> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Gym ID',
+                    labelText: 'Gym Member ID',
                     contentPadding: const EdgeInsets.all(15.0),
                     border: InputBorder.none,
                     labelStyle: new TextStyle(color: Colors.black54),
@@ -95,7 +95,7 @@ class SignUpState extends State<SignUp> {
                         borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
-                    gymId = value;
+                    gymMemberId = value;
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
@@ -303,7 +303,7 @@ class SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(10.0)),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
-                    sendValuesToDatabase(gymId, password, gym, username);
+                    sendValuesToDatabase(gymMemberId, password, gym, username);
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
@@ -339,14 +339,11 @@ class SignUpState extends State<SignUp> {
                   text: 'Have an account? ',
                 ),
                 TextSpan(
-                  text: 'Log in',
+                  text: 'Log in!',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                   ),
-                ),
-                TextSpan(
-                  text: '!',
-                ),
+                )
               ],
             ),
             textAlign: TextAlign.center,

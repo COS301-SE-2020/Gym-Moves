@@ -32,6 +32,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 import 'SignUp.dart';
+import 'ForgotPassword.dart';
 
 /*
 Class Name:
@@ -57,60 +58,12 @@ Purpose:
   This class will build the page, and request verification to the database.
  */
 class LogInState extends State<LogIn> {
-  String id = "";
   String password = "";
-  String gym = "";
   String username = "";
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-
-    /*
-    Variable Name: idField
-
-    Purpose: Stores the id input element value.
-     */
-    final idField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
-            child: TextField(
-                cursorColor: Colors.black45,
-                obscureText: false,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Gym ID',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                /*
-                 Method Name: onChanged
-
-                 Purpose: This method is called when the state of the input field
-                          changes. This then makes sure the variable that stores
-                          the data (_headingOfAnnouncement) is always up to date
-                          with what the value is.
-                 */
-                onChanged: (value) {
-                  setState(() {
-                    id = value;
-                  });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
 
     /*
     Variable Name: usernameField
@@ -274,15 +227,8 @@ class LogInState extends State<LogIn> {
               textAlign: TextAlign.left,
             ),
           ),
-
-          /*
-            Explanation: This is the heading on the screen.
-             */
         ]),
         SizedBox(height: 10.0),
-        /*
-            Explanation: This is the place where the textboxes are placed.
-            */
         Form(
             child: Column(children: <Widget>[
           SizedBox(height: 0.02 * media.size.height),
@@ -308,12 +254,24 @@ class LogInState extends State<LogIn> {
                   color: Colors.black45,
                   allowDrawingOutsideViewBox: true,
                 ))
-          ]),
-          SizedBox(height: 0.05 * media.size.height),
+          ])
         ])),
-        /*
-            Explanation: This is the send button.
-            */
+        Container(
+            padding: EdgeInsets.fromLTRB(0.05 * media.size.height, 0.0,
+                0.18 * media.size.width, 0.05 * media.size.height),
+            width: media.size.width,
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ForgotPassword()),
+                  );
+                },
+                child: Text(
+                  "Forgot password?",
+                  textAlign: TextAlign.right,
+                  style: TextStyle(color: Colors.white),
+                ))),
         Center(
             child: SizedBox(
                 width: 0.3 * media.size.width,
@@ -321,15 +279,8 @@ class LogInState extends State<LogIn> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                   color: const Color(0xffffffff).withOpacity(0.3),
-                  /*
-                    Method Name: onPressed
-
-                    Purpose: This method is called when the send button is pressed.
-                             It send the data retrieved from the input and calls
-                             the relevant functions to handle the data.
-                    */
                   onPressed: () {
-                    sendValuesToDatabase(id, password, gym);
+                    verifyUser(username, password);
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
@@ -365,14 +316,11 @@ class LogInState extends State<LogIn> {
                   text: 'Don\'t have an account? ',
                 ),
                 TextSpan(
-                  text: 'Sign up',
+                  text: 'Sign up!',
                   style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w800,
                   ),
-                ),
-                TextSpan(
-                  text: '!',
-                ),
+                )
               ],
             ),
             textAlign: TextAlign.center,
@@ -391,7 +339,7 @@ class LogInState extends State<LogIn> {
            It sends the values to the database to be stored.
 */
 
-sendValuesToDatabase(id, password, gym) {}
+verifyUser(username, password) {}
 
 const String lock =
     '<svg viewBox="292.0 395.0 16.0 17.5" ><path transform="translate(292.0, 395.0)" d="M 14.28200817108154 7.65625 L 13.42508792877197 7.65625 L 13.42508792877197 5.1953125 C 13.42508792877197 2.3310546875 10.99000549316406 0 7.9979248046875 0 C 5.005844116210938 0 2.570761442184448 2.3310546875 2.570761442184448 5.1953125 L 2.570761442184448 7.65625 L 1.713841080665588 7.65625 C 0.7676579356193542 7.65625 0 8.39111328125 0 9.296875 L 0 15.859375 C 0 16.76513671875 0.7676579356193542 17.5 1.713841080665588 17.5 L 14.28200817108154 17.5 C 15.22819137573242 17.5 15.995849609375 16.76513671875 15.995849609375 15.859375 L 15.995849609375 9.296875 C 15.995849609375 8.39111328125 15.22819137573242 7.65625 14.28200817108154 7.65625 Z M 10.56868648529053 7.65625 L 5.427163124084473 7.65625 L 5.427163124084473 5.1953125 C 5.427163124084473 3.83837890625 6.580435276031494 2.734375 7.9979248046875 2.734375 C 9.415414810180664 2.734375 10.56868648529053 3.83837890625 10.56868648529053 5.1953125 L 10.56868648529053 7.65625 Z" fill="#b9a8bf" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
