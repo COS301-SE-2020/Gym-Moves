@@ -8,15 +8,42 @@ Gym Moves is an application that will make life easier for gym members and gym s
 
 ### Recorded Demo 1
 
-Link to folder with video: [Demo1](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+Link to google drive folder with video: [Demo1](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+
+<br/>
+
+### Recorded Demo 2
+
+Link to google drive folder with video: 
 
 <br/>
 
 
 ### SRS Document
 
-View only link to SRS document on overleaf: [Gym Moves Document](https://www.overleaf.com/read/pccntnjzxgyf) <br/>
-Link to folder with SRS document as a pdf: [Gym Moves PDF](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+#### Version 1
+View only link to SRS document on overleaf: [Gym Moves Document Version1](https://www.overleaf.com/read/chgypmxyntsm) <br/>
+Link to folder with SRS document as a pdf: [Gym Moves Version1 PDF](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+
+#### Version 2
+
+View only link to SRS document on overleaf:<br/>
+Link to folder with SRS document as a pdf: 
+
+<br/>
+
+### User Manual Document
+
+View only link to User Manual document on overleaf: <br/>
+Link to folder with SRS document as a pdf:
+
+<br/>
+
+### Coding Standards Document
+
+View only link to Coding Standards document on overleaf: <br/>
+Link to folder with SRS document as a pdf:
+
 
 <br/>
 
