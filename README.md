@@ -35,14 +35,14 @@ Link to folder with SRS document as a pdf:
 ### User Manual Document
 
 View only link to User Manual document on overleaf: <br/>
-Link to folder with SRS document as a pdf:
+Link to folder with User Manual document as a pdf:
 
 <br/>
 
 ### Coding Standards Document
 
 View only link to Coding Standards document on overleaf: <br/>
-Link to folder with SRS document as a pdf:
+Link to folder with Coding Standards document as a pdf:
 
 
 <br/>
