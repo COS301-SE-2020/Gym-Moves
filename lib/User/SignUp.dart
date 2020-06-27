@@ -12,15 +12,17 @@ Update History:
 --------------------------------------------------------------------------------
 | Name               | Date              | Changes                             |
 --------------------------------------------------------------------------------
-| Danel              | 25/06/2020        | Made UI responsive and functional   |
+| Danel              | 24/06/2020        | Made UI responsive and functional   |
+--------------------------------------------------------------------------------
+| Danel              | 26/06/2020        | Added autocomplete field            |
 --------------------------------------------------------------------------------
 
 Functional Description:
-  This file contains the SignUp class that calls the class that creates the UI.
-  The SignUpState class handles the building of the UI and making all the
+  This file contains the SignUp class that creates the class that creates the
+  UI. The SignUpState class handles the building of the UI and making all the
   components functional and responsive.
   This file will also handle sending the information that is entered to the
-  database.
+  database to verify if they can create an account.
 
 Classes in the File:
 - SignUp
@@ -31,16 +33,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
-import 'LogIn.dart';
+import 'package:gym_moves/User/LogIn.dart';
 
 /*
 Class Name:
   SignUp
 
 Purpose:
-  This class creates the class that will build the page.
+  This class creates the class that will build the page. It ensures state
+  remains, so that when the keyboard closes the for fields do not clear.
  */
-
 class SignUp extends StatefulWidget {
   const SignUp({
     Key key,
@@ -64,6 +66,17 @@ class SignUpState extends State<SignUp> {
   String gym = "";
   String username = "";
 
+  final signUpFormKey = GlobalKey<FormState>();
+
+  /*
+   Method Name:
+    build
+
+   Purpose:
+    This method builds the UI for the screen for a user to sign up. It calls the
+    necessary function in order to send the data to the database. If the sign up
+    is successful, the user will be redirected to their relevant home screen.
+   */
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
@@ -74,7 +87,7 @@ class SignUpState extends State<SignUp> {
         child: Container(
             width: 0.7 * media.size.width,
             height: 0.08 * media.size.height,
-            child: TextField(
+            child: TextFormField(
                 cursorColor: Colors.black45,
                 obscureText: false,
                 style: TextStyle(
@@ -89,15 +102,19 @@ class SignUpState extends State<SignUp> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     gymMemberId = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
@@ -122,15 +139,19 @@ class SignUpState extends State<SignUp> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     username = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
@@ -156,17 +177,22 @@ class SignUpState extends State<SignUp> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     password = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.transparent
+    );
 
     final gymField = Material(
         shadowColor: Colors.black,
@@ -197,8 +223,10 @@ class SignUpState extends State<SignUp> {
                   labelStyle: new TextStyle(color: Colors.black54),
                   border: InputBorder.none,
                   enabledBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none)),
-            )),
+                      OutlineInputBorder(borderSide: BorderSide.none)
+              ),
+            )
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.white);
 
@@ -213,10 +241,11 @@ class SignUpState extends State<SignUp> {
               height: 0.4 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/Bicycles.jpg'),
+                  image: const AssetImage('assets/images/bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.82), BlendMode.dstIn),
+                      Colors.black.withOpacity(0.82), BlendMode.dstIn
+                  ),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -240,67 +269,83 @@ class SignUpState extends State<SignUp> {
               textAlign: TextAlign.left,
             ),
           ),
-        ]),
+        ]
+        ),
         SizedBox(height: 0.04 * media.size.height),
         Form(
+            key: signUpFormKey,
             child: Column(children: <Widget>[
-          Stack(children: <Widget>[
-            gymIdField,
-            Transform.translate(
-                offset: Offset(0.7 * 0.85 * media.size.width,
-                    0.08 * 0.3 * media.size.height),
-                child: SvgPicture.string(
-                  idCard,
-                  color: Colors.black45,
-                  allowDrawingOutsideViewBox: true,
-                ))
-          ]),
+              Stack(children: <Widget>[
+                gymIdField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: SvgPicture.string(
+                      idCard,
+                      width: media.size.width * 0.06,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    )
+                )
+              ]
+              ),
               SizedBox(height: 0.06 * media.size.height),
-          Stack(children: <Widget>[
-            gymField,
-            Transform.translate(
-                offset: Offset(0.7 * 0.85 * media.size.width,
-                    0.08 * 0.3 * media.size.height),
-                child: SvgPicture.string(
-                  dumbbell,
-                  height: 0.04 * media.size.height,
-                  width: 0.04 * media.size.width,
-                  color: Colors.black45,
-                  allowDrawingOutsideViewBox: true,
-                ))
-          ]),
+              Stack(children: <Widget>[
+                gymField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: SvgPicture.string(
+                      dumbbell,
+                      height: 0.04 * media.size.height,
+                      width: 0.04 * media.size.width,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    )
+                )
+              ]
+              ),
               SizedBox(height: 0.06 * media.size.height),
-          Stack(children: <Widget>[
-            usernameField,
-            Transform.translate(
-                offset: Offset(0.7 * 0.85 * media.size.width,
-                    0.08 * 0.3 * media.size.height),
-                child: SvgPicture.string(
-                  person,
-                  color: Colors.black45,
-                  allowDrawingOutsideViewBox: true,
-                ))
-          ]),
+              Stack(children: <Widget>[
+                usernameField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.25 * media.size.height),
+                    child: SvgPicture.string(
+                      person,
+                      width: media.size.width * 0.05,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    )
+                )
+              ]
+              ),
               SizedBox(height: 0.06 * media.size.height),
-          Stack(children: <Widget>[
-            passwordField,
-            Transform.translate(
-                offset: Offset(0.7 * 0.85 * media.size.width,
-                    0.08 * 0.3 * media.size.height),
-                child: SvgPicture.string(
-                  lock,
-                  color: Colors.black45,
-                  allowDrawingOutsideViewBox: true,
-                ))
-          ]),
+              Stack(children: <Widget>[
+                passwordField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: SvgPicture.string(
+                      lock,
+                      width: media.size.width * 0.05,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    )
+                )
+              ]
+              ),
               SizedBox(height: 0.06 * media.size.height),
-        ])),
+            ]
+            )
+        ),
         Center(
             child: SizedBox(
-                width: 0.3 * media.size.width,
+                width: 0.25 * media.size.width,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
                     sendValuesToDatabase(gymMemberId, password, gym, username);
@@ -313,10 +358,13 @@ class SignUpState extends State<SignUp> {
                       'Submit',
                       style: TextStyle(
                           fontSize: 0.05 * media.size.width,
-                          fontFamily: 'Roboto'),
+                          fontFamily: 'Roboto'
+                      ),
                     ),
                   ),
-                ))),
+                )
+            )
+        ),
         SizedBox(height: 0.06 * media.size.height),
         Center(
             child: GestureDetector(
@@ -331,7 +379,7 @@ class SignUpState extends State<SignUp> {
             TextSpan(
               style: TextStyle(
                 fontFamily: 'Roboto',
-                fontSize: 16,
+                fontSize: 0.04 * media.size.width,
                 color: const Color(0xffffffff),
               ),
               children: [
@@ -348,12 +396,13 @@ class SignUpState extends State<SignUp> {
             ),
             textAlign: TextAlign.center,
           ),
-        )),
+        )
+        ),
         SizedBox(height: 0.05 * media.size.height),
-      ]),
+      ]
+      ),
     );
   }
-}
 
 /*
   Method Name: sendValuesToDatabase
@@ -362,7 +411,10 @@ class SignUpState extends State<SignUp> {
            It sends the values to the database to be stored.
 */
 
-sendValuesToDatabase(id, password, gym, username) {}
+  sendValuesToDatabase(id, password, gym, username) {}
+
+}
+
 
 const String idCard =
     '<svg viewBox="291.0 327.0 23.6 16.5" ><path transform="translate(291.0, 324.75)" d="M 21.62522506713867 2.25 L 1.965929627418518 2.25 C 0.8805726170539856 2.25 0 3.041852474212646 0 4.017857074737549 L 0 4.607143402099609 L 23.59115600585938 4.607143402099609 L 23.59115600585938 4.017857074737549 C 23.59115600585938 3.041852474212646 22.7105827331543 2.25 21.62522506713867 2.25 Z M 0 16.98214149475098 C 0 17.95814514160156 0.8805726170539856 18.75 1.965929627418518 18.75 L 21.62522506713867 18.75 C 22.7105827331543 18.75 23.59115600585938 17.95814514160156 23.59115600585938 16.98214149475098 L 23.59115600585938 5.785714626312256 L 0 5.785714626312256 L 0 16.98214149475098 Z M 14.41681671142578 8.437499046325684 C 14.41681671142578 8.275445938110352 14.5642614364624 8.142857551574707 14.74447154998779 8.142857551574707 L 20.64226150512695 8.142857551574707 C 20.82247161865234 8.142857551574707 20.96991539001465 8.275445938110352 20.96991539001465 8.437499046325684 L 20.96991539001465 9.026785850524902 C 20.96991539001465 9.188838958740234 20.82247161865234 9.321427345275879 20.64226150512695 9.321427345275879 L 14.74447154998779 9.321427345275879 C 14.5642614364624 9.321427345275879 14.41681671142578 9.188838958740234 14.41681671142578 9.026785850524902 L 14.41681671142578 8.437499046325684 Z M 14.41681671142578 10.79464149475098 C 14.41681671142578 10.63258838653564 14.5642614364624 10.49999904632568 14.74447154998779 10.49999904632568 L 20.64226150512695 10.49999904632568 C 20.82247161865234 10.49999904632568 20.96991539001465 10.63258838653564 20.96991539001465 10.79464149475098 L 20.96991539001465 11.3839282989502 C 20.96991539001465 11.54598140716553 20.82247161865234 11.67857074737549 20.64226150512695 11.67857074737549 L 14.74447154998779 11.67857074737549 C 14.5642614364624 11.67857074737549 14.41681671142578 11.54598140716553 14.41681671142578 11.3839282989502 L 14.41681671142578 10.79464149475098 Z M 14.41681671142578 13.15178489685059 C 14.41681671142578 12.98972988128662 14.5642614364624 12.85714054107666 14.74447154998779 12.85714054107666 L 20.64226150512695 12.85714054107666 C 20.82247161865234 12.85714054107666 20.96991539001465 12.98972988128662 20.96991539001465 13.15178489685059 L 20.96991539001465 13.74106979370117 C 20.96991539001465 13.90312385559082 20.82247161865234 14.03571224212646 20.64226150512695 14.03571224212646 L 14.74447154998779 14.03571224212646 C 14.5642614364624 14.03571224212646 14.41681671142578 13.90312385559082 14.41681671142578 13.74106979370117 L 14.41681671142578 13.15178489685059 Z M 7.208408355712891 8.142857551574707 C 8.65418529510498 8.142857551574707 9.829648017883301 9.199888229370117 9.829648017883301 10.49999904632568 C 9.829648017883301 11.80011081695557 8.65418529510498 12.85714054107666 7.208408355712891 12.85714054107666 C 5.762631416320801 12.85714054107666 4.587169170379639 11.80011081695557 4.587169170379639 10.49999904632568 C 4.587169170379639 9.199888229370117 5.762631416320801 8.142857551574707 7.208408355712891 8.142857551574707 Z M 2.748205900192261 15.66361427307129 C 3.092243432998657 14.71707439422607 4.079304218292236 14.03571224212646 5.242478847503662 14.03571224212646 L 5.578325271606445 14.03571224212646 C 6.082094669342041 14.22354698181152 6.630917072296143 14.33035564422607 7.208408355712891 14.33035564422607 C 7.785899639129639 14.33035564422607 8.338818550109863 14.22354698181152 8.838491439819336 14.03571224212646 L 9.174338340759277 14.03571224212646 C 10.33751392364502 14.03571224212646 11.3245735168457 14.71707439422607 11.66861152648926 15.66361427307129 C 11.79967403411865 16.02823448181152 11.4556360244751 16.39285469055176 11.02968502044678 16.39285469055176 L 3.387132883071899 16.39285469055176 C 2.961181402206421 16.39285469055176 2.617143630981445 16.02455139160156 2.748205900192261 15.66361427307129 Z" fill="#b9a8bf" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

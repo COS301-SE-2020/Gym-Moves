@@ -15,13 +15,14 @@ Update History:
 | Danel              | 26/06/2020        | Made UI responsive and functional   |
 --------------------------------------------------------------------------------
 
-
 Functional Description:
   This file contains the ViewMyProfile class that handles building the UI for
-  the profile screen of the users.
+  the profile screen of the users. It also ensures all the menu options are
+  functional and that the widgets are responsive.
 
 Classes in the File:
 - ViewMyProfile
+- ViewMyProfileState
  */
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -31,27 +32,48 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_moves/Announcement/SetNotificationType.dart';
 import 'package:gym_moves/User/ChangePassword.dart';
 import 'package:gym_moves/User/HelpManual.dart';
+import 'package:gym_moves/User/LogIn.dart';
 
 /*
 Class Name:
   ViewMyProfile
 
 Purpose:
-  This class builds the UI for the profile page. It also ensures all buttons
-  are functional and that the UI is responsive to the screen size. It also
-  makes sure the persons name displays on the screen.
+  This class creates the class that will build the page.
  */
-class ViewMyProfile extends StatelessWidget {
-  ViewMyProfile({Key key}) : super(key: key);
+class ViewMyProfile extends StatefulWidget {
+  const ViewMyProfile({Key key}) : super(key: key);
+
+  @override
+  ViewMyProfileState createState() => ViewMyProfileState();
+}
+
+/*
+Class Name:
+  ViewMyProfileState
+
+Purpose:
+  This class builds the UI for the profile page. It also ensures all buttons
+  are functional and that the UI is responsive to the screen size. It also uses
+  the name of the user that was retrieved from the database displays on the
+  profile.
+ */
+class ViewMyProfileState extends State<ViewMyProfile> {
+  ViewMyProfileState({Key key});
 
   /*
-   Method Name: Build
+   Method Name:
+    build
 
-   Purpose: This method builds the UI for the screen. It calls the necessary
-            function in order to display the name of the user.
+   Purpose:
+    This method builds the UI for the screen. It calls the necessary function in
+    order to display the name of the user.
    */
   @override
   Widget build(BuildContext context) {
+    /* This will hold the user's name. */
+    String name = "";
+
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
@@ -64,10 +86,11 @@ class ViewMyProfile extends StatelessWidget {
               decoration: BoxDecoration(
                   image: DecorationImage(
                     image:
-                        const AssetImage('assets/images/RightSidePoolHalf.png'),
+                        const AssetImage('assets/images/rightSidePoolHalf.png'),
                     fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(
-                        Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                        Colors.black.withOpacity(1.0), BlendMode.dstIn
+                    ),
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -75,7 +98,8 @@ class ViewMyProfile extends StatelessWidget {
                       offset: Offset(0, 3),
                       blurRadius: 6,
                     )
-                  ])),
+                  ])
+          ),
           Transform.translate(
               offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
               child: GestureDetector(
@@ -83,9 +107,11 @@ class ViewMyProfile extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: SvgPicture.string(backButton,
-                      height: 0.05 * media.size.height,
                       width: 0.07 * media.size.width,
-                      allowDrawingOutsideViewBox: true))),
+                      allowDrawingOutsideViewBox: true
+                  )
+              )
+          ),
           Container(
               width: media.size.width,
               height: 0.4 * media.size.height,
@@ -98,11 +124,12 @@ class ViewMyProfile extends StatelessWidget {
                             BorderRadius.all(Radius.elliptical(85.5, 81.0)),
                         color: const Color(0xffffffff),
                         border: Border.all(
-                            width: 1.0, color: const Color(0xff707070)),
+                            width: 1.0, color: const Color(0xff707070)
+                        ),
                       ),
                       child: Center(
                           child: AutoSizeText(
-                        'Name',
+                        name,
                         style: TextStyle(
                           fontFamily: 'FreestyleScript',
                           fontSize: media.size.width * 0.12,
@@ -117,154 +144,72 @@ class ViewMyProfile extends StatelessWidget {
                         ),
                         maxLines: 1,
                         textAlign: TextAlign.center,
-                      )))))
-        ]),
-        SizedBox(height: 0.05 * media.size.height),
-        Stack(children: <Widget>[
-          GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChangePassword()));
-              },
-              child: Container(
-                  width: 0.8 * media.size.width,
-                  height: 0.08 * media.size.height,
-                  padding: EdgeInsets.all(0.025 * media.size.width),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(29.0),
-                      color: const Color(0x3dffffff),
-                      border: Border.all(
-                          width: 1.0, color: const Color(0x3d707070)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x23000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        )
-                      ]))),
-          Transform.translate(
-              offset: Offset(0.8 * 0.8 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child:
-                  // Adobe XD layer: 'Icon open-account-l…' (shape)
-                  SvgPicture.string(
-                pen,
-                allowDrawingOutsideViewBox: true,
-                height: 0.08 * 0.5 * media.size.height,
-              )),
-          Transform.translate(
-            offset: Offset(
-                0.8 * 0.1 * media.size.width, 0.08 * 0.25 * media.size.height),
-            child: Text(
-              'Change Password',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 0.05 * media.size.width,
-                color: const Color(0xffffffff),
-              ),
-              textAlign: TextAlign.left,
-            ),
+                      )
+                      )
+                  )
+              )
           )
-        ]),
+        ]
+        ),
         SizedBox(height: 0.05 * media.size.height),
         Stack(children: <Widget>[
-          GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HelpManual()));
-              },
-              child: Container(
-                  width: 0.8 * media.size.width,
-                  height: 0.08 * media.size.height,
-                  padding: EdgeInsets.all(0.025 * media.size.width),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(29.0),
-                      color: const Color(0x3dffffff),
-                      border: Border.all(
-                          width: 1.0, color: const Color(0x3d707070)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x23000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        )
-                      ]))),
+          getOptionContainer(media, ChangePassword()),
           Transform.translate(
-              offset: Offset(0.8 * 0.8 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child:
-                  // Adobe XD layer: 'Icon open-account-l…' (shape)
-                  SvgPicture.string(
-                helpIcon,
-                allowDrawingOutsideViewBox: true,
-                height: 0.08 * 0.5 * media.size.height,
-              )),
-          Transform.translate(
-            offset: Offset(
-                0.8 * 0.1 * media.size.width, 0.08 * 0.25 * media.size.height),
-            child: Text(
-              'Help Manual',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 0.05 * media.size.width,
-                color: const Color(0xffffffff),
+              offset: Offset(0.8 * 0.82 * media.size.width,
+                  0.08 * 0.25 * media.size.height
               ),
-              textAlign: TextAlign.left,
-            ),
+              child: getIcon(pen, 0.08 * 0.5 * media.size.height)
           ),
+          Transform.translate(
+              offset: Offset(0.8 * 0.1 * media.size.width,
+                  0.08 * 0.25 * media.size.height
+              ),
+              child: getOptionText(media, "Change Password")
+          )
         ]),
         SizedBox(height: 0.05 * media.size.height),
         Stack(children: <Widget>[
-          GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Notifications()));
-              },
-              child: Container(
-                  width: 0.8 * media.size.width,
-                  height: 0.08 * media.size.height,
-                  padding: EdgeInsets.all(0.025 * media.size.width),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(29.0),
-                      color: const Color(0x3dffffff),
-                      border: Border.all(
-                          width: 1.0, color: const Color(0x3d707070)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x23000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        )
-                      ]))),
+          getOptionContainer(media, HelpManual()),
           Transform.translate(
-              offset: Offset(0.8 * 0.8 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child:
-                  // Adobe XD layer: 'Icon open-account-l…' (shape)
-                  SvgPicture.string(
-                bell,
-                allowDrawingOutsideViewBox: true,
-                height: 0.08 * 0.5 * media.size.height,
-              )),
-          Transform.translate(
-            offset: Offset(
-                0.8 * 0.1 * media.size.width, 0.08 * 0.25 * media.size.height),
-            child: Text(
-              'Notifications',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 0.05 * media.size.width,
-                color: const Color(0xffffffff),
+              offset: Offset(0.8 * 0.82 * media.size.width,
+                  0.08 * 0.25 * media.size.height
               ),
-              textAlign: TextAlign.left,
-            ),
+              child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)
+          ),
+          Transform.translate(
+              offset: Offset(0.8 * 0.1 * media.size.width,
+                  0.08 * 0.25 * media.size.height
+              ),
+              child: getOptionText(media, "Help Manual")
+          ),
+        ]
+        ),
+        SizedBox(height: 0.05 * media.size.height),
+        Stack(children: <Widget>[
+          getOptionContainer(media, Notifications()),
+          Transform.translate(
+              offset: Offset(0.8 * 0.82 * media.size.width,
+                  0.08 * 0.25 * media.size.height
+              ),
+              child: getIcon(bell, 0.08 * 0.5 * media.size.height)
+          ),
+          Transform.translate(
+              offset: Offset(0.8 * 0.1 * media.size.width,
+                  0.08 * 0.25 * media.size.height),
+              child: getOptionText(media, "Notifications")
           )
-        ]),
+        ]
+        ),
         SizedBox(height: 0.05 * media.size.height),
         Stack(children: <Widget>[
           GestureDetector(
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LogIn()),
+                );
               },
               child: Container(
                   width: 0.8 * media.size.width,
@@ -274,39 +219,99 @@ class ViewMyProfile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(29.0),
                       color: const Color(0x3dffffff),
                       border: Border.all(
-                          width: 1.0, color: const Color(0x3d707070)),
+                          width: 1.0, color: const Color(0x3d707070)
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: const Color(0x23000000),
                           offset: Offset(0, 3),
                           blurRadius: 6,
                         )
-                      ]))),
+                      ])
+              )
+          ),
           Transform.translate(
               offset: Offset(0.8 * 0.8 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child:
-                  // Adobe XD layer: 'Icon open-account-l…' (shape)
-                  SvgPicture.string(
-                logout,
-                allowDrawingOutsideViewBox: true,
-                height: 0.08 * 0.5 * media.size.height,
-              )),
-          Transform.translate(
-            offset: Offset(
-                0.8 * 0.1 * media.size.width, 0.08 * 0.25 * media.size.height),
-            child: Text(
-              'Logout',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 0.05 * media.size.width,
-                color: const Color(0xffffffff),
+                  0.08 * 0.25 * media.size.height
               ),
-              textAlign: TextAlign.left,
-            ),
+              child: getIcon(logout, 0.08 * 0.5 * media.size.height)
+          ),
+          Transform.translate(
+              offset: Offset(0.8 * 0.1 * media.size.width,
+                  0.08 * 0.25 * media.size.height
+              ),
+              child: getOptionText(media, "Logout")
           )
-        ]),
-      ]),
+        ]
+        )
+      ]
+      ),
+    );
+  }
+
+  /*
+   Method Name:
+    getOptionContainer
+
+   Purpose:
+    This method returns the container that holds the options.
+   */
+  Widget getOptionContainer(media, nextPage) {
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => nextPage));
+        },
+        child: Container(
+            width: 0.8 * media.size.width,
+            height: 0.08 * media.size.height,
+            padding: EdgeInsets.all(0.025 * media.size.width),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(29.0),
+                color: const Color(0x3dffffff),
+                border: Border.all(width: 1.0, color: const Color(0x3d707070)),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x23000000),
+                    offset: Offset(0, 3),
+                    blurRadius: 6,
+                  )
+                ])
+        )
+    );
+  }
+
+  /*
+   Method Name:
+    getOptionText
+
+   Purpose:
+    This method returns the text that is shown for the options.
+   */
+  Widget getOptionText(media, text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'Roboto',
+        fontSize: 0.05 * media.size.width,
+        color: const Color(0xffffffff),
+      ),
+      textAlign: TextAlign.left,
+    );
+  }
+
+  /*
+   Method Name:
+    getIcon
+
+   Purpose:
+    This method returns the needed icon.
+   */
+  Widget getIcon(icon, height) {
+    return SvgPicture.string(
+      icon,
+      allowDrawingOutsideViewBox: true,
+      height: height,
     );
   }
 }

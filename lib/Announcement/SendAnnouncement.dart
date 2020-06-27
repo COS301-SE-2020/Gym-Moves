@@ -1,36 +1,39 @@
 /*
-File Name: SendAnnouncement.dart
+File Name:
+  SendAnnouncement.dart
 
-Project Name: Gym Moves
+Author:
+  Raeesa
+
+Date Created:
+  15/06/2020
 
 Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-15/06/2020    |    Raeesa      |    Original
--------------------------------------------------------------------------------
 24/06/2020    |    Danel       |    Fixed input and scrolling
 --------------------------------------------------------------------------------
 
-Functional Description: This file implements the SendAnnouncementState class. It
-                        creates the UI for Managers to be able to
-                        send announcements; as well as implements the actual
-                        functionality of sending the announcements, notifying
-                        members of the announcements, and storing the new
-                        in the database. It also implements the
-                        SendAnnouncement class which calls the other class
-                        to be built.
-
+Functional Description:
+  This file implements the SendAnnouncementState class. It creates the UI for
+  Managers to be able to send announcements; as well as implements the actual
+  functionality of sending the announcements, notifying members of the
+  announcements, and storing the new data in the database. It also implements
+  the SendAnnouncement class which calls the other class to be built.
  */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 /*
-Purpose: This class is used to call the class that builds the UI.
+Class Name:
+  SendAnnouncement
 
-Version: Original
-
+Purpose:
+  This class is used to call the class that builds the UI, it also ensures that
+  the screen keeps the state of the text fields and does not clear them when the
+  keyboard closes.
  */
 
 class SendAnnouncement extends StatefulWidget {
@@ -41,32 +44,33 @@ class SendAnnouncement extends StatefulWidget {
 }
 
 /*
-Purpose: This class is used to build the UI and handle what happens with the
-          user input.
+Class Name:
+  SendAnnouncementState
 
-Version: 1
-
+Purpose:
+  This class is used to build the UI to allow managers to send announcements,
+   and also handles what happens with the information that gets inputted.
+  input.
  */
 
 class SendAnnouncementState extends State<SendAnnouncement> {
   String _headingOfAnnouncement = "";
   String _detailsAnnouncement = "";
 
-  /*
-   Method Name: Build
+  final announcementFormKey = GlobalKey<FormState>();
 
-   Purpose: This method builds the UI and also calls the necessary functions
-            that process the data that was entered.
+  /*
+   Method Name:
+    build
+
+   Purpose:
+    This method builds the UI and also calls the necessary functions that
+    process the data that was entered.
    */
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    /*
-    Variable Name: headingField
-
-    Purpose: Stores the heading input element value.
-     */
     final headingField = Material(
         shadowColor: Colors.black,
         elevation: 15,
@@ -77,7 +81,8 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 cursorColor: Colors.black45,
                 obscureText: false,
                 style: TextStyle(
-                  color: Colors.black54,
+                    color: Colors.black54,
+                    fontSize: 0.04 * media.size.width
                 ),
                 decoration: InputDecoration(
                     filled: true,
@@ -88,31 +93,23 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                /*
-                 Method Name: onChanged
-
-                 Purpose: This method is called when the state of the input field
-                          changes. This then makes sure the variable that stores
-                          the data (_headingOfAnnouncement) is always up to date
-                          with what the value is.
-                 */
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     _headingOfAnnouncement = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.transparent
+    );
 
-    /*
-    Variable Name: detailField
-
-    Purpose: Stores the heading input element value.
-     */
     final detailField = Material(
         shadowColor: Colors.black,
         elevation: 15,
@@ -123,8 +120,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 cursorColor: Colors.black45,
                 obscureText: false,
                 style: TextStyle(
-                  color: Colors.black54,
-                ),
+                    color: Colors.black54, fontSize: 0.04 * media.size.width),
                 maxLines: 9,
                 decoration: InputDecoration(
                     filled: true,
@@ -137,20 +133,15 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                /*
-                 Method Name: onChanged
-
-                 Purpose: This method is called when the state of the input field
-                          changes. This then makes sure the variable that stores
-                          the data (_headingOfAnnouncement) is always up to date
-                          with what the value is.
-                 */
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     _detailsAnnouncement = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
@@ -158,17 +149,14 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         backgroundColor: const Color(0xff513369),
         body: ListView(children: <Widget>[
           Stack(children: <Widget>[
-            /*
-            Explanation: This is the background image.
-             */
-            Transform.translate(
+             Transform.translate(
               offset: Offset(0.0, -0.033 * media.size.height),
               child: Container(
                 width: media.size.width,
                 height: media.size.height * 0.35,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: const AssetImage('assets/images/Bicycles.jpg'),
+                    image: const AssetImage('assets/images/bicycles.jpg'),
                     fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(
                         Color(0xff513369).withOpacity(0.6), BlendMode.dstIn),
@@ -183,10 +171,6 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 ),
               ),
             ),
-            /*
-            Explanation: This is the back arrow that is used to go back to the
-                         previous screen.
-             */
             Transform.translate(
                 offset:
                     Offset(0.05 * media.size.width, 0.01 * media.size.height),
@@ -194,15 +178,12 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: SvgPicture.string(
-                    backArrow,
-                    allowDrawingOutsideViewBox: true,
+                  child: SvgPicture.string(backArrow,
+                      allowDrawingOutsideViewBox: true,
                       height: 0.05 * media.size.height,
                       width: 0.07 * media.size.width),
-                )),
-            /*
-            Explanation: This is the heading on the screen.
-             */
+                )
+            ),
             Transform.translate(
                 offset: Offset(0.0, -0.033 * media.size.height),
                 child: SizedBox(
@@ -225,22 +206,22 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    ))),
-          ]),
+                    )
+                )
+            ),
+          ]
+          ),
           SizedBox(height: 0.04 * media.size.height),
-          /*
-            Explanation: This is the place where the textboxes are placed.
-            */
           Form(
+            key: announcementFormKey,
               child: Column(children: <Widget>[
             headingField,
             SizedBox(height: 0.05 * media.size.height),
             detailField
-          ])),
+          ]
+              )
+          ),
           SizedBox(height: 0.05 * media.size.height),
-          /*
-            Explanation: This is the send button.
-            */
           Center(
               child: SizedBox(
                   width: 0.2 * media.size.width,
@@ -248,13 +229,6 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     color: const Color(0xffffffff).withOpacity(0.3),
-                    /*
-                    Method Name: onPressed
-
-                    Purpose: This method is called when the send button is pressed.
-                             It send the data retrieved from the input and calls
-                             the relevant functions to handle the data.
-                    */
                     onPressed: () {
                       sendValuesToNotify(
                           _headingOfAnnouncement, _detailsAnnouncement);
@@ -272,27 +246,35 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                             fontFamily: 'Roboto'),
                       ),
                     ),
-                  )))
-        ]));
+                  )
+              )
+          )
+        ]
+        )
+    );
   }
 }
 
 /*
-  Method Name: sendValuesToNotify
+  Method Name:
+    sendValuesToNotify
 
-  Purpose: This method is called when the send button is pressed.
-           It sends out the notifications to the members.
+  Purpose:
+    This method is called when the send button is pressed. It tells the API to
+    send this announcement as a notification to the members.
 */
-void sendValuesToNotify(String heading, String details) {}
+void sendValuesToNotify(String heading, String details) async {}
 
 /*
-  Method Name: sendValuesToDatabase
+  Method Name:
+    sendValuesToDatabase
 
-  Purpose: This method is called when the send button is pressed.
-           It sends the values to the database to be stored.
+  Purpose:
+    This method is called when the send button is pressed. It sends the values
+    to the database to be stored.
 */
 
-sendValuesToDatabase(_heading, _details) {
+sendValuesToDatabase(_heading, _details) async {
   var date = new DateTime.now();
 
   var year = date.year;

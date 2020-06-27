@@ -1,8 +1,38 @@
+/*
+File Name
+  EditClassesInstructor.dart
+
+Author:
+  Danel
+
+Date Created
+  25/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Name               | Date              | Changes                             |
+--------------------------------------------------------------------------------
+
+Functional Description:
+
+
+Classes in the File:
+- EditClassesInstructor
+- EditClassesInstructorState
+ */
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'ClassDetails.dart';
+import 'EditClass.dart';
 
+/*
+Class Name:
+  EditClassesInstructor
+
+Purpose:
+  This class creates the class that will build the page.
+ */
 class EditClassesInstructor extends StatefulWidget {
   const EditClassesInstructor({Key key}) : super(key: key);
 
@@ -10,10 +40,24 @@ class EditClassesInstructor extends StatefulWidget {
   EditClassesInstructorState createState() => EditClassesInstructorState();
 }
 
+/*
+Class Name:
+EditClassesInstructorState
+
+Purpose:
+
+ */
 class EditClassesInstructorState extends State<EditClassesInstructor> {
+
+  /*
+   Method Name:
+    build
+
+   Purpose:
+
+   */
   @override
   Widget build(BuildContext context) {
-    /* gets screen properties */
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
@@ -22,10 +66,10 @@ class EditClassesInstructorState extends State<EditClassesInstructor> {
         Stack(children: <Widget>[
           Container(
             width: media.size.width,
-            height: 1 / 3 * media.size.height,
+            height: 1 / 4 * media.size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: const AssetImage('assets/images/RightSidePoolHalf.png'),
+                image: const AssetImage('assets/images/rightSidePoolHalf.png'),
                 fit: BoxFit.fill,
                 colorFilter: new ColorFilter.mode(
                     Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -35,58 +79,57 @@ class EditClassesInstructorState extends State<EditClassesInstructor> {
                   color: const Color(0x46000000),
                   offset: Offset(0, 3),
                   blurRadius: 6,
-                ),
-              ],
-            ),
+                )
+              ])
           ),
           Transform.translate(
-              offset: Offset(0.05 * media.size.width, 0.07 * media.size.height),
+              offset: Offset(0.04 * media.size.width, 0.05 * media.size.height),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: SvgPicture.string(
-                  backButton,
-                  allowDrawingOutsideViewBox: true,
-                ),
+                child: SvgPicture.string(backButton,
+                    allowDrawingOutsideViewBox: true,
+                    width: 0.07 * media.size.width),
               )),
-          Transform.translate(
-            offset: Offset(0.0, 0.13 * media.size.height),
-            child: SizedBox(
+          SizedBox(
               width: media.size.width,
-              height: 0.1 * media.size.height,
-              child: Text(
-                'Classes',
-                style: TextStyle(
-                  fontFamily: 'FreestyleScript',
-                  fontSize: 0.16 * media.size.width,
-                  color: const Color(0xFFFFFFFF),
-                  shadows: [
-                    Shadow(
-                      color: const Color(0xbd000000),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                    ),
-                  ],
+              height: 1 / 3 * media.size.height,
+              child: Center(
+                child: Text(
+                  'Select a Class',
+                  style: TextStyle(
+                    fontFamily: 'FreestyleScript',
+                    fontSize: 0.16 * media.size.width,
+                    color: const Color(0xFFFFFFFF),
+                    shadows: [
+                      Shadow(
+                        color: const Color(0xbd000000),
+                        offset: Offset(0, 3),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )
+              ))
         ]),
         Expanded(child: getClasses(media))
       ]),
     );
   }
 
-  /* Can only implement once API working */
+
+  /*
+   Method Name:
+    getClasses
+
+   Purpose:
+
+   */
   Widget getClasses(MediaQueryData media) {
     List<Widget> classes = new List();
 
-    /*
-  Explanation : This will be when there are no classes assigned to the
-                instructor.
-   */
     if (false) {
       /*
     A pop up dialog would be nice for this.
@@ -111,16 +154,15 @@ class EditClassesInstructorState extends State<EditClassesInstructor> {
         classes.add(GestureDetector(
             onTap: () {
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ClassDetails(),
-              ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditClass(),
+                  ));
             },
             child: Stack(children: <Widget>[
               Container(
                   width: 0.95 * media.size.width,
-                  height: 0.4 * media.size.height,
+                  height: 0.2 * media.size.height,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(22.0),
                     color: const Color(0x26ffffff),
@@ -133,7 +175,34 @@ class EditClassesInstructorState extends State<EditClassesInstructor> {
                         blurRadius: 6,
                       ),
                     ],
-                  ))
+                  )),
+              Transform.translate(
+                  offset:
+                      Offset(0.05 * media.size.width, 0.03 * media.size.height),
+                  child: SizedBox(
+                      width: 0.95 * media.size.width,
+                      child: Text("Class Name: ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 0.035 * media.size.width)))),
+              Transform.translate(
+                  offset:
+                  Offset(0.05 * media.size.width, 0.08 * media.size.height),
+                  child: SizedBox(
+                      width: 0.95 * media.size.width,
+                      child: Text("Class Day: ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 0.035 * media.size.width)))),
+              Transform.translate(
+                  offset:
+                  Offset(0.05 * media.size.width, 0.13 * media.size.height),
+                  child: SizedBox(
+                      width: 0.95 * media.size.width,
+                      child: Text("Class Time: ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 0.035 * media.size.width))))
             ])));
 
         classes.add(SizedBox(height: 20));

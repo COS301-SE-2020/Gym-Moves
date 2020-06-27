@@ -3,24 +3,22 @@ File Name
   LogIn.dart
 
 Author:
-  Raeesa
+  Danel
 
 Date Created
-  15/06/2020
+  26/06/2020
 
 Update History:
 --------------------------------------------------------------------------------
 | Name               | Date              | Changes                             |
 --------------------------------------------------------------------------------
-| Danel              | 25/06/2020        | Made UI responsive and functional   |
---------------------------------------------------------------------------------
-
 
 Functional Description:
-  This file contains the Login class that calls the class that creates the UI.
-  The LogInpState class handles the building of the UI and making all the
+  This file contains the LogIn class that calls the class that creates the UI.
+  The LogInState class handles the building of the UI and making all the
   components functional and responsive.
-  This file will also request the database to verify the account exists.
+  This file will also request the database to verify the account exists and then
+  redirect the user.
 
 Classes in the File:
 - LogIn
@@ -29,10 +27,9 @@ Classes in the File:
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
-import 'SignUp.dart';
-import 'ForgotPassword.dart';
+import 'package:gym_moves/User/SignUp.dart';
+import 'package:gym_moves/User/ForgotPassword.dart';
 
 /*
 Class Name:
@@ -42,9 +39,7 @@ Purpose:
   This class creates the class that will build the page.
  */
 class LogIn extends StatefulWidget {
-  const LogIn({
-    Key key,
-  }) : super(key: key);
+  const LogIn({Key key}) : super(key: key);
 
   @override
   LogInState createState() => LogInState();
@@ -61,15 +56,12 @@ class LogInState extends State<LogIn> {
   String password = "";
   String username = "";
 
+  final logInFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    /*
-    Variable Name: usernameField
-
-    Purpose: Stores the username input element value.
-     */
     final usernameField = Material(
         shadowColor: Colors.black,
         elevation: 15,
@@ -91,23 +83,19 @@ class LogInState extends State<LogIn> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                /*
-                 Method Name: onChanged
-
-                 Purpose: This method is called when the state of the input field
-                          changes. This then makes sure the variable that stores
-                          the data (_headingOfAnnouncement) is always up to date
-                          with what the value is.
-                 */
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     username = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
@@ -123,7 +111,6 @@ class LogInState extends State<LogIn> {
                 style: TextStyle(
                   color: Colors.black54,
                 ),
-//                maxLines: 9,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -133,66 +120,26 @@ class LogInState extends State<LogIn> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                /*
-                 Method Name: onChanged
-
-                 Purpose: This method is called when the state of the input field
-                          changes. This then makes sure the variable that stores
-                          the data (_headingOfAnnouncement) is always up to date
-                          with what the value is.
-                 */
-
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     password = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
-
-    final gymField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
-            child: SimpleAutoCompleteTextField(
-              style: TextStyle(
-                color: Colors.black54,
-              ),
-              suggestions: [
-                "Apple",
-                "Armidillo",
-                "Actual",
-                "Actuary",
-                "America",
-                "Argentina",
-                "Australia",
-                "Antarctica",
-              ],
-              clearOnSubmit: false,
-              textSubmitted: (text) => setState(() {}),
-              decoration: InputDecoration(
-                  labelText: 'Type your gym name',
-                  labelStyle: new TextStyle(color: Colors.black54),
-                  border: InputBorder.none,
-                  enabledBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none)),
-            )),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
 
     return Scaffold(
       backgroundColor: const Color(0xff513369),
       body: ListView(children: <Widget>[
         Stack(children: <Widget>[
-          /*
-            Explanation: This is the background image.
-             */
           Transform.translate(
             offset: Offset(0.0, -0.035 * media.size.height),
             child: Container(
@@ -200,7 +147,7 @@ class LogInState extends State<LogIn> {
               height: 0.4 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/Bicycles.jpg'),
+                  image: const AssetImage('assets/images/bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(0.82), BlendMode.dstIn),
@@ -227,35 +174,45 @@ class LogInState extends State<LogIn> {
               textAlign: TextAlign.left,
             ),
           ),
-        ]),
+        ]
+        ),
         SizedBox(height: 10.0),
         Form(
+            key: logInFormKey,
             child: Column(children: <Widget>[
-          SizedBox(height: 0.02 * media.size.height),
-          Stack(children: <Widget>[
-            usernameField,
-            Transform.translate(
-                offset: Offset(0.7 * 0.85 * media.size.width,
-                    0.08 * 0.3 * media.size.height),
-                child: SvgPicture.string(
-                  person,
-                  color: Colors.black45,
-                  allowDrawingOutsideViewBox: true,
-                ))
-          ]),
-          SizedBox(height: 0.05 * media.size.height),
-          Stack(children: <Widget>[
-            passwordField,
-            Transform.translate(
-                offset: Offset(0.7 * 0.85 * media.size.width,
-                    0.08 * 0.3 * media.size.height),
-                child: SvgPicture.string(
-                  lock,
-                  color: Colors.black45,
-                  allowDrawingOutsideViewBox: true,
-                ))
-          ])
-        ])),
+              SizedBox(height: 0.02 * media.size.height),
+              Stack(children: <Widget>[
+                usernameField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.25 * media.size.height),
+                    child: SvgPicture.string(
+                      person,
+                      width: media.size.width * 0.05,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    )
+                )
+              ]
+              ),
+              SizedBox(height: 0.05 * media.size.height),
+              Stack(children: <Widget>[
+                passwordField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: SvgPicture.string(
+                      lock,
+                      width: media.size.width * 0.05,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    )
+                )
+              ]
+              )
+            ]
+            )
+        ),
         Container(
             padding: EdgeInsets.fromLTRB(0.05 * media.size.height, 0.0,
                 0.18 * media.size.width, 0.05 * media.size.height),
@@ -274,7 +231,7 @@ class LogInState extends State<LogIn> {
                 ))),
         Center(
             child: SizedBox(
-                width: 0.3 * media.size.width,
+                width: 0.25 * media.size.width,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
@@ -293,7 +250,9 @@ class LogInState extends State<LogIn> {
                           fontFamily: 'Roboto'),
                     ),
                   ),
-                ))),
+                )
+            )
+        ),
         SizedBox(height: 30),
         Center(
             child: GestureDetector(
@@ -308,7 +267,7 @@ class LogInState extends State<LogIn> {
             TextSpan(
               style: TextStyle(
                 fontFamily: 'Roboto',
-                fontSize: 16,
+                fontSize: 0.04 * media.size.width,
                 color: const Color(0xffffffff),
               ),
               children: [
@@ -321,22 +280,23 @@ class LogInState extends State<LogIn> {
                     fontWeight: FontWeight.w800,
                   ),
                 )
-              ],
-            ),
+              ]),
             textAlign: TextAlign.center,
-          ),
-        )),
+          )
+        )
+        ),
         SizedBox(height: 30),
-      ]),
+      ]
+      ),
     );
   }
 }
 
 /*
-  Method Name: sendValuesToDatabase
+  Method Name: verifyUser
 
-  Purpose: This method is called when the send button is pressed.
-           It sends the values to the database to be stored.
+  Purpose: This method is called when the send button is pressed. It verifies
+           that the user does exist and what type of user they are.
 */
 
 verifyUser(username, password) {}

@@ -1,33 +1,42 @@
 /*
-File Name: ClassDetails.dart
+File Name:
+  ClassDetails.dart
 
-Project Name: Gym Moves
+Author:
+  Raeesa
+
+Date Created:
+  17/06/2020
 
 Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-15/06/2020    |    Raeesa      |    Original
--------------------------------------------------------------------------------
 24/06/2020    |    Danel       |    Stars can be added dynamically
 --------------------------------------------------------------------------------
 
-Functional Description: This file implements the ClassDetailsState class. It
-                        creates the UI for users to be able to
-                        see details of a class. It also implements the
-                        SendAnnouncement class which calls the other class
-                        to be built.
+Functional Description:
+  This file implements the ClassDetailsState class. It creates the UI for users
+  to be able to see details of a class. It also implements the SendAnnouncement
+  class which calls the other class to be built.
 
+Classes in the File:
+- ClassDetails
+- ClassDetailsState
  */
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 /*
-Purpose: This class is used to call the class that builds the UI for viewing
-         classes.
+Class Name:
+  ClassDetails
 
-Version: 1
+Purpose:
+  This class is used to create the ClassDetailsState that builds the UI for
+  viewing classes. It allows for widgets to be dynamically added as well.
 
  */
 
@@ -39,378 +48,452 @@ class ClassDetails extends StatefulWidget {
 }
 
 /*
-Purpose: This class is used to create the UI.
+Class Name:
+  ClassDetailsState
 
-Version: 1
-
+Purpose:
+  This class is used to create the UI for users to see the classes. It also
+  handles the request to the API to get the details of a class to display.
  */
 
 class ClassDetailsState extends State<ClassDetails> {
   ClassDetailsState({Key key});
 
-  /*
-   Method Name: Build
+  String instructorName = "";
+  String className = "";
+  String classDay = "";
+  String classTime = "";
+  String classAvailableSpots = "";
+  String classDescription = "";
 
-   Purpose: This method builds the UI and also calls the necessary functions
-            to get the rating to show the correct type of stars.
+  /*
+   Method Name:
+    build
+
+   Purpose:
+    This method builds the UI and also calls the necessary functions that make
+    a request to the API to get the class details.
    */
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
+    getClassDetails();
+
     return Scaffold(
         backgroundColor: const Color(0xff513369),
-        body: Column(children: <Widget>[
-          Stack(children: <Widget>[
-            Container(
-              width: media.size.width,
-              height: media.size.height * 0.4,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image:
-                      const AssetImage('assets/images/RightSidePoolHalf.png'),
-                  fit: BoxFit.fill,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(1.0), BlendMode.dstIn),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x46000000),
-                    offset: Offset(0, 3),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: media.size.width,
-              height: media.size.height * 0.4,
-              child: Center(
+        body: ListView(children: <Widget>[
+          Column(children: <Widget>[
+            Stack(children: <Widget>[
+              Transform.translate(
+                  offset: Offset(0.0, -0.033 * media.size.height),
                   child: Container(
-                width: 0.55 * media.size.width,
-                height: 0.31 * media.size.height,
-                child: Center(
-                    child: AutoSizeText(
-                  getClassName(),
-                  style: TextStyle(
-                    fontFamily: 'FreestyleScript',
-                    fontSize: 0.15 * media.size.width,
-                    color: const Color(0xff391f57),
-                    shadows: [
-                      Shadow(
-                        color: const Color(0x38000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
-                      )
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                )),
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.all(Radius.elliptical(110.5, 108.0)),
-                  color: const Color(0xffffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0xff707070)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0x8f000000),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-              )),
-            ),
-            Transform.translate(
-                offset:
-                    Offset(0.05 * media.size.width, 0.05 * media.size.height),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SvgPicture.string(backArrow,
-                      allowDrawingOutsideViewBox: true,
-                      height: 0.05 * media.size.height,
-                      width: 0.07 * media.size.width),
-                )),
-            Transform.translate(
-                offset:
-                    Offset(0.33 * media.size.width, 0.09 * media.size.height),
-                child: SvgPicture.string(
-                  dumbbell,
-                  width: 0.55 * media.size.width * 0.7,
-                  height: 0.31 * media.size.height * 0.7,
-                  allowDrawingOutsideViewBox: true,
-                )),
-          ]),
-          Stack(children: <Widget>[
-            Transform.translate(
-                offset:
-                    Offset(0.1 * media.size.width, 0.025 * media.size.height),
-                child: Container(
-                  width: 0.8 * media.size.width,
-                  height: 0.55 * media.size.height,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(22.0),
-                    color: const Color(0x26ffffff),
-                    border:
-                        Border.all(width: 1.0, color: const Color(0x26707070)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x12000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
+                    width: media.size.width,
+                    height: media.size.height * 0.4,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: const AssetImage(
+                            'assets/images/rightSidePoolHalf.png'
+                        ),
+                        fit: BoxFit.fill,
+                        colorFilter: new ColorFilter.mode(
+                            Colors.black.withOpacity(1.0), BlendMode.dstIn
+                        ),
                       ),
-                    ],
-                  ),
-                )),
-            Transform.translate(
-              offset:
-                  Offset(0.14 * media.size.width, 0.04 * media.size.height),
-              child: Text.rich(
-                TextSpan(
-                  style: TextStyle(
-                    fontFamily: 'Arial',
-                    fontSize: 0.04 * media.size.width,
-                    color: Colors.white38,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: 'Instructor: ' + getNameOfInstructor(),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0x46000000),
+                          offset: Offset(0, 3),
+                          blurRadius: 6,
+                        ),
+                      ]),
+                  )
+              ),
+              Transform.translate(
+                  offset: Offset(0.0, -0.033 * media.size.height),
+                  child: SizedBox(
+                    width: media.size.width,
+                    height: media.size.height * 0.4,
+                    child: Center(
+                        child: Container(
+                      width: 0.55 * media.size.width,
+                      height: 0.31 * media.size.height,
+                      child: Center(
+                          child: AutoSizeText(
+                        className,
+                        style: TextStyle(
+                          fontFamily: 'FreestyleScript',
+                          fontSize: 0.15 * media.size.width,
+                          color: const Color(0xff391f57),
+                          shadows: [
+                            Shadow(
+                              color: const Color(0x38000000),
+                              offset: Offset(0, 3),
+                              blurRadius: 6,
+                            )
+                          ]),
+                        textAlign: TextAlign.center,
+                        maxLines: 3,
+                      )
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.all(Radius.elliptical(110.5, 108.0)),
+                        color: const Color(0xffffffff),
+                        border: Border.all(
+                            width: 1.0, color: const Color(0xff707070)
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x8f000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          )
+                        ]
+                      )
+                    )
+                    )
+                  )
+              ),
+              Transform.translate(
+                  offset:
+                      Offset(0.05 * media.size.width, 0.02 * media.size.height),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: SvgPicture.string(backArrow,
+                        allowDrawingOutsideViewBox: true,
+                        width: 0.07 * media.size.width
                     ),
-                    TextSpan(
-                      text: ' \n',
-                    ),
-                  ],
-                ),
-                textAlign: TextAlign.left,
+                  )
               ),
+              Transform.translate(
+                  offset:
+                      Offset(0.33 * media.size.width, 0.06 * media.size.height),
+                  child: SvgPicture.string(
+                    dumbbell,
+                    width: 0.55 * media.size.width * 0.7,
+                    height: 0.31 * media.size.height * 0.7,
+                    allowDrawingOutsideViewBox: true
+                  )
+              )
+            ]
             ),
-            Transform.translate(
-              offset:
-                  Offset(0.14 * media.size.width, 0.14 * media.size.height),
-              child: Text(
-                'Day: ' + getDayOfClass(),
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white38,
-                ),
-                textAlign: TextAlign.left,
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.0, 0.0, 0.0
               ),
-            ),
-            Transform.translate(
-              offset:
-                  Offset(0.14 * media.size.width, 0.24 * media.size.height),
-              child: Text(
-                'Time: ' + getTimeOfClass(),
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white38,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Transform.translate(
-              offset:
-                  Offset(0.14 * media.size.width, 0.34 * media.size.height),
-              child: Text(
-                'Description: ' + getDescriptionOfClass(),
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white38,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Transform.translate(
-              offset:
-                  Offset(0.14 * media.size.width, 0.535 * media.size.height),
               child: Text(
                 'Class Rating: ',
                 style: TextStyle(
-                  fontFamily: 'Arial',
+                  fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white38,
+                  color: Colors.white70,
                 ),
                 textAlign: TextAlign.left,
               ),
+              alignment: Alignment.centerLeft,
             ),
-            Transform.translate(
-                offset:
-                    Offset(0.6 * media.size.width, 0.045 * media.size.height),
-                child: Row(
-                  children: getStarsForInstructor(media),
-                )),
-            Transform.translate(
-                offset: Offset(0.4 * media.size.width, 0.54 * media.size.height),
-                child: Row(
-                  children: getStarsForClass(media),
-                ))
-          ])
-        ]));
+            Container(
+                padding: EdgeInsets.fromLTRB(
+                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+                ),
+                child: Row(children: getStarsForClass(media))
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                'Instructor: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                instructorName,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                'Instructor Rating: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+                padding: EdgeInsets.fromLTRB(
+                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+                ),
+                child: Row(children: getStarsForInstructor(media))
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                'Day: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                classDay,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                'Time: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                classTime,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                'Available Spots: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                classAvailableSpots,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                'Description: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+              ),
+              child: Text(
+                classDescription,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white70,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+          ]
+          )
+        ]
+        )
+    );
   }
-}
 
-/*
-   Method Name: getStarsForInstructor
+  /*
+   Method Name:
+    getClassDetails
 
-   Purpose: This method will get the rating for the specific instructor for the
-            class and show the correct stars.
+   Purpose:
+    This method will get the details of the class.
+
+   Extra:
+    Currently hardcoded. This will be changed.
+   */
+  void getClassDetails(){
+    className = "a name";
+    classAvailableSpots = "a number";
+    instructorName = "a persons name";
+    classDescription = "a description";
+    classTime = "a time";
+    classDay = "a day";
+  }
+
+  /*
+   Method Name:
+    getStarsForInstructor
+
+   Purpose:
+    This method will get the rating for the specific instructor for the class
+    and show the correct stars.
+
+   Extra:
+    Rating is currently hardcoded. This will be changed.
+   */
+
+  List<Widget> getStarsForInstructor(MediaQueryData media) {
+    List<Widget> stars = [];
+
+    int full = 2;
+    int half = 1;
+    int empty = 2;
+
+    for (int i = full; i > 0; i--) {
+      stars.add(SvgPicture.string(
+        fullStar,
+        height: 0.02 * media.size.height,
+        width: 0.02 * media.size.width,
+        allowDrawingOutsideViewBox: true,
+      ));
+    }
+
+    for (int i = half; i > 0; i--) {
+      stars.add(SvgPicture.string(
+        halfStar,
+        height: 0.02 * media.size.height,
+        width: 0.02 * media.size.width,
+        allowDrawingOutsideViewBox: true,
+      ));
+    }
+
+    for (int i = empty; i > 0; i--) {
+      stars.add(SvgPicture.string(
+        emptyStar,
+        height: 0.02 * media.size.height,
+        width: 0.02 * media.size.width,
+        allowDrawingOutsideViewBox: true,
+      ));
+    }
+
+    return stars;
+  }
+
+  /*
+   Method Name:
+    getStarsForClass
+
+   Purpose:
+    This method will get the rating for the specific class and show the
+    correct stars.
 
    Extra: Rating is currently hardcoded. This will be changed.
    */
 
-List<Widget> getStarsForInstructor(MediaQueryData media) {
-  List<Widget> stars = [];
+  List<Widget> getStarsForClass(MediaQueryData media) {
+    List<Widget> stars = [];
 
-  int full = 2;
-  int half = 1;
-  int empty = 2;
+    int full = 3;
+    int half = 1;
+    int empty = 1;
 
-  for (int i = full; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      fullStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
+    for (int i = full; i > 0; i--) {
+      stars.add(SvgPicture.string(
+        fullStar,
+        height: 0.02 * media.size.height,
+        width: 0.02 * media.size.width,
+        allowDrawingOutsideViewBox: true,
+      ));
+    }
+
+    for (int i = half; i > 0; i--) {
+      stars.add(SvgPicture.string(
+        halfStar,
+        height: 0.02 * media.size.height,
+        width: 0.02 * media.size.width,
+        allowDrawingOutsideViewBox: true,
+      ));
+    }
+
+    for (int i = empty; i > 0; i--) {
+      stars.add(SvgPicture.string(
+        emptyStar,
+        height: 0.02 * media.size.height,
+        width: 0.02 * media.size.width,
+        allowDrawingOutsideViewBox: true,
+      ));
+    }
+
+    return stars;
   }
-
-  for (int i = half; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      halfStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  for (int i = empty; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      emptyStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  return stars;
-}
-
-/*
-   Method Name: getStarsForClass
-
-   Purpose: This method will get the rating for the specific class and show the
-            correct stars.
-
-   Extra: Rating is currently hardcoded. This will be changed.
-   */
-
-List<Widget> getStarsForClass(MediaQueryData media) {
-  List<Widget> stars = [];
-
-  int full = 3;
-  int half = 1;
-  int empty = 1;
-
-  for (int i = full; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      fullStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  for (int i = half; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      halfStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  for (int i = empty; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      emptyStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  return stars;
-}
-
-/*
-   Method Name: getNameOfInstructor
-
-   Purpose: This method return the instructors name that it gets from the
-            database.
-
-   Extra: Currently hardcoded. This will be changed.
-   */
-
-String getNameOfInstructor() {
-  return "Sally Hall";
-}
-
-/*
-   Method Name: getDayOfClass
-
-   Purpose: This method return the day of class that it gets from the
-            database.
-
-   Extra: Currently hardcoded. This will be changed.
-   */
-
-String getDayOfClass() {
-  return "Mondays";
-}
-
-/*
-   Method Name: getTimeOfClass
-
-   Purpose: This method return the time of class that it gets from the
-            database.
-
-   Extra: Currently hardcoded. This will be changed.
-   */
-
-String getTimeOfClass() {
-  return "15:00";
-}
-
-/*
-   Method Name: getDescriptionOfClass
-
-   Purpose: This method return the description of class that it gets from the
-            database.
-
-   Extra: Currently hardcoded. This will be changed.
-   */
-
-String getDescriptionOfClass() {
-  return "describe";
-}
-
-/*
-   Method Name: getClassName
-
-   Purpose: This method return the name of class that it gets from the
-            database.
-
-   Extra: Currently hardcoded. This will be changed.
-   */
-
-String getClassName() {
-  return "Spin Party";
 }
 
 const String backArrow =

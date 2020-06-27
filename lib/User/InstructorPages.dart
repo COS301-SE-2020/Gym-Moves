@@ -1,6 +1,6 @@
 /*
 File Name
-  ViewMyProfile.dart
+  InstructorPages.dart
 
 Author:
   Danel
@@ -14,7 +14,6 @@ Update History:
 --------------------------------------------------------------------------------
 
 
-
 Functional Description:
   This file contains the InstructorPages class that handles building the UI for
   the Welcome page and the menu. It also implements the scroll screen the user
@@ -22,286 +21,279 @@ Functional Description:
 
 Classes in the File:
 - InstructorPages
+- InstructorPagesState
  */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import '../GymClass/EditClassesInstructor.dart';
-import '../Rating/InstructorViewMyRatings.dart';
-import 'ViewMyProfile.dart';
 
-class InstructorPages extends StatelessWidget {
-  InstructorPages({
+import 'package:gym_moves/GymClass/EditClassesInstructor.dart';
+import 'package:gym_moves/Rating/InstructorViewMyRatings.dart';
+import 'package:gym_moves/User/ViewMyProfile.dart';
+
+/*
+Class Name:
+  InstructorPages
+
+Purpose:
+  This class creates the class that will build the page. It allows for dynamic
+  adding of elements onto the welcome page.
+ */
+class InstructorPages extends StatefulWidget {
+  const InstructorPages({
     Key key,
   }) : super(key: key);
 
   @override
+  InstructorPagesState createState() => InstructorPagesState();
+}
+
+/*
+Class Name:
+  InstructorPagesState
+
+Purpose:
+  This class builds the UI for the scrollable welcome and menu page for
+  instructors. It also ensures all the menu options are functional and that the
+  UI is responsive to the screen size. The welcome page will also show the
+  amount of people at the gym and the name of the user. This class will also
+  handles this.
+ */
+class InstructorPagesState extends State<InstructorPages> {
+  InstructorPagesState({Key key});
+
+  /*
+   Method Name: build
+
+   Purpose:
+    This method builds the UI for the screen. It calls the necessary
+    function in order to display the dynamic information the user needs
+    to see.
+   */
+  @override
   Widget build(BuildContext context) {
-    /* gets screen properties */
     MediaQueryData media = MediaQuery.of(context);
+
+    /* This will store the name of the person.*/
+    String name = "";
+    /* This will store the number of people that are currently at the gym.*/
+    String numberOfPeople = "";
+    /* This will store the gym name.*/
+    String gymName = "";
 
     return Scaffold(
         backgroundColor: const Color(0xff513369),
-
-        /* allows for the screen drag, each child is a screen it can slide to */
-        body: PageView(
-
-            children: <Widget>[
-          /* Screen One: welcome page */
-              Stack(
-
-              /* Children is everything that appears on this one screen. */
-                  children: <Widget>[
-
-                    /* Child 1: background picture for the welcome page */
-                    Container(
-
-                      width: media.size.width,
-
-                      height: media.size.height,
-
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: const AssetImage('assets/images/LeftSidePool.png'),
-                          fit: BoxFit.fill,
-                          colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(1.0), BlendMode.dstIn),
-                        ),
-                      ),
-                    ),
-
-                    /* Child 2: welcome message */
-                    Transform.translate(
-                        offset: Offset(0.0, 0.4 * media.size.height),
-                        child: Container(
-                            height: 1 / 5 * media.size.height,
-                            width: media.size.width,
-                            /* This auto sizes text to make sure it fits in one line */
-                            child: AutoSizeText(
-                              'Welcome name!',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: media.size.width * 0.1,
-                                color: const Color(0xffffffff),
-                                shadows: [
-                                  Shadow(
-                                    color: const Color(0xbd000000),
-                                    offset: Offset(0, 3),
-                                    blurRadius: 6,
-                                  ),
-                                ],
-                              ),
-                              maxLines: 1,
-                              textAlign: TextAlign.center,
-                            )
-                        )
-                    ),
-
-                    /* Child 3: number of people at gym */
-
-                    Transform.translate(
-                        offset: Offset(0.0, 0.5 * media.size.height),
-                        child: Container(
-                            height: 1 / 10 * media.size.height,
-                            width: media.size.width,
-                            child: Text(
-                              'Number of people at gymname:',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: media.size.width * 0.05,
-                                color: const Color(0xffffffff),
-                                shadows: [
-                                  Shadow(
-                                    color: const Color(0xbd000000),
-                                    offset: Offset(0, 3),
-                                    blurRadius: 6,
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.center,
-                            )
-                        )
-                    ),
-
-                    /* Child 4: number */
-                    Transform.translate(
-                        offset: Offset(0.0, 0.56 * media.size.height),
-                        child: Container(
-                            height: 1 / 10 * media.size.height,
-                            width: media.size.width,
-                            child: Text(
-                              '#',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: media.size.width * 0.05,
-                                color: const Color(0xffffffff),
-                                shadows: [
-                                  Shadow(
-                                    color: const Color(0xbd000000),
-                                    offset: Offset(0, 3),
-                                    blurRadius: 6,
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.center,
-                            )
-                        )
-                    )
-                  ]
+        body: PageView(children: <Widget>[
+          Stack(children: <Widget>[
+            Container(
+              width: media.size.width,
+              height: media.size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage('assets/images/leftSidePool.png'),
+                  fit: BoxFit.fill,
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstIn
+                  ),
+                ),
               ),
-
-          // menu page
-          Stack(
-              children: <Widget>[
-                /* background picture for the menu page*/
-                Container(
-                  width: media.size.width,
-                  height: media.size.height,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: const AssetImage('assets/images/RightSidePool.png'),
-                      fit: BoxFit.fill,
-                      colorFilter: new ColorFilter.mode(
-                          Colors.black.withOpacity(1.0), BlendMode.dstIn),
-                    ),
-                  ),
-                ),
-                /* First menu box */
-                Transform.translate(
-                  offset: Offset(0.1 * media.size.width, 1.2/5 * media.size.height),
-                  child: Container(
-                    width: 0.8 * media.size.width,
-                    height: 0.1 * media.size.height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(19.0),
-                      color: const Color(0x30ffffff),
-                      border: Border.all(width: 1.0, color: const Color(0x30707070)),
-                    ),
-                  ),
-                ),
-                /* Second menu box */
-                Transform.translate(
-                  offset: Offset(0.1 * media.size.width, 2.2/5 * media.size.height),
-                  child: Container(
-                    width: 0.8 * media.size.width,
-                    height: 0.1 * media.size.height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(19.0),
-                      color: const Color(0x30ffffff),
-                      border: Border.all(width: 1.0, color: const Color(0x30707070)),
-                    ),
-                  ),
-                ),
-                /* Third menu box */
-                Transform.translate(
-                  offset: Offset(0.1 * media.size.width, 3.2/5 * media.size.height),
-                  child: Container(
-                    width: 0.8 * media.size.width,
-                    height: 0.1 * media.size.height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(19.0),
-                      color: const Color(0x30ffffff),
-                      border: Border.all(width: 1.0, color: const Color(0x30707070)),
-                    ),
-                  ),
-                ),
-                /* Text for menu box 1 */
-                Transform.translate(
-                  offset: Offset(0.15 * media.size.width, 1.35/5 * media.size.height),
-                  child: Text(
-                    'Edit my classes',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 0.053 * media.size.width,
-                      color: const Color(0xfffcfbfc),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                /* Text for menu box 2 */
-                Transform.translate(
-                  offset: Offset(0.15 * media.size.width, 2.35/5 * media.size.height),
-                  child: Text(
-                    'View my ratings',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 0.053 * media.size.width,
-                      color: const Color(0xfffcfbfc),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                /* Text for menu box 3 */
-                Transform.translate(
-                  offset: Offset(0.15 * media.size.width, 3.35/5 * media.size.height),
-                  child: Text(
-                    'View my profile',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 0.053 * media.size.width,
-                      color: const Color(0xfffcfbfc),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                /*Arrow for first menu box*/
-                Transform.translate(
-                  offset: Offset(0.8 * media.size.width, 1.4/5 * media.size.height),
-                  child:
-                  // Adobe XD layer: 'Icon material-arrow…' (shape)
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EditClassesInstructor()),
-                      );
-                    },
-                    child: SvgPicture.string(
-                      frontArrow,
-                      allowDrawingOutsideViewBox: true,
-                    ),
-                  )
-                ),
-                /*Arrow for second menu box*/
-                Transform.translate(
-                  offset: Offset(0.8 * media.size.width, 2.4/5 * media.size.height),
-                  child:
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => InstructorViewMyRatings()),
-                      );
-                    },
-                    child: SvgPicture.string(
-                      frontArrow,
-                      allowDrawingOutsideViewBox: true,
-                    ),
-                  )
-                ),
-                /*Arrow for third menu box*/
-                Transform.translate(
-                  offset: Offset(0.8 * media.size.width, 3.4/5 * media.size.height),
-                  child:
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ViewMyProfile()),
-                      );
-                    },
-                    child: SvgPicture.string(
-                      frontArrow,
-                      allowDrawingOutsideViewBox: true,
-                    ),
-                  )
+            ),
+            Transform.translate(
+                offset: Offset(0.0, 0.4 * media.size.height),
+                child: Container(
+                    height: 1 / 5 * media.size.height,
+                    width: media.size.width,
+                    child: AutoSizeText(
+                      'Welcome $name!',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: media.size.width * 0.1,
+                        color: const Color(0xffffffff),
+                        shadows: [
+                          Shadow(
+                            color: const Color(0xbd000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                    )
                 )
-              ]
+            ),
+            Transform.translate(
+                offset: Offset(0.0, 0.5 * media.size.height),
+                child: Container(
+                    height: 1 / 10 * media.size.height,
+                    width: media.size.width,
+                    child: Text(
+                      'Number of people at $gymName:',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: media.size.width * 0.05,
+                        color: const Color(0xffffffff),
+                        shadows: [
+                          Shadow(
+                            color: const Color(0xbd000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                )
+            ),
+            Transform.translate(
+                offset: Offset(0.0, 0.56 * media.size.height),
+                child: Container(
+                    height: 1 / 10 * media.size.height,
+                    width: media.size.width,
+                    child: Text(
+                      numberOfPeople,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: media.size.width * 0.05,
+                        color: const Color(0xffffffff),
+                        shadows: [
+                          Shadow(
+                            color: const Color(0xbd000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                )
             )
-           ]
+          ]
+          ),
+          Stack(children: <Widget>[
+            Container(
+              width: media.size.width,
+              height: media.size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage('assets/images/rightSidePool.png'),
+                  fit: BoxFit.fill,
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstIn
+                  ),
+                ),
+              ),
+            ),
+            Transform.translate(
+              offset:
+                  Offset(0.1 * media.size.width, 1.2 / 5 * media.size.height),
+                child: getMenuContainers(0.8, 0.1, media)
+            ),
+            Transform.translate(
+              offset:
+                  Offset(0.1 * media.size.width, 2.2 / 5 * media.size.height),
+                child: getMenuContainers(0.8, 0.1, media)
+            ),
+            Transform.translate(
+              offset:
+                  Offset(0.1 * media.size.width, 3.2 / 5 * media.size.height),
+              child: getMenuContainers(0.8, 0.1, media)
+            ),
+            Transform.translate(
+                offset: Offset(
+                    0.15 * media.size.width, 1.35 / 5 * media.size.height
+                ),
+                child: getMenuOptionText('Edit my classes', media)
+            ),
+            Transform.translate(
+                offset: Offset(
+                    0.15 * media.size.width, 2.35 / 5 * media.size.height
+                ),
+                child: getMenuOptionText('View my ratings', media)
+            ),
+            Transform.translate(
+                offset: Offset(
+                    0.15 * media.size.width, 3.35 / 5 * media.size.height),
+                child: getMenuOptionText('View my profile', media)
+            ),
+            Transform.translate(
+                offset:
+                    Offset(0.8 * media.size.width, 1.4 / 5 * media.size.height),
+                child: getArrow(0.05, media, EditClassesInstructor())
+            ),
+            Transform.translate(
+                offset:
+                    Offset(0.8 * media.size.width, 2.4 / 5 * media.size.height),
+                child: getArrow(0.05, media, InstructorViewMyRatings())
+            ),
+            Transform.translate(
+                offset:
+                    Offset(0.8 * media.size.width, 3.4 / 5 * media.size.height),
+                child: getArrow(0.05, media, ViewMyProfile())
+            )
+          ]
+          )
+        ]
         )
-        );
+    );
+  }
+
+  /*
+   Method Name:
+    getArrow
+
+   Purpose:
+    This method returns a front facing arrow that is used to navigate.
+   */
+  Widget getArrow(width, media, nextPage) {
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => nextPage),
+          );
+        },
+        child: SvgPicture.string(frontArrow,
+            width: width * media.size.width, allowDrawingOutsideViewBox: true));
+  }
+
+  /*
+   Method Name:
+    getMenuOptionText
+
+   Purpose:
+    This method returns the text of the options.
+   */
+  Widget getMenuOptionText(text, media) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'Roboto',
+        fontSize: 0.053 * media.size.width,
+        color: const Color(0xfffcfbfc),
+      ),
+      textAlign: TextAlign.left,
+    );
+  }
+
+  /*
+   Method Name:
+    getMenuContainers
+
+   Purpose:
+    This method returns the containers that hold the menu options.
+   */
+  Widget getMenuContainers(width, height, media) {
+    return Container(
+      width: width * media.size.width,
+      height: height * media.size.height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(19.0),
+        color: const Color(0x30ffffff),
+        border: Border.all(width: 1.0, color: const Color(0x30707070)),
+      ),
+    );
   }
 }
 

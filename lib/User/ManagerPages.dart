@@ -13,8 +13,6 @@ Update History:
 | Name               | Date              | Changes                             |
 --------------------------------------------------------------------------------
 
-
-
 Functional Description:
   This file contains the InstructorPages class that handles building the UI for
   the Welcome page and the menu. It also implements the scroll screen the user
@@ -28,77 +26,105 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import '../Rating/ManagerViewClassRatings.dart';
-import '../Announcement/SendAnnouncement.dart';
-import '../GymClass/EditClassesManager.dart';
-import '../Dashboard/Dashboard.dart';
-import 'ViewMyProfile.dart';
+import 'package:gym_moves/Rating/ManagerViewClassRatings.dart';
+import 'package:gym_moves/Announcement/SendAnnouncement.dart';
+import 'package:gym_moves/GymClass/EditClassesManager.dart';
+import 'package:gym_moves/Dashboard/Dashboard.dart';
+import 'package:gym_moves/User/ViewMyProfile.dart';
 
-class ManagerPages extends StatelessWidget {
-  ManagerPages({
+/*
+Class Name:
+  ManagerPages
+
+Purpose:
+  This class creates the class that will build the page. It allows for dynamic
+  adding of elements onto the welcome page.
+ */
+class ManagerPages extends StatefulWidget {
+  const ManagerPages({
     Key key,
   }) : super(key: key);
 
   @override
+  ManagerPagesState createState() => ManagerPagesState();
+}
+
+/*
+Class Name:
+  ManagerPagesState
+
+Purpose:
+  This class builds the UI for the scrollable welcome and menu page for managers.
+  It also ensures all the menu options are functional and that the UI is
+  responsive to the screen size. The welcome page will also show the amount of
+  people at the gym and the name of the user. This class will also handles this.
+ */
+class ManagerPagesState extends State<ManagerPages> {
+  ManagerPagesState({Key key});
+
+  /*
+   Method Name: build
+
+   Purpose: This method builds the UI for the screen. It calls the necessary
+            function in order to display the dynamic information the user needs
+            to see.
+   */
+  @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
+
+    /* This will store the name of the person.*/
+    String name = "";
+    /* This will store the number of people that are currently at the gym.*/
+    String numberOfPeople = "";
+    /* This will store the gym name.*/
+    String gymName = "";
+
     return Scaffold(
         backgroundColor: const Color(0xff513369),
         body: PageView(children: <Widget>[
-          /*
-              *  The menu page.
-              */
           Stack(children: <Widget>[
-            /*
-                    *  The image of the welcome page.
-                    */
             Container(
               width: media.size.width,
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/LeftSidePool.png'),
+                  image: const AssetImage('assets/images/leftSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                      Colors.black.withOpacity(1.0), BlendMode.dstIn
+                  ),
                 ),
               ),
             ),
-            /*
-                    *  The welcome message.
-                    */
             Transform.translate(
                 offset: Offset(0.0, 0.4 * media.size.height),
                 child: Container(
                     height: 1 / 5 * media.size.height,
                     width: media.size.width,
-                    child: AutoSizeText(
-                      'Welcome name!',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 42,
-                        color: const Color(0xffffffff),
-                        shadows: [
-                          Shadow(
-                            color: const Color(0xbd000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          )
-                        ],
-                      ),
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                    ))),
-            /*
-                    *  The number of people message.
-                    */
+                    child: AutoSizeText('Welcome $name!',
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 42,
+                            color: const Color(0xffffffff),
+                            shadows: [
+                              Shadow(
+                                color: const Color(0xbd000000),
+                                offset: Offset(0, 3),
+                                blurRadius: 6,
+                              )
+                            ]),
+                        maxLines: 1,
+                        textAlign: TextAlign.center)
+                )
+            ),
             Transform.translate(
                 offset: Offset(0.0, 0.5 * media.size.height),
                 child: Container(
                     height: 1 / 10 * media.size.height,
                     width: media.size.width,
                     child: Text(
-                      'Number of people at gymname:',
+                      'Number of people at $gymName:',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: media.size.width * 0.05,
@@ -112,17 +138,16 @@ class ManagerPages extends StatelessWidget {
                         ],
                       ),
                       textAlign: TextAlign.center,
-                    ))),
-            /*
-                    *  The actual number of people.
-                    */
+                    )
+                )
+            ),
             Transform.translate(
                 offset: Offset(0.0, 0.56 * media.size.height),
                 child: Container(
                     height: 1 / 10 * media.size.height,
                     width: media.size.width,
                     child: Text(
-                      '#',
+                      numberOfPeople,
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: media.size.width * 0.05,
@@ -136,289 +161,164 @@ class ManagerPages extends StatelessWidget {
                         ],
                       ),
                       textAlign: TextAlign.center,
-                    )))
-          ]),
-
-          /*
-              *  The menu page.
-              */
+                    )
+                )
+            )
+          ]
+          ),
           Stack(children: <Widget>[
-            /*
-                    *  The image of the menu page.
-                    */
             Container(
               width: media.size.width,
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/RightSidePool.png'),
+                  image: const AssetImage('assets/images/rightSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                      Colors.black.withOpacity(1.0), BlendMode.dstIn
+                  ),
                 ),
               ),
             ),
-            /*
-                    *  The first menu box.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.1 * media.size.width, 0.8 / 6 * media.size.height),
-              child: Container(
-                width: 0.8 * media.size.width,
-                height: 0.1 * media.size.height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(19.0),
-                  color: const Color(0x30ffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0x30707070)),
-                ),
-              ),
+                offset:
+                    Offset(0.1 * media.size.width, 0.8 / 6 * media.size.height),
+                child: getMenuContainers(0.8, 0.1, media)
             ),
-            /*
-                    *  The second menu box.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.1 * media.size.width, 1.8 / 6 * media.size.height),
-              child: Container(
-                width: 0.8 * media.size.width,
-                height: 0.1 * media.size.height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(19.0),
-                  color: const Color(0x30ffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0x30707070)),
-                ),
-              ),
+                offset:
+                    Offset(0.1 * media.size.width, 1.8 / 6 * media.size.height),
+                child: getMenuContainers(0.8, 0.1, media)
             ),
-            /*
-                    *  The third menu box.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.1 * media.size.width, 2.8 / 6 * media.size.height),
-              child: Container(
-                width: 0.8 * media.size.width,
-                height: 0.1 * media.size.height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(19.0),
-                  color: const Color(0x30ffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0x30707070)),
-                ),
-              ),
+                offset:
+                    Offset(0.1 * media.size.width, 2.8 / 6 * media.size.height),
+                child: getMenuContainers(0.8, 0.1, media)
             ),
-            /*
-                    *  The fourth menu box.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.1 * media.size.width, 3.8 / 6 * media.size.height),
-              child: Container(
-                width: 0.8 * media.size.width,
-                height: 0.1 * media.size.height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(19.0),
-                  color: const Color(0x30ffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0x30707070)),
-                ),
-              ),
+                offset:
+                    Offset(0.1 * media.size.width, 3.8 / 6 * media.size.height),
+                child: getMenuContainers(0.8, 0.1, media)
             ),
-            /*
-                    *  The fifth menu box.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.1 * media.size.width, 4.8 / 6 * media.size.height),
-              child: Container(
-                width: 0.8 * media.size.width,
-                height: 0.1 * media.size.height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(19.0),
-                  color: const Color(0x30ffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0x30707070)),
-                ),
-              ),
+                offset:
+                    Offset(0.1 * media.size.width, 4.8 / 6 * media.size.height),
+                child: getMenuContainers(0.8, 0.1, media)
             ),
-            /*
-                    *  The first menu box text.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.15 * media.size.width, 1 / 6 * media.size.height),
-              child: Text(
-                'Send an announcement',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.053 * media.size.width,
-                  color: const Color(0xfffcfbfc),
-                ),
-                textAlign: TextAlign.left,
-              ),
+                offset:
+                    Offset(0.15 * media.size.width, 1 / 6 * media.size.height),
+                child: getMenuOptionText('Send an announcement', media)
             ),
-            /*
-                    *  The second menu box text.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.15 * media.size.width, 2 / 6 * media.size.height),
-              child: Text(
-                'Edit the classes',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.053 * media.size.width,
-                  color: const Color(0xfffcfbfc),
-                ),
-                textAlign: TextAlign.left,
-              ),
+                offset:
+                    Offset(0.15 * media.size.width, 2 / 6 * media.size.height),
+                child: getMenuOptionText('Edit the classes', media)
             ),
-            /*
-                    *  The third menu box text.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.15 * media.size.width, 3 / 6 * media.size.height),
-              child: Text(
-                'View all ratings',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.053 * media.size.width,
-                  color: const Color(0xfffcfbfc),
-                ),
-                textAlign: TextAlign.left,
-              ),
+                offset:
+                    Offset(0.15 * media.size.width, 3 / 6 * media.size.height),
+                child: getMenuOptionText('View all ratings', media)
             ),
-            /*
-                    *  The fourth menu box text.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.15 * media.size.width, 4 / 6 * media.size.height),
-              child: Text(
-                'View the dashboard',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.053 * media.size.width,
-                  color: const Color(0xfffcfbfc),
-                ),
-                textAlign: TextAlign.left,
-              ),
+                offset:
+                    Offset(0.15 * media.size.width, 4 / 6 * media.size.height),
+                child: getMenuOptionText('View the dashboard', media)
             ),
-            /*
-                    *  The fifth menu box text.
-                    */
             Transform.translate(
-              offset:
-                  Offset(0.15 * media.size.width, 5 / 6 * media.size.height),
-              child: Text(
-                'View my profile',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.053 * media.size.width,
-                  color: const Color(0xfffcfbfc),
-                ),
-                textAlign: TextAlign.left,
-              ),
+                offset:
+                    Offset(0.15 * media.size.width, 5 / 6 * media.size.height),
+                child: getMenuOptionText('View my profile', media)
             ),
-            /*
-                    *  The first menu box arrow.
-                    */
             Transform.translate(
-              offset: Offset(0.8 * media.size.width, 1 / 6 * media.size.height),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SendAnnouncement()),
-                  );
-                },
-                child: SvgPicture.string(
-                  _svg_j4s3gg,
-                  allowDrawingOutsideViewBox: true,
-                ),
-              ),
+                offset:
+                    Offset(0.8 * media.size.width, 1 / 6 * media.size.height),
+                child: getArrow(0.05, media, SendAnnouncement())
             ),
-            /*
-                    *  The second menu box arrow.
-                    */
             Transform.translate(
-              offset: Offset(0.8 * media.size.width, 2 / 6 * media.size.height),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditClassesManager()),
-                  );
-                },
-                child: SvgPicture.string(
-                  _svg_j4s3gg,
-                  allowDrawingOutsideViewBox: true,
-                ),
-              ),
+                offset:
+                    Offset(0.8 * media.size.width, 2 / 6 * media.size.height),
+                child: getArrow(0.05, media, EditClassesManager())
             ),
-            /*
-                    *  The third menu box arrow.
-                    */
             Transform.translate(
-              offset: Offset(0.8 * media.size.width, 3 / 6 * media.size.height),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ManagerViewClassRatings()),
-                  );
-                },
-                child: SvgPicture.string(
-                  _svg_j4s3gg,
-                  allowDrawingOutsideViewBox: true,
-                ),
-              ),
+                offset:
+                    Offset(0.8 * media.size.width, 3 / 6 * media.size.height),
+                child: getArrow(0.05, media, ManagerViewClassRatings())
             ),
-            /*
-                    *  The fourth menu box arrow.
-                    */
             Transform.translate(
                 offset:
                     Offset(0.8 * media.size.width, 4 / 6 * media.size.height),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Dashboard()),
-                    );
-                  },
-                  child: SvgPicture.string(
-                    _svg_j4s3gg,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                )),
-            /*
-                    *  The fifth menu box arrow.
-                    */
+                child: getArrow(0.05, media, Dashboard())
+            ),
             Transform.translate(
                 offset:
                     Offset(0.8 * media.size.width, 5 / 6 * media.size.height),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ViewMyProfile()),
-                    );
-                  },
-                  child: SvgPicture.string(
-                    _svg_j4s3gg,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ))
-          ])
-        ]));
+                child: getArrow(0.05, media, ViewMyProfile())
+            )
+          ]
+          )
+        ]
+        )
+    );
+  }
+
+  /*
+   Method Name:
+    getArrow
+
+   Purpose:
+    This method returns a front facing arrow that is used to navigate.
+   */
+  Widget getArrow(width, media, nextPage) {
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => nextPage),
+          );
+        },
+        child: SvgPicture.string(frontArrow,
+            width: width * media.size.width, allowDrawingOutsideViewBox: true));
+  }
+
+  /*
+   Method Name:
+    getMenuOptionText
+
+   Purpose:
+    This method returns the text of the options.
+   */
+  Widget getMenuOptionText(text, media) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'Roboto',
+        fontSize: 0.053 * media.size.width,
+        color: const Color(0xfffcfbfc),
+      ),
+      textAlign: TextAlign.left,
+    );
+  }
+
+  /*
+   Method Name:
+    getMenuContainers
+
+   Purpose:
+    This method returns the containers that hold the menu options.
+   */
+  Widget getMenuContainers(width, height, media) {
+    return Container(
+      width: width * media.size.width,
+      height: height * media.size.height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(19.0),
+        color: const Color(0x30ffffff),
+        border: Border.all(width: 1.0, color: const Color(0x30707070)),
+      ),
+    );
   }
 }
 
-const String _svg_j4s3gg =
+const String frontArrow =
     '<svg viewBox="288.2 250.0 21.8 18.5" ><path transform="translate(282.25, 244.0)" d="M 16.87643432617188 6 L 14.95946311950684 7.633152008056641 L 22.54577445983887 14.10784912109375 L 6 14.10784912109375 L 6 16.42437744140625 L 22.54577445983887 16.42437744140625 L 14.95946216583252 22.89907455444336 L 16.87643432617188 24.5322265625 L 27.75286865234375 15.26611328125 L 16.87643432617188 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
