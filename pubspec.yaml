@@ -9,6 +9,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  fluttertoast: ^4.0.0
+  http: ^0.12.1
   adobe_xd:
   flutter:
     sdk: flutter

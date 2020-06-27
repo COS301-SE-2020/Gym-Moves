@@ -25,6 +25,9 @@ Functional Description:
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /*
 Class Name:
@@ -104,11 +107,9 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                   setState(() {
                     _headingOfAnnouncement = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent
-    );
+        color: Colors.transparent);
 
     final detailField = Material(
         shadowColor: Colors.black,
@@ -133,15 +134,12 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     _detailsAnnouncement = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
@@ -149,7 +147,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         backgroundColor: const Color(0xff513369),
         body: ListView(children: <Widget>[
           Stack(children: <Widget>[
-             Transform.translate(
+            Transform.translate(
               offset: Offset(0.0, -0.033 * media.size.height),
               child: Container(
                 width: media.size.width,
@@ -182,8 +180,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                       allowDrawingOutsideViewBox: true,
                       height: 0.05 * media.size.height,
                       width: 0.07 * media.size.width),
-                )
-            ),
+                )),
             Transform.translate(
                 offset: Offset(0.0, -0.033 * media.size.height),
                 child: SizedBox(
@@ -206,21 +203,16 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    )
-                )
-            ),
-          ]
-          ),
+                    ))),
+          ]),
           SizedBox(height: 0.04 * media.size.height),
           Form(
-            key: announcementFormKey,
+              key: announcementFormKey,
               child: Column(children: <Widget>[
-            headingField,
-            SizedBox(height: 0.05 * media.size.height),
-            detailField
-          ]
-              )
-          ),
+                headingField,
+                SizedBox(height: 0.05 * media.size.height),
+                detailField
+              ])),
           SizedBox(height: 0.05 * media.size.height),
           Center(
               child: SizedBox(
@@ -246,12 +238,8 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                             fontFamily: 'Roboto'),
                       ),
                     ),
-                  )
-              )
-          )
-        ]
-        )
-    );
+                  )))
+        ]));
   }
 }
 
@@ -263,7 +251,29 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     This method is called when the send button is pressed. It tells the API to
     send this announcement as a notification to the members.
 */
-void sendValuesToNotify(String heading, String details) async {}
+void sendValuesToNotify(String heading, String details) async {
+  final http.Response response = await http.post(
+    'https://jsonplaceholder.typicode.com/',
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(<String, String>{'heading': heading, 'body': details}),
+  );
+
+  if (response.statusCode == 201) {
+    //return Album.fromJson(json.decode(response.body));
+  } 
+  else {
+    Fluttertoast.showToast(
+        msg: "Could not send announcement. Try again later.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black,
+        fontSize: 16.0);
+  }
+}
 
 /*
   Method Name:
@@ -280,6 +290,34 @@ sendValuesToDatabase(_heading, _details) async {
   var year = date.year;
   var month = date.month;
   var day = date.day;
+
+  final http.Response response = await http.post(
+    'https://jsonplaceholder.typicode.com/',
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(<String, String>{
+      'heading': _heading,
+      'body': _details,
+      'announcementDay': day.toString(),
+      'announcementYear': year.toString(),
+      'announcementMonth': month.toString(),
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    //return Album.fromJson(json.decode(response.body));
+  } 
+  else {
+    Fluttertoast.showToast(
+        msg: "Could not store announcement. Try again later.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black,
+        fontSize: 16.0);
+  }
 }
 
 const String backArrow =
