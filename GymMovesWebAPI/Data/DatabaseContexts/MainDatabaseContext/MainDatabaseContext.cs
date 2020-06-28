@@ -1,4 +1,5 @@
 ﻿using GymMovesWebAPI.Data.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
         public DbSet<NotificationSettings> NotificationSettings { get; set; }
         public DbSet<SupportUsers> SupportStaff { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<GymMember> GymMembers { get; set; }
 
         private readonly IConfiguration config = null;
 
@@ -30,6 +32,9 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<GymMember>()
+                .HasKey(p => new {p.MembershipId, p.GymId});
+
             modelBuilder.Entity<Gym>()
                 .HasMany(p => p.Classes)
                 .WithOne(p => p.Gym);

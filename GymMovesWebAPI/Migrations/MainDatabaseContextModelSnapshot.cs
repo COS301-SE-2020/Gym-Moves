@@ -38,6 +38,38 @@ namespace GymMovesWebAPI.Migrations
                     b.ToTable("NotificationSettings");
                 });
 
+            modelBuilder.Entity("GymMovesWebAPI.Data.Models.VerificationDatabaseModels.GymMember", b =>
+                {
+                    b.Property<string>("MembershipId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GymId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
+
+                    b.HasKey("MembershipId", "GymId");
+
+                    b.ToTable("GymMembers");
+                });
+
             modelBuilder.Entity("GymMovesWebAPI.Models.DatabaseModels.ClassRating", b =>
                 {
                     b.Property<int>("ClassIdForeignKey")
@@ -234,6 +266,9 @@ namespace GymMovesWebAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")

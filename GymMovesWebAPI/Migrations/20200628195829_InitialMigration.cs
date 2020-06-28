@@ -8,6 +8,23 @@ namespace GymMovesWebAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "GymMembers",
+                columns: table => new
+                {
+                    MembershipId = table.Column<string>(nullable: false),
+                    GymId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Surname = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: false),
+                    UserType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GymMembers", x => new { x.MembershipId, x.GymId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Gyms",
                 columns: table => new
                 {
@@ -82,7 +99,8 @@ namespace GymMovesWebAPI.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     UserType = table.Column<int>(nullable: false),
-                    Password = table.Column<string>(nullable: true)
+                    Password = table.Column<string>(nullable: true),
+                    Salt = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -245,6 +263,9 @@ namespace GymMovesWebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "ClassRegisters");
+
+            migrationBuilder.DropTable(
+                name: "GymMembers");
 
             migrationBuilder.DropTable(
                 name: "InstructorRatings");
