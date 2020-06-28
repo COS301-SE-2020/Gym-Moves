@@ -1,6 +1,7 @@
 ﻿using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             query = query.Where(p => p.MembershipId == membershipId);
             query = query.Where(p => p.GymId == gymId);
 
-            return query.FirstOrDefault();
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

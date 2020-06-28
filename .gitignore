@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs/GymMovesWebAPI
+/GymMovesWebAPI/bin/Debug/netcoreapp3.1
+/GymMovesWebAPI/obj
