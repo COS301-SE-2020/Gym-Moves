@@ -5006,11 +5006,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 2\\GymMovesWebAPI\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 3\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
       "projectName": "GymMovesWebAPI",
-      "projectPath": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 2\\GymMovesWebAPI\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
+      "projectPath": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 3\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
       "packagesPath": "C:\\Users\\Longji Kang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 2\\GymMovesWebAPI\\GymMovesWebAPI\\obj\\",
+      "outputPath": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 3\\GymMovesWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",

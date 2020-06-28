@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\GymMovesWebAPI",
+    "\\GymMovesWebAPI\\Data",
+    "\\GymMovesWebAPI\\Data\\Models",
+    "\\GymMovesWebAPI\\Data\\Models\\DatabaseModels",
+    "\\GymMovesWebAPI\\Data\\Repositories",
+    "\\GymMovesWebAPI\\Data\\Repositories\\Implementations",
+    "\\GymMovesWebAPI\\Data\\Repositories\\Interfaces",
+    "\\GymMovesWebAPI\\Migrations",
+    "\\GymMovesWebAPI\\obj\\Debug\\netcoreapp3.1",
+    "\\GymMovesWebAPI\\obj\\Release"
+  ],
+  "SelectedNode": "\\GymMovesWebAPI\\Data\\Models\\DatabaseModels",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GtIw2Z2AB1oYtt4PTqKweWj7GpnXZVzsXCimu7EABddjXe/UugkYp2ifGt0dRqUwloo81LarfcIByR+S610URg==",
+  "dgSpecHash": "PXwUWpHd2IMa5de/A2wRgZxovgFjsZwscr2CGEgTkJ3DMY7o0S5wnzjVATY166jVcKESsMOmk7uUlvaWBrNcvg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 2\\GymMovesWebAPI\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
+  "projectFilePath": "C:\\Users\\Longji Kang\\Documents\\COS301\\Capstone\\Projects 3\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Longji Kang\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Longji Kang\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
