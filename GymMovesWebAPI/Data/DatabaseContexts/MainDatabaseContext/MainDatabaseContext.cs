@@ -1,4 +1,5 @@
-﻿using GymMovesWebAPI.Data.Models.DatabaseModels;
+﻿using GymMovesWebAPI.Data.Enums;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
@@ -96,6 +97,56 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
 
             modelBuilder.Entity<ClassRegister>()
                 .HasKey(p => new {p.ClassIdForeignKey, p.StudentUsernameForeignKey});
+
+            /* Default data for gym */
+            modelBuilder.Entity<Gym>()
+                .HasData(
+                    new {
+                        GymId = 1,
+                        GymName = "TestName",
+                        GymBranch = "TestBranch"
+                    }
+                );
+
+            /* Default data for verification table */
+            modelBuilder.Entity<GymMember>()
+                .HasData(
+                    new {
+                        MembershipId = "testmanagermembershipid",
+                        GymId = 1,
+                        Name = "Test",
+                        Surname = "Manager",
+                        Email = "managertestemail@gmail.com",
+                        PhoneNumber = "0629058357",
+                        UserType = UserTypes.Manager
+                    }
+                );
+
+            modelBuilder.Entity<GymMember>()
+                .HasData(
+                    new {
+                        MembershipId = "testinstructormembershipid",
+                        GymId = 1,
+                        Name = "Test",
+                        Surname = "Instructor",
+                        Email = "instructortestemail@gmail.com",
+                        PhoneNumber = "0629058357",
+                        UserType = UserTypes.Instructor
+                    }
+                );
+
+            modelBuilder.Entity<GymMember>()
+                .HasData(
+                    new {
+                        MembershipId = "testmembermembershipid",
+                        GymId = 1,
+                        Name = "Test",
+                        Surname = "Member",
+                        Email = "membertestemail@gmail.com",
+                        PhoneNumber = "0629058357",
+                        UserType = UserTypes.Member
+                    }
+                );
         }
     }
 }
