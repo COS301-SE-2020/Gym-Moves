@@ -186,7 +186,7 @@ class ViewMyProfileState extends State<ViewMyProfile> {
         ),
         SizedBox(height: 0.05 * media.size.height),
         Stack(children: <Widget>[
-          getOptionContainer(media, Notifications()),
+          getOptionContainer(media, SetNotificationType()),
           Transform.translate(
               offset: Offset(0.8 * 0.82 * media.size.width,
                   0.08 * 0.25 * media.size.height
@@ -217,17 +217,11 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                   padding: EdgeInsets.all(0.025 * media.size.width),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(29.0),
-                      color: const Color(0x3dffffff),
+                      color: Color(0x26ffffff),
                       border: Border.all(
                           width: 1.0, color: const Color(0x3d707070)
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x23000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        )
-                      ])
+                      )
+                     )
               )
           ),
           Transform.translate(
@@ -268,15 +262,9 @@ class ViewMyProfileState extends State<ViewMyProfile> {
             padding: EdgeInsets.all(0.025 * media.size.width),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(29.0),
-                color: const Color(0x3dffffff),
+                color: Color(0x26ffffff),
                 border: Border.all(width: 1.0, color: const Color(0x3d707070)),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x23000000),
-                    offset: Offset(0, 3),
-                    blurRadius: 6,
-                  )
-                ])
+               )
         )
     );
   }
@@ -329,4 +317,4 @@ const String pen =
     '<svg viewBox="73.0 315.0 27.0 27.0" ><path transform="translate(68.5, 310.5)" d="M 4.5 25.875 L 4.5 31.5 L 10.125 31.5 L 26.71500015258789 14.90999984741211 L 21.09000015258789 9.284999847412109 L 4.5 25.875 Z M 31.06500053405762 10.5600004196167 C 31.64999961853027 9.975000381469727 31.64999961853027 9.030000686645508 31.06500053405762 8.445000648498535 L 27.55500030517578 4.935000419616699 C 26.97000122070313 4.350000381469727 26.02499961853027 4.350000381469727 25.44000053405762 4.935000419616699 L 22.69499969482422 7.680000305175781 L 28.31999969482422 13.30500030517578 L 31.06499862670898 10.5600004196167 Z" fill="#ffffff" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 
 const String helpIcon =
-    '<svg viewBox="3.0 3.0 30.0 30.0" ><path  d="M 33 18 C 33 26.28427124023438 26.28427124023438 33 18 33 C 9.715728759765625 33 3 26.28427124023438 3 18 C 3 9.715728759765625 9.715728759765625 3 18 3 C 26.28427124023438 3 33 9.715728759765625 33 18 Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path  d="M 13.63500022888184 13.5 C 14.3631534576416 11.43006229400635 16.47807502746582 10.18710136413574 18.64076614379883 10.55806159973145 C 20.80345726013184 10.92901992797852 22.38327407836914 12.80572700500488 22.38000106811523 15 C 22.38000106811523 18 17.88000106811523 19.5 17.88000106811523 19.5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path  d="M 18 25.5 L 18 25.5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>';
+    '<svg viewBox="70.0 402.0 18.0 27.0" ><path transform="translate(61.0, 397.5)" d="M 20.3203125 31.5 L 15.6796875 31.5 L 15.6796875 26.9296875 L 20.3203125 26.9296875 L 20.3203125 31.5 Z M 20.25 24.609375 L 15.75 24.609375 C 15.75 17.5078125 22.5 17.92265701293945 22.5 13.4296875 C 22.5 10.95468711853027 20.47500038146973 8.971875190734863 18 8.971875190734863 C 15.52499961853027 8.971875190734863 13.5 11.109375 13.5 13.5 L 9 13.5 C 9 8.5078125 13.02890586853027 4.5 18 4.5 C 22.97109413146973 4.5 27 8.465624809265137 27 13.4296875 C 27 19.04765701293945 20.25 19.6875 20.25 24.609375 Z" fill="#ffffff" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
