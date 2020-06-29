@@ -8,5 +8,6 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
         public Task<GymClasses[]> getGymClasses(int gymId);
         public Task<GymClasses[]> getUserClasses(string username);
         public Task<GymClasses[]> getInstructorClasses(string username);
+        public Task<GymClasses> getInstructorClassAtSpecificDateTime(string instructor, string day, string time);
     }
 }

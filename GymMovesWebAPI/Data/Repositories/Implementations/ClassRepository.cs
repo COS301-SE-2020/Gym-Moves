@@ -41,7 +41,6 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return await query.ToArrayAsync();
         }
 
-        /* Possible simplification of code by moving registerQuery to RegisterRepository */
         public async Task<GymClasses[]> getUserClasses(string username) {
             ClassRegister[] registerList = await registerRepository.getUserRegisters(username);
 
@@ -56,6 +55,16 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             }
 
             return classList;
+        }
+
+        /* TODO: Check if given time is in the start end range */
+        public async Task<GymClasses> getInstructorClassAtSpecificDateTime(string instructor, string day, string time) {
+            IQueryable<GymClasses> query = context.Classes;
+            query = query.Where(p => p.InstructorUsername == instructor);
+            query = query.Where(p => p.Day == day);
+            query = query.Where(p => p.StartTime == time);
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

@@ -2,8 +2,6 @@
 using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,6 +29,11 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             query = query.Where(p => p.GymId == gymId);
 
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> deleteMember(GymMember member) {
+            context.Remove(member);
+            return (await context.SaveChangesAsync()) > 0;
         }
     }
 }

@@ -15,6 +15,29 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
 
         public async Task<bool> addRegister(ClassRegister register) {
             context.Add(register);
+
+            IQueryable<GymClasses> query = context.Classes;
+            query = query.Where(p => p.ClassId == register.ClassIdForeignKey);
+
+            GymClasses classToUpdate = query.FirstOrDefault();
+            classToUpdate.CurrentStudents++;
+
+            context.Update(classToUpdate);
+
+            return (await context.SaveChangesAsync()) > 0;
+        }
+
+        public async Task<bool> removeRegister(ClassRegister register) {
+            context.Remove(register);
+
+            IQueryable<GymClasses> query = context.Classes;
+            query = query.Where(p => p.ClassId == register.ClassIdForeignKey);
+
+            GymClasses classToUpdate = query.FirstOrDefault();
+            classToUpdate.CurrentStudents--;
+
+            context.Update(classToUpdate);
+
             return (await context.SaveChangesAsync()) > 0;
         }
 
@@ -25,11 +48,23 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return await query.ToArrayAsync();
         }
 
-        public async Task<ClassRegister[]> getUserRegisters(string username) {
+        public async Task<ClassRegister[]> getUserRegisters(string username, bool includeClass = false) {
             IQueryable<ClassRegister> query = context.ClassRegisters;
             query = query.Where(p => p.StudentUsernameForeignKey == username);
 
+            if (includeClass) {
+                query = query.Include(p => p.Class);
+            }
+
             return await query.ToArrayAsync();
+        }
+
+        public async Task<ClassRegister> getSpecificUserAndClass(string username, int classId) {
+            IQueryable<ClassRegister> query = context.ClassRegisters;
+            query = query.Where(p => p.StudentUsernameForeignKey == username);
+            query = query.Where(p => p.ClassIdForeignKey == classId);
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

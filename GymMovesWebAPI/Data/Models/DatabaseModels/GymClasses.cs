@@ -22,7 +22,7 @@ namespace GymMovesWebAPI.Models.DatabaseModels {
         public string Day { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
-        public int MaxCapactiy { get; set; }
+        public int MaxCapacity { get; set; }
         public int CurrentStudents { get; set; }
         public bool Cancelled { get; set; }
 
