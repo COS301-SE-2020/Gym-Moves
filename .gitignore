@@ -1,7 +1,0 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs/GymMovesWebAPI
-/GymMovesWebAPI/bin/Debug/netcoreapp3.1
-/GymMovesWebAPI/obj
