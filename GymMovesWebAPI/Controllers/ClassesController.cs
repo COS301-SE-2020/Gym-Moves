@@ -101,6 +101,25 @@ namespace GymMovesWebAPI.Controllers {
             return Ok(classesReduced);
         }
 
+        [HttpGet("instructorlist")]
+        public async Task<ActionResult<GymClassReducedModel[]>> getByInstructor(string username) {
+            Users verifyUser = await userRepository.getUser(username);
+
+            if (verifyUser == null || verifyUser.UserType != UserTypes.Instructor) {
+                return StatusCode(StatusCodes.Status404NotFound, "The specified instructor was not found!");
+            }
+
+            GymClasses[] classes = await classRepository.getInstructorClasses(username);
+
+            if (classes.Length == 0) {
+                return Ok(new GymClassReducedModel[0]);
+            }
+
+            GymClassReducedModel[] reducedClasses = ClassMappers.classModelToReducedModel(classes);
+
+            return Ok(reducedClasses);
+        }
+
         [HttpPost("signup")]
         public async Task<ActionResult<bool>> signUpUserToClass(RegisterUserForClassModel register) {
             if (await classRepository.getClassById(register.ClassId) == null) {
