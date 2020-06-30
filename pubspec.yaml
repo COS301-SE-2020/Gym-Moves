@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_datetime_picker: ^1.3.8
   fluttertoast: ^4.0.0
   http: ^0.12.1
   adobe_xd:
@@ -43,5 +44,8 @@ flutter:
 
   uses-material-design: true
   assets:
-    - assets/images/
-
+    - assets/Bicycles.jpg
+    - assets/LeftSidePool.png
+    - assets/leftSidePoolHalf.png
+    - assets/RightSidePool.png
+    - assets/RightSidePoolHalf.png

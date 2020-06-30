@@ -91,7 +91,7 @@ class MemberPagesState extends State<MemberPages> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image:
-                        const AssetImage('assets/images/leftSidePoolHalf.png'),
+                        const AssetImage('assets/leftSidePoolHalf.png'),
                     fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(
                         Colors.black.withOpacity(1.0), BlendMode.dstIn),

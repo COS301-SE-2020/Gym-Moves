@@ -71,7 +71,7 @@ class EditClassesManagerState extends State<EditClassesManager> {
             height: 1 / 4 * media.size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: const AssetImage('assets/images/rightSidePoolHalf.png'),
+                image: const AssetImage('assets/rightSidePoolHalf.png'),
                 fit: BoxFit.fill,
                 colorFilter: new ColorFilter.mode(
                     Colors.black.withOpacity(1.0), BlendMode.dstIn),

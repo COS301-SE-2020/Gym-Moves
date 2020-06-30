@@ -25,7 +25,7 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image:
-                  const AssetImage('assets/images/rightSidePoolHalf.png'),
+                  const AssetImage('assets/rightSidePoolHalf.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),

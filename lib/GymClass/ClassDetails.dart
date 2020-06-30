@@ -93,7 +93,7 @@ class ClassDetailsState extends State<ClassDetails> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: const AssetImage(
-                            'assets/images/rightSidePoolHalf.png'
+                            'assets/rightSidePoolHalf.png'
                         ),
                         fit: BoxFit.fill,
                         colorFilter: new ColorFilter.mode(

@@ -30,6 +30,31 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:gym_moves/User/SignUp.dart';
 import 'package:gym_moves/User/ForgotPassword.dart';
+import 'package:gym_moves/User/MemberPages.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+/*
+Class Name: 
+  LoginResponse
+
+Purpose:
+  This class will be used to parse the response from the api and allow the user to log in.
+*/
+
+class LoginResponse {
+  final bool userValid;
+  final bool passwordValid;
+
+  LoginResponse({this.userValid, this.passwordValid});
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    return LoginResponse(
+      userValid: json['userValid'],
+      passwordValid: json['passwordValid'],
+    );
+  }
+}
 
 /*
 Class Name:
@@ -83,19 +108,15 @@ class LogInState extends State<LogIn> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     username = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
@@ -120,19 +141,15 @@ class LogInState extends State<LogIn> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     password = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
@@ -147,7 +164,7 @@ class LogInState extends State<LogIn> {
               height: 0.4 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/bicycles.jpg'),
+                  image: const AssetImage('assets/Bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(0.82), BlendMode.dstIn),
@@ -174,8 +191,7 @@ class LogInState extends State<LogIn> {
               textAlign: TextAlign.left,
             ),
           ),
-        ]
-        ),
+        ]),
         SizedBox(height: 10.0),
         Form(
             key: logInFormKey,
@@ -191,10 +207,8 @@ class LogInState extends State<LogIn> {
                       width: media.size.width * 0.05,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
-              ]
-              ),
+                    ))
+              ]),
               SizedBox(height: 0.05 * media.size.height),
               Stack(children: <Widget>[
                 passwordField,
@@ -206,13 +220,9 @@ class LogInState extends State<LogIn> {
                       width: media.size.width * 0.05,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
-              ]
-              )
-            ]
-            )
-        ),
+                    ))
+              ])
+            ])),
         Container(
             padding: EdgeInsets.fromLTRB(0.05 * media.size.height, 0.0,
                 0.18 * media.size.width, 0.05 * media.size.height),
@@ -250,56 +260,100 @@ class LogInState extends State<LogIn> {
                           fontFamily: 'Roboto'),
                     ),
                   ),
-                )
-            )
-        ),
+                ))),
         SizedBox(height: 30),
         Center(
             child: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SignUp()),
-            );
-          },
-          child: Text.rich(
-            TextSpan(
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 0.04 * media.size.width,
-                color: const Color(0xffffffff),
-              ),
-              children: [
-                TextSpan(
-                  text: 'Don\'t have an account? ',
-                ),
-                TextSpan(
-                  text: 'Sign up!',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                  ),
-                )
-              ]),
-            textAlign: TextAlign.center,
-          )
-        )
-        ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUp()),
+                  );
+                },
+                child: Text.rich(
+                  TextSpan(
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 0.04 * media.size.width,
+                        color: const Color(0xffffffff),
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Don\'t have an account? ',
+                        ),
+                        TextSpan(
+                          text: 'Sign up!',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        )
+                      ]),
+                  textAlign: TextAlign.center,
+                ))),
         SizedBox(height: 30),
-      ]
-      ),
+      ]),
     );
   }
-}
 
-/*
+  /*
   Method Name: verifyUser
 
   Purpose: This method is called when the send button is pressed. It verifies
            that the user does exist and what type of user they are.
 */
 
-verifyUser(username, password) {}
+  verifyUser(username, password) async {
+
+    Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MemberPages()),
+                  );
+
+    final http.Response response = await http.post(
+      'https://jsonplaceholder.typicode.com/',
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(
+          <String, String>{'username': username, 'password': password}),
+    );
+    
+    LoginResponse res = LoginResponse.fromJson(json.decode(response.body));
+
+    if (res.passwordValid && res.userValid) {
+        
+    } else {
+      String errMessage = "";
+      if (!res.passwordValid && res.userValid) {
+        errMessage = "Please ensure that the password is correct and try again.";
+      } else if (res.passwordValid && !res.userValid) {
+        errMessage = "Please ensure that the username is correct and try again.";
+      } else {
+        errMessage = "Your username or password is incorrect. Please try again.";
+      }
+
+      Widget okButton = FlatButton(
+        child: Text("OK"),
+        onPressed: () => Navigator.pop(context)
+      );
+
+      AlertDialog alert = AlertDialog(
+        title: Text("Login Error"),
+        content: Text(errMessage),
+        actions: [
+          okButton,
+        ],
+      );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+  }
+}
 
 const String lock =
     '<svg viewBox="292.0 395.0 16.0 17.5" ><path transform="translate(292.0, 395.0)" d="M 14.28200817108154 7.65625 L 13.42508792877197 7.65625 L 13.42508792877197 5.1953125 C 13.42508792877197 2.3310546875 10.99000549316406 0 7.9979248046875 0 C 5.005844116210938 0 2.570761442184448 2.3310546875 2.570761442184448 5.1953125 L 2.570761442184448 7.65625 L 1.713841080665588 7.65625 C 0.7676579356193542 7.65625 0 8.39111328125 0 9.296875 L 0 15.859375 C 0 16.76513671875 0.7676579356193542 17.5 1.713841080665588 17.5 L 14.28200817108154 17.5 C 15.22819137573242 17.5 15.995849609375 16.76513671875 15.995849609375 15.859375 L 15.995849609375 9.296875 C 15.995849609375 8.39111328125 15.22819137573242 7.65625 14.28200817108154 7.65625 Z M 10.56868648529053 7.65625 L 5.427163124084473 7.65625 L 5.427163124084473 5.1953125 C 5.427163124084473 3.83837890625 6.580435276031494 2.734375 7.9979248046875 2.734375 C 9.415414810180664 2.734375 10.56868648529053 3.83837890625 10.56868648529053 5.1953125 L 10.56868648529053 7.65625 Z" fill="#b9a8bf" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

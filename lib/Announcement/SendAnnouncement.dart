@@ -278,8 +278,6 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         borderRadius: BorderRadius.circular(10.0)),
                     color: const Color(0xffffffff).withOpacity(0.3),
                     onPressed: () {
-                      sendValuesToDatabase(
-                          _headingOfAnnouncement, _detailsOfAnnouncement);
                       sendValuesToNotify(
                           _headingOfAnnouncement, _detailsOfAnnouncement);
                     },
@@ -311,61 +309,44 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     final http.Response response = await http.post(
       'https://jsonplaceholder.typicode.com/',
       headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<String, String>{'heading': heading, 'body': details}),
-    );
-
-    if (response.statusCode == 201) {
-      //return Album.fromJson(json.decode(response.body));
-    } else {
-      Fluttertoast.showToast(
-          msg: "Could not send announcement. Try again later.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.grey,
-          textColor: Colors.black,
-          fontSize: 16.0);
-    }
-  }
-
-/*
-  Method Name:
-    sendValuesToDatabase
-
-  Purpose:
-    This method is called when the send button is pressed. It sends the values
-    to the database to be stored.
-*/
-  sendValuesToDatabase(_heading, _details) async {
-    final http.Response response = await http.post(
-      'https://jsonplaceholder.typicode.com/',
-      headers: <String, String>{
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: jsonEncode(<String, String>{
-        'heading': _heading,
-        'body': _details,
+        'heading': heading,
+        'body': details,
         'announcementDay': day,
         'announcementMonth': month,
         'announcementYear': year
-      }),
+         }),
     );
 
     if (response.statusCode == 201) {
       //return Album.fromJson(json.decode(response.body));
-    } else {
-      Fluttertoast.showToast(
-          msg: "Could not store announcement. Try again later.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.grey,
-          textColor: Colors.black,
-          fontSize: 16.0);
+    } 
+    else {
+      Widget okButton = FlatButton(
+        child: Text("OK"),
+        onPressed: () => Navigator.pop(context)
+      );
+
+  AlertDialog alert = AlertDialog(
+    title: Text("Announcement"),
+    content: Text("Could not send announcement. Try again later."),
+    actions: [
+      okButton,
+    ],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+
     }
   }
+
 }
 
 const String backArrow =

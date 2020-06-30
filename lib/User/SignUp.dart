@@ -241,7 +241,7 @@ class SignUpState extends State<SignUp> {
               height: 0.4 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/bicycles.jpg'),
+                  image: const AssetImage('assets/Bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(0.82), BlendMode.dstIn

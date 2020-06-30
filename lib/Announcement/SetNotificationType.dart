@@ -88,7 +88,7 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                 height: media.size.height * 0.4,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: const AssetImage('assets/images/bicycles.jpg'),
+                      image: const AssetImage('assets/bicycles.jpg'),
                       fit: BoxFit.fill,
                       colorFilter: new ColorFilter.mode(
                           Color(0xff513369).withOpacity(0.6), BlendMode.dstIn),
