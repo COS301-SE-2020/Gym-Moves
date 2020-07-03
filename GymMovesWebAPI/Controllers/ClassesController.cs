@@ -58,6 +58,13 @@ namespace GymMovesWebAPI.Controllers
             gymRepository = gR;
         }
 
+        /* Temporary user adding function */
+        [HttpPost("useradd")]
+        public async Task<ActionResult<Users>> addUser(Users user) {
+            await userRepository.addUser(user);
+            return Ok(user);
+        }
+
         [HttpPost("add")]
         public async Task<ActionResult<bool>> addClass(GymClassRequest newClass)
         {
