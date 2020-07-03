@@ -1,4 +1,27 @@
-﻿using System.Threading.Tasks;
+﻿/*
+File Name:
+    ClassesController.cs
+
+Author:
+    Longji
+
+Date Created:
+    29/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+    This file contains the class for the gym classes controller. 
+
+List of Classes:
+    - UserController
+*/
+
+using System.Threading.Tasks;
 using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Mappers;
 using GymMovesWebAPI.Data.Models.ArgumentModels;
@@ -46,7 +69,8 @@ namespace GymMovesWebAPI.Controllers {
                     if (await classRepository.getInstructorClassAtSpecificDateTime(newClassModel.InstructorUsername, newClassModel.Day, newClassModel.StartTime) == null) {
                         if (await classRepository.addClass(newClassModel)) {
                             return Ok(true);
-                        } else {
+                        } else 
+                        {
                             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attmepting to the new class to the database!");
                         }
                     } else 

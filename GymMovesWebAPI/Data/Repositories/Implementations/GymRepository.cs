@@ -1,4 +1,28 @@
-﻿using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
+﻿/*
+File Name:
+    GymController.cs
+
+Author:
+    Longji
+
+Date Created:
+    28/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+28/06/2020      Longji          Added addGym, getGymById and getByNameAndBranch functions implementations
+02/07/2020      Longji          Added getAllGyms function implementation
+
+Functional Description:
+    
+
+List of Classes:
+    - GymRepository
+*/
+
+using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +42,10 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
         public async Task<bool> addGym(Gym gym) {
             context.Add(gym);
             return (await context.SaveChangesAsync()) > 0; 
+        }
+
+        public async Task<Gym[]> getAllGyms() {
+            return await context.Gyms.ToArrayAsync();            
         }
 
         public async Task<Gym> getGymById(int gymId) {

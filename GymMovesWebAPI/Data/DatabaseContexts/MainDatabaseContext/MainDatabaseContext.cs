@@ -1,4 +1,29 @@
-﻿using GymMovesWebAPI.Data.Enums;
+﻿/*
+File Name:
+    MainDatabaseContext.cs
+
+Author:
+    Longji
+
+Date Created:
+    28/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+28/06/2020      Longji          Initial creation of the database context class.
+02/07/2020      Longji          Added table for password resets.
+
+
+Functional Description:
+    
+
+List of Classes:
+    - MainDatabaseContext
+*/
+
+using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Models.DatabaseModels;
@@ -18,6 +43,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
         public DbSet<SupportUsers> SupportStaff { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<GymMember> GymMembers { get; set; }
+        public DbSet<PasswordReset> PasswordResets { get; set; }
 
         private readonly IConfiguration config = null;
 
@@ -35,6 +61,14 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<GymMember>()
                 .HasKey(p => new {p.MembershipId, p.GymId});
+
+            modelBuilder.Entity<Gym>()
+                .HasIndex(p => p.GymName)
+                .IsUnique();
+
+            modelBuilder.Entity<Gym>()
+                .HasIndex(p => p.GymBranch)
+                .IsUnique();
 
             modelBuilder.Entity<Gym>()
                 .HasMany(p => p.Classes)
@@ -97,6 +131,10 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
 
             modelBuilder.Entity<ClassRegister>()
                 .HasKey(p => new {p.ClassIdForeignKey, p.StudentUsernameForeignKey});
+
+            modelBuilder.Entity<PasswordReset>()
+                .HasIndex(p => p.Code)
+                .IsUnique();
 
             /* Default data for gym */
             modelBuilder.Entity<Gym>()
