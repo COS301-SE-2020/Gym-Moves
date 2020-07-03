@@ -20,7 +20,7 @@ Functional Description:
     activities.
 
 List of Classes:
-    - SignInUserModel
+    - SignUpUserModel
     - LogInUserModel
     - GetCodeUserModel
     - ForgotPasswordUserModel
@@ -38,11 +38,12 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
         This class handles the incoming JSON structure
         of a sign up request.
     */
-    public class SignInUserModel {
+    public class SignUpUserModel {
         public string username { get; set; }
         public string gymMemberId { get; set; }
         public string password { get; set; }
-        public string gym { get; set; }
+        public string gymName { get; set; }
+        public string gymBranch { get; set; }
     }
 
     /*

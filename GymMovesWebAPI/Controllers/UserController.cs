@@ -40,9 +40,7 @@ using Microsoft.AspNetCore.Mvc;
 using MailKit.Net.Smtp;
 using MimeKit;
 
-namespace GymMovesWebAPI.Controllers
-{
-
+namespace GymMovesWebAPI.Controllers {
 
     /*
     Class Name:
@@ -53,13 +51,13 @@ namespace GymMovesWebAPI.Controllers
         to the API with regards to the user management.
     */
     [ApiController]
-    public class UserController : Controller
-    {
+    public class UserController : Controller {
 
         private readonly IUserRepository userGymMovesRepository;
         private readonly IGymMemberRepository gymMembersRepository;
         private readonly IGymRepository gymRepository;
         private readonly INotificationSettingsRepository notificationSettingRepository;
+        private readonly IPasswordResetRepository resetPasswordRepository;
 
         /*
         Method Name:
@@ -68,13 +66,13 @@ namespace GymMovesWebAPI.Controllers
             This method instantiates the repositories that will be used.
         */
         public UserController(IUserRepository repoOne, IGymMemberRepository repoTwo, IGymRepository repoThree,
-            INotificationSettingsRepository repoFour)
-        {
+            INotificationSettingsRepository repoFour, IPasswordResetRepository repoFive) {
 
             userGymMovesRepository = repoOne;
             gymMembersRepository = repoTwo;
             gymRepository = repoThree;
             notificationSettingRepository = repoFour;
+            resetPasswordRepository = repoFive;
         }
 
         /*
@@ -85,8 +83,7 @@ namespace GymMovesWebAPI.Controllers
        */
         [Route("api/signup")]
         [HttpPost]
-        public async Task<ActionResult<UserSignUpResponseModel>> signUp(SignInUserModel user)
-        {
+        public async Task<ActionResult<UserSignUpResponseModel>> signUp(SignUpUserModel user) {
 
             /* Create return message to send back.*/
             UserSignUpResponseModel response = new UserSignUpResponseModel();
@@ -98,92 +95,83 @@ namespace GymMovesWebAPI.Controllers
             newUserAccount.MembershipId = user.gymMemberId.Trim();
             newUserAccount.Username = user.username.Trim();
 
-            string[] gymArray = user.gym.Split(",");
+            /* Set the users gym and gym ID. */
+            newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(user.gymName.Trim(), user.gymBranch.Trim());
+            newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
 
-            if (gymArray.Length == 2){
+            /* Get the member from the user repo that has the entered member ID and gym. */
+            GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId, newUserAccount.GymIdForeignKey);
 
-                /* Set the users gym and gym ID. */
-                newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(gymArray[0].Trim(), gymArray[1].Trim());
-                newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
+            /* If member null, such person does not exist. */
+            if (member == null) {
+                response.usernameValid = true;
+                response.gymMemberIdValid = false;
+                response.userType = 0;
 
-                /* Get the member from the user repo that has the entered member ID and gym. */
-                GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId, newUserAccount.GymIdForeignKey);
+                response.name = "";
+                response.gymMemberID = "";
+                response.gymID = -1;
 
-                /* If member null, such person does not exist. */
-                if (member == null)
-                {
-                    response.usernameValid = true;
-                    response.gymMemberIdValid = false;
-                    response.userType = 0;
+                return Unauthorized(response);
+            }
 
-                    response.name = "";
-                    response.gymMemberID = "";
-                    response.gymID = -1;
+            newUserAccount.Name = member.Name;
+            newUserAccount.Surname = member.Surname;
+            newUserAccount.PhoneNumber = member.PhoneNumber;
+            newUserAccount.Email = member.Email;
 
-                    return Unauthorized(response);
-                }
+            /* Since person exists, get their user type. */
+            newUserAccount.UserType = member.UserType;
 
-                newUserAccount.Name = member.Name;
-                newUserAccount.Surname = member.Surname;
-                newUserAccount.PhoneNumber = member.PhoneNumber;
-                newUserAccount.Email = member.Email;
+            /* Need to check if username unique. */
+            Users checkIfUsernameExists = await userGymMovesRepository.getUser(newUserAccount.Username);
 
-                /* Since person exists, get their user type. */
-                newUserAccount.UserType = member.UserType;
+            /* If not null, it means username already exists.*/
+            if (checkIfUsernameExists != null) {
+                response.usernameValid = false;
+                response.gymMemberIdValid = true;
+                response.userType = 0;
 
-                /* Need to check if username unique. */
-                Users checkIfUsernameExists = await userGymMovesRepository.getUser(newUserAccount.Username);
+                response.name = "";
+                response.gymMemberID = "";
+                response.gymID = -1;
 
-                /* If not null, it means username already exists.*/
-                if (checkIfUsernameExists != null)
-                {
-                    response.usernameValid = false;
-                    response.gymMemberIdValid = true;
-                    response.userType = 0;
+                return Unauthorized(response);
+            }
 
-                    response.name = "";
-                    response.gymMemberID = "";
-                    response.gymID = -1;
+            /* random will generate different salt lengths of between 5 and 10. */
+            Random random = new Random();
+            newUserAccount.Salt = getRandomString(random.Next(5, 10));
 
-                    return Unauthorized(response);
-                }
+            string hash = getHash(SHA256.Create(), user.password + newUserAccount.Salt);
 
-                /* random will generate different salt lengths of between 5 and 10. */
-                Random random = new Random();
-                newUserAccount.Salt = getRandomString(random.Next(5, 10));
+            /* Set new accounts password as the hash. */
+            newUserAccount.Password = hash;
 
-                string hash = getHash(SHA256.Create(), user.password + newUserAccount.Salt);
+            /* Check if new account added. */
+            bool added = await userGymMovesRepository.addUser(newUserAccount);
 
-                /* Set new accounts password as the hash. */
-                newUserAccount.Password = hash;
+            if (added) {
 
-                /* Check if new account added. */
-                bool added = await userGymMovesRepository.addUser(newUserAccount);
+                NotificationSettings newUserNotifs = new NotificationSettings();
 
-                if (added)
-                {
+                newUserNotifs.Email = false;
+                newUserNotifs.PushNotifications = true;
+                newUserNotifs.Sms = false;
+                newUserNotifs.UsernameForeignKey = newUserAccount.Username;
+                newUserNotifs.User = newUserAccount;
 
-                    NotificationSettings newUserNotifs = new NotificationSettings();
+                added = await notificationSettingRepository.addUser(newUserNotifs);
 
-                    newUserNotifs.Email = false;
-                    newUserNotifs.PushNotifications = true;
-                    newUserNotifs.Sms = false;
-                    newUserNotifs.UsernameForeignKey = newUserAccount.Username;
-                    newUserNotifs.User = newUserAccount;
+                response.usernameValid = true;
+                response.gymMemberIdValid = true;
+                response.userType = newUserAccount.UserType;
 
-                    added = await notificationSettingRepository.addUser(newUserNotifs);
+                response.name = newUserAccount.Name;
+                response.gymMemberID = newUserAccount.MembershipId;
+                 response.gymID = newUserAccount.GymIdForeignKey;
 
-                    response.usernameValid = true;
-                    response.gymMemberIdValid = true;
-                    response.userType = newUserAccount.UserType;
-
-                    response.name = newUserAccount.Name;
-                    response.gymMemberID = newUserAccount.MembershipId;
-                    response.gymID = newUserAccount.GymIdForeignKey;
-
-                    return Ok(response);
-                }
-
+                return Ok(response);
             }
 
             response.usernameValid = false;
@@ -206,8 +194,7 @@ namespace GymMovesWebAPI.Controllers
        */
         [Route("api/login")]
         [HttpPost]
-        public async Task<ActionResult<UserLogInResponseModel>> logIn(LogInUserModel user)
-        {
+        public async Task<ActionResult<UserLogInResponseModel>> logIn(LogInUserModel user) {
 
             /* Check if user exists with this username. */
             Users checkUser = await userGymMovesRepository.getUser(user.username.Trim());
@@ -216,8 +203,7 @@ namespace GymMovesWebAPI.Controllers
             UserLogInResponseModel response = new UserLogInResponseModel();
 
             /* If null, no user with that username exists.*/
-            if (checkUser == null)
-            {
+            if (checkUser == null) {
 
                 response.usernameValid = false;
                 response.passwordValid = true;
@@ -231,8 +217,7 @@ namespace GymMovesWebAPI.Controllers
             }
 
             /* Verify correct password has been entered.*/
-            if (verifyHash(SHA256.Create(), user.password + checkUser.Salt, checkUser.Password))
-            {
+            if (verifyHash(SHA256.Create(), user.password + checkUser.Salt, checkUser.Password)) {
 
                 response.usernameValid = true;
                 response.passwordValid = true;
@@ -244,8 +229,7 @@ namespace GymMovesWebAPI.Controllers
 
                 return Ok(response);
             }
-            else
-            {
+            else {
                 response.usernameValid = true;
                 response.passwordValid = false;
                 response.userType = 0;
@@ -331,7 +315,6 @@ namespace GymMovesWebAPI.Controllers
        */
         private static bool verifyHash(HashAlgorithm hashAlgorithm, string input, string hash)
         {
-
             var hashOfPassword = getHash(hashAlgorithm, input);
             return hashOfPassword.Equals(hash);
         }
@@ -344,23 +327,155 @@ namespace GymMovesWebAPI.Controllers
        */
         [Route("api/getcode")]
         [HttpPost]
-        public async Task<ActionResult> getCode(GetCodeUserModel user)
-        {
+        public async Task<ActionResult> getCode(GetCodeUserModel user)  {
+
+            Users member = await userGymMovesRepository.getUser(user.username);
+
+            if (member != null)  {
+                MailboxAddress from = new MailboxAddress("Self",
+                "lockdown.squad.301@gmail.com");
+
+                MailboxAddress to = new MailboxAddress("Self",
+               member.Email);
+
+                MimeMessage message = new MimeMessage();
+                message.From.Add(from);
+                message.To.Add(to);
+                message.Subject = "Gym Moves Code";
+
+
+                string code = getRandomString(8);
+
+                BodyBuilder bodyBuilder = new BodyBuilder();
+                bodyBuilder.TextBody = "The code for " + member.Name + " " + member.Surname +
+                    " is " + code;
+
+                message.Body = bodyBuilder.ToMessageBody();
+
+                SmtpClient client = new SmtpClient();
+                await client.ConnectAsync("smtp.gmail.com", 465, true);
+                await client.AuthenticateAsync("lockdown.squad.301@gmail.com", "");
+
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+                client.Dispose();
+
+                PasswordReset userToAdd = new PasswordReset();
+                userToAdd.Username = user.username;
+                userToAdd.User = member;
+                userToAdd.Code = code;
+
+                DateTime date = new DateTime();
+                date.AddHours(1);
+                userToAdd.Expiry = date;
+
+                bool added = await resetPasswordRepository.addUser(userToAdd);
+
+
+                return Ok();
+
+            }
+
             return Unauthorized();
         }
 
+        /*
+        Method Name:
+            forgotPassword
+        Purpose:
+            This method will change the password for the user and check they entered the correct code.
+       */
         [Route("api/forgotpassword")]
         [HttpPost]
-        public async Task<ActionResult> forgotPassword(GetCodeUserModel user)
-        {
-            return Unauthorized();
+        public async Task<ActionResult<ForgotPasswordUserModel>> forgotPassword(ForgotPasswordUserModel user){
+
+            /* Get the user record to change.*/
+            Users userToChange = await userGymMovesRepository.getUser(user.username);
+
+            UserForgotPasswordResponseModel response = new UserForgotPasswordResponseModel();
+
+            /* No such user exists.*/
+            if(userToChange == null) {
+                response.message = "This username does not exist! Are you sure you typed the correct one?";
+                return Unauthorized(response);
+            }
+
+            /*Get code from code table to see if it matches.*/
+            PasswordReset userCode = await resetPasswordRepository.getUser(user.username);
+
+            DateTime dateTime = new DateTime();
+
+            if ((dateTime.Subtract(userCode.Expiry)).TotalMinutes > 60)
+            {
+                await resetPasswordRepository.deleteUser(userCode.Username);
+                response.message = "Oh no! Your code is expired.";
+                return Unauthorized(response);
+            }
+
+            if (userCode.Code.Equals(user.code))
+            {
+                 /* Hash new password.*/
+                string hash = getHash(SHA256.Create(), user.password + userToChange.Salt);
+
+                /* Try change password in db.*/
+                bool changed = await userGymMovesRepository.changePassword(userToChange.Username, hash);
+
+                if (changed) {
+                    response.message = "Successfully changed! You can log in with your new password now.";
+
+                    return Ok(response);
+                }
+                else {
+                    response.message = "Sprry! Something went wrong on our side. Please try again.";
+
+                return Ok(response);
+                }
+
+            }
+
+            response.message = "This code is incorrect.";
+            return Unauthorized(response);
         }
 
-        [Route("api/chnagepassword")]
+
+        /*
+        Method Name:
+            changePassword
+        Purpose:
+            This method will change the password for the user.
+       */
+        [Route("api/changepassword")]
         [HttpPost]
-        public async Task<ActionResult> changePassword(ChangePasswordUserModel user)
-        {
-            return Unauthorized();
+        public async Task<ActionResult> changePassword(ChangePasswordUserModel user) {
+
+            /* Get the user record to change.*/
+            Users userToChange = await userGymMovesRepository.getUser(user.username);
+
+            /* If null, user does not exit.*/
+            if (userToChange == null) {
+
+                return Unauthorized();
+            }
+
+            /* Verifies the old password matches the one in the db. */
+            if(verifyHash(SHA256.Create(), user.oldPassword + userToChange.Salt, userToChange.Password))  {
+                
+                /* Hash new password.*/
+                string hash = getHash(SHA256.Create(), user.newPassword + userToChange.Salt);
+
+                /* Try change password in db.*/
+                bool changed = await userGymMovesRepository.changePassword(userToChange.Username, hash);
+
+                if (changed) {
+                    return Ok();
+                }
+                else {
+                    return StatusCode(500);
+                }
+            }
+            else {
+                return Unauthorized();
+            }    
         }
     }
 }

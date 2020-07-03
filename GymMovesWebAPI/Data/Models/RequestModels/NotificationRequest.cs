@@ -13,7 +13,7 @@ Update History:
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 03/07/2020    |  Danel         |    Added a request model
-
+--------------------------------------------------------------------------------
 
 Functional Description:
     This file contains the classes that will be used to access the data sent in a 
@@ -29,7 +29,7 @@ using System;
 
 namespace GymMovesWebAPI.Data.Models.RequestModels
 {
-    class NotificationRequest
+    public class NotificationRequest
     {
         public int gymId { get; set; }
         public String heading { get; set; }
@@ -43,11 +43,18 @@ namespace GymMovesWebAPI.Data.Models.RequestModels
         public String announcementYear { get; set; }
     }
 
+    /*
+    Class Name:
+        NotificationsSettingsRequest
+
+    Purpose:
+        This class is the structure of the incoming change setting request.
+    */
     public class NotificationsSettingsRequest
     {
-        public bool sms;
-        public bool push;
-        public bool email;
-        public string username;
+        public bool sms { get; set; }
+        public bool push { get; set; }
+        public bool email { get; set; }
+        public string username { get; set; }
     }
 }

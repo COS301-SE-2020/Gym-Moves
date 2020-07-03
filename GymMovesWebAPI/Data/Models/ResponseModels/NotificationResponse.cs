@@ -29,7 +29,7 @@ using System.Text;
 
 namespace GymMovesWebAPI.Data.Models.ResponseModels
 {
-    class NotificationResponse
+    public class NotificationResponse
     {
         public String message { get; set; }
     }

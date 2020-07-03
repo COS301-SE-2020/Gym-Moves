@@ -63,5 +63,18 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
         public int gymID { get; set; }
     }
 
-   
+    /*
+   Class Name:
+       UserForgotPasswordResponseModel
+
+   Purpose:
+        This class defines the structure of the log in
+       responses.
+   */
+    public class UserForgotPasswordResponseModel {
+        public string message { get; set; }
+
+    }
+
+
 }

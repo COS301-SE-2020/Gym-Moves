@@ -12,7 +12,10 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-02/07/2020      Longji          Added all fields and data annotations needed by the database table that this data model represents
+02/07/2020    |  Longji        |  Added all fields and data annotations needed 
+              |                |  by the database table that this data model 
+              |                |  represents
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -22,7 +25,7 @@ List of Classes:
     - PasswordReset
 */
 
-using GymMovesWebAPI.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

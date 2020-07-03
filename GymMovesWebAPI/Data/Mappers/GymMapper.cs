@@ -24,6 +24,7 @@ List of Classes:
 
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.GymModels;
+using GymMovesWebAPI.Models.DatabaseModels;
 
 namespace GymMovesWebAPI.Data.Mappers {
     public static class GymMapper {

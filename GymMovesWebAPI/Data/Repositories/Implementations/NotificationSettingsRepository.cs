@@ -25,6 +25,8 @@ List of Classes:
 using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GymMovesWebAPI.Data.Repositories.Implementations{
@@ -64,23 +66,20 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations{
             return (await context.SaveChangesAsync()) > 0;
         }
 
+
         /*
         Method Name:
             changeSetting
         Purpose:
             This changes the settings of the notifications.
         */
-        public async Task<bool> changeSetting(string username, bool email, bool sms, bool push) { 
+        public async Task<bool> changeSetting(string username, bool email, bool sms, bool push) {
 
-            var user = new NotificationSettings { UsernameForeignKey = username };
-            
+            var user = context.NotificationSettings.First(a => a.UsernameForeignKey == username);
+
             user.Sms = sms;
             user.PushNotifications = push;
             user.Email = email;
-
-            context.Entry(user).Property("Sms").IsModified = true;
-            context.Entry(user).Property("PushNotifications").IsModified = true;
-            context.Entry(user).Property("Email").IsModified = true;
 
             return (await context.SaveChangesAsync()) > 0;
         }
