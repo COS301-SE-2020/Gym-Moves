@@ -1,4 +1,31 @@
-﻿using System;
+﻿/*
+File Name:
+    NotificationsController.cs
+
+Author:
+    Tia
+
+Date Created:
+    28/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+03/07/2020    | Danel          | Added changing notfication settings
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+    This file implements the controller that will handle all notification
+    activities.
+
+List of Classes:
+    - NotificationsController
+
+ */
+
+using System;
 using System.Text;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +38,7 @@ using GymMovesWebAPI.Data.Models.DatabaseModels;
 
 namespace GymMovesWebAPI.Controllers {
     [ApiController]
-    class NotificationsController : Controller {
+    public class NotificationsController : Controller {
         private IUserRepository userRepository;
         private IGymRepository gymRepository;
         private INotificationSettingsRepository notificationSettingsRepository;
@@ -28,7 +55,8 @@ namespace GymMovesWebAPI.Controllers {
 
 
         }
-        public void sendGmailEmail(MailMessage message)
+        
+        private void sendGmailEmail(MailMessage message)
         {
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
             System.Net.NetworkCredential basicCredential1 = new
@@ -47,7 +75,7 @@ namespace GymMovesWebAPI.Controllers {
             }
         }
 
-        public async Task<bool> addAnnouncement(NotificationRequest req) {
+        private async Task<bool> addAnnouncement(NotificationRequest req) {
             DateTime dateTime = new DateTime(int.Parse(req.announcementYear), int.Parse(req.announcementMonth), int.Parse(req.announcementDay));
             Notifications notif = new Notifications() { Body = req.body, GymIdForeignKey = req.gymId, Heading = req.heading, Date = dateTime };
 
@@ -84,6 +112,29 @@ namespace GymMovesWebAPI.Controllers {
                 return StatusCode(StatusCodes.Status500InternalServerError, new NotificationResponse() { message = "There was an error storing the announcement. Please try again later" });
             
             
+        }
+        
+        /*
+       Method Name:
+          changeNotificationSetting
+       Purpose:
+          This method handles the changing of the notification settings.
+       */
+        [Route("api/changenotification")]
+        [HttpPost]
+        public async Task<ActionResult> changeNotificationSetting(NotificationsSettingsRequest request) {
+
+            bool changed = await notificationSettingsRepository.changeSetting(request.username, request.email, request.sms, request.push);
+
+            if (changed) {
+
+                return Ok();
+            }
+            else {
+
+                return StatusCode(500);
+            }
+
         }
     }
 }
