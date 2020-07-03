@@ -15,10 +15,11 @@ Date          |    Author      |     Changes
 
 
 Functional Description:
-    This file contains the classes that will be used to access the data sent in a nootification post request.
+    This file contains the classes that will be used to respond to a notification
+    request.
 
 List of Classes:
-    NotificationRequest
+    NotificationResponse
 
  */
 
@@ -26,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GymMovesWebAPI.Data.Models.NotificationModels
+namespace GymMovesWebAPI.Data.Models.ResponseModels
 {
     class NotificationResponse
     {

@@ -12,10 +12,12 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
+03/07/2020    |  Danel         |    Added a request model
 
 
 Functional Description:
-    This file contains the classes that will be used to access the data sent in a nootification post request.
+    This file contains the classes that will be used to access the data sent in a 
+    notification related post request.
 
 List of Classes:
     NotificationRequest
@@ -23,10 +25,9 @@ List of Classes:
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GymMovesWebAPI.Data.Models.NotificationModels
+
+namespace GymMovesWebAPI.Data.Models.RequestModels
 {
     class NotificationRequest
     {
@@ -40,5 +41,13 @@ namespace GymMovesWebAPI.Data.Models.NotificationModels
         public String announcementMonth { get; set; }
 
         public String announcementYear { get; set; }
+    }
+
+    public class NotificationsSettingsRequest
+    {
+        public bool sms;
+        public bool push;
+        public bool email;
+        public string username;
     }
 }

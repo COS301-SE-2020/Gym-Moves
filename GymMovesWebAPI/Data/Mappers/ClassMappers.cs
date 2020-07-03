@@ -3,8 +3,8 @@ using GymMovesWebAPI.Models.DatabaseModels;
 
 namespace GymMovesWebAPI.Data.Mappers {
     public static class ClassMappers {
-        public static GymClassReducedModel classModelToReducedModel(GymClasses source) {
-            GymClassReducedModel target = new GymClassReducedModel();
+        public static GymClassResponse classModelToReducedModel(GymClasses source) {
+            GymClassResponse target = new GymClassResponse();
 
             target.ClassId = source.ClassId;
             target.GymId = source.GymIdForeignKey;
@@ -21,8 +21,8 @@ namespace GymMovesWebAPI.Data.Mappers {
             return target;
         }
 
-        public static GymClassReducedModel[] classModelToReducedModel(GymClasses[] sources) {
-            GymClassReducedModel[] targets = new GymClassReducedModel[sources.Length];
+        public static GymClassResponse[] classModelToReducedModel(GymClasses[] sources) {
+            GymClassResponse[] targets = new GymClassResponse[sources.Length];
 
             for (int i = 0; i < sources.Length; i++) {
                 targets[i] = classModelToReducedModel(sources[i]);
@@ -31,7 +31,7 @@ namespace GymMovesWebAPI.Data.Mappers {
             return targets;
         }
 
-        public static GymClasses reducedClassToClassModel(GymClassReducedModel source) {
+        public static GymClasses reducedClassToClassModel(GymClassResponse source) {
             GymClasses target = new GymClasses();
 
             target.ClassId = source.ClassId;
@@ -49,7 +49,7 @@ namespace GymMovesWebAPI.Data.Mappers {
             return target;
         }
 
-        public static GymClasses[] reducedClassToClassModel(GymClassReducedModel[] sources) {
+        public static GymClasses[] reducedClassToClassModel(GymClassResponse[] sources) {
             GymClasses[] targets = new GymClasses[sources.Length];
 
             for (int i = 0; i < sources.Length; i++) {
