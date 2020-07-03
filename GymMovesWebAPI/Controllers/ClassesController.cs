@@ -39,16 +39,19 @@ using GymMovesWebAPI.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GymMovesWebAPI.Controllers {
+namespace GymMovesWebAPI.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
-    public class ClassesController : ControllerBase {
+    public class ClassesController : ControllerBase
+    {
         private readonly IUserRepository userRepository;
         private readonly IClassRepository classRepository;
         private readonly IClassRegisterRepository registerRepository;
         private readonly IGymRepository gymRepository;
 
-        public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR, IGymRepository gR) {
+        public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR, IGymRepository gR)
+        {
             userRepository = uR;
             classRepository = cR;
             registerRepository = cRR;
@@ -56,47 +59,60 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult<bool>> addClass(GymClassRequest newClass) {
+        public async Task<ActionResult<bool>> addClass(GymClassRequest newClass)
+        {
             Users personAdding = await userRepository.getUser(newClass.Username);
 
-            if (personAdding == null) {
+            if (personAdding == null)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "The user requesting for the class to be added could not be found!");
             }
 
-            if (personAdding.UserType == UserTypes.Manager) {
-                if (personAdding.GymIdForeignKey == newClass.NewClass.GymId) {
+            if (personAdding.UserType == UserTypes.Manager)
+            {
+                if (personAdding.GymIdForeignKey == newClass.NewClass.GymId)
+                {
                     GymClasses newClassModel = ClassMappers.reducedClassToClassModel(newClass.NewClass);
 
-                    if (await classRepository.getInstructorClassAtSpecificDateTime(newClassModel.InstructorUsername, newClassModel.Day, newClassModel.StartTime) == null) {
-                        if (await classRepository.addClass(newClassModel)) {
+                    if (await classRepository.getInstructorClassAtSpecificDateTime(newClassModel.InstructorUsername, newClassModel.Day, newClassModel.StartTime) == null)
+                    {
+                        if (await classRepository.addClass(newClassModel))
+                        {
                             return Ok(true);
-                        } else 
+                        }
+                        else
                         {
                             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attmepting to the new class to the database!");
                         }
-                    } else 
+                    }
+                    else
                     {
                         return StatusCode(StatusCodes.Status403Forbidden, "Designated instructor already has a class starting at the given start time!");
                     }
-                } else 
+                }
+                else
                 {
                     return StatusCode(StatusCodes.Status403Forbidden, "Managers can only add new classes for the gym they're assigned to!");
                 }
-            } else 
+            }
+            else
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, "Only managers can add new classes!");
             }
         }
 
         [HttpGet("gymlist")]
-        public async Task<ActionResult<GymClassResponse[]>> getByGym(int gymId) {
-            if (await gymRepository.getGymById(gymId) == null) {
+        public async Task<ActionResult<GymClassResponse[]>> getByGym(int gymId)
+        {
+            if (await gymRepository.getGymById(gymId) == null)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "The specified gym was not found!");
             }
 
             GymClasses[] allClasses = await classRepository.getGymClasses(gymId);
 
-            if (allClasses.Length == 0) {
+            if (allClasses.Length == 0)
+            {
                 return Ok(new GymClassResponse[0]);
             }
 
@@ -106,20 +122,24 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [HttpGet("userlist")]
-        public async Task<ActionResult<GymClassResponse[]>> getByUser(string username) {
-            if (await userRepository.getUser(username) == null) {
+        public async Task<ActionResult<GymClassResponse[]>> getByUser(string username)
+        {
+            if (await userRepository.getUser(username) == null)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "The specified user was not found!");
             }
 
             ClassRegister[] registerList = await registerRepository.getUserRegisters(username, true);
 
-            if (registerList.Length == 0) {
+            if (registerList.Length == 0)
+            {
                 return Ok(new GymClassResponse[0]);
             }
 
             GymClassResponse[] classesReduced = new GymClassResponse[registerList.Length];
 
-            for (int i = 0; i < registerList.Length; i++) {
+            for (int i = 0; i < registerList.Length; i++)
+            {
                 classesReduced[i] = ClassMappers.classModelToReducedModel(registerList[i].Class);
             }
 
@@ -127,16 +147,19 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [HttpGet("instructorlist")]
-        public async Task<ActionResult<GymClassResponse[]>> getByInstructor(string username) {
+        public async Task<ActionResult<GymClassResponse[]>> getByInstructor(string username)
+        {
             Users verifyUser = await userRepository.getUser(username);
 
-            if (verifyUser == null || verifyUser.UserType != UserTypes.Instructor) {
+            if (verifyUser == null || verifyUser.UserType != UserTypes.Instructor)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "The specified instructor was not found!");
             }
 
             GymClasses[] classes = await classRepository.getInstructorClasses(username);
 
-            if (classes.Length == 0) {
+            if (classes.Length == 0)
+            {
                 return Ok(new GymClassResponse[0]);
             }
 
@@ -146,32 +169,41 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [HttpPost("signup")]
-        public async Task<ActionResult<bool>> signUpUserToClass(RegisterUserForClassRequest register) {
-            if (await classRepository.getClassById(register.ClassId) == null) {
+        public async Task<ActionResult<bool>> signUpUserToClass(RegisterUserForClassRequest register)
+        {
+            if (await classRepository.getClassById(register.ClassId) == null)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "The class the user wants to signup for does not exist!");
             }
 
-            if (await userRepository.getUser(register.Username) == null) {
+            if (await userRepository.getUser(register.Username) == null)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "The user does not exist!");
             }
 
             ClassRegister existingRegister = await registerRepository.getSpecificUserAndClass(register.Username, register.ClassId);
 
-            if (existingRegister == null) {
+            if (existingRegister == null)
+            {
                 GymClasses targetClass = await classRepository.getClassById(register.ClassId);
 
-                if (targetClass.CurrentStudents < targetClass.MaxCapacity) {
-                    if (await registerRepository.addRegister(RegisterMapper.registerUserForClassToClassRegister(register))) {
+                if (targetClass.CurrentStudents < targetClass.MaxCapacity)
+                {
+                    if (await registerRepository.addRegister(RegisterMapper.registerUserForClassToClassRegister(register)))
+                    {
                         return Ok(true);
-                    } else 
+                    }
+                    else
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while trying to register the user for the class!");
                     }
-                } else 
+                }
+                else
                 {
                     return Ok(false);
                 }
-            } else 
+            }
+            else
             {
                 return Ok(false);
             }

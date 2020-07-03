@@ -1,4 +1,32 @@
-﻿using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
+﻿/*
+File Name:
+    UserRepository.cs
+
+Author:
+    Longji
+
+Date Created:
+    26/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+03/07/2020    | Danel          | Added chnage password functionality and added
+              |                | an implementation.
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+    This file implements the controller that will handle all user manangement
+    activities.
+
+List of Classes:
+    - UserController
+
+ */
+
+using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
@@ -31,16 +59,77 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
         Purpose:
             This changes the password of the user.
         */
-        public async Task<bool> changePassword(string username, string password)
-        {
+        public async Task<bool> changePassword(string username, string password) {
 
-            var user = new Users { Username = username };
+            var user = context.Users.First(a => a.Username == username);
 
             user.Password = password;
 
-            context.Entry(user).Property("Password").IsModified = true;
 
             return (await context.SaveChangesAsync()) > 0;
         }
+    }
+
+    /*
+    Class Name:
+        PasswordResetRepository
+
+    Purpose:
+        This class implements the password rest
+        repo.
+    */
+    public class PasswordResetRepository : IPasswordResetRepository {
+        
+        private readonly MainDatabaseContext context;
+
+        /*
+        Method Name:
+            changePassword
+        Purpose:
+            This changes the password of the user.
+        */
+        public PasswordResetRepository(MainDatabaseContext context) {
+           
+            this.context = context;
+        }
+        /*
+        Method Name:
+            addUser
+        Purpose:
+            This adds a user to the reset password table.
+        */
+        public async Task<bool> addUser(PasswordReset user) {
+           
+            context.Add(user);
+            return (await context.SaveChangesAsync()) > 0;
+        }
+
+        /*
+        Method Name:
+            getUser
+        Purpose:
+            This gets a user from the reset password table.
+        */
+        public async Task<PasswordReset> getUser(string username) {
+           
+            IQueryable<PasswordReset> query = context.PasswordResets;
+            query = query.Where(p => p.Username == username);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        /*
+        Method Name:
+            deleteUser
+        Purpose:
+            This removes a user, as their password changed.
+        */
+        public async Task<bool> deleteUser(string username) {
+            
+            context.Remove(getUser(username));
+            return (await context.SaveChangesAsync()) > 0;
+        }
+
+
     }
 }

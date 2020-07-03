@@ -12,7 +12,8 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-02/07/2020      Longji          Create return all gyms function
+02/07/2020    |  Longji        |  Create return all gyms function
+--------------------------------------------------------------------------------
 
 Functional Description:
     
@@ -29,18 +30,22 @@ using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace GymMovesWebAPI.Controllers {
+namespace GymMovesWebAPI.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
-    public class GymController : ControllerBase {
+    public class GymController : ControllerBase
+    {
         private readonly IGymRepository gymRepository;
 
-        public GymController(IGymRepository gr) {
+        public GymController(IGymRepository gr)
+        {
             gymRepository = gr;
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult<Gym>> listAllGyms() {
+        public async Task<ActionResult<Gym>> listAllGyms()
+        {
             GymModel[] results = GymMapper.mapToGymModel(await gymRepository.getAllGyms());
             return Ok(results);
         }

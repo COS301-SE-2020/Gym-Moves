@@ -12,8 +12,10 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-28/06/2020      Longji          Initial creation of the database context class.
-02/07/2020      Longji          Added table for password resets.
+28/06/2020    |  Longji        |  Initial creation of the database context class.
+--------------------------------------------------------------------------------
+02/07/2020    |  Longji        |  Added table for password resets.
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -30,8 +32,10 @@ using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
-    public class MainDatabaseContext : DbContext{
+namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
+{
+    public class MainDatabaseContext : DbContext
+    {
         public DbSet<ClassRating> ClassRatings { get; set; }
         public DbSet<ClassRegister> ClassRegisters { get; set; }
         public DbSet<Gym> Gyms { get; set; }
@@ -47,20 +51,24 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
 
         private readonly IConfiguration config = null;
 
-        public MainDatabaseContext(DbContextOptions options, IConfiguration config = null) : base(options) {
+        public MainDatabaseContext(DbContextOptions options, IConfiguration config = null) : base(options)
+        {
             this.config = config;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
             /* Comment out when running unit tests */
-            if (config != null) {
+            if (config != null)
+            {
                 optionsBuilder.UseSqlServer(config.GetConnectionString("GymDb"));
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<GymMember>()
-                .HasKey(p => new {p.MembershipId, p.GymId});
+                .HasKey(p => new { p.MembershipId, p.GymId });
 
             modelBuilder.Entity<Gym>()
                 .HasIndex(p => p.GymName)
@@ -130,7 +138,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
                .WithOne(p => p.Student);
 
             modelBuilder.Entity<ClassRegister>()
-                .HasKey(p => new {p.ClassIdForeignKey, p.StudentUsernameForeignKey});
+                .HasKey(p => new { p.ClassIdForeignKey, p.StudentUsernameForeignKey });
 
             modelBuilder.Entity<PasswordReset>()
                 .HasIndex(p => p.Code)
@@ -139,7 +147,8 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
             /* Default data for gym */
             modelBuilder.Entity<Gym>()
                 .HasData(
-                    new {
+                    new
+                    {
                         GymId = 1,
                         GymName = "TestName",
                         GymBranch = "TestBranch"
@@ -149,7 +158,8 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
             /* Default data for verification table */
             modelBuilder.Entity<GymMember>()
                 .HasData(
-                    new {
+                    new
+                    {
                         MembershipId = "testmanagermembershipid",
                         GymId = 1,
                         Name = "Test",
@@ -162,7 +172,8 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
 
             modelBuilder.Entity<GymMember>()
                 .HasData(
-                    new {
+                    new
+                    {
                         MembershipId = "testinstructormembershipid",
                         GymId = 1,
                         Name = "Test",
@@ -175,7 +186,8 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext {
 
             modelBuilder.Entity<GymMember>()
                 .HasData(
-                    new {
+                    new
+                    {
                         MembershipId = "testmembermembershipid",
                         GymId = 1,
                         Name = "Test",
