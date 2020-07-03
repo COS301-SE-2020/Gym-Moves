@@ -12,10 +12,13 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-29/06/2020      Longji          Created the initial class file with functions that
-                                allow adding of new classes, listing classes by the
-                                user, instructor or the gym. Also added function to
-                                signup users to classes.
+29/06/2020    | Longji         |Created the initial class file with functions that
+              |                |allow adding of new classes, listing classes by the
+              |                |user, instructor or the gym. Also added function to
+              |                |signup users to classes.
+--------------------------------------------------------------------------------
+03/07/2020    | Longji         |Removed function used for adding new users for test
+              |                |purposes.
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -58,13 +61,19 @@ namespace GymMovesWebAPI.Controllers
             gymRepository = gR;
         }
 
-        /* Temporary user adding function */
-        [HttpPost("useradd")]
-        public async Task<ActionResult<Users>> addUser(Users user) {
-            await userRepository.addUser(user);
-            return Ok(user);
-        }
+        /*
+        Method Name:
+            addClass
+        Purpose:
+            This function handles requests made to add a new class to the gym. The
+            function will verify the user attempting to add the class is a manager
+            as well as verify that the user attempting to add the class does exist.
 
+            The function also verifies that the person attempting to add the class
+            belongs to the gym that class is meant to be added to. It then checks
+            that the instructor assigned to the class does not have a class starting
+            at the same time.
+         */
         [HttpPost("add")]
         public async Task<ActionResult<bool>> addClass(GymClassRequest newClass)
         {
@@ -108,6 +117,15 @@ namespace GymMovesWebAPI.Controllers
             }
         }
 
+        /*
+        Method Name:
+            getByGym
+        Purpose:
+            This function handles requests made to list all the classes that are
+            hosted in a specific gym. It also verifies that the specified gym
+            exists in the database before attempting to find classes registered
+            to that particular gym.
+        */
         [HttpGet("gymlist")]
         public async Task<ActionResult<GymClassResponse[]>> getByGym(int gymId)
         {
@@ -128,6 +146,15 @@ namespace GymMovesWebAPI.Controllers
             return Ok(allClassesReduced);
         }
 
+
+        /*
+        Method Name:
+            getByUser
+        Purpose:
+            This function handles the api request for getting all classes a specific
+            user is signed up for. It also verifies thhat the target user actually
+            exists in the database. 
+        */
         [HttpGet("userlist")]
         public async Task<ActionResult<GymClassResponse[]>> getByUser(string username)
         {
@@ -153,6 +180,14 @@ namespace GymMovesWebAPI.Controllers
             return Ok(classesReduced);
         }
 
+        /*
+        Method Name:
+            getByInstructor
+        Purpose:
+            This function handles the api request for getting all classes that an
+            instructor is instructing. It verifies that the instructor exists in
+            the database before fetching the classes.
+        */
         [HttpGet("instructorlist")]
         public async Task<ActionResult<GymClassResponse[]>> getByInstructor(string username)
         {
@@ -175,6 +210,17 @@ namespace GymMovesWebAPI.Controllers
             return Ok(reducedClasses);
         }
 
+        /*
+        Method Name:
+            signUpUserToClass
+        Purpose:
+            This function handles the api request handles registering a user to a
+            specific class. It verifies that the target class as well as the target
+            user actually it exists. It also checks that the class is not at capacity
+            before registering the user.
+            
+            If the user is already signed 
+        */
         [HttpPost("signup")]
         public async Task<ActionResult<bool>> signUpUserToClass(RegisterUserForClassRequest register)
         {
@@ -207,12 +253,12 @@ namespace GymMovesWebAPI.Controllers
                 }
                 else
                 {
-                    return Ok(false);
+                    return StatusCode(StatusCodes.Status400BadRequest, "Class max capacity reached!");
                 }
             }
             else
             {
-                return Ok(false);
+                return StatusCode(StatusCodes.Status400BadRequest, "User is already signed up for the specified class");
             }
         }
     }

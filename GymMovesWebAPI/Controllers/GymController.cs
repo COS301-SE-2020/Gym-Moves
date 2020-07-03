@@ -6,13 +6,13 @@ Author:
     Longji
 
 Date Created:
-    02/07/2020
+    03/07/2020
 
 Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-02/07/2020    |  Longji        |  Create return all gyms function
+03/07/2020    |  Longji        |  Create return all gyms function
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -26,7 +26,6 @@ using GymMovesWebAPI.Data.Mappers;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.GymModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
-using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -43,6 +42,12 @@ namespace GymMovesWebAPI.Controllers
             gymRepository = gr;
         }
 
+        /*
+        Method Name:
+            listAllGyms
+        Purpose:
+            This function returns all the gyms that are registered in the gym
+         */
         [HttpGet("getall")]
         public async Task<ActionResult<Gym>> listAllGyms()
         {
