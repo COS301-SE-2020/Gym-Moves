@@ -1,6 +1,6 @@
 ﻿using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
-using GymMovesWebAPI.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;

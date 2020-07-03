@@ -24,7 +24,8 @@ List of Classes:
 
 using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
-using GymMovesWebAPI.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Enums;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -63,5 +64,15 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
 
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<Users[]> getMembers(int gymID)
+        {
+            IQueryable<Users> query = context.Users;
+            query = query.Where(p => p.GymIdForeignKey == gymID);
+            query = query.Where(p => p.UserType == UserTypes.Member);
+
+            return await query.ToArrayAsync();
+        }
+
     }
 }

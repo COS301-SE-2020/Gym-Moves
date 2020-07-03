@@ -35,5 +35,7 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
         public Task<Gym[]> getAllGyms();
         public Task<Gym> getGymById(int gymId);
         public Task<Gym> getGymByNameAndBranch(String name, String branch);
+
+        public Task<Users[]> getMembers(int gymID);
     }
 }

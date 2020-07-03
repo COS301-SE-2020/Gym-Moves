@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
-namespace GymMovesWebAPI.Data.Models.ReducedModels {
-    public class GymClassReducedModel {
+namespace GymMovesWebAPI.Data.Models.ResponseModels {
+    public class GymClassResponse {
         public int ClassId { get; set; }
         public int GymId { get; set; }
         public string Instructor { get; set; }

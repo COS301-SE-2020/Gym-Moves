@@ -55,7 +55,7 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult<bool>> addClass(AddingGymClassModel newClass) {
+        public async Task<ActionResult<bool>> addClass(GymClassRequest newClass) {
             Users personAdding = await userRepository.getUser(newClass.Username);
 
             if (personAdding == null) {
@@ -88,7 +88,7 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [HttpGet("gymlist")]
-        public async Task<ActionResult<GymClassReducedModel[]>> getByGym(int gymId) {
+        public async Task<ActionResult<GymClassResponse[]>> getByGym(int gymId) {
             if (await gymRepository.getGymById(gymId) == null) {
                 return StatusCode(StatusCodes.Status404NotFound, "The specified gym was not found!");
             }
@@ -96,16 +96,16 @@ namespace GymMovesWebAPI.Controllers {
             GymClasses[] allClasses = await classRepository.getGymClasses(gymId);
 
             if (allClasses.Length == 0) {
-                return Ok(new GymClassReducedModel[0]);
+                return Ok(new GymClassResponse[0]);
             }
 
-            GymClassReducedModel[] allClassesReduced = ClassMappers.classModelToReducedModel(allClasses);
+            GymClassResponse[] allClassesReduced = ClassMappers.classModelToReducedModel(allClasses);
 
             return Ok(allClassesReduced);
         }
 
         [HttpGet("userlist")]
-        public async Task<ActionResult<GymClassReducedModel[]>> getByUser(string username) {
+        public async Task<ActionResult<GymClassResponse[]>> getByUser(string username) {
             if (await userRepository.getUser(username) == null) {
                 return StatusCode(StatusCodes.Status404NotFound, "The specified user was not found!");
             }
@@ -113,10 +113,10 @@ namespace GymMovesWebAPI.Controllers {
             ClassRegister[] registerList = await registerRepository.getUserRegisters(username, true);
 
             if (registerList.Length == 0) {
-                return Ok(new GymClassReducedModel[0]);
+                return Ok(new GymClassResponse[0]);
             }
 
-            GymClassReducedModel[] classesReduced = new GymClassReducedModel[registerList.Length];
+            GymClassResponse[] classesReduced = new GymClassResponse[registerList.Length];
 
             for (int i = 0; i < registerList.Length; i++) {
                 classesReduced[i] = ClassMappers.classModelToReducedModel(registerList[i].Class);
@@ -126,7 +126,7 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [HttpGet("instructorlist")]
-        public async Task<ActionResult<GymClassReducedModel[]>> getByInstructor(string username) {
+        public async Task<ActionResult<GymClassResponse[]>> getByInstructor(string username) {
             Users verifyUser = await userRepository.getUser(username);
 
             if (verifyUser == null || verifyUser.UserType != UserTypes.Instructor) {
@@ -136,16 +136,16 @@ namespace GymMovesWebAPI.Controllers {
             GymClasses[] classes = await classRepository.getInstructorClasses(username);
 
             if (classes.Length == 0) {
-                return Ok(new GymClassReducedModel[0]);
+                return Ok(new GymClassResponse[0]);
             }
 
-            GymClassReducedModel[] reducedClasses = ClassMappers.classModelToReducedModel(classes);
+            GymClassResponse[] reducedClasses = ClassMappers.classModelToReducedModel(classes);
 
             return Ok(reducedClasses);
         }
 
         [HttpPost("signup")]
-        public async Task<ActionResult<bool>> signUpUserToClass(RegisterUserForClassModel register) {
+        public async Task<ActionResult<bool>> signUpUserToClass(RegisterUserForClassRequest register) {
             if (await classRepository.getClassById(register.ClassId) == null) {
                 return StatusCode(StatusCodes.Status404NotFound, "The class the user wants to signup for does not exist!");
             }

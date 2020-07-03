@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GymMovesWebAPI.Models.DatabaseModels {
+namespace GymMovesWebAPI.Data.Models.DatabaseModels {
     public class InstructorRating {
         [Key]
         public string InstructorUsernameForeignKey { get; set; }

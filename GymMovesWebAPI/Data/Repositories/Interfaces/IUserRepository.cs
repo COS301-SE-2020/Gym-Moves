@@ -1,4 +1,4 @@
-﻿using GymMovesWebAPI.Models.DatabaseModels;
+﻿using GymMovesWebAPI.Data.Models.DatabaseModels;
 using System.Threading.Tasks;
 
 namespace GymMovesWebAPI.Data.Repositories.Interfaces {

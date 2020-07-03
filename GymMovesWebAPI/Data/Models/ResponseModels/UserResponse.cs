@@ -1,6 +1,6 @@
 ﻿/*
 File Name:
-    UserResponseModels.cs
+    UserResponse.cs
 
 Author:
     Danel
@@ -11,6 +11,8 @@ Date Created:
 Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+03/07/2020    |    Danel       |    Added more response fields
 --------------------------------------------------------------------------------
 
 
@@ -26,7 +28,7 @@ List of Classes:
 
 using GymMovesWebAPI.Data.Enums;
 
-namespace GymMovesWebAPI.Data.Models.ArgumentModels {
+namespace GymMovesWebAPI.Data.Models.ResponseModels {
     /*
     Class Name:
         UserSignUpResponseModel
@@ -39,6 +41,9 @@ namespace GymMovesWebAPI.Data.Models.ArgumentModels {
         public bool usernameValid { get; set; }
         public bool gymMemberIdValid { get; set; }
         public UserTypes userType { get; set; }
+        public string name { get; set; }
+        public string gymMemberID { get; set; }
+        public int gymID { get; set; }
     }
 
     /*
@@ -53,6 +58,10 @@ namespace GymMovesWebAPI.Data.Models.ArgumentModels {
         public bool usernameValid { get; set; }
         public bool passwordValid { get; set; }
         public UserTypes userType { get; set; }
+        public string name { get; set; }
+        public string gymMemberID { get; set; }
+        public int gymID { get; set; }
     }
 
+   
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GymMovesWebAPI.Models.DatabaseModels {
+namespace GymMovesWebAPI.Data.Models.DatabaseModels {
     public class Gym {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -12,6 +12,8 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
+03/07/2020    | Danel          | Added response model changes and password stuff
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -23,8 +25,9 @@ List of Classes:
 
  */
 
-using GymMovesWebAPI.Models.DatabaseModels;
-using GymMovesWebAPI.Data.Models.ArgumentModels;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.RequestModels;
+using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 
@@ -33,9 +36,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
-using GymMovesWebAPI.Data.Models.DatabaseModels;
 
-namespace GymMovesWebAPI.Controllers{
+using MailKit.Net.Smtp;
+using MimeKit;
+
+namespace GymMovesWebAPI.Controllers
+{
 
 
     /*
@@ -47,10 +53,11 @@ namespace GymMovesWebAPI.Controllers{
         to the API with regards to the user management.
     */
     [ApiController]
-    public class UserController : Controller{
+    public class UserController : Controller
+    {
 
         private readonly IUserRepository userGymMovesRepository;
-        private readonly IGymMemberRepository userRepository;
+        private readonly IGymMemberRepository gymMembersRepository;
         private readonly IGymRepository gymRepository;
         private readonly INotificationSettingsRepository notificationSettingRepository;
 
@@ -61,10 +68,11 @@ namespace GymMovesWebAPI.Controllers{
             This method instantiates the repositories that will be used.
         */
         public UserController(IUserRepository repoOne, IGymMemberRepository repoTwo, IGymRepository repoThree,
-            INotificationSettingsRepository repoFour){
-            
+            INotificationSettingsRepository repoFour)
+        {
+
             userGymMovesRepository = repoOne;
-            userRepository = repoTwo;
+            gymMembersRepository = repoTwo;
             gymRepository = repoThree;
             notificationSettingRepository = repoFour;
         }
@@ -77,10 +85,11 @@ namespace GymMovesWebAPI.Controllers{
        */
         [Route("api/signup")]
         [HttpPost]
-        public async Task<ActionResult<UserSignUpResponseModel>> signUp(SignInUserModel user){
+        public async Task<ActionResult<UserSignUpResponseModel>> signUp(SignInUserModel user)
+        {
 
             /* Create return message to send back.*/
-            UserSignUpResponseModel returnMessage = new UserSignUpResponseModel();
+            UserSignUpResponseModel response = new UserSignUpResponseModel();
 
             /* New user account being made.*/
             Users newUserAccount = new Users();
@@ -91,31 +100,33 @@ namespace GymMovesWebAPI.Controllers{
 
             string[] gymArray = user.gym.Split(",");
 
-            if(gymArray.Length == 2)
-            {
+            if (gymArray.Length == 2){
 
                 /* Set the users gym and gym ID. */
                 newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(gymArray[0].Trim(), gymArray[1].Trim());
                 newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
 
                 /* Get the member from the user repo that has the entered member ID and gym. */
-                GymMember member = await userRepository.getMember(newUserAccount.MembershipId, newUserAccount.GymIdForeignKey);
+                GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId, newUserAccount.GymIdForeignKey);
 
                 /* If member null, such person does not exist. */
                 if (member == null)
                 {
-                    returnMessage.usernameValid = true;
-                    returnMessage.gymMemberIdValid = false;
-                    returnMessage.userType = 0;
+                    response.usernameValid = true;
+                    response.gymMemberIdValid = false;
+                    response.userType = 0;
 
-                    return Unauthorized(returnMessage);
+                    response.name = "";
+                    response.gymMemberID = "";
+                    response.gymID = -1;
+
+                    return Unauthorized(response);
                 }
 
                 newUserAccount.Name = member.Name;
                 newUserAccount.Surname = member.Surname;
                 newUserAccount.PhoneNumber = member.PhoneNumber;
                 newUserAccount.Email = member.Email;
-
 
                 /* Since person exists, get their user type. */
                 newUserAccount.UserType = member.UserType;
@@ -126,11 +137,15 @@ namespace GymMovesWebAPI.Controllers{
                 /* If not null, it means username already exists.*/
                 if (checkIfUsernameExists != null)
                 {
-                    returnMessage.usernameValid = false;
-                    returnMessage.gymMemberIdValid = true;
-                    returnMessage.userType = 0;
+                    response.usernameValid = false;
+                    response.gymMemberIdValid = true;
+                    response.userType = 0;
 
-                    return Unauthorized(returnMessage);
+                    response.name = "";
+                    response.gymMemberID = "";
+                    response.gymID = -1;
+
+                    return Unauthorized(response);
                 }
 
                 /* random will generate different salt lengths of between 5 and 10. */
@@ -158,21 +173,29 @@ namespace GymMovesWebAPI.Controllers{
 
                     added = await notificationSettingRepository.addUser(newUserNotifs);
 
-                    returnMessage.usernameValid = true;
-                    returnMessage.gymMemberIdValid = true;
-                    returnMessage.userType = newUserAccount.UserType;
+                    response.usernameValid = true;
+                    response.gymMemberIdValid = true;
+                    response.userType = newUserAccount.UserType;
 
-                    return Ok(returnMessage);
+                    response.name = newUserAccount.Name;
+                    response.gymMemberID = newUserAccount.MembershipId;
+                    response.gymID = newUserAccount.GymIdForeignKey;
+
+                    return Ok(response);
                 }
 
             }
 
-            returnMessage.usernameValid = false;
-            returnMessage.gymMemberIdValid = false;
-            returnMessage.userType = 0;
+            response.usernameValid = false;
+            response.gymMemberIdValid = false;
+            response.userType = 0;
 
-            return Unauthorized(returnMessage);
-            
+            response.name = "";
+            response.gymMemberID = "";
+            response.gymID = -1;
+
+            return Unauthorized(response);
+
         }
 
         /*
@@ -183,7 +206,8 @@ namespace GymMovesWebAPI.Controllers{
        */
         [Route("api/login")]
         [HttpPost]
-        public async Task<ActionResult<UserLogInResponseModel>> logIn(LogInUserModel user){
+        public async Task<ActionResult<UserLogInResponseModel>> logIn(LogInUserModel user)
+        {
 
             /* Check if user exists with this username. */
             Users checkUser = await userGymMovesRepository.getUser(user.username.Trim());
@@ -192,28 +216,43 @@ namespace GymMovesWebAPI.Controllers{
             UserLogInResponseModel response = new UserLogInResponseModel();
 
             /* If null, no user with that username exists.*/
-            if (checkUser == null){
-                
+            if (checkUser == null)
+            {
+
                 response.usernameValid = false;
                 response.passwordValid = true;
                 response.userType = 0;
+
+                response.name = "";
+                response.gymMemberID = "";
+                response.gymID = -1;
 
                 return Unauthorized(response);
             }
 
             /* Verify correct password has been entered.*/
-            if (verifyHash(SHA256.Create(), user.password + checkUser.Salt, checkUser.Password)){
-                
+            if (verifyHash(SHA256.Create(), user.password + checkUser.Salt, checkUser.Password))
+            {
+
                 response.usernameValid = true;
                 response.passwordValid = true;
                 response.userType = checkUser.UserType;
 
+                response.name = checkUser.Name;
+                response.gymMemberID = checkUser.MembershipId;
+                response.gymID = checkUser.GymIdForeignKey;
+
                 return Ok(response);
             }
-            else{
+            else
+            {
                 response.usernameValid = true;
                 response.passwordValid = false;
                 response.userType = 0;
+
+                response.name = "";
+                response.gymMemberID = "";
+                response.gymID = -1;
 
                 return Unauthorized(response);
             }
@@ -226,14 +265,16 @@ namespace GymMovesWebAPI.Controllers{
         Purpose:
             This method gets the salt.
        */
-        public static string getRandomString(int length){
+        public static string getRandomString(int length)
+        {
 
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             StringBuilder salt = new StringBuilder();
 
             RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
 
-            while (length > 0){
+            while (length > 0)
+            {
                 salt.Append(valid[getInt(random, valid.Length)]);
                 length--;
             }
@@ -247,14 +288,16 @@ namespace GymMovesWebAPI.Controllers{
         Purpose:
             This method gets the int of a byte.
        */
-        public static int getInt(RNGCryptoServiceProvider random, int max){
+        public static int getInt(RNGCryptoServiceProvider random, int max)
+        {
             byte[] byteChar = new byte[4];
             int value;
 
-            do{
+            do
+            {
                 random.GetBytes(byteChar);
                 value = BitConverter.ToInt32(byteChar, 0) & Int32.MaxValue;
-            } 
+            }
             while (value >= max * (Int32.MaxValue / max));
 
             return value % max;
@@ -266,12 +309,14 @@ namespace GymMovesWebAPI.Controllers{
         Purpose:
             This method will get the hash of the password and the salt.
        */
-        private static string getHash(HashAlgorithm hashAlgorithm, string input){
+        private static string getHash(HashAlgorithm hashAlgorithm, string input)
+        {
 
             byte[] data = hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
             var passwordStored = new StringBuilder();
 
-            for (int i = 0; i < data.Length; i++){
+            for (int i = 0; i < data.Length; i++)
+            {
                 passwordStored.Append(data[i].ToString("x2"));
             }
 
@@ -282,12 +327,40 @@ namespace GymMovesWebAPI.Controllers{
         Method Name:
             verifyHash
         Purpose:
-            This method will verify that the hash matches the hash stored in the datbase.
+            This method will verify that the hash matches the hash stored in the database.
        */
-        private static bool verifyHash(HashAlgorithm hashAlgorithm, string input, string hash){
-            
+        private static bool verifyHash(HashAlgorithm hashAlgorithm, string input, string hash)
+        {
+
             var hashOfPassword = getHash(hashAlgorithm, input);
             return hashOfPassword.Equals(hash);
+        }
+
+        /*
+        Method Name:
+            getCode
+        Purpose:
+            This method will send a code via email to the user.
+       */
+        [Route("api/getcode")]
+        [HttpPost]
+        public async Task<ActionResult> getCode(GetCodeUserModel user)
+        {
+            return Unauthorized();
+        }
+
+        [Route("api/forgotpassword")]
+        [HttpPost]
+        public async Task<ActionResult> forgotPassword(GetCodeUserModel user)
+        {
+            return Unauthorized();
+        }
+
+        [Route("api/chnagepassword")]
+        [HttpPost]
+        public async Task<ActionResult> changePassword(ChangePasswordUserModel user)
+        {
+            return Unauthorized();
         }
     }
 }
