@@ -12,13 +12,21 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-
+29/06/2020      Longji          Created the initial class file with functions that
+                                allow adding of new classes, listing classes by the
+                                user, instructor or the gym. Also added function to
+                                signup users to classes.
+--------------------------------------------------------------------------------
 
 Functional Description:
-    This file contains the class for the gym classes controller. 
+    - The purpose of the classes contained is to implement the api interface that the
+      mobile application would query to get data from the database or to add a new
+      class to a gym. This class is also used to register a pre-existing user to a
+      pre-existing class at the gym.
+      
 
 List of Classes:
-    - UserController
+    - ClassesController
 */
 
 using System.Threading.Tasks;
@@ -28,7 +36,6 @@ using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
-using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,13 +53,6 @@ namespace GymMovesWebAPI.Controllers {
             classRepository = cR;
             registerRepository = cRR;
             gymRepository = gR;
-        }
-
-        /* Temporary user adding function */
-        [HttpPost("useradd")]
-        public async Task<ActionResult<Users>> addUser(Users user) {
-            await userRepository.addUser(user);
-            return Ok(user);
         }
 
         [HttpPost("add")]
@@ -173,7 +173,7 @@ namespace GymMovesWebAPI.Controllers {
                 }
             } else 
             {
-                return Ok(true);
+                return Ok(false);
             }
         }
     }
