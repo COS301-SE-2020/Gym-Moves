@@ -1,5 +1,5 @@
-﻿using GymMovesWebAPI.Data.Models.ReducedModels;
-using GymMovesWebAPI.Models.DatabaseModels;
+﻿using GymMovesWebAPI.Data.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.ResponseModels;
 
 namespace GymMovesWebAPI.Data.Mappers {
     public static class ClassMappers {

@@ -22,6 +22,7 @@ List of Classes:
 */
 
 using GymMovesWebAPI.Data.Mappers;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.GymModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.Models.DatabaseModels;

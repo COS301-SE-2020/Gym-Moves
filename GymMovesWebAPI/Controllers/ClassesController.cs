@@ -24,8 +24,9 @@ List of Classes:
 using System.Threading.Tasks;
 using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Mappers;
-using GymMovesWebAPI.Data.Models.ArgumentModels;
-using GymMovesWebAPI.Data.Models.ReducedModels;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.RequestModels;
+using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.AspNetCore.Http;

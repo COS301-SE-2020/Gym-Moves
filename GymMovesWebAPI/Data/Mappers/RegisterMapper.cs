@@ -1,4 +1,5 @@
-﻿using GymMovesWebAPI.Data.Models.ArgumentModels;
+﻿using GymMovesWebAPI.Data.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Models.DatabaseModels;
 
 namespace GymMovesWebAPI.Data.Mappers {

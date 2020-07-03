@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
-using System.IO;
-using System.Net;
 using System.Net.Mail;
-using GymMovesWebAPI.Data.Models.NotificationModels;
 using Microsoft.AspNetCore.Mvc;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
-using GymMovesWebAPI.Models.DatabaseModels;
-using GymMovesWebAPI.Data.Repositories.Implementations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using GymMovesWebAPI.Data.Models.RequestModels;
+using GymMovesWebAPI.Data.Models.ResponseModels;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 
-namespace GymMovesWebAPI.Controllers
-{
+namespace GymMovesWebAPI.Controllers {
     [ApiController]
     class NotificationsController : Controller {
         private IUserRepository userRepository;
