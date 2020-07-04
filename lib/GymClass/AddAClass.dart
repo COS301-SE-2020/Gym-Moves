@@ -25,6 +25,7 @@ Classes in the File:
 - AddAClassState
  */
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
@@ -261,17 +262,17 @@ class AddAClassState extends State<AddAClass> {
       body: ListView(children: <Widget>[
         Stack(children: <Widget>[
           Transform.translate(
-              offset: Offset(0.0, -0.033 * media.size.height),
+              offset: Offset(0.0, -0.035 * media.size.height),
               child: Container(
                   width: media.size.width,
-                  height: 1 / 3 * media.size.height,
+                  height: 0.13 * media.size.height,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         image:
-                        const AssetImage('assets/images/rightSidePoolHalf.png'),
+                        const AssetImage('assets/Banner.jpg'),
                         fit: BoxFit.fill,
                         colorFilter: new ColorFilter.mode(
-                            Colors.black.withOpacity(1.0), BlendMode.dstIn
+                            Colors.black.withOpacity(0.52), BlendMode.dstIn,
                         ),
                       ),
                       boxShadow: [
@@ -292,22 +293,22 @@ class AddAClassState extends State<AddAClass> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: SvgPicture.string(backButton,
+                      child: SvgPicture.string(backArrow,
                           allowDrawingOutsideViewBox: true,
-                          width: 0.07 * media.size.width
-                      )
+                          width: 0.06 * media.size.width)
                   )
               )
           ),
-          SizedBox(
+          Container(
+            alignment: Alignment.centerRight,
               width: media.size.width,
-              height: 1 / 3 * media.size.height,
-              child: Center(
-                  child: Text(
+              height: 0.09 * media.size.height,
+              padding: EdgeInsets.all(0.01 * media.size.width),
+              child: Text(
                     'Add a New Class',
                     style: TextStyle(
                       fontFamily: 'FreestyleScript',
-                      fontSize: 0.16 * media.size.width,
+                      fontSize: 0.1 * media.size.width,
                       color: const Color(0xFFFFFFFF),
                       shadows: [
                         Shadow(
@@ -317,12 +318,13 @@ class AddAClassState extends State<AddAClass> {
                         ),
                       ],
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.right,
                   )
               )
-          )
+
         ]
         ),
+        SizedBox(height: 0.03 * media.size.height),
         Form(
             key: editFormKey,
             child: Column(children: <Widget>[
@@ -342,7 +344,7 @@ class AddAClassState extends State<AddAClass> {
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
-                child: RaisedButton(
+                child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)
                   ),
@@ -383,5 +385,5 @@ class AddAClassState extends State<AddAClass> {
 
 }
 
-const String backButton =
-    '<svg viewBox="34.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 71.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+const String backArrow =
+    '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

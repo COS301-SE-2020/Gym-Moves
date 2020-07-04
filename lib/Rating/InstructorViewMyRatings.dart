@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'ManagerViewInstructorRatings.dart';
@@ -21,11 +22,11 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
-              height: 0.4 * media.size.height,
+              height: 0.35 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image:
-                  const AssetImage('assets/images/rightSidePoolHalf.png'),
+                      const AssetImage('assets/RightSidePoolHalf.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -41,7 +42,7 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
             ),
             Transform.translate(
                 offset:
-                Offset(0.04 * media.size.width, 0.04 * media.size.height),
+                    Offset(0.04 * media.size.width, 0.04 * media.size.height),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -52,7 +53,7 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                   ),
                 )),
             Transform.translate(
-              offset: Offset(0.27 * media.size.width, 0.1 * media.size.height),
+              offset: Offset(0.27 * media.size.width, 0.07 * media.size.height),
               child: Container(
                 child: Text(
                   'Your rating:',
@@ -68,7 +69,11 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                 height: 0.3 * media.size.height,
                 padding: EdgeInsets.all(10.0),
               ),
-            )
+            ),
+            Container(
+                width: media.size.width,
+                height: 0.4 * media.size.height,
+                child: Row(children: getStarsForInstructor(media), mainAxisAlignment: MainAxisAlignment.center,))
           ]),
           Expanded(child: getClasses(media))
         ]));
@@ -120,8 +125,7 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ClassDetails(),
+                              builder: (context) => ClassDetails(),
                             ));
                       },
                       child: Container(
@@ -141,10 +145,11 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                             ],
                           )))),
               Transform.translate(
-                  offset: Offset(0.75 * 0.8 * media.size.width , 0.75 * 0.25 * media.size.height),
-                  child: Row( children: getStarsForClass(media))),
+                  offset: Offset(0.75 * 0.8 * media.size.width,
+                      0.75 * 0.25 * media.size.height),
+                  child: Row(children: getStarsForClass(media))),
               Transform.translate(
-                  offset: Offset(0.15* 0.8 * media.size.width,
+                  offset: Offset(0.15 * 0.8 * media.size.width,
                       0.1 * 0.25 * media.size.height),
                   child: Text(
                     'Class Name:',
@@ -154,10 +159,9 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                       color: Colors.white38,
                     ),
                     textAlign: TextAlign.left,
-                  )
-              ),
+                  )),
               Transform.translate(
-                  offset: Offset(0.15* 0.8 * media.size.width,
+                  offset: Offset(0.15 * 0.8 * media.size.width,
                       0.35 * 0.25 * media.size.height),
                   child: Text(
                     'Class Day:',
@@ -167,10 +171,9 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                       color: Colors.white38,
                     ),
                     textAlign: TextAlign.left,
-                  )
-              ),
+                  )),
               Transform.translate(
-                  offset: Offset(0.15* 0.8 * media.size.width,
+                  offset: Offset(0.15 * 0.8 * media.size.width,
                       0.6 * 0.25 * media.size.height),
                   child: Text(
                     'Class Time:',
@@ -180,9 +183,7 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                       color: Colors.white38,
                     ),
                     textAlign: TextAlign.left,
-                  )
-              )
-
+                  ))
             ])));
 
         classes.add(SizedBox(height: 20));
@@ -191,7 +192,6 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
     return ListView(padding: const EdgeInsets.all(15), children: classes);
   }
 }
-
 
 /*
    Method Name: getStarsForClass

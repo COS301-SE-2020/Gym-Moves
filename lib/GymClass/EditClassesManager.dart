@@ -50,7 +50,6 @@ Purpose:
 
  */
 class EditClassesManagerState extends State<EditClassesManager> {
-
   /*
    Method Name:
     build
@@ -68,13 +67,13 @@ class EditClassesManagerState extends State<EditClassesManager> {
         Stack(children: <Widget>[
           Container(
             width: media.size.width,
-            height: 1 / 4 * media.size.height,
+            height: 0.13 * media.size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: const AssetImage('assets/images/rightSidePoolHalf.png'),
+                image: const AssetImage('assets/Banner.jpg'),
                 fit: BoxFit.fill,
                 colorFilter: new ColorFilter.mode(
-                    Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                    Colors.black.withOpacity(0.55), BlendMode.dstIn),
               ),
               boxShadow: [
                 BoxShadow(
@@ -86,42 +85,54 @@ class EditClassesManagerState extends State<EditClassesManager> {
             ),
           ),
           Transform.translate(
-              offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
+              offset: Offset(0.05 * media.size.width, 0.09 * media.size.width),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: SvgPicture.string(backButton,
-                    allowDrawingOutsideViewBox: true,
-                    width: 0.07 * media.size.width),
+                  child: SvgPicture.string(backArrow,
+                      allowDrawingOutsideViewBox: true,
+                      width: 0.06 * media.size.width)
               ))
         ]),
-        Container(
-            alignment: AlignmentDirectional.centerEnd,
-            width: media.size.width,
-            padding: EdgeInsets.all(media.size.width * 0.03),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              color: const Color(0xffffffff).withOpacity(0.3),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddAClass(),
-                    ));
-              },
-              textColor: Colors.white,
-              padding: const EdgeInsets.all(0.0),
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  'New Class',
-                  style: TextStyle(
-                      fontSize: 0.05 * media.size.width, fontFamily: 'Roboto'),
-                ),
-              ),
-            )),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(0.02 * media.size.width),
+                  child: Text(
+                    "Choose a class to edit: ",
+                    style: TextStyle(
+                        fontSize: 0.04 * media.size.width,
+                        fontFamily: 'Roboto',
+                        color: Colors.white),
+                  )),
+              Container(
+                  padding: EdgeInsets.all(0.02 * media.size.width),
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    color: const Color(0x26ffffff),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddAClass(),
+                          ));
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        'New Class',
+                        style: TextStyle(
+                            fontSize: 0.04 * media.size.width,
+                            fontFamily: 'Roboto'),
+                      ),
+                    ),
+                  ))
+            ]),
         Expanded(child: getClasses(media))
       ]),
     );
@@ -170,51 +181,44 @@ class EditClassesManagerState extends State<EditClassesManager> {
                     builder: (context) => EditClass(),
                   ));
             },
-            child: Stack(children: <Widget>[
+            child: Row(mainAxisAlignment:MainAxisAlignment.center,children: <Widget>[ Stack(children: <Widget>[
               Container(
-                  width: 0.95 * media.size.width,
-                  height: 0.2 * media.size.height,
+                  width: 0.7 * media.size.width,
+                  height: 0.15 * media.size.height,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(22.0),
                     color: const Color(0x26ffffff),
                     border:
-                        Border.all(width: 1.0, color: const Color(0x26707070)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x12000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
-                      ),
-                    ],
+                    Border.all(width: 1.0, color: const Color(0x26707070)),
                   )),
               Transform.translate(
                   offset:
-                      Offset(0.05 * media.size.width, 0.03 * media.size.height),
+                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
                   child: SizedBox(
-                      width: 0.95 * media.size.width,
+                      width: 0.7 * media.size.width,
                       child: Text("Class Name: ",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 0.035 * media.size.width)))),
               Transform.translate(
                   offset:
-                      Offset(0.05 * media.size.width, 0.08 * media.size.height),
+                  Offset(0.05 * media.size.width, 0.06 * media.size.height),
                   child: SizedBox(
-                      width: 0.95 * media.size.width,
+                      width:0.7 * media.size.width,
                       child: Text("Class Day: ",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 0.035 * media.size.width)))),
               Transform.translate(
                   offset:
-                      Offset(0.05 * media.size.width, 0.13 * media.size.height),
+                  Offset(0.05 * media.size.width, 0.1 * media.size.height),
                   child: SizedBox(
-                      width: 0.95 * media.size.width,
+                      width: 0.7 * media.size.width,
                       child: Text("Class Time: ",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 0.035 * media.size.width))))
-            ])));
+            ])])));
 
         classes.add(SizedBox(height: 20));
       }
@@ -224,5 +228,5 @@ class EditClassesManagerState extends State<EditClassesManager> {
   }
 }
 
-const String backButton =
-    '<svg viewBox="34.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 71.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+const String backArrow =
+    '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

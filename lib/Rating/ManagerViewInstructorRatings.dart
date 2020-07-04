@@ -6,10 +6,12 @@ class ManagerViewInstructorRatings extends StatefulWidget {
   const ManagerViewInstructorRatings({Key key}) : super(key: key);
 
   @override
-  ManagerViewInstructorRatingsState createState() => ManagerViewInstructorRatingsState();
+  ManagerViewInstructorRatingsState createState() =>
+      ManagerViewInstructorRatingsState();
 }
 
-class ManagerViewInstructorRatingsState extends State<ManagerViewInstructorRatings> {
+class ManagerViewInstructorRatingsState
+    extends State<ManagerViewInstructorRatings> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
@@ -20,11 +22,11 @@ class ManagerViewInstructorRatingsState extends State<ManagerViewInstructorRatin
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
-              height: 0.4 * media.size.height,
+              height: 0.3 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image:
-                      const AssetImage('assets/images/rightSidePoolHalf.png'),
+                      const AssetImage('assets/RightSidePoolHalf.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -51,25 +53,7 @@ class ManagerViewInstructorRatingsState extends State<ManagerViewInstructorRatin
                   ),
                 )),
             Transform.translate(
-              offset: Offset(0.27 * media.size.width, 0.1 * media.size.height),
-              child: Container(
-                child: Text(
-                  'Ratings',
-                  style: TextStyle(
-                    fontFamily: 'FreestyleScript',
-                    fontSize: 0.2 * media.size.width,
-                    color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w300,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                width: 0.5 * media.size.width,
-                height: 0.3 * media.size.height,
-                padding: EdgeInsets.all(10.0),
-              ),
-            ),
-            Transform.translate(
-              offset: Offset(media.size.width * 0.5, 0.4 * media.size.height),
+              offset: Offset(media.size.width * 0.5, 0.3 * media.size.height),
               child: SvgPicture.string(
                 underline,
                 width: media.size.width * 0.5,
@@ -77,7 +61,7 @@ class ManagerViewInstructorRatingsState extends State<ManagerViewInstructorRatin
               ),
             ),
             Transform.translate(
-              offset: Offset(0.5 * media.size.width, 0.33 * media.size.height),
+              offset: Offset(0.5 * media.size.width, 0.23 * media.size.height),
               child: Container(
                 child: Text(
                   'View Instructors',
@@ -96,7 +80,7 @@ class ManagerViewInstructorRatingsState extends State<ManagerViewInstructorRatin
               ),
             ),
             Transform.translate(
-                offset: Offset(0.0, 0.33 * media.size.height),
+                offset: Offset(0.0, 0.23 * media.size.height),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -165,42 +149,34 @@ class ManagerViewInstructorRatingsState extends State<ManagerViewInstructorRatin
                         ClassDetails(className: "Spin Busters")),
               );*/
             },
-            child: Stack(children: <Widget>[
-              Transform.translate(
-                  offset: Offset(0.07 * media.size.width, 0.0),
-                  child: Container(
-                      width: 0.8 * media.size.width,
-                      height: 0.1 * media.size.height,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(22.0),
-                        color: const Color(0x26ffffff),
-                        border: Border.all(
-                            width: 1.0, color: const Color(0x26707070)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x12000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ))),
-              Transform.translate(
-                  offset: Offset(0.75 * 0.8 * media.size.width,
-                      0.65 * 0.1 * media.size.height),
-                  child: Row(children: getStarsForInstructor(media))),
-              Transform.translate(
-                  offset: Offset(0.15* 0.8 * media.size.width,
-                      0.15 * 0.1 * media.size.height),
-                  child: Text(
-                    'Name:',
-                    style: TextStyle(
-                      fontFamily: 'Arial',
-                      fontSize: 0.04 * media.size.width,
-                      color: Colors.white38,
-                    ),
-                    textAlign: TextAlign.left,
-                  )
-              )])));
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Stack(children: <Widget>[
+                    Container(
+                        width: 0.7 * media.size.width,
+                        height: 0.1 * media.size.height,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(19.0),
+                          color: const Color(0x26ffffff),
+                          border: Border.all(
+                              width: 1.0, color: const Color(0x26707070)),
+                        )),
+                    Transform.translate(
+                        offset: Offset(0.37 * 0.7 * media.size.width,
+                            0.65 * 0.1* media.size.height),
+                        child: Row(children: getStarsForInstructor(media))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.02 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Instructor's Name: ",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width))))
+                  ])
+                ])));
 
         classes.add(SizedBox(height: 20));
       }
@@ -254,7 +230,6 @@ List<Widget> getStarsForInstructor(MediaQueryData media) {
 
   return stars;
 }
-
 
 const String underline =
     '<svg viewBox="203.5 276.5 162.0 1.0" ><path transform="translate(203.5, 276.5)" d="M 0 0 L 162 0" fill="none" stroke="#ffffff" stroke-width="3" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

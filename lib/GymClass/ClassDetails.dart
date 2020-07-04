@@ -93,7 +93,7 @@ class ClassDetailsState extends State<ClassDetails> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: const AssetImage(
-                            'assets/images/rightSidePoolHalf.png'
+                            'assets/RightSidePoolHalf.png'
                         ),
                         fit: BoxFit.fill,
                         colorFilter: new ColorFilter.mode(
@@ -159,13 +159,12 @@ class ClassDetailsState extends State<ClassDetails> {
                   offset:
                       Offset(0.05 * media.size.width, 0.02 * media.size.height),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SvgPicture.string(backArrow,
-                        allowDrawingOutsideViewBox: true,
-                        width: 0.07 * media.size.width
-                    ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: SvgPicture.string(backArrow,
+                          allowDrawingOutsideViewBox: true,
+                          width: 0.06 * media.size.width)
                   )
               ),
               Transform.translate(

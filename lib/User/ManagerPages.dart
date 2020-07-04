@@ -89,7 +89,7 @@ class ManagerPagesState extends State<ManagerPages> {
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/leftSidePool.png'),
+                  image: const AssetImage('assets/LeftSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn
@@ -172,7 +172,7 @@ class ManagerPagesState extends State<ManagerPages> {
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/rightSidePool.png'),
+                  image: const AssetImage('assets/RightSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn

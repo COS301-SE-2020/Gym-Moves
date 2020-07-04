@@ -33,11 +33,11 @@ Classes in the File:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:testing/User/MemberPages.dart';
-import 'package:testing/User/LogIn.dart';
-import 'package:testing/User/ManagerPages.dart';
-import 'package:testing/User/InstructorPages.dart';
-import 'package:http/http.dart';
+import 'package:gym_moves/User/MemberPages.dart';
+import 'package:gym_moves/User/LogIn.dart';
+import 'package:gym_moves/User/ManagerPages.dart';
+import 'package:gym_moves/User/InstructorPages.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
@@ -244,7 +244,7 @@ class SignUpState extends State<SignUp> {
               height: 0.4 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/bicycles.jpg'),
+                  image: const AssetImage('assets/Bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(0.82), BlendMode.dstIn
@@ -466,56 +466,20 @@ class SignUpState extends State<SignUp> {
            It makes a post request to our API.
 */
   _makePostRequest(gymMemberId, password, gym, user) async {
-    // set up POST request arguments
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/signup/user';
-    Map<String, String> headers = {"Content-type": "application/json"};
-    String jsonString = '{"gymID": gymMemberId, "password": password, "gym": gym, "user": user}';
-    // make POST request
-    Response response = await post(url, headers: headers, body: json);
-    // check the status code for the result
-    int statusCode = response.statusCode;
-    String body = response.body;
 
-    if (statusCode == 200) {
-      User userjson = User.fromJson(json.decode(body));
+    final http.Response response = await http.post(
+      'https://gymmoveswebapi.azurewebsites.net/api/signup',
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode({
+        "username": "why",
+        "password": "oh",
+        "gymMemberId": "f",
+        "gymBranch": "TestBranch",
+        "gymName": "TestName"
+      }),
+    );
 
-      bool uservalid = userjson.uservalid;
-      bool gymvalid = userjson.gymvalid;
-      String userType = userjson.userType;
-
-
-      if (uservalid == false) {
-        _showAlertDialog("Your username is taken, try a different one.",
-            'User name invalid');
-      }
-      else if (gymvalid == false) {
-        _showAlertDialog(
-            "Did you make a typo in your Gym ID?", "Gym ID invalid");
-      }
-
-      else if (uservalid == true && gymvalid == true) {
-        //take to welcome/login page
-        if (userType == "Member") {
-          MaterialPageRoute(builder: (context) => MemberPages());
-        }
-        else if (userType == "Instructor") {
-          MaterialPageRoute(builder: (context) => InstructorPages());
-        }
-
-        else if (userType == "Manager") {
-          MaterialPageRoute(builder: (context) => ManagerPages());
-        }
-
-        else{
-          _showAlertDialog(
-              "Not a valid gym member", "Gym ID invalid");
-        }
-
-      } else {
-        _showAlertDialog(
-            "Try again in a few minutes", "Sorry, there's a problem on our side");
-      }
-    }
+    print(response.statusCode);
   }
 
 

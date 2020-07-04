@@ -91,7 +91,7 @@ class MemberPagesState extends State<MemberPages> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image:
-                        const AssetImage('assets/images/leftSidePoolHalf.png'),
+                        const AssetImage('assets/LeftSidePoolHalf.png'),
                     fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(
                         Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -168,7 +168,7 @@ class MemberPagesState extends State<MemberPages> {
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/rightSidePool.png'),
+                  image: const AssetImage('assets/RightSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),
