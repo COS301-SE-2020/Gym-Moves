@@ -19,7 +19,8 @@ namespace GymMovesWebAPI {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
-            
+            services.AddMvc();
+
             services.AddScoped<IClassRegisterRepository, ClassRegisterRepository>();
             services.AddScoped<IClassRepository, ClassRepository>();
             services.AddScoped<IGymRepository, GymRepository>();
@@ -28,6 +29,7 @@ namespace GymMovesWebAPI {
             services.AddScoped<INotificationSettingsRepository, NotificationSettingsRepository>();
             services.AddScoped<IGymMemberRepository, GymMemberRepository>();
             services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
+
             services.AddDbContext<MainDatabaseContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("GymDb")));
         }
 

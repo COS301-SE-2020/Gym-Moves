@@ -49,7 +49,7 @@ namespace GymMovesWebAPI.Controllers
             This function returns all the gyms that are registered in the gym
          */
         [HttpGet("getall")]
-        public async Task<ActionResult<Gym>> listAllGyms()
+        public async Task<ActionResult<GymModel>> listAllGyms()
         {
             GymModel[] results = GymMapper.mapToGymModel(await gymRepository.getAllGyms());
             return Ok(results);
