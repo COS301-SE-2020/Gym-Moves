@@ -1,4 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿/*
+File Name:
+    GymClasses.cs
+
+Author:
+    Longji
+
+Date Created:
+    02/07/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+
+Functional Description:
+    
+
+List of Classes:
+    - GymClasses
+*/
+
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

@@ -83,5 +83,14 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations{
 
             return (await context.SaveChangesAsync()) > 0;
         }
+
+        public async Task<NotificationSettings> getSettingsOfUser(string username)
+        {
+            IQueryable<NotificationSettings> query = context.NotificationSettings;
+            query = query.Where(p => p.UsernameForeignKey == username);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
     }
 }

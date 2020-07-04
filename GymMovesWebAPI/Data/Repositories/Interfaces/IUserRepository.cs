@@ -34,18 +34,4 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
         public Task<Users> getUser(string username);
         public Task<bool> changePassword(string username, string password);
     }
-
-    /*
-    Interface Name:
-        IPasswordResetRepository
-
-    Purpose:
-        This class implements the interface of the password rest
-        repo.
-    */
-    public interface IPasswordResetRepository {
-        public Task<bool> addUser(PasswordReset user);
-        public Task<PasswordReset> getUser(string username);
-        public Task<bool> deleteUser(string username);
-    }
 }

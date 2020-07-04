@@ -1,4 +1,28 @@
-﻿using GymMovesWebAPI.Data.Models.DatabaseModels;
+﻿/*
+File Name:
+    ClassMappers.cs
+
+Author:
+    Longji
+
+Date Created:
+    28/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+    This file implements a mapper for gym classes.
+
+List of Classes:
+    - ClassMappers
+
+ */
+
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.ResponseModels;
 
 namespace GymMovesWebAPI.Data.Mappers {
