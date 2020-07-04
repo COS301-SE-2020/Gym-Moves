@@ -1,4 +1,28 @@
-﻿using GymMovesWebAPI.Data.Models.DatabaseModels;
+﻿/*
+File Name:
+    RegisterMapper.cs
+
+Author:
+    Longji
+
+Date Created:
+    02/07/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+    This file implemets the mappers for class registers.
+    
+
+List of Classes:
+    - RegisterMapper
+*/
+
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Models.DatabaseModels;
 

@@ -21,8 +21,10 @@ Functional Description:
     look like.
 
 List of Classes:
-    - UserSignUpResponseModel
-    - UserLogInResponseModel
+    - SignUpResponseModel
+    - LogInResponseModel
+    - ForgotPasswordResponseModel
+    - ChangePasswordResponseModel
 
  */
 
@@ -31,13 +33,14 @@ using GymMovesWebAPI.Data.Enums;
 namespace GymMovesWebAPI.Data.Models.ResponseModels {
     /*
     Class Name:
-        UserSignUpResponseModel
+        SignUpResponseModel
 
     Purpose:
         This class defines the structure of the sign up
         responses.
     */
-    public class UserSignUpResponseModel {
+    public class SignUpResponseModel
+    {
         public bool usernameValid { get; set; }
         public bool gymMemberIdValid { get; set; }
         public UserTypes userType { get; set; }
@@ -48,13 +51,13 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
 
     /*
     Class Name:
-        UserLogInResponseModel
+       LogInResponseModel
 
     Purpose:
          This class defines the structure of the log in
         responses.
     */
-    public class UserLogInResponseModel {
+    public class LogInResponseModel {
         public bool usernameValid { get; set; }
         public bool passwordValid { get; set; }
         public UserTypes userType { get; set; }
@@ -65,13 +68,27 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
 
     /*
    Class Name:
-       UserForgotPasswordResponseModel
+      ForgotPasswordResponseModel
 
    Purpose:
-        This class defines the structure of the log in
+        This class defines the structure of the forgot password
        responses.
    */
-    public class UserForgotPasswordResponseModel {
+    public class ForgotPasswordResponseModel {
+        public string message { get; set; }
+
+    }
+
+    /*
+   Class Name:
+       ChangePasswordResponseModel
+
+   Purpose:
+        This class defines the structure of the change 
+        password responses.
+   */
+    public class ChangePasswordResponseModel
+    {
         public string message { get; set; }
 
     }

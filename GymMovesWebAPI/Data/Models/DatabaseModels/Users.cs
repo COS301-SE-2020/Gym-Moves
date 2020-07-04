@@ -1,4 +1,26 @@
-﻿using GymMovesWebAPI.Data.Enums;
+﻿/*
+File Name:
+    Users.cs
+
+Author:
+    Longji
+
+Date Created:
+    02/07/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+
+Functional Description:
+    
+
+List of Classes:
+    - Users
+*/
+
+using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

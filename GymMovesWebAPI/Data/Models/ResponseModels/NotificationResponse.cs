@@ -12,6 +12,8 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
+04/07/2020    | Danel          |  Added new response model
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -19,7 +21,8 @@ Functional Description:
     request.
 
 List of Classes:
-    NotificationResponse
+    - NotificationResponse
+    - GetNotificationResponse
 
  */
 
@@ -32,5 +35,12 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels
     public class NotificationResponse
     {
         public String message { get; set; }
+    }
+
+    public class GetNotificationResponse
+    {
+        public bool sms { get; set; }
+        public bool push { get; set; }
+        public bool email { get; set; }
     }
 }

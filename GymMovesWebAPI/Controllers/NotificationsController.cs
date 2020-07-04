@@ -12,7 +12,9 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-03/07/2020    | Danel          | Added changing notfication settings
+03/07/2020    | Danel          | Added changing notification settings
+--------------------------------------------------------------------------------
+04/07/2020    | Danel          | Added getting notification settings
 --------------------------------------------------------------------------------
 
 
@@ -133,6 +135,35 @@ namespace GymMovesWebAPI.Controllers {
             else {
 
                 return StatusCode(500);
+            }
+
+        }
+
+        /*
+      Method Name:
+         getNotificationSettings
+      Purpose:
+         This method handles the getting of the notification settings.
+      */
+        [Route("api/getnotifications")]
+        [HttpPost]
+        public async Task<ActionResult<GetNotificationResponse>> getNotificationSettings(GetNotificationRequest request) {
+
+            GetNotificationResponse response = new GetNotificationResponse();
+
+            NotificationSettings settings = await notificationSettingsRepository.getSettingsOfUser(request.username);
+
+            if (settings != null) {
+
+                response.email = settings.Email;
+                response.sms = settings.Sms;
+                response.push = settings.PushNotifications;
+
+                return Ok(response);
+            }
+            else {
+
+                return StatusCode(500, response);
             }
 
         }

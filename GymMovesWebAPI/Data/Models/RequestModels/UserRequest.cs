@@ -20,25 +20,26 @@ Functional Description:
     activities.
 
 List of Classes:
-    - SignUpUserModel
-    - LogInUserModel
-    - GetCodeUserModel
-    - ForgotPasswordUserModel
-    - ChangePasswordUserModel
+    - SignUpRequestModel
+    - LogInRequestModel
+    - GetCodeRequestModel
+    - ForgotPasswordRequestModel
+    - ChangePasswordRequestModel
 
  */
 
-namespace GymMovesWebAPI.Data.Models.ResponseModels {
+namespace GymMovesWebAPI.Data.Models.RequestModels{
 
     /*
     Class Name:
-        SignInUserModel
+        SignUpRequestModel
 
     Purpose:
         This class handles the incoming JSON structure
         of a sign up request.
     */
-    public class SignUpUserModel {
+    public class SignUpRequestModel
+    {
         public string username { get; set; }
         public string gymMemberId { get; set; }
         public string password { get; set; }
@@ -48,13 +49,13 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
 
     /*
     Class Name:
-        LogInUserModel
+        LogInRequestModel
 
     Purpose:
         This class handles the incoming JSON structure
         of a login request.
     */
-    public class LogInUserModel {
+    public class LogInRequestModel {
         public string username { get; set; }
         public string password { get; set; }
     }
@@ -67,20 +68,20 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
         This class handles the incoming JSON structure
         of a get code request.
     */
-    public class GetCodeUserModel
+    public class GetCodeRequestModel
     {
         public string username { get; set; }
     }
 
     /*
     Class Name:
-        ForgotPasswordUserModel
+        ForgotPasswordRequestModel
 
     Purpose:
         This class handles the incoming JSON structure
         of a forget password request.
     */
-    public class ForgotPasswordUserModel
+    public class ForgotPasswordRequestModel
     {
         public string username { get; set; }
         public string code { get; set; }
@@ -89,13 +90,13 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
 
     /*
     Class Name:
-        ChangePasswordUserModel
+        ChangePasswordRequestModel
 
     Purpose:
         This class handles the incoming JSON structure
         of a change password.
     */
-    public class ChangePasswordUserModel
+    public class ChangePasswordRequestModel
     {
         public string username { get; set; }
         public string oldPassword { get; set; }
