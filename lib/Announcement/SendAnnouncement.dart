@@ -27,7 +27,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:fluttertoast/fluttertoast.dart';
 
 /*
 Class Name:
@@ -140,127 +139,134 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.transparent);
 
+    final dateField = Material(
+        shadowColor: Colors.black,
+        elevation: 15,
+        child: Container(
+            width: 0.7 * media.size.width,
+            height: 0.08 * media.size.height,
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(19.0)),
+              onPressed: () {
+                DatePicker.showDatePicker(context,
+                    theme: DatePickerTheme(
+                      containerHeight: media.size.height * 0.35,
+                    ),
+                    showTitleActions: true,
+                    minTime: DateTime(new DateTime.now().year,
+                        new DateTime.now().month, new DateTime.now().day),
+                    maxTime: DateTime(
+                        new DateTime.now().year + 1,
+                        new DateTime.now().month,
+                        new DateTime.now().day), onConfirm: (date) {
+                  year = date.year.toString();
+                  month = date.month.toString();
+                  day = date.day.toString();
+                  setState(() {});
+                }, currentTime: DateTime.now());
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 0.63 * media.size.width,
+                height: 0.075 * media.size.height,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.date_range,
+                                  size: 0.04 * media.size.width,
+                                  color: Colors.black54),
+                              Text(
+                                " $day - $month - $year",
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 0.04 * media.size.width),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Text(
+                      "  Change",
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 0.04 * media.size.width),
+                    ),
+                  ],
+                ),
+              ),
+              color: Colors.white,
+            )),
+        borderRadius: BorderRadius.all(Radius.circular(19.0)),
+        color: Colors.transparent);
+
     return Scaffold(
         backgroundColor: const Color(0xff513369),
         body: ListView(children: <Widget>[
           Stack(children: <Widget>[
             Transform.translate(
-              offset: Offset(0.0, -0.033 * media.size.height),
-              child: Container(
-                width: media.size.width,
-                height: media.size.height * 0.35,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: const AssetImage('assets/images/bicycles.jpg'),
-                    fit: BoxFit.fill,
-                    colorFilter: new ColorFilter.mode(
-                        Color(0xff513369).withOpacity(0.6), BlendMode.dstIn),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0x46000000),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Transform.translate(
-                offset:
-                    Offset(0.05 * media.size.width, 0.01 * media.size.height),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SvgPicture.string(backArrow,
-                      allowDrawingOutsideViewBox: true,
-                      width: 0.05 * media.size.width),
-                )),
-            Transform.translate(
-                offset: Offset(0.0, -0.033 * media.size.height),
-                child: SizedBox(
+                offset: Offset(0.0, -0.035 * media.size.height),
+                child: Container(
                     width: media.size.width,
-                    height: media.size.height * 0.35,
-                    child: Center(
-                      child: Text(
-                        'New Announcement',
-                        style: TextStyle(
-                          fontFamily: 'FreestyleScript',
-                          fontSize: 0.16 * media.size.width,
-                          color: const Color(0xFFFFFFFF),
-                          shadows: [
-                            Shadow(
-                              color: const Color(0xbd000000),
-                              offset: Offset(0, 3),
-                              blurRadius: 6,
-                            ),
-                          ],
+                    height: 0.13 * media.size.height,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: const AssetImage('assets/Banner.jpg'),
+                          fit: BoxFit.fill,
+                          colorFilter: new ColorFilter.mode(
+                            Colors.black.withOpacity(0.52),
+                            BlendMode.dstIn,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x46000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          )
+                        ]))),
+            Transform.translate(
+                offset: Offset(0.0, 0.04 * media.size.height),
+                child: Transform.translate(
+                    offset: Offset(
+                        0.05 * media.size.width, -0.02 * media.size.height),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: SvgPicture.string(backArrow,
+                            allowDrawingOutsideViewBox: true,
+                            width: 0.06 * media.size.width)))),
+            Container(
+                alignment: Alignment.centerRight,
+                width: media.size.width,
+                height: 0.09 * media.size.height,
+                padding: EdgeInsets.all(0.01 * media.size.width),
+                child: Text(
+                  'New Announcement',
+                  style: TextStyle(
+                    fontFamily: 'FreestyleScript',
+                    fontSize: 0.1 * media.size.width,
+                    color: const Color(0xFFFFFFFF),
+                    shadows: [
+                      Shadow(
+                        color: const Color(0xbd000000),
+                        offset: Offset(0, 3),
+                        blurRadius: 6,
                       ),
-                    ))),
-          ]),
-          SizedBox(height: 0.04 * media.size.height),
-          Center(
-              child: FlatButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(19.0)),
-            onPressed: () {
-              DatePicker.showDatePicker(context,
-                  theme: DatePickerTheme(
-                    containerHeight: media.size.height * 0.35,
-                  ),
-                  showTitleActions: true,
-                  minTime: DateTime(new DateTime.now().year,
-                      new DateTime.now().month, new DateTime.now().day),
-                  maxTime: DateTime(
-                      new DateTime.now().year + 1,
-                      new DateTime.now().month,
-                      new DateTime.now().day), onConfirm: (date) {
-                year = date.year.toString();
-                month = date.month.toString();
-                day = date.day.toString();
-                setState(() {});
-              }, currentTime: DateTime.now());
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: 0.63 * media.size.width,
-              height: 0.075 * media.size.height,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.date_range,
-                                size: 0.04 * media.size.width,
-                                color: Colors.black54),
-                            Text(
-                              " $day - $month - $year",
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 0.04 * media.size.width),
-                            ),
-                          ],
-                        ),
-                      )
                     ],
                   ),
-                  Text(
-                    "  Change",
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 0.04 * media.size.width),
-                  ),
-                ],
-              ),
-            ),
-            color: Colors.white,
-          )),
+                  textAlign: TextAlign.right,
+                ))
+          ]),
+          SizedBox(height: 0.04 * media.size.height),
+          Center(child: dateField),
           SizedBox(height: 0.05 * media.size.height),
           Form(
               key: announcementFormKey,
@@ -273,12 +279,12 @@ class SendAnnouncementState extends State<SendAnnouncement> {
           Center(
               child: SizedBox(
                   width: 0.2 * media.size.width,
-                  child: RaisedButton(
+                  child: FlatButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     color: const Color(0xffffffff).withOpacity(0.3),
                     onPressed: () {
-                      sendValuesToNotify(
+                     sendValuesToNotify(
                           _headingOfAnnouncement, _detailsOfAnnouncement);
                     },
                     textColor: Colors.white,
@@ -311,38 +317,38 @@ class SendAnnouncementState extends State<SendAnnouncement> {
       headers: <String, String>{
         'Content-Type': 'application/json'
       },
-      body: jsonEncode(<String, String>{
+      body: jsonEncode({
         'heading': heading,
         'body': details,
         'announcementDay': day,
         'announcementMonth': month,
         'announcementYear': year
-         }),
+      }),
     );
 
     if (response.statusCode == 201) {
       //return Album.fromJson(json.decode(response.body));
-    } 
+    }
     else {
       Widget okButton = FlatButton(
-        child: Text("OK"),
-        onPressed: () => Navigator.pop(context)
+          child: Text("OK"),
+          onPressed: () => Navigator.pop(context)
       );
 
-  AlertDialog alert = AlertDialog(
-    title: Text("Announcement"),
-    content: Text("Could not send announcement. Try again later."),
-    actions: [
-      okButton,
-    ],
-  );
+      AlertDialog alert = AlertDialog(
+        title: Text("Oh no!"),
+        content: Text("Could not send announcement. Try again later."),
+        actions: [
+          okButton,
+        ],
+      );
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
 
     }
   }

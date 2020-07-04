@@ -27,34 +27,15 @@ Classes in the File:
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_moves/User/InstructorPages.dart';
+import 'package:gym_moves/User/ManagerPages.dart';
+import 'package:gym_moves/User/MemberPages.dart';
 
 import 'package:gym_moves/User/SignUp.dart';
 import 'package:gym_moves/User/ForgotPassword.dart';
-import 'package:gym_moves/User/MemberPages.dart';
-import 'package:http/http.dart' as http;
+
 import 'dart:convert';
-
-/*
-Class Name: 
-  LoginResponse
-
-Purpose:
-  This class will be used to parse the response from the api and allow the user to log in.
-*/
-
-class LoginResponse {
-  final bool userValid;
-  final bool passwordValid;
-
-  LoginResponse({this.userValid, this.passwordValid});
-
-  factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    return LoginResponse(
-      userValid: json['userValid'],
-      passwordValid: json['passwordValid'],
-    );
-  }
-}
+import 'package:http/http.dart' as http;
 
 /*
 Class Name:
@@ -204,7 +185,7 @@ class LogInState extends State<LogIn> {
                         0.08 * 0.25 * media.size.height),
                     child: SvgPicture.string(
                       person,
-                      width: media.size.width * 0.05,
+                      width: media.size.width * 0.04,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
                     ))
@@ -217,7 +198,7 @@ class LogInState extends State<LogIn> {
                         0.08 * 0.3 * media.size.height),
                     child: SvgPicture.string(
                       lock,
-                      width: media.size.width * 0.05,
+                      width: media.size.width * 0.04,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
                     ))
@@ -242,7 +223,7 @@ class LogInState extends State<LogIn> {
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
-                child: RaisedButton(
+                child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                   color: const Color(0xffffffff).withOpacity(0.3),
@@ -305,37 +286,31 @@ class LogInState extends State<LogIn> {
 
   verifyUser(username, password) async {
 
-    Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemberPages()),
-                  );
-
     final http.Response response = await http.post(
       'https://jsonplaceholder.typicode.com/',
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(
           <String, String>{'username': username, 'password': password}),
     );
-    
+
     LoginResponse res = LoginResponse.fromJson(json.decode(response.body));
 
     if (res.passwordValid && res.userValid) {
-        
     } else {
       String errMessage = "";
       if (!res.passwordValid && res.userValid) {
-        errMessage = "Please ensure that the password is correct and try again.";
+        errMessage =
+            "Please ensure that the password is correct and try again.";
       } else if (res.passwordValid && !res.userValid) {
-        errMessage = "Please ensure that the username is correct and try again.";
+        errMessage =
+            "Please ensure that the username is correct and try again.";
       } else {
-        errMessage = "Your username or password is incorrect. Please try again.";
+        errMessage =
+            "Your username or password is incorrect. Please try again.";
       }
 
       Widget okButton = FlatButton(
-        child: Text("OK"),
-        onPressed: () => Navigator.pop(context)
-      );
+          child: Text("OK"), onPressed: () => Navigator.pop(context));
 
       AlertDialog alert = AlertDialog(
         title: Text("Login Error"),
@@ -352,6 +327,28 @@ class LogInState extends State<LogIn> {
         },
       );
     }
+  }
+}
+
+/*
+Class Name:
+  LoginResponse
+
+Purpose:
+  This class will be used to parse the response from the api and allow the user to log in.
+*/
+
+class LoginResponse {
+  final bool userValid;
+  final bool passwordValid;
+
+  LoginResponse({this.userValid, this.passwordValid});
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    return LoginResponse(
+      userValid: json['userValid'],
+      passwordValid: json['passwordValid'],
+    );
   }
 }
 

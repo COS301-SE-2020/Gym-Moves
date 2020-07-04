@@ -9,24 +9,18 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  flutter_datetime_picker: ^1.3.8
-  fluttertoast: ^4.0.0
-  http: ^0.12.1
   adobe_xd:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^0.1.3
-
   flutter_svg: ^0.17.4
-
   responsive_framework: ^0.0.7
-
   auto_size_text: ^2.1.0
-
   autocomplete_textfield: ^1.6.4
-
   rxdart: ^0.20.0
+  http: ^0.12.1
+  flutter_datetime_picker: ^1.3.8
+  fluttertoast: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -43,9 +37,13 @@ flutter:
         - asset: assets/Roboto.ttf
 
   uses-material-design: true
+
   assets:
+    - assets/Banner.jpg
     - assets/Bicycles.jpg
+    - assets/Boxing.jpg
     - assets/LeftSidePool.png
-    - assets/leftSidePoolHalf.png
+    - assets/LeftSidePoolHalf.png
     - assets/RightSidePool.png
     - assets/RightSidePoolHalf.png
+

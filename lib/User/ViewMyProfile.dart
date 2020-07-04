@@ -86,7 +86,7 @@ class ViewMyProfileState extends State<ViewMyProfile> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                     image:
-                        const AssetImage('assets/rightSidePoolHalf.png'),
+                        const AssetImage('assets/RightSidePoolHalf.png'),
                     fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(
                         Colors.black.withOpacity(1.0), BlendMode.dstIn

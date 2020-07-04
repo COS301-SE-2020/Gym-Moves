@@ -21,11 +21,11 @@ class ManagerViewClassRatingsState extends State<ManagerViewClassRatings> {
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
-              height: 0.4 * media.size.height,
+              height: 0.3 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image:
-                      const AssetImage('assets/rightSidePoolHalf.png'),
+                      const AssetImage('assets/RightSidePoolHalf.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -52,25 +52,7 @@ class ManagerViewClassRatingsState extends State<ManagerViewClassRatings> {
                   ),
                 )),
             Transform.translate(
-              offset: Offset(0.27 * media.size.width, 0.1 * media.size.height),
-              child: Container(
-                child: Text(
-                  'Ratings',
-                  style: TextStyle(
-                    fontFamily: 'FreestyleScript',
-                    fontSize: 0.2 * media.size.width,
-                    color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w300,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                width: 0.5 * media.size.width,
-                height: 0.3 * media.size.height,
-                padding: EdgeInsets.all(10.0),
-              ),
-            ),
-            Transform.translate(
-              offset: Offset(0.0, 0.4 * media.size.height),
+              offset: Offset(0.0, 0.3 * media.size.height),
               child: SvgPicture.string(
                 underline,
                 width: media.size.width * 0.5,
@@ -79,7 +61,7 @@ class ManagerViewClassRatingsState extends State<ManagerViewClassRatings> {
             ),
             Transform.translate(
                 offset:
-                    Offset(0.5 * media.size.width, 0.33 * media.size.height),
+                    Offset(0.5 * media.size.width, 0.23 * media.size.height),
                 child: Container(
                     child: GestureDetector(
                   onTap: () {
@@ -95,7 +77,7 @@ class ManagerViewClassRatingsState extends State<ManagerViewClassRatings> {
                       'View Instructors',
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 20,
+                        fontSize: 0.05 * media.size.width,
                         color: const Color(0xffffffff),
                         fontWeight: FontWeight.w300,
                       ),
@@ -107,13 +89,13 @@ class ManagerViewClassRatingsState extends State<ManagerViewClassRatings> {
                   ),
                 ))),
             Transform.translate(
-                offset: Offset(0.0, 0.33 * media.size.height),
+                offset: Offset(0.0, 0.23 * media.size.height),
                 child: Container(
                   child: Text(
                     'View Classes',
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 20,
+                      fontSize: 0.05 * media.size.width,
                       color: const Color(0xffffffff),
                       fontWeight: FontWeight.w300,
                     ),
@@ -167,78 +149,56 @@ class ManagerViewClassRatingsState extends State<ManagerViewClassRatings> {
                         ClassDetails(className: "Spin Busters")),
               );*/
             },
-            child: Stack(children: <Widget>[
-              Transform.translate(
-                  offset: Offset(0.07 * media.size.width, 0.0),
-            child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) =>
-                      ClassDetails(),
-                  ));
-                },
+            child: Row(mainAxisAlignment:MainAxisAlignment.center,children: <Widget>[ Stack(children: <Widget>[
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ClassDetails(),
+                        ));
+                  },
                   child: Container(
-                      width: 0.8 * media.size.width,
-                      height: 0.25 * media.size.height,
+                      width: 0.7 * media.size.width,
+                      height: 0.2 * media.size.height,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(22.0),
+                        borderRadius: BorderRadius.circular(19.0),
                         color: const Color(0x26ffffff),
                         border: Border.all(
                             width: 1.0, color: const Color(0x26707070)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x12000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          ),
-                        ],
-                      )))),
+                      ))),
               Transform.translate(
-                  offset: Offset(0.75 * 0.8 * media.size.width , 0.75 * 0.25 * media.size.height),
-                  child: Row( children: getStarsForClass(media))),
+                  offset: Offset(0.37 * 0.7 *  media.size.width,
+                      0.8 * 0.2 * media.size.height),
+                  child: Row(children: getStarsForClass(media))),
               Transform.translate(
-                  offset: Offset(0.15* 0.8 * media.size.width,
-                      0.1 * 0.25 * media.size.height),
-                  child: Text(
-                    'Class Name:',
-                    style: TextStyle(
-                      fontFamily: 'Arial',
-                      fontSize: 0.04 * media.size.width,
-                      color: Colors.white38,
-                    ),
-                    textAlign: TextAlign.left,
-                  )
-              ),
+                  offset:
+                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
+                  child: SizedBox(
+                      width: 0.7 * media.size.width,
+                      child: Text("Class Name: ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 0.035 * media.size.width)))),
               Transform.translate(
-                  offset: Offset(0.15* 0.8 * media.size.width,
-                      0.35 * 0.25 * media.size.height),
-                  child: Text(
-                    'Class Day:',
-                    style: TextStyle(
-                      fontFamily: 'Arial',
-                      fontSize: 0.04 * media.size.width,
-                      color: Colors.white38,
-                    ),
-                    textAlign: TextAlign.left,
-                  )
-              ),
+                  offset:
+                  Offset(0.05 * media.size.width, 0.07 * media.size.height),
+                  child: SizedBox(
+                      width:0.7 * media.size.width,
+                      child: Text("Class Day: ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 0.035 * media.size.width)))),
               Transform.translate(
-                  offset: Offset(0.15* 0.8 * media.size.width,
-                      0.6 * 0.25 * media.size.height),
-                  child: Text(
-                    'Class Time:',
-                    style: TextStyle(
-                      fontFamily: 'Arial',
-                      fontSize: 0.04 * media.size.width,
-                      color: Colors.white38,
-                    ),
-                    textAlign: TextAlign.left,
-                  )
-              )
-
-            ])));
+                  offset:
+                  Offset(0.05 * media.size.width, 0.12 * media.size.height),
+                  child: SizedBox(
+                      width: 0.7 * media.size.width,
+                      child: Text("Class Time: ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 0.035 * media.size.width))))
+            ])])));
 
         classes.add(SizedBox(height: 20));
       }

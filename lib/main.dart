@@ -5,6 +5,7 @@ import 'package:gym_moves/Announcement/SendAnnouncement.dart';
 import 'package:gym_moves/Rating/ManagerViewClassRatings.dart';
 import 'package:gym_moves/Rating/ManagerViewInstructorRatings.dart';
 import 'package:gym_moves/Rating/InstructorViewMyRatings.dart';
+import 'package:gym_moves/User/ChangePassword.dart';
 
 import 'package:gym_moves/User/LogIn.dart';
 import 'package:gym_moves/User/SignUp.dart';
@@ -12,6 +13,8 @@ import 'package:gym_moves/User/ViewMyProfile.dart';
 import 'package:gym_moves/User/ManagerPages.dart';
 import 'package:gym_moves/User/InstructorPages.dart';
 import 'package:gym_moves/User/MemberPages.dart';
+import 'package:gym_moves/User/ForgotPassword.dart';
+
 import 'package:gym_moves/Announcement/SetNotificationType.dart';
 
 import 'package:gym_moves/GymClass/ClassDetails.dart';
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:(LogIn()),
+      home:(ManagerPages()),
     );
   }
 }

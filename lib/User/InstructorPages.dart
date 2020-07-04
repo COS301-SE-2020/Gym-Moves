@@ -91,7 +91,7 @@ class InstructorPagesState extends State<InstructorPages> {
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/leftSidePool.png'),
+                  image: const AssetImage('assets/images/LeftSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn
@@ -177,7 +177,7 @@ class InstructorPagesState extends State<InstructorPages> {
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/rightSidePool.png'),
+                  image: const AssetImage('assets/RightSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn

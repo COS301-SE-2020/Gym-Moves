@@ -267,18 +267,17 @@ class EditClassState extends State<EditClass> {
       body: ListView(children: <Widget>[
         Stack(children: <Widget>[
           Transform.translate(
-              offset: Offset(0.0, -0.033 * media.size.height),
+              offset: Offset(0.0, -0.034 * media.size.height),
               child: Container(
                 width: media.size.width,
-                height: 1 / 4 * media.size.height,
+                height: 0.13 * media.size.height,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image:
-                        const AssetImage('assets/rightSidePoolHalf.png'),
+                        const AssetImage('assets/Banner.jpg'),
                     fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(
-                        Colors.black.withOpacity(1.0), BlendMode.dstIn
-                    ),
+                        Colors.black.withOpacity(0.52), BlendMode.dstIn),
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -289,21 +288,33 @@ class EditClassState extends State<EditClass> {
                   ])
               )
           ),
-          Transform.translate(
-                  offset:
-                      Offset(0.04 * media.size.width, 0.01 * media.size.height),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SvgPicture.string(backButton,
-                        allowDrawingOutsideViewBox: true,
-                        width: 0.07 * media.size.width
-                    )
-                  )
-          )
+          Container(
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.1 * media.size.width, 0.0),
+            width: media.size.width,
+            child: Text(
+              'Edit the Class',
+              style: TextStyle(
+                fontFamily: 'FreestyleScript',
+                fontSize: 0.1 * media.size.width,
+                color: const Color(0xffffffff),
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),Transform.translate(
+              offset:
+              Offset(0.04 * media.size.width, 0.01 * media.size.height),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.string(backArrow,
+                      allowDrawingOutsideViewBox: true,
+                      width: 0.06 * media.size.width)
+              )
+          ),
         ]
         ),
+
         Form(
             key: editFormKey,
             child: Column(children: <Widget>[
@@ -364,5 +375,5 @@ class EditClassState extends State<EditClass> {
 
 }
 
-const String backButton =
-    '<svg viewBox="34.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 71.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+const String backArrow =
+    '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
