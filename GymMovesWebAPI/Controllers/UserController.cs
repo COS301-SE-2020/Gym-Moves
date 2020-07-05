@@ -41,6 +41,10 @@ using Microsoft.AspNetCore.Mvc;
 
 using MailKit.Net.Smtp;
 using MimeKit;
+using System.Security.Cryptography.X509Certificates;
+using Google.Apis.Auth.OAuth2;
+using System.Threading;
+using MailKit.Security;
 
 namespace GymMovesWebAPI.Controllers {
 
@@ -347,6 +351,14 @@ namespace GymMovesWebAPI.Controllers {
 
             if (member != null)  {
 
+                var certificate = new X509Certificate2("", "", X509KeyStorageFlags.Exportable);
+                var credential = new ServiceAccountCredential(new ServiceAccountCredential.Initializer
+                    ("lockdownsquad@skilled-nation-282411.iam.gserviceaccount.com")
+                { Scopes = new[] { "https://mail.google.com/" }, User = "lockdown.squad.301@gmail.com" }.FromCertificate(certificate));
+
+                bool result = await credential.RequestAccessTokenAsync(new CancellationToken());
+
+
                 MailboxAddress from = new MailboxAddress("Gym Moves", "lockdown.squad.301@gmail.com");
                 MailboxAddress to = new MailboxAddress("User", "u18008659@tuks.co.za");
                 // MailboxAddress to = new MailboxAddress("User", user.Email);
@@ -378,11 +390,10 @@ namespace GymMovesWebAPI.Controllers {
                 if (added) {
 
                     SmtpClient client = new SmtpClient();
-                    await client.ConnectAsync("smtp.gmail.com", 465, true);
-                    await client.AuthenticateAsync("lockdown.squad.301@gmail.com", "SECRETPASSWORD");
-
-                    await client.SendAsync(message);
-                    await client.DisconnectAsync(true);
+                    var connection = new SaslMechanismOAuth2("lockdown.squad.301@gmail.com", credential.Token.AccessToken);
+                    client.Authenticate(connection);
+                    client.Send(message);
+                    client.DisconnectAsync(true);
                     client.Dispose();
 
                     return Ok();
