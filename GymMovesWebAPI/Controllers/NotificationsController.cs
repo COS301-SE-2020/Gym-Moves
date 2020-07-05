@@ -62,7 +62,7 @@ namespace GymMovesWebAPI.Controllers {
         {
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
             System.Net.NetworkCredential basicCredential1 = new
-            System.Net.NetworkCredential("tiamangena@gmail.com", "xxuwyymlscsuiwhg");
+            System.Net.NetworkCredential("tiamangena@gmail.com", "");
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
             client.Credentials = basicCredential1;
@@ -78,10 +78,16 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         private async Task<bool> addAnnouncement(NotificationRequest req) {
-            DateTime dateTime = new DateTime(int.Parse(req.announcementYear), int.Parse(req.announcementMonth), int.Parse(req.announcementDay));
-            Notifications notif = new Notifications() { Body = req.body, GymIdForeignKey = req.gymId, Heading = req.heading, Date = dateTime };
+            DateTime dateTime = convertToDate(req);
+                Notifications notif = new Notifications() { Body = req.body, GymIdForeignKey = req.gymId, Heading = req.heading, Date = dateTime };
 
            return await notificationsRepository.addNotification(notif);
+        }
+
+        private DateTime convertToDate(NotificationRequest req)
+        {
+            DateTime dateTime = new DateTime(int.Parse(req.announcementYear), int.Parse(req.announcementMonth), int.Parse(req.announcementDay));
+            return dateTime;
         }
 
 
@@ -89,27 +95,40 @@ namespace GymMovesWebAPI.Controllers {
         [HttpPost]
         public async Task<ActionResult<NotificationResponse>> sendEmail(NotificationRequest req)
         {
-   
-            Users[] Members = await gymRepository.getMembers(req.gymId);
-
-            foreach(Users user in Members) {
-
-                if (user.NotificationSetting.Email) { 
-                    string from = "tiamangena@gmail.com"; //From address    
-                    MailMessage message = new MailMessage(from, user.Email);
-
-                    message.Subject = req.heading;
-                    message.Body = req.body;
-                    message.BodyEncoding = Encoding.UTF8;
-                    message.IsBodyHtml = true;
-                    sendGmailEmail(message);
-                }
-            }
 
             bool sent = await addAnnouncement(req);
-
             if (sent)
-                return Ok(new NotificationResponse() { message = "Notification added and sent successfully." });
+            {
+
+                string today = DateTime.Today.ToString("d");
+                string announcementDate = convertToDate(req).ToString("d");
+
+                if (today == announcementDate)
+                {
+
+                    Users[] Members = await gymRepository.getMembers(req.gymId);
+
+                    foreach (Users user in Members)
+                    {
+
+                        if (user.NotificationSetting.Email)
+                        {
+                            string from = "tiamangena@gmail.com"; //From address    
+                            MailMessage message = new MailMessage(from, user.Email);
+
+                            message.Subject = req.heading;
+                            message.Body = req.body;
+                            message.BodyEncoding = Encoding.UTF8;
+                            message.IsBodyHtml = true;
+                            sendGmailEmail(message);
+                        }
+                    }
+
+                    return Ok(new NotificationResponse() { message = "Notification added and sent successfully." });
+                }else
+                    return Ok(new NotificationResponse() { message = "Notification added and will be sent on " + announcementDate});
+
+            }
             else
                 return StatusCode(StatusCodes.Status500InternalServerError, new NotificationResponse() { message = "There was an error storing the announcement. Please try again later" });
             
