@@ -63,6 +63,10 @@ Purpose:
 class InstructorPagesState extends State<InstructorPages> {
   InstructorPagesState({Key key});
 
+  static final controller = PageController(
+    initialPage: 1,
+  );
+
   /*
    Method Name: build
 
@@ -84,14 +88,17 @@ class InstructorPagesState extends State<InstructorPages> {
 
     return Scaffold(
         backgroundColor: const Color(0xff513369),
-        body: PageView(children: <Widget>[
+        body: PageView(controller : controller,children: <Widget>[
+          Column(
+
+          ),
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
               height: media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/images/LeftSidePool.png'),
+                  image: const AssetImage('assets/LeftSidePool.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn
