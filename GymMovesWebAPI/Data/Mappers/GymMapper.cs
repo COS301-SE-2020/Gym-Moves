@@ -12,7 +12,8 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-02/07/2020      Longji          Added getAllGyms function definition
+02/07/2020    |  Longji        |  Added getAllGyms function definition
+--------------------------------------------------------------------------------
 
 
 Functional Description:
