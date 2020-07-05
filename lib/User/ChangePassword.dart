@@ -55,7 +55,8 @@ class ChangePasswordState extends State<ChangePassword> {
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
+            padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextFormField(
                 obscureText: true,
                 cursorColor: Colors.black45,
@@ -81,14 +82,15 @@ class ChangePasswordState extends State<ChangePassword> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final newPasswordField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
+            padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextFormField(
                 obscureText: true,
                 cursorColor: Colors.black45,
@@ -114,7 +116,7 @@ class ChangePasswordState extends State<ChangePassword> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     return Scaffold(
       backgroundColor: const Color(0xff513369),

@@ -60,8 +60,6 @@ class SetNotificationTypeState extends State<SetNotificationType> {
   bool pushNotificationsChanged = false;
   bool emailNotifications = false;
   bool emailNotificationsChanged = false;
-  bool smsNotifications = false;
-  bool smsNotificationsChanged = false;
 
   /*Url of API*/
   String url = "https://gymmoveswebapi.azurewebsites.net/api/";
@@ -135,10 +133,6 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                     height: 0.04 * media.size.height,
                   ),
                   getEmail(media),
-                  SizedBox(
-                    height: 0.04 * media.size.height,
-                  ),
-                  getSms(media),
                   SizedBox(
                     height: 0.04 * media.size.height,
                   ),
@@ -219,10 +213,6 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                   SizedBox(
                     height: 0.04 * media.size.height,
                   ),
-                  getSms(media),
-                  SizedBox(
-                    height: 0.04 * media.size.height,
-                  ),
                   Container(
                       padding: EdgeInsets.all(0.02 * media.size.width),
                       child: FlatButton(
@@ -293,27 +283,6 @@ class SetNotificationTypeState extends State<SetNotificationType> {
             borderRadius: BorderRadius.all(Radius.circular(15.0))));
   }
 
-  Widget getSms(MediaQueryData media) {
-    return Container(
-        padding: EdgeInsets.all(0.02 * media.size.width),
-        width: 0.8 * media.size.width,
-        child: SwitchListTile(
-          title: Text('SMS notifications',
-              style: TextStyle(
-                  color: Colors.white, fontSize: 0.05 * media.size.width)),
-          value: smsNotifications,
-          onChanged: (bool value) {
-            setState(() {
-              smsNotifications = value;
-              smsNotificationsChanged = !smsNotificationsChanged;
-            });
-          },
-          activeColor: Colors.white,
-        ),
-        decoration: BoxDecoration(
-            color: Color(0x26ffffff),
-            borderRadius: BorderRadius.all(Radius.circular(15.0))));
-  }
 
   /*
    Method Name:
@@ -330,7 +299,6 @@ class SetNotificationTypeState extends State<SetNotificationType> {
       },
       body: jsonEncode({
         "username": username,
-        "sms": smsNotifications,
         "push": pushNotifications,
         "email": emailNotifications,
       }),
@@ -348,9 +316,6 @@ class SetNotificationTypeState extends State<SetNotificationType> {
         emailNotifications = !emailNotifications;
       }
 
-      if (smsNotificationsChanged) {
-        smsNotifications = !smsNotifications;
-      }
     } else {
       _successDialogue("Your settings were updated successfully.");
     }
@@ -381,7 +346,6 @@ class SetNotificationTypeState extends State<SetNotificationType> {
       Notifications notifications =
           Notifications.fromJson(json.decode(response.body));
 
-      smsNotifications = notifications.sms;
       pushNotifications = notifications.push;
       emailNotifications = notifications.email;
     }
@@ -456,15 +420,13 @@ Purpose:
 class Notifications {
   final bool push;
   final bool email;
-  final bool sms;
 
-  Notifications({this.push, this.email, this.sms});
+  Notifications({this.push, this.email});
 
   factory Notifications.fromJson(Map<String, dynamic> json) {
     return Notifications(
       push: json['push'],
-      email: json['email'],
-      sms: json['sms'],
+      email: json['email']
     );
   }
 }

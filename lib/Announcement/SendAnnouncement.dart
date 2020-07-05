@@ -80,8 +80,9 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+          alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
             child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: false,
@@ -106,12 +107,14 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final detailField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+          padding: EdgeInsets.all(0.01 * media.size.width),
+          alignment: Alignment.topLeft,
             width: 0.7 * media.size.width,
             height: 0.3 * media.size.height,
             child: TextField(
@@ -120,6 +123,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 style: TextStyle(
                     color: Colors.black54, fontSize: 0.04 * media.size.width),
                 maxLines: 9,
+                minLines: 1,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -138,14 +142,14 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final dateField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(19.0)),

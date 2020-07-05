@@ -62,12 +62,17 @@ Purpose:
 class ManagerPagesState extends State<ManagerPages> {
   ManagerPagesState({Key key});
 
+  static final controller = PageController(
+    initialPage: 1,
+  );
+
   /*
    Method Name: build
 
-   Purpose: This method builds the UI for the screen. It calls the necessary
-            function in order to display the dynamic information the user needs
-            to see.
+   Purpose:
+    This method builds the UI for the screen. It calls the necessary
+    function in order to display the dynamic information the user needs
+    to see.
    */
   @override
   Widget build(BuildContext context) {
@@ -82,8 +87,10 @@ class ManagerPagesState extends State<ManagerPages> {
 
     return Scaffold(
         backgroundColor: const Color(0xff513369),
-        body: PageView(children: <Widget>[
-          Stack(children: <Widget>[
+        body: PageView(controller : controller,children: <Widget>[
+          Column(
+
+          ),Stack(children: <Widget>[
             Container(
               width: media.size.width,
               height: media.size.height,
