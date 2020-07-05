@@ -61,13 +61,17 @@ Purpose:
 class MemberPagesState extends State<MemberPages> {
   MemberPagesState({Key key});
 
+  static final controller = PageController(
+    initialPage: 1,
+  );
+
   /*
    Method Name: build
 
-   Purpose: This method builds the UI for the screen. It calls the necessary
-            function in order to display the dynamic information the user needs
-            to see. It also implements the scroll view. It also shows the
-            announcements for members.
+   Purpose:
+    This method builds the UI for the screen. It calls the necessary
+    function in order to display the dynamic information the user needs
+    to see.
    */
   @override
   Widget build(BuildContext context) {
@@ -82,86 +86,91 @@ class MemberPagesState extends State<MemberPages> {
 
     return Scaffold(
         backgroundColor: const Color(0xff513369),
-        body: PageView(children: <Widget>[
-          Column(children: <Widget>[
-            Stack(children: <Widget>[
-              Container(
-                width: media.size.width,
-                height: media.size.height * 1 / 3,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image:
-                        const AssetImage('assets/LeftSidePoolHalf.png'),
-                    fit: BoxFit.fill,
-                    colorFilter: new ColorFilter.mode(
-                        Colors.black.withOpacity(1.0), BlendMode.dstIn),
+        body: PageView(controller: controller, children: <Widget>[
+          Column(),
+          Stack(children: <Widget>[
+            Container(
+              width: media.size.width,
+              height: media.size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage('assets/LeftSidePool.png'),
+                  fit: BoxFit.fill,
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstIn
                   ),
                 ),
               ),
-              Transform.translate(
-                  offset: Offset(0.0, 0.1 * media.size.height),
-                  child: Container(
-                      height: media.size.height * 1 / 3,
-                      width: media.size.width,
-                      child: AutoSizeText('Welcome $name!',
-                          style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 42,
-                              color: const Color(0xffffffff),
-                              shadows: [
-                                Shadow(
-                                  color: const Color(0xbd000000),
-                                  offset: Offset(0, 3),
-                                  blurRadius: 6,
-                                )
-                              ]),
-                          maxLines: 1,
-                          textAlign: TextAlign.center))),
-              Transform.translate(
-                  offset: Offset(0.0, 0.2 * media.size.height),
-                  child: Container(
-                      height: 1 / 10 * media.size.height,
-                      width: media.size.width,
-                      child: Text(
-                        'Number of people at $gymName:',
+            ),
+            Transform.translate(
+                offset: Offset(0.0, 0.4 * media.size.height),
+                child: Container(
+                    height: 1 / 5 * media.size.height,
+                    width: media.size.width,
+                    child: AutoSizeText('Welcome $name!',
                         style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: media.size.width * 0.05,
-                          color: const Color(0xffffffff),
-                          shadows: [
-                            Shadow(
-                              color: const Color(0xbd000000),
-                              offset: Offset(0, 3),
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ))),
-              Transform.translate(
-                  offset: Offset(0.0, 0.26 * media.size.height),
-                  child: Container(
-                      height: 1 / 10 * media.size.height,
-                      width: media.size.width,
-                      child: Text(
-                        numberOfPeople,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: media.size.width * 0.05,
-                          color: const Color(0xffffffff),
-                          shadows: [
-                            Shadow(
-                              color: const Color(0xbd000000),
-                              offset: Offset(0, 3),
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      )))
-            ]),
-            Expanded(child: getAnnouncements(media))
-          ]),
+                            fontFamily: 'Roboto',
+                            fontSize: 42,
+                            color: const Color(0xffffffff),
+                            shadows: [
+                              Shadow(
+                                color: const Color(0xbd000000),
+                                offset: Offset(0, 3),
+                                blurRadius: 6,
+                              )
+                            ]),
+                        maxLines: 1,
+                        textAlign: TextAlign.center)
+                )
+            ),
+            Transform.translate(
+                offset: Offset(0.0, 0.5 * media.size.height),
+                child: Container(
+                    height: 1 / 10 * media.size.height,
+                    width: media.size.width,
+                    child: Text(
+                      'Number of people at $gymName:',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: media.size.width * 0.05,
+                        color: const Color(0xffffffff),
+                        shadows: [
+                          Shadow(
+                            color: const Color(0xbd000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                )
+            ),
+            Transform.translate(
+                offset: Offset(0.0, 0.56 * media.size.height),
+                child: Container(
+                    height: 1 / 10 * media.size.height,
+                    width: media.size.width,
+                    child: Text(
+                      numberOfPeople,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: media.size.width * 0.05,
+                        color: const Color(0xffffffff),
+                        shadows: [
+                          Shadow(
+                            color: const Color(0xbd000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                )
+            )
+          ]
+          ),
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
