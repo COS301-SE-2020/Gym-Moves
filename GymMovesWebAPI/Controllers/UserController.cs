@@ -380,7 +380,6 @@ namespace GymMovesWebAPI.Controllers {
                     SmtpClient client = new SmtpClient();
                     await client.ConnectAsync("smtp.gmail.com", 465, true);
                     await client.AuthenticateAsync("lockdown.squad.301@gmail.com", "SECRETPASSWORD");
-
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);
                     client.Dispose();
