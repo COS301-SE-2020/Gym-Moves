@@ -32,15 +32,15 @@ namespace GymMovesWebAPI.Data.Models.RequestModels
     public class NotificationRequest
     {
         public int gymId { get; set; }
-        public String heading { get; set; }
+        public string heading { get; set; }
 
-        public String body { get; set; }
+        public string body { get; set; }
 
-        public String announcementDay { get; set; }
+        public string announcementDay { get; set; }
 
-        public String announcementMonth { get; set; }
+        public string announcementMonth { get; set; }
 
-        public String announcementYear { get; set; }
+        public string announcementYear { get; set; }
     }
 
     /*
