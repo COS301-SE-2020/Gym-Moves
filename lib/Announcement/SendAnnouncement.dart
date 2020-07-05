@@ -80,7 +80,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
-          alignment: Alignment.centerLeft,
+            alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             child: TextField(
@@ -113,8 +113,8 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
-          padding: EdgeInsets.all(0.01 * media.size.width),
-          alignment: Alignment.topLeft,
+            padding: EdgeInsets.all(0.01 * media.size.width),
+            alignment: Alignment.topLeft,
             width: 0.7 * media.size.width,
             height: 0.3 * media.size.height,
             child: TextField(
@@ -319,7 +319,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
   void sendValuesToNotify(String heading, String details) async {
     final prefs = await SharedPreferences.getInstance();
 
-    final gymId = prefs.getInt('gymId');
+    final int gymId = 0; //prefs.getInt('gymId');
 
     final http.Response response = await http.post(
       'https://gymmoveswebapi.azurewebsites.net/api/sendNotification',

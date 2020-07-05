@@ -296,23 +296,6 @@ class LogInState extends State<LogIn> {
       body: jsonEncode(
           <String, String>{'username': username, 'password': password}),
     );
-    Widget okButton = FlatButton(
-          child: Text("OK"), onPressed: () => Navigator.pop(context));
-
-      AlertDialog alert = AlertDialog(
-        title: Text("Login Error"),
-        content: Text(response.body),
-        actions: [
-          okButton,
-        ],
-      );
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
     
     LoginResponse res = LoginResponse.fromJson(json.decode(response.body));
 
