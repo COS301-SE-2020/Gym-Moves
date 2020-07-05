@@ -10,7 +10,11 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-| Name               | Date              | Changes                             |
+| Date       | Author       | Changes                             
+--------------------------------------------------------------------------------
+01/01/2020   |    Tia       |  Added outline of login function and LoginRequest 
+--------------------------------------------------------------------------------
+04/01/2020   |    Tia       |  Fixed login request 
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -36,6 +40,7 @@ import 'package:gym_moves/User/ForgotPassword.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 /*
 Class Name:
@@ -285,23 +290,63 @@ class LogInState extends State<LogIn> {
 */
 
   verifyUser(username, password) async {
-
     final http.Response response = await http.post(
-      'https://jsonplaceholder.typicode.com/',
+      'https://gymmoveswebapi.azurewebsites.net/api/login',
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(
           <String, String>{'username': username, 'password': password}),
     );
+    Widget okButton = FlatButton(
+          child: Text("OK"), onPressed: () => Navigator.pop(context));
 
+      AlertDialog alert = AlertDialog(
+        title: Text("Login Error"),
+        content: Text(response.body),
+        actions: [
+          okButton,
+        ],
+      );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    
     LoginResponse res = LoginResponse.fromJson(json.decode(response.body));
 
-    if (res.passwordValid && res.userValid) {
+    if (res.passwordValid && res.usernameValid) {
+      final prefs = await SharedPreferences.getInstance();
+
+      prefs.setInt('gymId', res.gymID);
+      prefs.setString('userName', res.name);
+      prefs.setInt('type', res.userType);
+      Navigator.pop(context);
+
+      if (res.userType == 0) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MemberPages()),
+        );
+      }
+      else if(res.userType == 2){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ManagerPages()),
+        );
+      } else if(res.userType == 1){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => InstructorPages()),
+        );
+      }
     } else {
       String errMessage = "";
-      if (!res.passwordValid && res.userValid) {
+      if (!res.passwordValid && res.usernameValid) {
         errMessage =
             "Please ensure that the password is correct and try again.";
-      } else if (res.passwordValid && !res.userValid) {
+      } else if (res.passwordValid && !res.usernameValid) {
         errMessage =
             "Please ensure that the username is correct and try again.";
       } else {
@@ -339,14 +384,28 @@ Purpose:
 */
 
 class LoginResponse {
-  final bool userValid;
+  final bool usernameValid;
   final bool passwordValid;
+  final int gymID;
+  final int userType;
+  final String gymMemberID;
+  final String name;
 
-  LoginResponse({this.userValid, this.passwordValid});
+  LoginResponse(
+      {this.usernameValid,
+      this.passwordValid,
+      this.gymID,
+      this.userType,
+      this.gymMemberID,
+      this.name});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      userValid: json['userValid'],
+      gymID: json['gymId'],
+      gymMemberID: json['gymMemberID'],
+      name: json['name'],
+      userType: json['userType'],
+      usernameValid: json['usernameValid'],
       passwordValid: json['passwordValid'],
     );
   }

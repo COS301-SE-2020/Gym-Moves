@@ -27,6 +27,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /*
 Class Name:
@@ -284,7 +285,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         borderRadius: BorderRadius.circular(10.0)),
                     color: const Color(0xffffffff).withOpacity(0.3),
                     onPressed: () {
-                     sendValuesToNotify(
+                      sendValuesToNotify(
                           _headingOfAnnouncement, _detailsOfAnnouncement);
                     },
                     textColor: Colors.white,
@@ -312,12 +313,15 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     send this announcement as a notification to the members.
 */
   void sendValuesToNotify(String heading, String details) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final gymId = prefs.getInt('gymId');
+
     final http.Response response = await http.post(
-      'https://jsonplaceholder.typicode.com/',
-      headers: <String, String>{
-        'Content-Type': 'application/json'
-      },
+      'https://gymmoveswebapi.azurewebsites.net/api/sendNotification',
+      headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode({
+        'gymId': gymId,
         'heading': heading,
         'body': details,
         'announcementDay': day,
@@ -325,34 +329,34 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         'announcementYear': year
       }),
     );
-
-    if (response.statusCode == 201) {
-      //return Album.fromJson(json.decode(response.body));
+    String title = "";
+    String message = "";
+    if (response.statusCode == 200) {
+      title = "Success!";
+      message = response.body;
+    } else {
+      title = "Oh no!";
+      message = "Could not send announcement. Please try again later.";
     }
-    else {
-      Widget okButton = FlatButton(
-          child: Text("OK"),
-          onPressed: () => Navigator.pop(context)
-      );
 
-      AlertDialog alert = AlertDialog(
-        title: Text("Oh no!"),
-        content: Text("Could not send announcement. Try again later."),
-        actions: [
-          okButton,
-        ],
-      );
+    Widget okButton =
+        FlatButton(child: Text("OK"), onPressed: () => Navigator.pop(context));
 
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        okButton,
+      ],
+    );
 
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
-
 }
 
 const String backArrow =
