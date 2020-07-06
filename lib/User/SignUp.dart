@@ -7,43 +7,54 @@ Date Created
   15/06/2020
 Update History:
 --------------------------------------------------------------------------------
-| Name               | Date              | Changes                             |
+ Name               | Date         | Changes
 --------------------------------------------------------------------------------
-| Danel              | 24/06/2020        | Made UI responsive and functional   |
+ Danel              | 24/06/2020   | Made UI responsive and functional
 --------------------------------------------------------------------------------
-| Danel              | 26/06/2020        | Added autocomplete field            |
+ Danel              | 26/06/2020   | Added autocomplete field
 --------------------------------------------------------------------------------
-|Raeesa             | 27/06/2020         | Added error messages, form          |
-                    |                    | validation and dialog boxes         |
+Raeesa              | 27/06/2020   | Added error messages, form
+                    |              | validation and dialog boxes
 --------------------------------------------------------------------------------
-| Raeesa             | 28/06/2020        | Added API and database functionality|
+ Raeesa             | 28/06/2      | Added API and database functionality
 --------------------------------------------------------------------------------
+ Raeesa             | 03/07/2020   | Changed API
+--------------------------------------------------------------------------------
+ Raeesa             | 04/07/2020   | Added welcome page redirect and local
+                                   |   storage
+--------------------------------------------------------------------------------
+ Danel              | 05/07/2020   | Added autocomplete
+--------------------------------------------------------------------------------
+
 Functional Description:
   This file contains the SignUp class that creates the class that creates the
   UI. The SignUpState class handles the building of the UI and making all the
   components functional and responsive.
   This file will also handle sending the information that is entered to the
   database to verify if they can create an account.
+
 Classes in the File:
-- SignUp
-- SignUpState
-- User
+  - SignUp
+  - SignUpState
+  - User
+  - Gym
  */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gym_moves/User/MemberPages.dart';
 import 'package:gym_moves/User/LogIn.dart';
 import 'package:gym_moves/User/ManagerPages.dart';
 import 'package:gym_moves/User/InstructorPages.dart';
+import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:async';
 
-/*
-Class Name:
+/*Class Name:
   SignUp
+
 Purpose:
   This class creates the class that will build the page. It ensures state
   remains, so that when the keyboard closes the for fields do not clear.
@@ -55,6 +66,26 @@ class SignUp extends StatefulWidget {
 
   @override
   SignUpState createState() => SignUpState();
+}
+
+/*Class Name:
+  Gym
+Purpose:
+  This class interprets the Json object of the gyms, received from the API.
+ */
+class Gym {
+  final int gymId;
+  final String gymName;
+  final String gymBranch;
+
+  Gym({this.gymId, this.gymName, this.gymBranch});
+
+  factory Gym.fromJson(Map<String, dynamic> json) {
+    return Gym(
+        gymId: json['gymId'],
+        gymName: json['gymName'],
+        gymBranch: json['gymBranch']);
+  }
 }
 
 /*
@@ -72,9 +103,43 @@ class SignUpState extends State<SignUp> {
 
   final signUpFormKey = GlobalKey<FormState>();
 
+  List<Gym> gyms = [];
+  int arrLength = 0;
+
+  @override
+  void initState() {
+    _makeGetRequest();
+    super.initState();
+  }
+
+  AutoCompleteTextField searchTextField;
+  GlobalKey<AutoCompleteTextFieldState<Gym>> gymsKey = new GlobalKey();
+
+  /*
+  Method Name:
+    _makeGetRequest
+
+  Purpose:
+     This method is used to make a get request and fetch the different gym's
+    and their branches. This list will be used for the auto-complete field, "Gym".
+*/
+  _makeGetRequest() async {
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/gym/getall';
+    Response response = await get(url);
+    String responseBody = response.body;
+
+    List<dynamic> gymsJson = json.decode(responseBody);
+    arrLength = gymsJson.length;
+
+    for (int i = 0; i < arrLength; i++) {
+      gyms.add(Gym.fromJson(gymsJson[i]));
+    }
+  }
+
   /*
    Method Name:
     build
+
    Purpose:
     This method builds the UI for the screen for a user to sign up. It calls the
     necessary function in order to send the data to the database. If the sign up
@@ -89,8 +154,9 @@ class SignUpState extends State<SignUp> {
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
-            child: TextFormField(
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
+            child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: false,
                 style: TextStyle(
@@ -99,34 +165,31 @@ class SignUpState extends State<SignUp> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Gym Member ID',
+                    labelText: 'Member ID',
                     contentPadding: const EdgeInsets.all(15.0),
                     border: InputBorder.none,
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     gymMemberId = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final usernameField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
             child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: false,
@@ -142,35 +205,31 @@ class SignUpState extends State<SignUp> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     username = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final passwordField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
             child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: true,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
-//                maxLines: 9,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -180,56 +239,63 @@ class SignUpState extends State<SignUp> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     password = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent
+        color: Colors.white);
+
+    searchTextField = AutoCompleteTextField<Gym>(
+      style: TextStyle(
+        color: Colors.black54,
+      ),
+      itemBuilder: (context, item) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              item.gymName + ", " + item.gymBranch,
+              style: TextStyle(fontSize: 0.04 * media.size.width),
+            )
+          ],
+        );
+      },
+      itemFilter: (item, query) {
+        return item.gymName.toLowerCase().startsWith(query.toLowerCase());
+      },
+      itemSorter: (a, b) {
+        return a.gymName.compareTo(b.gymName);
+      },
+      itemSubmitted: (item) {
+        setState(() => searchTextField.textField.controller.text =
+            item.gymName + ", " + item.gymBranch);
+        gym = item.gymName + ", " + item.gymBranch;
+      },
+      key: gymsKey,
+      suggestions: gyms,
+      clearOnSubmit: false,
+      decoration: InputDecoration(
+          labelText: 'Gym',
+          labelStyle: new TextStyle(color: Colors.black54),
+          border: InputBorder.none,
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)),
     );
 
     final gymField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+            padding: EdgeInsets.all(0.01 * media.size.width),
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
-            child: SimpleAutoCompleteTextField(
-              style: TextStyle(
-                color: Colors.black54,
-              ),
-              suggestions: [
-                "Apple",
-                "Armidillo",
-                "Actual",
-                "Actuary",
-                "America",
-                "Argentina",
-                "Australia",
-                "Antarctica",
-              ],
-              clearOnSubmit: false,
-              textSubmitted: (text) => setState(() {
-                gym = text;
-              }),
-              decoration: InputDecoration(
-                  labelText: 'Type your gym name',
-                  labelStyle: new TextStyle(color: Colors.black54),
-                  border: InputBorder.none,
-                  enabledBorder:
-                  OutlineInputBorder(borderSide: BorderSide.none)
-              ),
-            )
-        ),
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
+            child: searchTextField),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.white);
 
@@ -247,8 +313,7 @@ class SignUpState extends State<SignUp> {
                   image: const AssetImage('assets/Bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.82), BlendMode.dstIn
-                  ),
+                      Colors.black.withOpacity(0.82), BlendMode.dstIn),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -272,8 +337,7 @@ class SignUpState extends State<SignUp> {
               textAlign: TextAlign.left,
             ),
           ),
-        ]
-        ),
+        ]),
         SizedBox(height: 0.04 * media.size.height),
         Form(
             key: signUpFormKey,
@@ -288,10 +352,8 @@ class SignUpState extends State<SignUp> {
                       width: media.size.width * 0.06,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
-              ]
-              ),
+                    ))
+              ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 gymField,
@@ -304,10 +366,8 @@ class SignUpState extends State<SignUp> {
                       width: 0.04 * media.size.width,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
-              ]
-              ),
+                    ))
+              ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 usernameField,
@@ -319,10 +379,8 @@ class SignUpState extends State<SignUp> {
                       width: media.size.width * 0.05,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
-              ]
-              ),
+                    ))
+              ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 passwordField,
@@ -334,24 +392,19 @@ class SignUpState extends State<SignUp> {
                       width: media.size.width * 0.05,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
-              ]
-              ),
+                    ))
+              ]),
               SizedBox(height: 0.06 * media.size.height),
-            ]
-            )
-        ),
+            ])),
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
-                child: RaisedButton(
+                child: FlatButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)
-                  ),
+                      borderRadius: BorderRadius.circular(10.0)),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
-                    sendValuesToDatabase(gymMemberId, password, gym, username);
+                    sendValuesToDatabase();
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
@@ -361,62 +414,63 @@ class SignUpState extends State<SignUp> {
                       'Submit',
                       style: TextStyle(
                           fontSize: 0.05 * media.size.width,
-                          fontFamily: 'Roboto'
-                      ),
+                          fontFamily: 'Roboto'),
                     ),
                   ),
-                )
-            )
-        ),
+                ))),
         SizedBox(height: 0.06 * media.size.height),
         Center(
             child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LogIn()),
-                );
-              },
-              child: Text.rich(
-                TextSpan(
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 0.04 * media.size.width,
-                    color: const Color(0xffffffff),
-                  ),
-                  children: [
-                    TextSpan(
-                      text: 'Have an account? ',
-                    ),
-                    TextSpan(
-                      text: 'Log in!',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    )
-                  ],
-                ),
-                textAlign: TextAlign.center,
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LogIn()),
+            );
+          },
+          child: Text.rich(
+            TextSpan(
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 0.04 * media.size.width,
+                color: const Color(0xffffffff),
               ),
-            )
-        ),
+              children: [
+                TextSpan(
+                  text: 'Have an account? ',
+                ),
+                TextSpan(
+                  text: 'Log in!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                  ),
+                )
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        )),
         SizedBox(height: 0.05 * media.size.height),
-      ]
-      ),
+      ]),
     );
   }
 
+  /*
+  Method Name:
+    _showAlertDialog
+  Purpose:
+    This method is used when validating the form.
+           If a field is invalid or incomplete, the alert dialog will show.
+*/
 
   void _showAlertDialog(String message, String message2) {
     // set up the button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
       onPressed: () {
         Navigator.pop(context);
       },
     );
-
 
     AlertDialog alert = AlertDialog(
       title: Text(message2),
@@ -434,85 +488,141 @@ class SignUpState extends State<SignUp> {
     );
   }
 
-
 /*
-  Method Name: sendValuesToDatabase
-  Purpose: This method is called when the send button is pressed.
-           It sends the values to the database to be stored.
+  Method Name:
+    sendValuesToDatabase
+  Purpose:
+    This method is called when the send button is pressed. It sends the values
+    to the database to be stored.
 */
-
-  sendValuesToDatabase(id, password, gym, username) {
+  sendValuesToDatabase() async {
     bool secure = validateStructure(password);
 
-
-    if (id == "" || password == "" || gym == "" || username == "") {
-      _showAlertDialog("Please fill in missing fields", "All fields are required");
-
-    }
-
-    else if (secure == false) {
-      _showAlertDialog("Your password needs to be 8 characters long, with at least one special character, number, small letter and capital letter", "Password invalid");
-
-    }
-
-    else {
-      _makePostRequest(id, password, gym,username);
+    if (gymMemberId == "" || password == "" || gym == "" || username == "") {
+      _showAlertDialog(
+          "Please fill in missing fields", "All fields are required");
+    } else if (secure == false) {
+      _showAlertDialog(
+          "Your password needs to be 8 characters long, with at least one special character, number, small letter and capital letter",
+          "Password invalid");
+    } else {
+      _makePostRequest();
     }
   }
 
   /*
-  Method Name: _makePostRequest
-  Purpose: This method is called when the all the fields in the form has been verified.
-           It makes a post request to our API.
+  Method Name:
+    _makePostRequest
+  Purpose:
+    This method is called when the all the fields in the form has been verified.
+    It makes a post request to our API with the respective fields, ensuring that
+    this user is registered to a gym. Once they're logged in, it redirects them to
+    their respective welcome pages.
 */
-  _makePostRequest(gymMemberId, password, gym, user) async {
+  _makePostRequest() async {
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/signup';
+
+    var gymArray = gym.split(", ");
 
     final http.Response response = await http.post(
-      'https://gymmoveswebapi.azurewebsites.net/api/signup',
-      headers: <String, String>{'Content-Type': 'application/json'},
+      url,
+      headers: <String, String>{'Content-type': 'application/json'},
       body: jsonEncode({
-        "username": "why",
-        "password": "oh",
-        "gymMemberId": "f",
-        "gymBranch": "TestBranch",
-        "gymName": "TestName"
+        "username": username,
+        "password": password,
+        "gymMemberID": gymMemberId,
+        "gymName": gymArray[0],
+        "gymBranch": gymArray[1],
       }),
     );
 
-    print(response.statusCode);
-  }
+    String responseBody = response.body;
 
+    User userjson = User.fromJson(json.decode(responseBody));
+    bool usernameValid = userjson.usernameValid;
+    bool gymMemberIdValid = userjson.gymMemberIdValid;
+    int userType = userjson.userType;
+    String name = userjson.name;
+
+    if (usernameValid == false && gymMemberIdValid == true) {
+      _showAlertDialog(
+          "Your username is taken, try a different one.", 'Username invalid');
+    } else if (gymMemberIdValid == false && usernameValid == true) {
+      _showAlertDialog("Did you make a typo in your Gym ID?", "Gym ID invalid");
+    } else if (gymMemberIdValid == false && usernameValid == false) {
+      _showAlertDialog(
+          "Gym ID does not exist, and username is already taken.", "Invalid");
+    } else if (usernameValid == true && gymMemberIdValid == true) {
+      /* local storage */
+      final prefs = await SharedPreferences.getInstance();
+      /* set value */
+      prefs.setString('gymId', gymMemberId);
+      prefs.setString('username', username);
+      prefs.setInt('type', userType);
+      prefs.setString("name", name);
+      prefs.setString("gymName", gymArray[0]);
+
+      if (userType == 0) {
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (BuildContext context) {
+          return new MemberPages();
+        }));
+      } else if (userType == 1) {
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (BuildContext context) {
+          return new InstructorPages();
+        }));
+      } else if (userType == 2) {
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (BuildContext context) {
+          return new ManagerPages();
+        }));
+      } else {
+        _showAlertDialog("Not a valid gym member", "Gym ID invalid");
+      }
+    } else {
+      _showAlertDialog(
+          "Try again in a few minutes", "Sorry, there's a problem on our side");
+    }
+  }
 
 /*
   Method Name: validateStructure
   Purpose: This method validates that the password the user entered, is secure.
 */
   bool validateStructure(String password) {
-    String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(password);
   }
-
-
 }
+
 /*
-this is the response body that we receive from the API
+Class Name:
+  User
+Purpose:
+This class is the response body that we receive from the API
  */
-class User{
-  final bool uservalid;
-  final bool gymvalid;
-  final String userType;
+class User {
+  final bool usernameValid;
+  final bool gymMemberIdValid;
+  final int userType;
+  final String name;
 
-  User({this.uservalid, this.gymvalid, this.userType});
+  User({this.usernameValid, this.gymMemberIdValid, this.userType, this.name});
 
-  factory User.fromJson(Map<String, dynamic> json){
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      uservalid: json['user'],
-      gymvalid: json['gym'],
-
+      usernameValid: json['usernameValid'],
+      gymMemberIdValid: json['gymMemberIdValid'],
+      userType: json['userType'],
+      name: json['name'],
     );
   }
-
 }
 
 const String idCard =
