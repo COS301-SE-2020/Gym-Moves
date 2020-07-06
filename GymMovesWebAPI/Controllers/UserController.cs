@@ -45,6 +45,8 @@ using System.Security.Cryptography.X509Certificates;
 using Google.Apis.Auth.OAuth2;
 using System.Threading;
 using MailKit.Security;
+using System.IO;
+using System.Reflection;
 
 namespace GymMovesWebAPI.Controllers {
 
@@ -350,8 +352,7 @@ namespace GymMovesWebAPI.Controllers {
             Users member = await userGymMovesRepository.getUser(user.username);
 
             if (member != null)  {
-
-                var certificate = new X509Certificate2("", "", X509KeyStorageFlags.Exportable);
+                var certificate = new X509Certificate2("", "notasecret", X509KeyStorageFlags.Exportable);
                 var credential = new ServiceAccountCredential(new ServiceAccountCredential.Initializer
                     ("lockdownsquad@skilled-nation-282411.iam.gserviceaccount.com")
                 { Scopes = new[] { "https://mail.google.com/" }, User = "lockdown.squad.301@gmail.com" }.FromCertificate(certificate));

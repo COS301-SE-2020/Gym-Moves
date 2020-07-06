@@ -39,6 +39,7 @@ using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
+using GymMovesWebAPI.MailerProgram;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,13 +53,15 @@ namespace GymMovesWebAPI.Controllers
         private readonly IClassRepository classRepository;
         private readonly IClassRegisterRepository registerRepository;
         private readonly IGymRepository gymRepository;
+        private readonly IMailer mailer;
 
-        public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR, IGymRepository gR)
+        public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR, IGymRepository gR, IMailer mail)
         {
             userRepository = uR;
             classRepository = cR;
             registerRepository = cRR;
             gymRepository = gR;
+            mailer = mail;
         }
 
         /*

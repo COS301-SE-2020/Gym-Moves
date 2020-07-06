@@ -26,9 +26,6 @@ List of Classes:
 
  */
 
-using System;
-
-
 namespace GymMovesWebAPI.Data.Models.RequestModels
 {
     public class NotificationRequest

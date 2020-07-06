@@ -1,6 +1,7 @@
 using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Repositories.Implementations;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
+using GymMovesWebAPI.MailerProgram;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ namespace GymMovesWebAPI {
             services.AddScoped<INotificationSettingsRepository, NotificationSettingsRepository>();
             services.AddScoped<IGymMemberRepository, GymMemberRepository>();
             services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
+
+            services.AddScoped<IMailer, Mailer>();
 
             services.AddDbContext<MainDatabaseContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("GymDb")));
         }

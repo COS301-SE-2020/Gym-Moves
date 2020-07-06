@@ -16,6 +16,8 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 04/07/2020    | Danel          | Added getting notification settings
 --------------------------------------------------------------------------------
+06/07/2020    | Longji         | Use the newly created mailer class to send email
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -37,6 +39,7 @@ using Microsoft.AspNetCore.Http;
 using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
+using GymMovesWebAPI.MailerProgram;
 
 namespace GymMovesWebAPI.Controllers {
     [ApiController]
@@ -45,17 +48,17 @@ namespace GymMovesWebAPI.Controllers {
         private IGymRepository gymRepository;
         private INotificationSettingsRepository notificationSettingsRepository;
         private INotificationsRepository notificationsRepository;
+        private readonly IMailer mailer;
 
         public NotificationsController(IUserRepository userRep, INotificationSettingsRepository notificationSettingsRep, INotificationsRepository notificationsRep,
-            IGymRepository gymRepo)
+            IGymRepository gymRepo, IMailer mail)
         {
 
             userRepository = userRep;
             notificationSettingsRepository = notificationSettingsRep;
             notificationsRepository = notificationsRep;
             gymRepository = gymRepo;
-
-
+            mailer = mail;
         }
         
         private void sendGmailEmail(MailMessage message)
@@ -114,13 +117,15 @@ namespace GymMovesWebAPI.Controllers {
                         if (user.NotificationSetting.Email)
                         {
                             string from = "tiamangena@gmail.com"; //From address    
-                            MailMessage message = new MailMessage(from, user.Email);
+                            /*MailMessage message = new MailMessage(from, user.Email);
 
                             message.Subject = req.heading;
                             message.Body = req.body;
                             message.BodyEncoding = Encoding.UTF8;
                             message.IsBodyHtml = true;
-                            sendGmailEmail(message);
+                            sendGmailEmail(message);*/
+
+                            await mailer.sendEmail(from, "Notifications", req.heading, req.body, user.Email, true);
                         }
                     }
 
