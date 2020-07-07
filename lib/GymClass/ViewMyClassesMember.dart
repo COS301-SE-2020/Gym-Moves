@@ -1,6 +1,6 @@
 /*
 File Name
-  ViewMyClassesMember.dart
+  ViewAllClassesMember.dart
 
 Author:
   Danel
@@ -10,22 +10,26 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-| Name               | Date              | Changes                             |
+| Name  Ayanda             | Date   04/07/2020          | Changes                             |
 --------------------------------------------------------------------------------
 
 Functional Description:
 
 
 Classes in the File:
-- ViewMyClassesMember
-- ViewMyClassesMemberState
+- ViewAllClassesMember
+- ViewAllClassesMemberState
  */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:gym_moves/GymClass/ClassDetails.dart';
-import 'package:gym_moves/GymClass/ViewAllClassesMember.dart';
+import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 /*
 Class Name:
@@ -34,8 +38,6 @@ Class Name:
 Purpose:
   This class creates the class that will build the page.
  */
-
-
 class ViewMyClassesMember extends StatefulWidget {
   const ViewMyClassesMember({Key key}) : super(key: key);
 
@@ -45,20 +47,36 @@ class ViewMyClassesMember extends StatefulWidget {
 
 /*
 Class Name:
-  ViewMyClassesMemberState
+  ViewAllClassesMemberState
 
 Purpose:
 
  */
 class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
 
+  List<ViewResponse> allClasses = [];
+  String expResponse = "";
+  String className = "";
+  String classDay = "";
+  String classTime = "";
+  String instructorName = "";
+  int classAvailableSpots = 0;
+  String classDescription = "";
   /*
    Method Name:
     build
 
    Purpose:
-
+    This method builds the UI for the screen. It calls the necessary
+    function in order to display the dynamic information the user needs
+    to see.
    */
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
@@ -101,7 +119,7 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                   ),
                 )),
             Transform.translate(
-              offset: Offset(0.0, 0.3 * media.size.height),
+              offset: Offset(0.5 * media.size.width, 0.3 * media.size.height),
               child: SvgPicture.string(
                 underline,
                 width: media.size.width * 0.5,
@@ -109,8 +127,7 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
               ),
             ),
             Transform.translate(
-                offset:
-                Offset(0.5 * media.size.width, 0.23 * media.size.height),
+                offset: Offset(0.0, 0.23 * media.size.height),
                 child: Container(
                     child: GestureDetector(
                       onTap: () {
@@ -118,12 +135,12 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ViewAllClassesMember()),
+                              builder: (context) => ViewMyClassesMember()),
                         );
                       },
                       child: Container(
                         child: Text(
-                          'View All',
+                          'View Mine',
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 0.05 * media.size.width,
@@ -138,10 +155,11 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                       ),
                     ))),
             Transform.translate(
-                offset: Offset(0.0, 0.23 * media.size.height),
+                offset:
+                Offset(0.5 * media.size.width, 0.23 * media.size.height),
                 child: Container(
                   child: Text(
-                    'View Mine',
+                    'View All',
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 0.05 * media.size.width,
@@ -162,44 +180,78 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
 
 
   /*
+  Method Name:
+    _makeGetRequest
+
+  Purpose:
+     This method is used to make a get request and fetch the all the classes available at a specific gym.
+*/
+  void _makeGetRequest() async {
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/instructorlist?username=testmanager';
+    var response = await http.get(url);
+    String responseBody = response.body;
+
+    expResponse = responseBody;
+  }
+
+  /*
    Method Name:
     getClasses
 
    Purpose:
+    makes get request that returns all the classes that the instructor instructs, if there are none then the user is notified
+    via a pop-up dialog.
 
    */
   Widget getClasses(MediaQueryData media) {
     List<Widget> classes = new List();
+    _makeGetRequest();
+    List<dynamic> classesJson = json.decode(expResponse);
 
-    if (false) {
+    for (int i = 0; i < classesJson.length; i++)
+    {
+      allClasses.add(ViewResponse.fromJson(classesJson[i]));
+    }
+    if (allClasses.length==0) {
       /*
     A pop up dialog would be nice for this.
+
+
      */
-      classes.add(Text(
+
+      _alertDialog("You are currently not instructing any classes!");
+      /*classes.add(Text(
         "You are currently not instructing any classes!",
         textAlign: TextAlign.center,
         style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 0.05 * media.size.width,
             color: Colors.white70),
-      ));
+      ));*/
     }
     /*
   Explanation : This will be when there are classes assigned to the
                 instructor.
    */
     else {
-      int amountOfClasses = 5;
+      int amountOfClasses = allClasses.length;
 
       for (int i = 0; i < amountOfClasses; i++) {
+        className = allClasses[i].Name;
+        classDay = allClasses[i].Day;
+        instructorName = allClasses[i].Instructor;
+        classAvailableSpots = allClasses[i].MaxCapacity- allClasses[i].CurrentStudents;
+        classTime = allClasses[i].StartTime;
+        classDescription = allClasses[i].Description;
         classes.add(GestureDetector(
             onTap: () {
-              /* Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ClassDetails(className: "Spin Busters")),
-              );*/
+                        ClassDetails(instructorName: instructorName , className: className, classDay:classDay,
+                            classTime:classTime, classAvailableSpots:classAvailableSpots, classDescription:classDescription)),
+              );
             },
             child: Row(mainAxisAlignment:MainAxisAlignment.center,children: <Widget>[ Stack(children: <Widget>[
               GestureDetector(
@@ -259,14 +311,16 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   }
 }
 
-
 /*
-   Method Name: getStarsForClass
+   Method Name:
+    getStarsForClass
 
-   Purpose: This method will get the rating for the specific class and show the
-            correct stars.
+   Purpose:
+    This method will get the rating for the specific class and show the
+    correct stars.
 
-   Extra: Rating is currently hardcoded. This will be changed.
+   Extra:
+    Rating is currently hardcoded. This will be changed.
    */
 
 List<Widget> getStarsForClass(MediaQueryData media) {
@@ -304,6 +358,71 @@ List<Widget> getStarsForClass(MediaQueryData media) {
   }
 
   return stars;
+}
+
+/*
+   Method Name:
+    _alertDialog
+   Purpose:
+     This method shows a dialogue if the user (instructor) currently has no classes assigned to them.
+   */
+
+_alertDialog(text) async {
+  return showDialog<void>(
+   // context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('No results!'),
+        content: Text(text),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              'Ok',
+              style: TextStyle(color: Color(0xff513369)),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+/*
+Purpose:
+This class will be used to parse the response from the api which contains all the classes the instructor instructs at the
+gym.
+*/
+class ViewResponse {
+  final int GymId;
+  final String Instructor;
+  final String Name;
+  final String Description;
+  final String Day;
+  final String StartTime;
+  final String EndTime;
+  final int MaxCapacity;
+  final int CurrentStudents;
+
+  ViewResponse({this.GymId, this.Instructor, this.Name, this.Description, this.Day, this.StartTime,
+    this.EndTime, this.MaxCapacity, this.CurrentStudents });
+
+  factory ViewResponse.fromJson(Map<String, dynamic> json) {
+    return ViewResponse(
+      GymId: json['GymId'],
+      Instructor: json['Instructor'],
+      Name: json['Name'],
+      Description: json['Description'],
+      Day: json['Day'],
+      StartTime: json['StartTime'],
+      EndTime: json['EndTime'],
+      MaxCapacity: json['MaxCapacity'],
+      CurrentStudents: json['CurrentStudents'],
+
+    );
+  }
 }
 
 const String underline =

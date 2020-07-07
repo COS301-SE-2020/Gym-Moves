@@ -41,7 +41,8 @@ Purpose:
  */
 
 class ClassDetails extends StatefulWidget {
-  const ClassDetails({Key key}) : super(key: key);
+  const ClassDetails( {Key key, String instructorName, String className, String classDay, String classTime, int classAvailableSpots,
+  String classDescription}) : super(key: key);
 
   @override
   ClassDetailsState createState() => ClassDetailsState();
