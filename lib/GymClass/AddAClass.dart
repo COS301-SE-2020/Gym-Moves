@@ -1,27 +1,22 @@
 /*
 File Name
   AddAClass.dart
-
 Author:
   Danel
-
 Date Created
   27/06/2020
-
 Update History:
 --------------------------------------------------------------------------------
  Name               | Date              | Changes
 --------------------------------------------------------------------------------
 Danel               | 05/07/2020        | Added autocomplete day and time picker
 --------------------------------------------------------------------------------
-
 Functional Description:
   This file contains the AddAClass class that calls the class that creates the
   UI for a manager to add a new class. The EditState class handles the building
   of the UI and making all the components functional and responsive.
   This file will also handle sending the information that is entered to the
   database.
-
 Classes in the File:
 - AddAClass
 - AddAClassState
@@ -32,10 +27,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'dart:convert';
+//import 'package:intl/intl.dart';
+//import 'package:intl/date_symbol_data_local.dart';
 /*
 Class Name:
   AddAClass
-
 Purpose:
   This class creates the class that will build the page.
  */
@@ -50,7 +49,6 @@ class AddAClass extends StatefulWidget {
 /*
 Class Name:
   AddAClassState
-
 Purpose:
   This class will build the page, and send information to the database.
  */
@@ -63,13 +61,29 @@ class AddAClassState extends State<AddAClass> {
   String minute = DateTime.now().minute.toString();
   String second = DateTime.now().second.toString();
   String description = "";
+  DateTime time = DateTime.now();
+  String startTime = "15:30:00"; //DateFormat('kk:mm:ss \n EEE d MMM').format(time);
+  String endTime ="15:30:00";// DateFormat('kk:mm:ss \n EEE d MMM').format(time);
+
+
+  final nameHolder = TextEditingController();
+  final dayHolder = TextEditingController();
+  final instructorHolder = TextEditingController();
+  final descriptionHolder = TextEditingController();
+  //final currentStudentsHolder = TextEditingController(); // fields to be added
+  //final maxCapacityHolder = TextEditingController();
 
   final editFormKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    //sendValuesToDatabase();
+    super.initState();
+  }
 
   /*
    Method Name:
     build
-
    Purpose:
     This method builds the UI and also calls the necessary functions that send
     the new class details to the database.
@@ -86,6 +100,7 @@ class AddAClassState extends State<AddAClass> {
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             child: TextFormField(
+                controller : nameHolder,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -115,7 +130,7 @@ class AddAClassState extends State<AddAClass> {
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
-          padding: EdgeInsets.all(0.01 * media.size.width),
+            padding: EdgeInsets.all(0.01 * media.size.width),
             alignment: Alignment.topLeft,
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
@@ -142,7 +157,7 @@ class AddAClassState extends State<AddAClass> {
                   labelStyle: new TextStyle(color: Colors.black54),
                   border: InputBorder.none,
                   enabledBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none)),
+                  OutlineInputBorder(borderSide: BorderSide.none)),
             )),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.white);
@@ -156,6 +171,7 @@ class AddAClassState extends State<AddAClass> {
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             child: SimpleAutoCompleteTextField(
+              controller : instructorHolder,
               style: TextStyle(
                 color: Colors.black54,
               ),
@@ -177,7 +193,7 @@ class AddAClassState extends State<AddAClass> {
                   labelStyle: new TextStyle(color: Colors.black54),
                   border: InputBorder.none,
                   enabledBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none)),
+                  OutlineInputBorder(borderSide: BorderSide.none)),
             )),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.white);
@@ -194,24 +210,24 @@ class AddAClassState extends State<AddAClass> {
                 DatePicker.showTimePicker(context,
                     showTitleActions: true,
                     currentTime: DateTime.now(), onConfirm: (value) {
-                  hour = value.hour.toString();
-                  minute = value.minute.toString();
-                  second = value.second.toString();
+                      hour = value.hour.toString();
+                      minute = value.minute.toString();
+                      second = value.second.toString();
 
-                  if(hour.length == 1){
-                    hour = '0' + hour;
-                  }
+                      if(hour.length == 1){
+                        hour = '0' + hour;
+                      }
 
-                  if(minute.length == 1){
-                    minute = '0' + minute;
-                  }
+                      if(minute.length == 1){
+                        minute = '0' + minute;
+                      }
 
-                  if(second.length == 1){
-                    second = '0' + second;
-                  }
+                      if(second.length == 1){
+                        second = '0' + second;
+                      }
 
-                  setState(() {});
-                });
+                      setState(() {});
+                    });
               },
               child: Container(
                 alignment: Alignment.center,
@@ -259,6 +275,7 @@ class AddAClassState extends State<AddAClass> {
             height: 0.3 * media.size.height,
             width: 0.7 * media.size.width,
             child: TextFormField(
+                controller : descriptionHolder,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -388,9 +405,40 @@ class AddAClassState extends State<AddAClass> {
   }
 
   /*
+  Method Name:
+    _showAlertDialog
+  Purpose:
+    This method is used when adding a new class to the database.
+           If a class is added successfully, the alert dialog will show to confirm this.
+*/
+
+  void _showAlertDialog(String message, String message2) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(message2),
+      content: Text(message),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  /*
   Method name:
     sendValuesToDatabase
-
   Purpose:
     This function will send the updated details to the database.
    */
@@ -408,12 +456,73 @@ class AddAClassState extends State<AddAClass> {
       _errorDialogue("Time has to be after 6am and before 8pm.");
       return;
     }
+    _makePostRequest();
+
+  }
+
+/*
+  Method Name:
+    _makePostRequest
+  Purpose:
+    This method is called when the all the fields in the form have been verified.
+    It makes a post request to our API with the respective fields, to allow a manager to add
+    a new class to the database. Once the class has been added successfully the fields are
+    returned to default values and the manager can add another class.
+*/
+
+/*
+  Method Name:
+    _defaultFields
+  Purpose:
+   Once a class has been added successfully the fields are
+    returned to default values so that the manager can add another class.
+*/
+
+  void _defaultFields() {
+    nameHolder.clear();
+    dayHolder.clear();
+    instructorHolder.clear();
+    descriptionHolder.clear();
+  }
+
+
+  _makePostRequest() async {
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/add';
+
+    final http.Response response = await http.post(
+      url,
+      headers: <String, String>{'Content-type': 'application/json'},
+      body: jsonEncode({
+        "Username": "testmanager",
+        "NewClass": [{
+          "GymId": "1",
+          "Instructor": instructorName,
+          "Name": className,
+          "Description": description,
+          "Day": day,
+          "StartTime":startTime,// this is fixed for now (note: to ask Danel if I can add these fields)
+          "EndTime": endTime, // this is fixed for now (note: to ask Danel if I can add these fields)
+          "MaxCapacity": "20", // this is fixed for now (note: to ask Danel if I can add these fields)
+          "CurrentStudents": "20" // this is fixed for now (note: to ask Danel if I can add these fields)
+        }],
+      }),
+    );
+
+    int x = response.statusCode;
+    String y =  x.toString();
+    _showAlertDialog(y, y);
+        if (response.statusCode == 200) {
+      _showAlertDialog("The class was added successfully."  , "SUCCESSFUL");
+
+      _defaultFields();
+    } else {
+      _showAlertDialog("There was a problem on our side, please try again in a few minutes.", "UNSUCCESSFUL");
+    }
   }
 
   /*
    Method Name:
     _errorDialogue
-
    Purpose:
      This method shows a dialogue if there was an error with getting or sending
      information from or to the database.
