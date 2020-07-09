@@ -150,7 +150,7 @@ namespace GymMovesWebAPI.Controllers {
         [HttpPost]
         public async Task<ActionResult> changeNotificationSetting(NotificationsSettingsRequest request) {
 
-            bool changed = await notificationSettingsRepository.changeSetting(request.username, request.email, request.sms, request.push);
+            bool changed = await notificationSettingsRepository.changeSetting(request.username, request.email, request.push);
 
             if (changed) {
 
@@ -158,7 +158,7 @@ namespace GymMovesWebAPI.Controllers {
             }
             else {
 
-                return StatusCode(500);
+                return StatusCode(500, "Something went wrong on our side.");
             }
 
         }
@@ -180,14 +180,13 @@ namespace GymMovesWebAPI.Controllers {
             if (settings != null) {
 
                 response.email = settings.Email;
-                response.sms = settings.Sms;
                 response.push = settings.PushNotifications;
 
                 return Ok(response);
             }
             else {
 
-                return StatusCode(500, response);
+                return StatusCode(500, "Something went wrong on our side.");
             }
 
         }

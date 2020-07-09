@@ -73,11 +73,10 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations{
         Purpose:
             This changes the settings of the notifications.
         */
-        public async Task<bool> changeSetting(string username, bool email, bool sms, bool push) {
+        public async Task<bool> changeSetting(string username, bool email, bool push) {
 
             var user = context.NotificationSettings.First(a => a.UsernameForeignKey == username);
 
-            user.Sms = sms;
             user.PushNotifications = push;
             user.Email = email;
 

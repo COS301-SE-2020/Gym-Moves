@@ -34,12 +34,11 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels
 {
     public class NotificationResponse
     {
-        public String message { get; set; }
+        public string message { get; set; }
     }
 
     public class GetNotificationResponse
     {
-        public bool sms { get; set; }
         public bool push { get; set; }
         public bool email { get; set; }
     }

@@ -49,8 +49,8 @@ namespace GymMovesWebAPI.Data.Models.RequestModels
     Purpose:
         This class is the structure of the incoming change setting request.
     */
-    public class NotificationsSettingsRequest {
-        public bool sms { get; set; }
+    public class NotificationsSettingsRequest
+    {
         public bool push { get; set; }
         public bool email { get; set; }
         public string username { get; set; }
@@ -62,7 +62,8 @@ namespace GymMovesWebAPI.Data.Models.RequestModels
      Purpose:
         This class is the structure of incoming get settings request.
      */
-    public class GetNotificationRequest {
+    public class GetNotificationRequest
+    {
         public string username { get; set; }
     }
 }

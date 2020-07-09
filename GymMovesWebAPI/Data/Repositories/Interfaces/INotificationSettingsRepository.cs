@@ -36,7 +36,7 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
     */
     public interface INotificationSettingsRepository {
         public Task<bool> addUser(NotificationSettings user);
-        public Task<bool> changeSetting(string username, bool email, bool sms, bool push);
+        public Task<bool> changeSetting(string username, bool email, bool push);
         public Task<NotificationSettings> getSettingsOfUser(string username);
     }
 }
