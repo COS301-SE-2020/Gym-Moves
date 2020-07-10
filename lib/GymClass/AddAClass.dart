@@ -61,6 +61,8 @@ class AddAClassState extends State<AddAClass> {
   String minute = DateTime.now().minute.toString();
   String second = DateTime.now().second.toString();
   String description = "";
+  String max = "0";
+  String current = "0";
   DateTime time = DateTime.now();
   String startTime = "15:30:00"; //DateFormat('kk:mm:ss \n EEE d MMM').format(time);
   String endTime ="15:30:00";// DateFormat('kk:mm:ss \n EEE d MMM').format(time);
@@ -302,6 +304,81 @@ class AddAClassState extends State<AddAClass> {
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.white);
+    final maxField = Material(
+        shadowColor: Colors.black,
+        elevation: 15,
+        child: Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.all(0.01 * media.size.width),
+            height: 0.3 * media.size.height,
+            width: 0.7 * media.size.width,
+            child: TextFormField(
+                controller : descriptionHolder,
+                cursorColor: Colors.black45,
+                style: TextStyle(
+                  color: Colors.black54,
+                ),
+                maxLines: 1,
+                minLines: 1,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Description of class',
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.all(15.0),
+                    labelStyle: new TextStyle(color: Colors.black54),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
+                        borderSide: BorderSide.none),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(19.0))),
+                onChanged: (value) {
+                  setState(() {
+                    max = value;
+                  });
+                })),
+        borderRadius: BorderRadius.all(Radius.circular(19.0)),
+        color: Colors.white);
+
+    final currentField = Material(
+        shadowColor: Colors.black,
+        elevation: 15,
+        child: Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.all(0.01 * media.size.width),
+            height: 0.3 * media.size.height,
+            width: 0.7 * media.size.width,
+            child: TextFormField(
+                controller : descriptionHolder,
+                cursorColor: Colors.black45,
+                style: TextStyle(
+                  color: Colors.black54,
+                ),
+                maxLines: 1,
+                minLines: 1,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: 'Description of class',
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.all(15.0),
+                    labelStyle: new TextStyle(color: Colors.black54),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
+                        borderSide: BorderSide.none),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(19.0))),
+                onChanged: (value) {
+                  setState(() {
+                    current = value;
+                  });
+                })),
+        borderRadius: BorderRadius.all(Radius.circular(19.0)),
+        color: Colors.white);
 
     return Scaffold(
       backgroundColor: const Color(0xff513369),
@@ -375,6 +452,10 @@ class AddAClassState extends State<AddAClass> {
               timeField,
               SizedBox(height: 0.04 * media.size.height),
               descriptionField,
+              SizedBox(height: 0.04 * media.size.height),
+              maxField,
+              SizedBox(height: 0.04 * media.size.height),
+              currentField,
               SizedBox(height: 0.04 * media.size.height),
             ])),
         Center(
@@ -488,24 +569,16 @@ class AddAClassState extends State<AddAClass> {
 
   _makePostRequest() async {
     String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/add';
+    NewClass myClass = new  NewClass(1, instructorName, className, description, day, startTime, endTime, int.parse(max), int.parse(current));
+
+    var map = new Map<String, dynamic>();
+    map["Username"] = "testmanager";
+    map["NewClass"] = myClass;//.toJson();
 
     final http.Response response = await http.post(
       url,
       headers: <String, String>{'Content-type': 'application/json'},
-      body: jsonEncode({
-        "Username": "testmanager",
-        "NewClass": [{
-          "GymId": "1",
-          "Instructor": instructorName,
-          "Name": className,
-          "Description": description,
-          "Day": day,
-          "StartTime":startTime,// this is fixed for now (note: to ask Danel if I can add these fields)
-          "EndTime": endTime, // this is fixed for now (note: to ask Danel if I can add these fields)
-          "MaxCapacity": "20", // this is fixed for now (note: to ask Danel if I can add these fields)
-          "CurrentStudents": "20" // this is fixed for now (note: to ask Danel if I can add these fields)
-        }],
-      }),
+      body: jsonEncode(map)
     );
 
     int x = response.statusCode;
@@ -551,6 +624,34 @@ class AddAClassState extends State<AddAClass> {
     );
   }
 }
+
+class NewClass
+{
+  final int GymId;
+  final String Instructor;
+  final String Name;
+  final String Description;
+  final String Day;
+  final String StartTime;
+  final String EndTime;
+  final int MaxCapacity;
+  final int CurrentStudents;
+
+  NewClass(this.GymId, this.Instructor, this.Name, this.Description, this.Day, this.StartTime, this.EndTime, this.MaxCapacity, this.CurrentStudents);
+
+  Map<String, dynamic> toJson()=>{
+  'GymId': GymId,
+  'Instructor': Instructor,
+  'Name': Name,
+  'Description': Description,
+    'Day': Day,
+  'StartTime': StartTime,
+   'EndTime': EndTime,
+  'MaxCapacity':MaxCapacity,
+    'CurrentStudents': CurrentStudents
+  };
+
+  }
 
 const String backArrow =
     '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
