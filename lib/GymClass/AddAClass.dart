@@ -72,6 +72,8 @@ class AddAClassState extends State<AddAClass> {
   final dayHolder = TextEditingController();
   final instructorHolder = TextEditingController();
   final descriptionHolder = TextEditingController();
+  final maxHolder = TextEditingController();
+  final currentHolder = TextEditingController();
   //final currentStudentsHolder = TextEditingController(); // fields to be added
   //final maxCapacityHolder = TextEditingController();
 
@@ -310,10 +312,10 @@ class AddAClassState extends State<AddAClass> {
         child: Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(0.01 * media.size.width),
-            height: 0.3 * media.size.height,
-            width: 0.7 * media.size.width,
+            height: 0.085 * media.size.height,
+            width:  0.7 * media.size.width,
             child: TextFormField(
-                controller : descriptionHolder,
+                controller : maxHolder,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -324,7 +326,7 @@ class AddAClassState extends State<AddAClass> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Description of class',
+                    labelText: 'Maximum students',
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.all(15.0),
                     labelStyle: new TextStyle(color: Colors.black54),
@@ -348,10 +350,10 @@ class AddAClassState extends State<AddAClass> {
         child: Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(0.01 * media.size.width),
-            height: 0.3 * media.size.height,
-            width: 0.7 * media.size.width,
+            height: 0.085 * media.size.height,
+            width:  0.7* media.size.width,
             child: TextFormField(
-                controller : descriptionHolder,
+                controller : currentHolder,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -362,7 +364,7 @@ class AddAClassState extends State<AddAClass> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Description of class',
+                    labelText: 'Current students in class',
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.all(15.0),
                     labelStyle: new TextStyle(color: Colors.black54),
@@ -564,6 +566,8 @@ class AddAClassState extends State<AddAClass> {
     dayHolder.clear();
     instructorHolder.clear();
     descriptionHolder.clear();
+    maxHolder.clear();
+    currentHolder.clear();
   }
 
 
