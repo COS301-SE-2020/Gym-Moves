@@ -10,7 +10,7 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-| Name               | Date              | Changes                             |
+| Name         Ayanda      | Date   06/07/2020           | Get request, Viewing all classes                             |
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -23,9 +23,24 @@ Classes in the File:
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:gym_moves/GymClass/ClassDetails.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
+import 'package:gym_moves/GymClass/ClassDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_moves/User/InstructorPages.dart';
+import 'package:gym_moves/User/ManagerPages.dart';
+import 'package:gym_moves/User/MemberPages.dart';
+
+import 'package:gym_moves/User/SignUp.dart';
+import 'package:gym_moves/User/ForgotPassword.dart';
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 /*
 Class Name:
@@ -46,9 +61,25 @@ Class Name:
   ViewAllClassesMemberState
 
 Purpose:
-
+  This class will build the page, and receive a response from the database.
  */
 class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
+
+  List<ViewResponse> allClasses = [];
+  String expResponse = "";
+  String className = "";
+  String classDay = "";
+  String classTime = "";
+  String instructorName = "";
+  int classAvailableSpots = 0;
+  String classDescription = "";
+
+  /* This will hold the user's `type` and gymid. */
+  int gymid =0;
+  int type =0;
+
+  Future idFromLocal;
+  Future typeFromLocal;
   /*
    Method Name:
     build
@@ -56,6 +87,14 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
    Purpose:
 
    */
+
+  @override
+  void initState() {
+     idFromLocal = _getId();
+     typeFromLocal = _getType();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
@@ -158,44 +197,91 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   }
 
   /*
+  Method Name:
+    _getType
+
+  Purpose:
+     This method is used to get the gymId from local storage.
+*/
+  _getId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    gymid = prefs.get("gymId");
+
+  }
+
+  /*
+  Method Name:
+    _getType
+
+  Purpose:
+     This method is used to get the user type from local storage.
+*/
+  _getType() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    type = prefs.get("type");
+
+  }
+  /*
+  Method Name:
+    _makeGetRequest
+
+  Purpose:
+     This method is used to make a get request and fetch the all the classes available at a specific gym.
+*/
+  void _makeGetRequest() async {
+   String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymlist?gymid='+ gymid.toString();
+    //String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymlist?gymid=1';
+    var response = await http.get(url);
+    String responseBody = response.body;
+
+    expResponse = responseBody;
+  }
+
+  /*
    Method Name:
     getClasses
 
-   Purpose:
+   Purpose: This method gets the reponse from the API and displays it on screen.
 
    */
-  Widget getClasses(MediaQueryData media) {
-    List<Widget> classes = new List();
 
-    if (false) {
+  Widget getClasses(MediaQueryData media) {
+
+    List<Widget> classes = new List();
+    _makeGetRequest();
+    List<dynamic> classesJson = json.decode(expResponse);
+
+    for (int i = 0; i < classesJson.length; i++)
+    {
+        allClasses.add(ViewResponse.fromJson(classesJson[i]));
+    }
+    if (allClasses.length==0) {
       /*
     A pop up dialog would be nice for this.
      */
-      classes.add(Text(
-        "You are currently not instructing any classes!",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 0.05 * media.size.width,
-            color: Colors.white70),
-      ));
+
+      _alertDialog("There are currently no available classes at the gym.");
+
     }
-    /*
-  Explanation : This will be when there are classes assigned to the
-                instructor.
-   */
     else {
-      int amountOfClasses = 5;
+      int amountOfClasses = allClasses.length;
 
       for (int i = 0; i < amountOfClasses; i++) {
+        className = allClasses[i].Name;
+        classDay = allClasses[i].Day;
+        instructorName = allClasses[i].Instructor;
+        classAvailableSpots = allClasses[i].MaxCapacity- allClasses[i].CurrentStudents;
+        classTime = allClasses[i].StartTime;
+        classDescription = allClasses[i].Description;
         classes.add(GestureDetector(
             onTap: () {
-              /* Navigator.push(
+               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ClassDetails(className: "Spin Busters")),
-              );*/
+                        ClassDetails(className: className, classDay:classDay,
+                            classTime:classTime)),
+              );
             },
             child: Row(mainAxisAlignment:MainAxisAlignment.center,children: <Widget>[ Stack(children: <Widget>[
                   GestureDetector(
@@ -224,7 +310,7 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                   Offset(0.05 * media.size.width, 0.02 * media.size.height),
                   child: SizedBox(
                       width: 0.7 * media.size.width,
-                      child: Text("Class Name: ",
+                      child: Text("Class Name: " + className,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 0.035 * media.size.width)))),
@@ -233,16 +319,17 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                   Offset(0.05 * media.size.width, 0.07 * media.size.height),
                   child: SizedBox(
                       width:0.7 * media.size.width,
-                      child: Text("Class Day: ",
+                      child: Text("Class Day: " + classDay ,
                           style: TextStyle(
                               color: Colors.white,
+
                               fontSize: 0.035 * media.size.width)))),
               Transform.translate(
                   offset:
                   Offset(0.05 * media.size.width, 0.12 * media.size.height),
                   child: SizedBox(
                       width: 0.7 * media.size.width,
-                      child: Text("Class Time: ",
+                      child: Text("Class Time: " + classTime,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 0.035 * media.size.width))))
@@ -302,6 +389,72 @@ List<Widget> getStarsForClass(MediaQueryData media) {
   }
 
   return stars;
+}
+
+/*
+   Method Name:
+    _alertDialog
+
+   Purpose:
+     This method shows a dialogue if there are currently has no classes available at the gym.
+   */
+_alertDialog(text) async {
+  return showDialog<void>(
+    //context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('No results!'),
+        content: Text(text),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              'Ok',
+              style: TextStyle(color: Color(0xff513369)),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+/*
+Purpose:
+This class will be used to parse the response from the api which contains all the available classes at the gym.
+*/
+class ViewResponse {
+  final int GymId;
+  final String Instructor;
+  final String Name;
+  final String Description;
+  final String Day;
+  final String StartTime;
+  final String EndTime;
+  final int MaxCapacity;
+  final int CurrentStudents;
+
+  ViewResponse({this.GymId, this.Instructor, this.Name, this.Description, this.Day, this.StartTime,
+    this.EndTime, this.MaxCapacity, this.CurrentStudents });
+
+  factory ViewResponse.fromJson(Map<String, dynamic> json) {
+    return ViewResponse(
+      GymId: json['GymId'],
+      Instructor: json['Instructor'],
+      Name: json['Name'],
+      Description: json['Description'],
+      Day: json['Day'],
+      StartTime: json['StartTime'],
+      EndTime: json['EndTime'],
+      MaxCapacity: json['MaxCapacity'],
+      CurrentStudents: json['CurrentStudents'],
+
+    );
+  }
 }
 
 const String underline =
