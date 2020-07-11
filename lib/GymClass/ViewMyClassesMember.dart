@@ -419,6 +419,7 @@ This class will be used to parse the response from the api which contains all th
 gym.
 */
 class ViewResponse {
+  final int ClassId;
   final int GymId;
   final String Instructor;
   final String Name;
@@ -428,22 +429,24 @@ class ViewResponse {
   final String EndTime;
   final int MaxCapacity;
   final int CurrentStudents;
+  final bool Cancelled;
 
-  ViewResponse({this.GymId, this.Instructor, this.Name, this.Description, this.Day, this.StartTime,
-    this.EndTime, this.MaxCapacity, this.CurrentStudents });
+  ViewResponse({this.ClassId,this.GymId, this.Instructor, this.Name, this.Description, this.Day, this.StartTime,
+    this.EndTime, this.MaxCapacity, this.CurrentStudents,this.Cancelled });
 
   factory ViewResponse.fromJson(Map<String, dynamic> json) {
     return ViewResponse(
-      GymId: json['GymId'],
-      Instructor: json['Instructor'],
-      Name: json['Name'],
-      Description: json['Description'],
-      Day: json['Day'],
-      StartTime: json['StartTime'],
-      EndTime: json['EndTime'],
-      MaxCapacity: json['MaxCapacity'],
-      CurrentStudents: json['CurrentStudents'],
-
+      ClassId: json['classId'], 
+      GymId: json['gymId'],
+      Instructor: json['instructor'],
+      Name: json['name'],
+      Description: json['description'],
+      Day: json['day'],
+      StartTime: json['startTime'],
+      EndTime: json['endTime'],
+      MaxCapacity: json['maxCapacity'],
+      CurrentStudents: json['currentStudents'],
+      Cancelled: json['cancelled'] 
     );
   }
 }
