@@ -10,13 +10,14 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-| Date       | Author       | Changes                             
+|   Name   | Date              | Changes                             
 --------------------------------------------------------------------------------
-01/01/2020   |    Tia       |  Added outline of login function and LoginRequest 
+| Tia     |    01/07/2020     |  Added outline of login function and LoginRequest 
 --------------------------------------------------------------------------------
-04/01/2020   |    Tia       |  Fixed login request 
+| Tia      |    04/07/2020     |  Fixed login request 
 --------------------------------------------------------------------------------
-
+| Tia      |    10/07/2020     | Added hide/show password field
+--------------------------------------------------------------------------------
 Functional Description:
   This file contains the LogIn class that calls the class that creates the UI.
   The LogInState class handles the building of the UI and making all the
@@ -66,6 +67,7 @@ Purpose:
 class LogInState extends State<LogIn> {
   String password = "";
   String username = "";
+  bool hidePassword = true;
 
   final logInFormKey = GlobalKey<FormState>();
 
@@ -114,7 +116,7 @@ class LogInState extends State<LogIn> {
             height: 0.08 * media.size.height,
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: true,
+                obscureText: hidePassword,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -201,12 +203,17 @@ class LogInState extends State<LogIn> {
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
                         0.08 * 0.3 * media.size.height),
-                    child: SvgPicture.string(
-                      lock,
-                      width: media.size.width * 0.04,
-                      color: Colors.black45,
-                      allowDrawingOutsideViewBox: true,
-                    ))
+                        child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      child:  Icon(
+                      hidePassword ? Icons.visibility_off : Icons.visibility,
+                      
+                    )
+                  ) )
               ])
             ])),
         Container(

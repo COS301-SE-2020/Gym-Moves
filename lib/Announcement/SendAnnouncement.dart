@@ -10,12 +10,13 @@ Date Created:
 
 Update History:
 --------------------------------------------------------------------------------
-Date          |    Author      |     Changes
+| Name          |    Date             |     Changes
 --------------------------------------------------------------------------------
-24/06/2020    |    Danel       |    Fixed input and scrolling
+| Danel         |      24/06/2020     |    Fixed input and scrolling
 --------------------------------------------------------------------------------
-28/06/2020    |    Danel       |    Added date picker
+| Danel         |      28/06/2020     |    Added date picker
 --------------------------------------------------------------------------------
+|Tia            |     04/07/2020      | Added Announcement API call function
 
 Functional Description:
   This file implements the the UI for managers to be able to send announcements.
@@ -319,7 +320,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
   void sendValuesToNotify(String heading, String details) async {
     final prefs = await SharedPreferences.getInstance();
 
-    final int gymId = 0; //prefs.getInt('gymId');
+    final int gymId = prefs.getInt('gymId');
 
     final http.Response response = await http.post(
       'https://gymmoveswebapi.azurewebsites.net/api/sendNotification',
