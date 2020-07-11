@@ -198,7 +198,7 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
 
   /*
   Method Name:
-    _getType
+    _getId
 
   Purpose:
      This method is used to get the gymId from local storage.
