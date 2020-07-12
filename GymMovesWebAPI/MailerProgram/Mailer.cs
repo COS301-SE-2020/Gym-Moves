@@ -35,9 +35,10 @@ namespace GymMovesWebAPI.MailerProgram {
            API_KEY = config.GetValue<string>("SendGridAPIKey");
         }
 
-        public async Task<int> sendEmail(string fromEmail, string fromName, string subject, string content, string to, bool isHtml = false) {
+        public async Task<int> sendEmail(string fromEmail, string fromName, string subject, string content, string toEmail, bool isHtml = false) {
             var client = new SendGridClient(API_KEY);
             var from = new EmailAddress(fromEmail, fromName);
+            var to = new EmailAddress(toEmail);
 
             var message = new SendGridMessage();
             message.SetFrom(from);

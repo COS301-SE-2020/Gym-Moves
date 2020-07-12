@@ -50,6 +50,7 @@ namespace GymMovesWebAPI.Controllers {
         This class handles the different requests that can be sent
         to the API with regards to the user management.
     */
+    [Route("api/user/[controller]")]
     [ApiController]
     public class UserController : Controller {
 
@@ -83,26 +84,21 @@ namespace GymMovesWebAPI.Controllers {
         Purpose:
             This method handles a user sign up request.
        */
-        [Route("api/signup")]
-        [HttpPost]
+        [HttpPost("signup")]
         public async Task<ActionResult<SignUpResponseModel>> signUp(SignUpRequestModel user) {
 
-            /* Create return message to send back.*/
             SignUpResponseModel response = new SignUpResponseModel();
 
-            /* New user account being made.*/
             Users newUserAccount = new Users();
 
-            /* Set the new accounts member ID and username. */
             newUserAccount.MembershipId = user.gymMemberId.Trim();
             newUserAccount.Username = user.username.Trim();
-
-            /* Set the users gym and gym ID. */
             newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(user.gymName.Trim(), user.gymBranch.Trim());
             newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
 
-            /* Get the member from the user repo that has the entered member ID and gym. */
-            GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId, newUserAccount.GymIdForeignKey);
+          
+            GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId, 
+                newUserAccount.GymIdForeignKey);
 
             /* If member null, such person does not exist. */
             if (member == null) {
@@ -116,6 +112,24 @@ namespace GymMovesWebAPI.Controllers {
 
                 return Unauthorized(response);
             }
+
+            /* Get the member from the user repo that has the entered member ID and gym. */
+            Users checkIfUserHasAccount = await userGymMovesRepository.getUserByMemberID(member.MembershipId, 
+                member.GymId);
+
+            /* If null, person has account.*/
+            if(checkIfUserHasAccount != null) {
+                response.usernameValid = false;
+                response.gymMemberIdValid = false;
+                response.userType = 0;
+
+                response.name = "";
+                response.gymMemberID = "";
+                response.gymID = -1;
+
+                return BadRequest(response);
+            }
+
 
             newUserAccount.Name = member.Name;
             newUserAccount.Surname = member.Surname;
@@ -159,7 +173,6 @@ namespace GymMovesWebAPI.Controllers {
 
                 newUserNotifs.Email = false;
                 newUserNotifs.PushNotifications = true;
-                newUserNotifs.Sms = false;
                 newUserNotifs.UsernameForeignKey = newUserAccount.Username;
                 newUserNotifs.User = newUserAccount;
 
@@ -197,14 +210,11 @@ namespace GymMovesWebAPI.Controllers {
         Purpose:
             This method handles a user login request.
        */
-        [Route("api/login")]
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<ActionResult<LogInResponseModel>> logIn(LogInRequestModel user) {
 
-            /* Response for login. */
             LogInResponseModel response = new LogInResponseModel();
 
-            /* Check if user exists with this username. */
             Users checkUser = await userGymMovesRepository.getUser(user.username.Trim());
 
             /* If null, no user with that username exists.*/
@@ -326,24 +336,23 @@ namespace GymMovesWebAPI.Controllers {
         Purpose:
             This method will send a code via email to the user.
        */
-        [Route("api/getcode")]
-        [HttpPost]
-        public async Task<ActionResult<string>> getCode(GetCodeRequestModel user)  {
+       [HttpGet("getCode")]
+        public async Task<ActionResult<string>> getCode(string username)  {
 
             /* Check if user already has a code.*/
-            PasswordReset checkIfHasCode = await resetPasswordRepository.getUser(user.username);
+            PasswordReset checkIfHasCode = await resetPasswordRepository.getUser(username);
 
             if (checkIfHasCode != null) {
                bool deleted =  await resetPasswordRepository.deleteUser(checkIfHasCode);
 
                 if (!deleted) {
-                    return StatusCode(500, "Something went wrong on our side.");
+                    return StatusCode(500, "You have a code but we cannot generate a new one for you.");
                 }
             }
 
 
             /*Get user with is username.*/
-            Users member = await userGymMovesRepository.getUser(user.username);
+            Users member = await userGymMovesRepository.getUser(username);
 
             if (member != null)  {
 
@@ -357,7 +366,7 @@ namespace GymMovesWebAPI.Controllers {
 
 
                 PasswordReset userToAdd = new PasswordReset();
-                userToAdd.Username = user.username;
+                userToAdd.Username = username;
                 userToAdd.User = member;
                 userToAdd.Code = code;
                 userToAdd.Expiry = date;
@@ -393,8 +402,7 @@ namespace GymMovesWebAPI.Controllers {
         Purpose:
             This method will change the password for the user and check they entered the correct code.
        */
-        [Route("api/forgotpassword")]
-        [HttpPost]
+        [HttpPost("forgotPassword")]
         public async Task<ActionResult<string>> forgotPassword(ForgotPasswordRequestModel user){
 
             /* Get the user record to change.*/
@@ -435,7 +443,7 @@ namespace GymMovesWebAPI.Controllers {
                 }
                 else {
                     await resetPasswordRepository.deleteUser(userInCodeTabe);
-                    return StatusCode(500, "Something went wrong on our side. Please try again.");
+                    return StatusCode(500, "We were unable to change your password.");
                 }
 
             }
@@ -451,8 +459,7 @@ namespace GymMovesWebAPI.Controllers {
         Purpose:
             This method will change the password for the user.
        */
-        [Route("api/changepassword")]
-        [HttpPost]
+        [HttpPost("changePassword")]
         public async Task<ActionResult<string>> changePassword(ChangePasswordRequestModel user) {
 
             /* Get the user record to change.*/
