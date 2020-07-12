@@ -51,7 +51,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers
 {
-    [Route("api/gymClasses/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ClassesController : ControllerBase
     {
@@ -293,46 +293,11 @@ namespace GymMovesWebAPI.Controllers
             bool changed = await classRepository.instructorCancelClass(classRequest.classId);
 
             if (changed) {
-                return Ok("Class has been changed.");
+                return Ok("Class has been cancelled");
             }
             else {
                 return StatusCode(500, "We were unable to change the class on our side. Please try again later.");
             }
-
-
-        }
-
-        [HttpPost("delete")]
-        public async Task<ActionResult<string>> deleteClass(CancelAndDeleteClassRequest classRequest) {
-
-            GymClasses classToCancel = await classRepository.getClassById(classRequest.classId);
-            Users user = await userRepository.getUser(classRequest.username);
-
-            if (user.UserType != UserTypes.Manager) {
-
-                return Unauthorized("This user is not a manager.");
-            }
-
-            if ( user.GymIdForeignKey != classToCancel.GymIdForeignKey) {
-
-                return Unauthorized("This manager does not work at the gym the class is taught at.");
-            }
-
-            bool deleted = await classRepository.managerDeleteClass(classToCancel);
-
-            if (deleted) {
-
-                return Ok("Class has been deleted.");
-            }
-            else{
-               
-                return StatusCode(500, "We were unable to delete the class on our side. Please try again later.");
-            }
-
-
-        }
-    }
-
         }
 
         [HttpPost("deregister")]

@@ -42,7 +42,7 @@ using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.MailerProgram;
 
 namespace GymMovesWebAPI.Controllers {
-    [Route("api/notifications/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class NotificationsController : Controller {
         private IGymRepository gymRepository;

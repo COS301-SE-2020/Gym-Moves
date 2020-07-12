@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers {
     public class IndexController : Controller {
-        [Route("")]
+        /*[Route("")]
         public IActionResult Index() {
             return View();
-        }
+        }*/
     }
 }

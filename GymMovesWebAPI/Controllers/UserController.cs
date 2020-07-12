@@ -50,7 +50,7 @@ namespace GymMovesWebAPI.Controllers {
         This class handles the different requests that can be sent
         to the API with regards to the user management.
     */
-    [Route("api/user/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : Controller {
 
