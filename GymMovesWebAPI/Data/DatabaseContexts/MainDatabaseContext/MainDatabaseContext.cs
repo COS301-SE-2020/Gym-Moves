@@ -16,6 +16,8 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 02/07/2020    |  Longji        |  Added table for password resets.
 --------------------------------------------------------------------------------
+09/07/2020    |  Longji        |  Added another default gym
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -152,6 +154,15 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         GymId = 1,
                         GymName = "TestName",
                         GymBranch = "TestBranch"
+                    }
+                );
+
+            modelBuilder.Entity<Gym>()
+                .HasData(
+                    new {
+                        GymId = 2,
+                        GymName = "AnotherGym",
+                        GymBranch = "TreeBranch"
                     }
                 );
 

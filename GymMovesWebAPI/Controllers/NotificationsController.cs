@@ -30,8 +30,6 @@ List of Classes:
  */
 
 using System;
-using System.Text;
-using System.Net.Mail;
 using Microsoft.AspNetCore.Mvc;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using System.Threading.Tasks;
@@ -59,25 +57,6 @@ namespace GymMovesWebAPI.Controllers {
             notificationsRepository = notificationsRep;
             gymRepository = gymRepo;
             mailer = mail;
-        }
-        
-        private void sendGmailEmail(MailMessage message)
-        {
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
-            System.Net.NetworkCredential basicCredential1 = new
-            System.Net.NetworkCredential("tiamangena@gmail.com", "");
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            client.Credentials = basicCredential1;
-            try
-            {
-                client.Send(message);
-            }
-
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         private async Task<bool> addAnnouncement(NotificationRequest req) {

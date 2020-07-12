@@ -20,6 +20,11 @@ Date          |    Author      |     Changes
 03/07/2020    | Longji         |Removed function used for adding new users for test
               |                |purposes.
 --------------------------------------------------------------------------------
+08/07/2020    | Longji         |Added functions to remove a class and a function to
+                               |deregister a user from the class.
+--------------------------------------------------------------------------------
+11/07/2020    | Longji         |Added function to get a specific class
+--------------------------------------------------------------------------------
 
 Functional Description:
     - The purpose of the classes contained is to implement the api interface that the
@@ -101,7 +106,7 @@ namespace GymMovesWebAPI.Controllers
                         }
                         else
                         {
-                            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attmepting to the new class to the database!");
+                            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attempting to the new class to the database!");
                         }
                     }
                     else
@@ -263,6 +268,71 @@ namespace GymMovesWebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "User is already signed up for the specified class");
             }
+        }
+
+        [HttpPost("deregister")]
+        public async Task<ActionResult<bool>> deregisterUserFromClass(RegisterUserForClassRequest register) 
+        {
+            if (await classRepository.getClassById(register.ClassId) == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "The class the user wants to signup for does not exist!");
+            }
+
+            if (await userRepository.getUser(register.Username) == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "The user does not exist!");
+            }
+
+            ClassRegister existingRegister = await registerRepository.getSpecificUserAndClass(register.Username, register.ClassId);
+
+            if (existingRegister == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "User is not signed up for the class!");
+            }
+
+            if (await registerRepository.removeRegister(existingRegister)) {
+                return Ok(true);
+            } else {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while attempting to remove the register from the database!");
+            }
+        }
+
+        [HttpPost("remove")]
+        public async Task<ActionResult<bool>> removeClass(GymClassRemoveRequest removeClass) {
+            Users user = await userRepository.getUser(removeClass.Username);
+
+            if (user == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "The user requesting for the class to be added could not be found!");
+            }
+
+            if (user.UserType == UserTypes.Manager) {
+                if (user.GymIdForeignKey == removeClass.ClassId) {
+                    GymClasses targetClass = await classRepository.getClassById(removeClass.ClassId);
+                    if (targetClass != null) {
+                        if (await classRepository.removeClass(targetClass)) {
+                            return Ok(true);
+                        } else {
+                            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attempting to delete the class from the database!");
+                        }
+                    } else {
+                        return StatusCode(StatusCodes.Status404NotFound, "The class being removed, does not exist!");
+                    }
+                } else {
+                    return StatusCode(StatusCodes.Status403Forbidden, "Managers can only add new classes for the gym they're assigned to!");
+                }
+            } else {
+                return StatusCode(StatusCodes.Status401Unauthorized, "Only managers can add new classes!");
+            }
+        }
+
+        [HttpGet("class")]
+        public async Task<ActionResult<GymClassResponse>> getSpecificClass(int classid) {
+            GymClasses targetClass = await classRepository.getClassById(classid);
+
+            if (targetClass == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "Specified class was not found!");
+            }
+
+            GymClassResponse convertedObject = ClassMappers.classModelToReducedModel(targetClass);
+
+            return Ok(convertedObject);
         }
     }
 }

@@ -20,6 +20,11 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return (await context.SaveChangesAsync()) > 0;
         }
 
+        public async Task<bool> removeClass(GymClasses gymClass) {
+            context.Remove(gymClass);
+            return (await context.SaveChangesAsync()) > 0;
+        }
+
         public async Task<GymClasses> getClassById(int classId) {
             IQueryable<GymClasses> query = context.Classes;
             query = query.Where(p => p.ClassId == classId);
