@@ -43,6 +43,7 @@ using GymMovesWebAPI.Data.Mappers;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Data.Models.ResponseModels;
+using GymMovesWebAPI.Data.Repositories.Implementations;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.MailerProgram;
 using Microsoft.AspNetCore.Http;
@@ -50,7 +51,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/gymClasses/[controller]")]
     [ApiController]
     public class ClassesController : ControllerBase
     {
@@ -60,7 +61,8 @@ namespace GymMovesWebAPI.Controllers
         private readonly IGymRepository gymRepository;
         private readonly IMailer mailer;
 
-        public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR, IGymRepository gR, IMailer mail)
+        public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR,
+            IGymRepository gR, IMailer mail)
         {
             userRepository = uR;
             classRepository = cR;
@@ -89,34 +91,42 @@ namespace GymMovesWebAPI.Controllers
 
             if (personAdding == null)
             {
-                return StatusCode(StatusCodes.Status404NotFound, "The user requesting for the class to be added could not be found!");
+                return StatusCode(StatusCodes.Status404NotFound, "The user requesting for " +
+                    "the class to be added could not be found!");
             }
 
             if (personAdding.UserType == UserTypes.Manager)
             {
+
                 if (personAdding.GymIdForeignKey == newClass.NewClass.GymId)
                 {
+
                     GymClasses newClassModel = ClassMappers.reducedClassToClassModel(newClass.NewClass);
 
-                    if (await classRepository.getInstructorClassAtSpecificDateTime(newClassModel.InstructorUsername, newClassModel.Day, newClassModel.StartTime) == null)
+                    if (await classRepository.getInstructorClassAtSpecificDateTime(newClassModel.InstructorUsername,
+                        newClassModel.Day, newClassModel.StartTime) == null)
                     {
+
                         if (await classRepository.addClass(newClassModel))
                         {
                             return Ok(true);
                         }
                         else
                         {
-                            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attempting to the new class to the database!");
+                            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attempting " +
+                                "to the new class to the database!");
                         }
                     }
                     else
                     {
-                        return StatusCode(StatusCodes.Status403Forbidden, "Designated instructor already has a class starting at the given start time!");
+                        return StatusCode(StatusCodes.Status403Forbidden, "Designated instructor already has a class " +
+                            "starting at the given start time!");
                     }
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status403Forbidden, "Managers can only add new classes for the gym they're assigned to!");
+                    return StatusCode(StatusCodes.Status403Forbidden, "Managers can only add new classes for the gym " +
+                        "they're assigned to!");
                 }
             }
             else
@@ -268,6 +278,61 @@ namespace GymMovesWebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "User is already signed up for the specified class");
             }
+        }
+
+        [HttpPost("cancel")]
+        public async Task<ActionResult<string>> cancelClass(CancelAndDeleteClassRequest classRequest) {
+            
+            GymClasses classToCancel = await classRepository.getClassById(classRequest.classId);
+
+            if(classToCancel.InstructorUsername != classRequest.username) {
+               
+                return Unauthorized("This instructor does not teach this class.");
+            }
+
+            bool changed = await classRepository.instructorCancelClass(classRequest.classId);
+
+            if (changed) {
+                return Ok("Class has been changed.");
+            }
+            else {
+                return StatusCode(500, "We were unable to change the class on our side. Please try again later.");
+            }
+
+
+        }
+
+        [HttpPost("delete")]
+        public async Task<ActionResult<string>> deleteClass(CancelAndDeleteClassRequest classRequest) {
+
+            GymClasses classToCancel = await classRepository.getClassById(classRequest.classId);
+            Users user = await userRepository.getUser(classRequest.username);
+
+            if (user.UserType != UserTypes.Manager) {
+
+                return Unauthorized("This user is not a manager.");
+            }
+
+            if ( user.GymIdForeignKey != classToCancel.GymIdForeignKey) {
+
+                return Unauthorized("This manager does not work at the gym the class is taught at.");
+            }
+
+            bool deleted = await classRepository.managerDeleteClass(classToCancel);
+
+            if (deleted) {
+
+                return Ok("Class has been deleted.");
+            }
+            else{
+               
+                return StatusCode(500, "We were unable to delete the class on our side. Please try again later.");
+            }
+
+
+        }
+    }
+
         }
 
         [HttpPost("deregister")]

@@ -17,4 +17,9 @@ namespace GymMovesWebAPI.Data.Models.RequestModels {
         public string Username { get; set; }
         public int ClassId { get; set; }
     }
+
+    public class CancelAndDeleteClassRequest {
+        public string username { get; set; }
+        public int classId { get; set; }
+    }
 }

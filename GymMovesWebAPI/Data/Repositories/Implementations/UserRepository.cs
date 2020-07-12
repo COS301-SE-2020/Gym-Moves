@@ -53,6 +53,19 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<Users> getUserByMemberID(string memberID, int gymID){
+            
+            IQueryable<Users> query = context.Users;
+            query = query.Where(p => p.MembershipId == memberID);
+
+            if (query != null) { 
+                query = query.Where(p => p.GymIdForeignKey == gymID);
+                return await query.FirstOrDefaultAsync();
+            }
+
+            return null;
+        }
+
         /*
         Method Name:
             changePassword

@@ -32,6 +32,7 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
     public interface IUserRepository {
         public Task<bool> addUser(Users user);
         public Task<Users> getUser(string username);
+        public Task<Users> getUserByMemberID(string memberID, int gymID);
         public Task<bool> changePassword(string username, string password);
     }
 }

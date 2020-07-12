@@ -56,14 +56,4 @@ namespace GymMovesWebAPI.Data.Models.RequestModels
         public string username { get; set; }
     }
 
-    /*
-     Method Name:
-        GetNotificationRequest
-     Purpose:
-        This class is the structure of incoming get settings request.
-     */
-    public class GetNotificationRequest
-    {
-        public string username { get; set; }
-    }
 }

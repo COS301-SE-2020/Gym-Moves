@@ -18,6 +18,8 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 06/07/2020    | Longji         | Use the newly created mailer class to send email
 --------------------------------------------------------------------------------
+12/07/2020    | Danel          | Added getting announcements
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -40,70 +42,56 @@ using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.MailerProgram;
 
 namespace GymMovesWebAPI.Controllers {
+    [Route("api/notifications/[controller]")]
     [ApiController]
     public class NotificationsController : Controller {
-        private IUserRepository userRepository;
         private IGymRepository gymRepository;
         private INotificationSettingsRepository notificationSettingsRepository;
         private INotificationsRepository notificationsRepository;
         private readonly IMailer mailer;
 
-        public NotificationsController(IUserRepository userRep, INotificationSettingsRepository notificationSettingsRep, INotificationsRepository notificationsRep,
-            IGymRepository gymRepo, IMailer mail)
-        {
-
-            userRepository = userRep;
+        public NotificationsController(INotificationSettingsRepository notificationSettingsRep, INotificationsRepository notificationsRep,
+            IGymRepository gymRepo, IMailer mail) { 
+            
             notificationSettingsRepository = notificationSettingsRep;
             notificationsRepository = notificationsRep;
             gymRepository = gymRepo;
             mailer = mail;
         }
+        
 
         private async Task<bool> addAnnouncement(NotificationRequest req) {
             DateTime dateTime = convertToDate(req);
-                Notifications notif = new Notifications() { Body = req.body, GymIdForeignKey = req.gymId, Heading = req.heading, Date = dateTime };
+            
+            Notifications notif = new Notifications() { Body = req.body, GymIdForeignKey = req.gymId, Heading = req.heading, Date = dateTime };
 
-           return await notificationsRepository.addNotification(notif);
+            return await notificationsRepository.addNotification(notif);
         }
 
-        private DateTime convertToDate(NotificationRequest req)
-        {
+        private DateTime convertToDate(NotificationRequest req) {
             DateTime dateTime = new DateTime(int.Parse(req.announcementYear), int.Parse(req.announcementMonth), int.Parse(req.announcementDay));
             return dateTime;
         }
 
 
-        [Route("api/sendNotification")]
-        [HttpPost]
-        public async Task<ActionResult<NotificationResponse>> sendEmail(NotificationRequest req)
-        {
+        [HttpPost("sendNotification")]
+        public async Task<ActionResult<NotificationResponse>> sendEmail(NotificationRequest req) {
 
             bool sent = await addAnnouncement(req);
-            if (sent)
-            {
+            if (sent) {
 
                 string today = DateTime.Today.ToString("d");
                 string announcementDate = convertToDate(req).ToString("d");
 
-                if (today == announcementDate)
-                {
+                if (today == announcementDate) {
 
                     Users[] Members = await gymRepository.getMembers(req.gymId);
 
-                    foreach (Users user in Members)
-                    {
+                    foreach (Users user in Members) {
 
-                        if (user.NotificationSetting.Email)
-                        {
+                        if (user.NotificationSetting.Email) {
+                            
                             string from = "tiamangena@gmail.com"; //From address    
-                            /*MailMessage message = new MailMessage(from, user.Email);
-
-                            message.Subject = req.heading;
-                            message.Body = req.body;
-                            message.BodyEncoding = Encoding.UTF8;
-                            message.IsBodyHtml = true;
-                            sendGmailEmail(message);*/
-
                             await mailer.sendEmail(from, "Notifications", req.heading, req.body, user.Email, true);
                         }
                     }
@@ -114,9 +102,7 @@ namespace GymMovesWebAPI.Controllers {
 
             }
             else
-                return StatusCode(StatusCodes.Status500InternalServerError, new NotificationResponse() { message = "There was an error storing the announcement. Please try again later" });
-            
-            
+                return StatusCode(StatusCodes.Status500InternalServerError, new NotificationResponse() { message = "There was an error storing the announcement. Please try again later" });            
         }
         
         /*
@@ -125,19 +111,18 @@ namespace GymMovesWebAPI.Controllers {
        Purpose:
           This method handles the changing of the notification settings.
        */
-        [Route("api/changenotification")]
-        [HttpPost]
+        [HttpPost("changeNotificationSettings")]
         public async Task<ActionResult> changeNotificationSetting(NotificationsSettingsRequest request) {
 
             bool changed = await notificationSettingsRepository.changeSetting(request.username, request.email, request.push);
 
             if (changed) {
 
-                return Ok();
+                return Ok("Changed your settings successfully.");
             }
             else {
 
-                return StatusCode(500, "Something went wrong on our side.");
+                return StatusCode(500, "We were unable to save your settings right now.");
             }
 
         }
@@ -148,15 +133,14 @@ namespace GymMovesWebAPI.Controllers {
       Purpose:
          This method handles the getting of the notification settings.
       */
-        [Route("api/getnotifications")]
-        [HttpPost]
-        public async Task<ActionResult<GetNotificationResponse>> getNotificationSettings(GetNotificationRequest request) {
+        [HttpGet("getNotificationSettings")]
+        public async Task<ActionResult<GetNotificationResponse>> getNotificationSettings(string username) {
 
-            GetNotificationResponse response = new GetNotificationResponse();
-
-            NotificationSettings settings = await notificationSettingsRepository.getSettingsOfUser(request.username);
+            NotificationSettings settings = await notificationSettingsRepository.getSettingsOfUser(username);
 
             if (settings != null) {
+
+                GetNotificationResponse response = new GetNotificationResponse();
 
                 response.email = settings.Email;
                 response.push = settings.PushNotifications;
@@ -164,10 +148,28 @@ namespace GymMovesWebAPI.Controllers {
                 return Ok(response);
             }
             else {
-
-                return StatusCode(500, "Something went wrong on our side.");
+                return StatusCode(500, "We are unable to get your notification settings right now.");
             }
 
+        }
+
+        /*
+         Method Name:
+            getAllAnnouncements
+         Purpose:
+            This method handles the getting of the notification settings.
+         */
+        [HttpGet("getAllAnnouncements")]
+        public async Task<ActionResult<Notifications[]>> getAllAnnouncements(int gymID) {
+
+            Notifications[] notifications = await notificationsRepository.getGymNotifications(gymID);
+
+            if(notifications == null) {
+                return Unauthorized("This is not a valid gym.");
+            }
+            else {
+                return Ok(notifications);
+            }
         }
     }
 }

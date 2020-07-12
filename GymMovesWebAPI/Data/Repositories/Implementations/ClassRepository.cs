@@ -4,6 +4,8 @@ using GymMovesWebAPI.Data.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
+
 
 namespace GymMovesWebAPI.Data.Repositories.Implementations {
     public class ClassRepository : IClassRepository {
@@ -52,7 +54,7 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             if (registerList.Length == 0) {
                 return new GymClasses[0];
             }
-            
+
             GymClasses[] classList = new GymClasses[registerList.Length];
 
             for (int i = 0; i < registerList.Length; i++) {
@@ -70,6 +72,19 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             query = query.Where(p => p.StartTime == time);
 
             return await query.FirstOrDefaultAsync();
+        }
+
+
+        public async Task<bool> instructorCancelClass(int classId) {
+            var classToChange = context.Classes.First(a => a.ClassId == classId);
+            classToChange.Cancelled = !classToChange.Cancelled;
+
+            return (await context.SaveChangesAsync()) > 0;
+        }
+
+        public async Task<bool> managerDeleteClass(GymClasses classToDelete) {
+            context.Remove(classToDelete);
+            return (await context.SaveChangesAsync()) > 0;
         }
     }
 }
