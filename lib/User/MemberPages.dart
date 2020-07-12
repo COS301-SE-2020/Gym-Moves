@@ -30,6 +30,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:gym_moves/Dashboard/ViewPredictions.dart';
 import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
 import 'package:gym_moves/User/ViewMyProfile.dart';
+import 'package:gym_moves/GymClass/ViewAllClassesMember.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -233,7 +234,7 @@ class MemberPagesState extends State<MemberPages> {
                     Transform.translate(
                         offset:
                         Offset(0.8 * media.size.width, 2 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyClassesMember())),
+                        child: getArrow(0.05, media, ViewAllClassesMember())),
                     Transform.translate(
                         offset:
                         Offset(0.8 * media.size.width, 3 / 6 * media.size.height),

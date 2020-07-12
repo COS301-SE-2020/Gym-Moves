@@ -39,8 +39,8 @@ import 'package:gym_moves/User/ForgotPassword.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 /*
 Class Name:
@@ -64,7 +64,6 @@ Purpose:
   This class will build the page, and receive a response from the database.
  */
 class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
-
   List<ViewResponse> allClasses = [];
   String expResponse = "";
   String className = "";
@@ -73,10 +72,11 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   String instructorName = "";
   int classAvailableSpots = 0;
   String classDescription = "";
+  Future<String> res;
 
   /* This will hold the user's `type` and gymid. */
-  int gymid =0;
-  int type =0;
+  int gymid = 0;
+  int type = 0;
 
   Future idFromLocal;
   Future typeFromLocal;
@@ -90,9 +90,11 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
 
   @override
   void initState() {
-     idFromLocal = _getId();
-     typeFromLocal = _getType();
+    idFromLocal = _getId();
+    typeFromLocal = _getType();
     super.initState();
+
+    res = _makeGetRequest();
   }
 
   @override
@@ -108,8 +110,7 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
               height: 0.3 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image:
-                      const AssetImage('assets/RightSidePoolHalf.png'),
+                  image: const AssetImage('assets/RightSidePoolHalf.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -192,7 +193,23 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                   padding: EdgeInsets.all(10.0),
                 ))
           ]),
-          Expanded(child: getClasses(media))
+          Expanded(
+            child: FutureBuilder<String>(
+              future: res,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return getClasses(media);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                // By default, show a loading spinner.
+                return Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ));
+              },
+            ),
+          )
         ]));
   }
 
@@ -206,7 +223,6 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   _getId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     gymid = prefs.get("gymId");
-
   }
 
   /*
@@ -219,8 +235,8 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   _getType() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     type = prefs.get("type");
-
   }
+
   /*
   Method Name:
     _makeGetRequest
@@ -228,13 +244,23 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   Purpose:
      This method is used to make a get request and fetch the all the classes available at a specific gym.
 */
-  void _makeGetRequest() async {
-   String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymlist?gymid='+ gymid.toString();
-    //String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymlist?gymid=1';
-    var response = await http.get(url);
+  Future<String> _makeGetRequest() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    gymid = prefs.get("gymId");
+
+    String gID = gymid.toString();
+    String url =
+        'https://gymmoveswebapi.azurewebsites.net/api/classes/gymlist?gymid=$gID';
+    Response response = await get(url);
     String responseBody = response.body;
 
     expResponse = responseBody;
+
+    if (response.statusCode == 200) {
+      return responseBody;
+    } else {
+      throw Exception('Failed to retrieve user data. Please Try Again Later');
+    }
   }
 
   /*
@@ -246,94 +272,116 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
    */
 
   Widget getClasses(MediaQueryData media) {
-
     List<Widget> classes = new List();
-    _makeGetRequest();
-    List<dynamic> classesJson = json.decode(expResponse);
 
-    for (int i = 0; i < classesJson.length; i++)
-    {
-        allClasses.add(ViewResponse.fromJson(classesJson[i]));
-    }
-    if (allClasses.length==0) {
+    if (expResponse.isEmpty) {
       /*
     A pop up dialog would be nice for this.
      */
+      return Container(
+          height: 1 / 10 * media.size.height,
+          width: media.size.width,
+          child: Text(
+            'There are currently no available classes at the gym.',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: media.size.width * 0.05,
+              color: const Color(0xffffffff),
+              shadows: [
+                Shadow(
+                  color: const Color(0xbd000000),
+                  offset: Offset(0, 3),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ));
+    } else {
+      List<dynamic> classesJson = json.decode(expResponse);
 
-      _alertDialog("There are currently no available classes at the gym.");
-
-    }
-    else {
+      for (int i = 0; i < classesJson.length; i++) {
+        allClasses.add(ViewResponse.fromJson(classesJson[i]));
+      }
       int amountOfClasses = allClasses.length;
 
       for (int i = 0; i < amountOfClasses; i++) {
         className = allClasses[i].Name;
         classDay = allClasses[i].Day;
         instructorName = allClasses[i].Instructor;
-        classAvailableSpots = allClasses[i].MaxCapacity- allClasses[i].CurrentStudents;
+        classAvailableSpots =
+            allClasses[i].MaxCapacity - allClasses[i].CurrentStudents;
         classTime = allClasses[i].StartTime;
         classDescription = allClasses[i].Description;
         classes.add(GestureDetector(
             onTap: () {
-               Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ClassDetails(className: className, classDay:classDay,
-                            classTime:classTime)),
-              );
+                    builder: (context) => ClassDetails(
+                        instructorName: instructorName,
+                        className: className,
+                        classDay: classDay,
+                        classTime: classTime,
+                        classAvailableSpots: classAvailableSpots.toString(),
+                        classDescription: classDescription
+              )
+              ));
             },
-            child: Row(mainAxisAlignment:MainAxisAlignment.center,children: <Widget>[ Stack(children: <Widget>[
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClassDetails(),
-                            ));
-                      },
-                      child: Container(
-                          width: 0.7 * media.size.width,
-                          height: 0.2 * media.size.height,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(19.0),
-                            color: const Color(0x26ffffff),
-                            border: Border.all(
-                                width: 1.0, color: const Color(0x26707070)),
-                          ))),
-              Transform.translate(
-                  offset: Offset(0.33 * 0.8 * media.size.width,
-                      0.65 * 0.25 * media.size.height),
-                  child: Row(children: getStarsForClass(media))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
-                  child: SizedBox(
-                      width: 0.7 * media.size.width,
-                      child: Text("Class Name: " + className,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width)))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.07 * media.size.height),
-                  child: SizedBox(
-                      width:0.7 * media.size.width,
-                      child: Text("Class Day: " + classDay ,
-                          style: TextStyle(
-                              color: Colors.white,
-
-                              fontSize: 0.035 * media.size.width)))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.12 * media.size.height),
-                  child: SizedBox(
-                      width: 0.7 * media.size.width,
-                      child: Text("Class Time: " + classTime,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width))))
-            ])])));
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Stack(children: <Widget>[
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ClassDetails(),
+                              ));
+                        },
+                        child: Container(
+                            width: 0.7 * media.size.width,
+                            height: 0.2 * media.size.height,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(19.0),
+                              color: const Color(0x26ffffff),
+                              border: Border.all(
+                                  width: 1.0, color: const Color(0x26707070)),
+                            ))),
+                    Transform.translate(
+                        offset: Offset(0.33 * 0.8 * media.size.width,
+                            0.65 * 0.25 * media.size.height),
+                        child: Row(children: getStarsForClass(media))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.02 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Name: " + className,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.07 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Day: " + classDay,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.12 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Time: " + classTime,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width))))
+                  ])
+                ])));
 
         classes.add(SizedBox(height: 20));
       }
@@ -422,7 +470,6 @@ _alertDialog(text) async {
   );
 }
 
-
 /*
 Purpose:
 This class will be used to parse the response from the api which contains all the available classes at the gym.
@@ -440,23 +487,32 @@ class ViewResponse {
   final int CurrentStudents;
   final bool Cancelled;
 
-  ViewResponse({this.ClassId,this.GymId, this.Instructor, this.Name, this.Description, this.Day, this.StartTime,
-    this.EndTime, this.MaxCapacity, this.CurrentStudents,this.Cancelled });
+  ViewResponse(
+      {this.ClassId,
+      this.GymId,
+      this.Instructor,
+      this.Name,
+      this.Description,
+      this.Day,
+      this.StartTime,
+      this.EndTime,
+      this.MaxCapacity,
+      this.CurrentStudents,
+      this.Cancelled});
 
   factory ViewResponse.fromJson(Map<String, dynamic> json) {
     return ViewResponse(
-      ClassId: json['classId'], 
-      GymId: json['gymId'],
-      Instructor: json['instructor'],
-      Name: json['name'],
-      Description: json['description'],
-      Day: json['day'],
-      StartTime: json['startTime'],
-      EndTime: json['endTime'],
-      MaxCapacity: json['maxCapacity'],
-      CurrentStudents: json['currentStudents'],
-      Cancelled: json['cancelled'] 
-    );
+        ClassId: json['classId'],
+        GymId: json['gymId'],
+        Instructor: json['instructor'],
+        Name: json['name'],
+        Description: json['description'],
+        Day: json['day'],
+        StartTime: json['startTime'],
+        EndTime: json['endTime'],
+        MaxCapacity: json['maxCapacity'],
+        CurrentStudents: json['currentStudents'],
+        Cancelled: json['cancelled']);
   }
 }
 

@@ -28,8 +28,8 @@ import 'package:gym_moves/GymClass/ClassDetails.dart';
 import 'package:gym_moves/GymClass/ViewAllClassesMember.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 /*
 Class Name:
@@ -53,19 +53,19 @@ Purpose:
 
  */
 class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
-
   List<ViewResponse> allClasses = [];
-  String expResponse = "";
+  String expResponse = "%";
   String className = "";
   String classDay = "";
   String classTime = "";
   String instructorName = "";
   int classAvailableSpots = 0;
   String classDescription = "";
+  Future<String> res;
 
   /* This will hold the user's `type` and gymid. */
-  String username ="";
-  int type =0;
+  String username = "";
+  int type = 0;
 
   Future usernameFromLocal;
   Future typeFromLocal;
@@ -84,6 +84,7 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
     usernameFromLocal = _getUsername();
     typeFromLocal = _getType();
     super.initState();
+    res = _makeGetRequest();
   }
 
   @override
@@ -99,8 +100,7 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
               height: 0.3 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image:
-                  const AssetImage('assets/RightSidePoolHalf.png'),
+                  image: const AssetImage('assets/RightSidePoolHalf.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -116,7 +116,7 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
             ),
             Transform.translate(
                 offset:
-                Offset(0.04 * media.size.width, 0.04 * media.size.height),
+                    Offset(0.04 * media.size.width, 0.04 * media.size.height),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -139,33 +139,33 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                 offset: Offset(0.0, 0.23 * media.size.height),
                 child: Container(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewAllClassesMember()),
-                        );
-                      },
-                      child: Container(
-                        child: Text(
-                          'View Mine',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 0.05 * media.size.width,
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w300,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        width: 0.5 * media.size.width,
-                        height: 0.1 * media.size.height,
-                        padding: EdgeInsets.all(10.0),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewAllClassesMember()),
+                    );
+                  },
+                  child: Container(
+                    child: Text(
+                      'View Mine',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 0.05 * media.size.width,
+                        color: const Color(0xffffffff),
+                        fontWeight: FontWeight.w300,
                       ),
-                    ))),
+                      textAlign: TextAlign.center,
+                    ),
+                    width: 0.5 * media.size.width,
+                    height: 0.1 * media.size.height,
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                ))),
             Transform.translate(
                 offset:
-                Offset(0.5 * media.size.width, 0.23 * media.size.height),
+                    Offset(0.5 * media.size.width, 0.23 * media.size.height),
                 child: Container(
                   child: Text(
                     'View All',
@@ -183,7 +183,21 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                   padding: EdgeInsets.all(10.0),
                 ))
           ]),
-          Expanded(child: getClasses(media))
+          Expanded(
+            child: FutureBuilder<String>(
+              future: res,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return getClasses(media);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                // By default, show a loading spinner.
+                return Center(
+                    child: CircularProgressIndicator(backgroundColor: Colors.white,));
+              },
+            ),
+          )
         ]));
   }
 
@@ -197,7 +211,6 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   _getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     username = prefs.get("username");
-
   }
 
 /*
@@ -210,7 +223,6 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   _getType() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     type = prefs.get("type");
-
   }
 
   /*
@@ -220,12 +232,22 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   Purpose:
      This method is used to make a get request and fetch the all the classes available at a specific gym.
 */
-  void _makeGetRequest() async {
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/instructorlist?username='+username;
-    var response = await http.get(url);
+  Future<String> _makeGetRequest() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.get("username");
+
+    String url =
+        'https://gymmoveswebapi.azurewebsites.net/api/classes/userlist?username=$username';
+    Response response = await get(url);
     String responseBody = response.body;
 
     expResponse = responseBody;
+
+    if (response.statusCode == 200) {
+      return responseBody;
+    } else {
+      throw Exception('Failed to retrieve user data. Please Try Again Later');
+    }
   }
 
   /*
@@ -239,100 +261,117 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
    */
   Widget getClasses(MediaQueryData media) {
     List<Widget> classes = new List();
-    _makeGetRequest();
-    List<dynamic> classesJson = json.decode(expResponse);
 
-    for (int i = 0; i < classesJson.length; i++)
-    {
-      allClasses.add(ViewResponse.fromJson(classesJson[i]));
-    }
-    if (allClasses.length==0) {
+    if (expResponse.isEmpty) {
       /*
     A pop up dialog would be nice for this.*/
-      if (type == 1) // if the user is an instructor
-        _alertDialog("You are currently not instructing any classes!");
-      else
-      if (type == 0) //if the user is a member
-      _alertDialog("You are currently not signed up for any classes!");
-    }
-    else {
+      return Container(
+          height: 1 / 10 * media.size.height,
+          width: media.size.width,
+          child: Text(
+            'You have not signed up for any classes',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: media.size.width * 0.05,
+              color: const Color(0xffffffff),
+              shadows: [
+                Shadow(
+                  color: const Color(0xbd000000),
+                  offset: Offset(0, 3),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ));
+    } else {
+      List<dynamic> classesJson = json.decode(expResponse);
+
+      for (int i = 0; i < classesJson.length; i++) {
+        allClasses.add(ViewResponse.fromJson(classesJson[i]));
+      }
       int amountOfClasses = allClasses.length;
 
       for (int i = 0; i < amountOfClasses; i++) {
-        className = allClasses[i].Name;
-        classDay = allClasses[i].Day;
-        instructorName = allClasses[i].Instructor;
-        classAvailableSpots = allClasses[i].MaxCapacity- allClasses[i].CurrentStudents;
-        classTime = allClasses[i].StartTime;
-        classDescription = allClasses[i].Description;
+        className = allClasses[i].name;
+        classDay = allClasses[i].day;
+        instructorName = allClasses[i].instructor;
+        classAvailableSpots =
+            allClasses[i].maxCapacity - allClasses[i].currentStudents;
+        classTime = allClasses[i].startTime;
+        classDescription = allClasses[i].description;
         classes.add(GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ClassDetails(className: className, classDay:classDay,
-                            classTime:classTime)),
+                    builder: (context) => ClassDetails(
+                        className: className,
+                        classDay: classDay,
+                        classTime: classTime)),
               );
             },
-            child: Row(mainAxisAlignment:MainAxisAlignment.center,children: <Widget>[ Stack(children: <Widget>[
-              GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ClassDetails(),
-                        ));
-                  },
-                  child: Container(
-                      width: 0.7 * media.size.width,
-                      height: 0.2 * media.size.height,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(19.0),
-                        color: const Color(0x26ffffff),
-                        border: Border.all(
-                            width: 1.0, color: const Color(0x26707070)),
-                      ))),
-              Transform.translate(
-                  offset: Offset(0.33 * 0.8 * media.size.width,
-                      0.65 * 0.25 * media.size.height),
-                  child: Row(children: getStarsForClass(media))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
-                  child: SizedBox(
-                      width: 0.7 * media.size.width,
-                      child: Text("Class Name: " + className,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width)))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.07 * media.size.height),
-                  child: SizedBox(
-                      width:0.7 * media.size.width,
-                      child: Text("Class Day: " + classDay,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width)))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.12 * media.size.height),
-                  child: SizedBox(
-                      width: 0.7 * media.size.width,
-                      child: Text("Class Time: " + classTime,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width))))
-            ])])));
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Stack(children: <Widget>[
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ClassDetails(),
+                              ));
+                        },
+                        child: Container(
+                            width: 0.7 * media.size.width,
+                            height: 0.2 * media.size.height,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(19.0),
+                              color: const Color(0x26ffffff),
+                              border: Border.all(
+                                  width: 1.0, color: const Color(0x26707070)),
+                            ))),
+                    Transform.translate(
+                        offset: Offset(0.33 * 0.8 * media.size.width,
+                            0.65 * 0.25 * media.size.height),
+                        child: Row(children: getStarsForClass(media))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.02 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Name: " + className,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.07 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Day: " + classDay,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.12 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Time: " + classTime,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width))))
+                  ])
+                ])));
 
         classes.add(SizedBox(height: 20));
       }
+      return ListView(padding: const EdgeInsets.all(15), children: classes);
     }
-    return ListView(padding: const EdgeInsets.all(15), children: classes);
   }
 }
-
 
 /*
    Method Name:
@@ -392,7 +431,7 @@ List<Widget> getStarsForClass(MediaQueryData media) {
 
 _alertDialog(text) async {
   return showDialog<void>(
-   // context: context,
+    // context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -413,41 +452,51 @@ _alertDialog(text) async {
     },
   );
 }
+
 /*
 Purpose:
 This class will be used to parse the response from the api which contains all the classes the instructor instructs at the
 gym.
 */
 class ViewResponse {
-  final int ClassId;
-  final int GymId;
-  final String Instructor;
-  final String Name;
-  final String Description;
-  final String Day;
-  final String StartTime;
-  final String EndTime;
-  final int MaxCapacity;
-  final int CurrentStudents;
-  final bool Cancelled;
+  final int classId;
+  final int gymId;
+  final String instructor;
+  final String name;
+  final String description;
+  final String day;
+  final String startTime;
+  final String endTime;
+  final int maxCapacity;
+  final int currentStudents;
+  final bool cancelled;
 
-  ViewResponse({this.ClassId,this.GymId, this.Instructor, this.Name, this.Description, this.Day, this.StartTime,
-    this.EndTime, this.MaxCapacity, this.CurrentStudents,this.Cancelled });
+  ViewResponse(
+      {this.classId,
+      this.gymId,
+      this.instructor,
+      this.name,
+      this.description,
+      this.day,
+      this.startTime,
+      this.endTime,
+      this.maxCapacity,
+      this.currentStudents,
+      this.cancelled});
 
   factory ViewResponse.fromJson(Map<String, dynamic> json) {
     return ViewResponse(
-      ClassId: json['classId'], 
-      GymId: json['gymId'],
-      Instructor: json['instructor'],
-      Name: json['name'],
-      Description: json['description'],
-      Day: json['day'],
-      StartTime: json['startTime'],
-      EndTime: json['endTime'],
-      MaxCapacity: json['maxCapacity'],
-      CurrentStudents: json['currentStudents'],
-      Cancelled: json['cancelled'] 
-    );
+        classId: json['classId'],
+        gymId: json['gymId'],
+        instructor: json['instructor'],
+        name: json['name'],
+        description: json['description'],
+        day: json['day'],
+        startTime: json['startTime'],
+        endTime: json['endTime'],
+        maxCapacity: json['maxCapacity'],
+        currentStudents: json['currentStudents'],
+        cancelled: json['cancelled']);
   }
 }
 

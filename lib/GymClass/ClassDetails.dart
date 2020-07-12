@@ -41,7 +41,15 @@ Purpose:
  */
 
 class ClassDetails extends StatefulWidget {
-  const ClassDetails({Key key}) : super(key: key);
+  final String instructorName;
+  final String className;
+  final String classDay;
+  final String classTime;
+  final String classAvailableSpots;
+  final String classDescription;
+
+  const ClassDetails({Key key, this.instructorName = "No data available", this.className = "No data available", this.classDay="No data available",
+  this.classTime= "No data available", this.classAvailableSpots= "No data available", this.classDescription= "No data available"}) : super(key: key);
 
   @override
   ClassDetailsState createState() => ClassDetailsState();
@@ -58,13 +66,6 @@ Purpose:
 
 class ClassDetailsState extends State<ClassDetails> {
   ClassDetailsState({Key key});
-
-  String instructorName = "";
-  String className = "";
-  String classDay = "";
-  String classTime = "";
-  String classAvailableSpots = "";
-  String classDescription = "";
 
   /*
    Method Name:
@@ -120,7 +121,7 @@ class ClassDetailsState extends State<ClassDetails> {
                       height: 0.31 * media.size.height,
                       child: Center(
                           child: AutoSizeText(
-                        className,
+                        widget.className,
                         style: TextStyle(
                           fontFamily: 'FreestyleScript',
                           fontSize: 0.15 * media.size.width,
@@ -220,7 +221,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                instructorName,
+                widget.instructorName,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -271,7 +272,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classDay,
+                widget.classDay,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -301,7 +302,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classTime,
+                widget.classTime,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -331,7 +332,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classAvailableSpots,
+                widget.classAvailableSpots,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -361,7 +362,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classDescription,
+                widget.classDescription,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -389,12 +390,13 @@ class ClassDetailsState extends State<ClassDetails> {
     Currently hardcoded. This will be changed.
    */
   void getClassDetails(){
-    className = "a name";
-    classAvailableSpots = "a number";
-    instructorName = "a persons name";
-    classDescription = "a description";
-    classTime = "a time";
-    classDay = "a day";
+    /*className = widget.className;
+    classAvailableSpots = widget.classAvailableSpots;
+    instructorName = widget.instructorName;
+    classDescription = widget.classDescription;
+    classTime = widget.classTime;
+    classDay = widget.classDay;
+    */
   }
 
   /*
