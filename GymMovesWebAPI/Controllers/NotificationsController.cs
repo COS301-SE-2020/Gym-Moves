@@ -40,6 +40,8 @@ using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.MailerProgram;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace GymMovesWebAPI.Controllers {
     [Route("api/[controller]")]
@@ -87,10 +89,14 @@ namespace GymMovesWebAPI.Controllers {
 
                     Users[] Members = await gymRepository.getMembers(req.gymId);
 
+
                     foreach (Users user in Members) {
 
-                        if (user.NotificationSetting.Email) {
-                            
+                        NotificationSettings settings = await notificationSettingsRepository.getSettingsOfUser
+                            (user.Username);
+
+
+                        if (settings.Email) {
                             string from = "tiamangena@gmail.com"; //From address    
                             await mailer.sendEmail(from, "Notifications", req.heading, req.body, user.Email, true);
                         }
@@ -164,11 +170,24 @@ namespace GymMovesWebAPI.Controllers {
 
             Notifications[] notifications = await notificationsRepository.getGymNotifications(gymID);
 
-            if(notifications == null) {
+            List<Notifications> announcementsThatHaveBeenMade = new List<Notifications>();
+
+            foreach (Notifications notif in notifications)
+            {
+                DateTime now = DateTime.Now;
+                DateTime stored = new DateTime(notif.Date.Year, notif.Date.Month, notif.Date.Day);
+
+                if(stored.Subtract(now).TotalDays <= 0)
+                {
+                    announcementsThatHaveBeenMade.Add(notif);
+                }
+            }
+
+            if (notifications.Length == 0) {
                 return Unauthorized("This is not a valid gym.");
             }
             else {
-                return Ok(notifications);
+                return Ok(announcementsThatHaveBeenMade);
             }
         }
     }

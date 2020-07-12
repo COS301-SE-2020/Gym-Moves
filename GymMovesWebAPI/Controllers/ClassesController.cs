@@ -293,7 +293,7 @@ namespace GymMovesWebAPI.Controllers
             bool changed = await classRepository.instructorCancelClass(classRequest.classId);
 
             if (changed) {
-                return Ok("Class has been cancelled");
+                return Ok("Class has been cancelled.");
             }
             else {
                 return StatusCode(500, "We were unable to change the class on our side. Please try again later.");

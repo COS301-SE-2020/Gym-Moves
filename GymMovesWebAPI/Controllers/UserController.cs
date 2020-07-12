@@ -171,8 +171,8 @@ namespace GymMovesWebAPI.Controllers {
 
                 NotificationSettings newUserNotifs = new NotificationSettings();
 
-                newUserNotifs.Email = false;
-                newUserNotifs.PushNotifications = true;
+                newUserNotifs.Email = true;
+                newUserNotifs.PushNotifications = false;
                 newUserNotifs.UsernameForeignKey = newUserAccount.Username;
                 newUserNotifs.User = newUserAccount;
 
