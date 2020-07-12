@@ -25,8 +25,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:gym_moves/GymClass/EditClass.dart';
-import 'package:gym_moves/GymClass/AddAClass.dart';
+import 'package:gymmoves/GymClass/EditClass.dart';
+import 'package:gymmoves/GymClass/AddAClass.dart';
 
 /*
 Class Name:

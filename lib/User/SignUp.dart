@@ -7,53 +7,54 @@ Date Created
   15/06/2020
 Update History:
 --------------------------------------------------------------------------------
-| Name               | Date              | Changes                             |
+ Name               | Date         | Changes
 --------------------------------------------------------------------------------
-| Danel              | 24/06/2020        | Made UI responsive and functional   |
+ Danel              | 24/06/2020   | Made UI responsive and functional
 --------------------------------------------------------------------------------
-| Danel              | 26/06/2020        | Added autocomplete field            |
+ Danel              | 26/06/2020   | Added autocomplete field
 --------------------------------------------------------------------------------
-|Raeesa             | 27/06/2020         | Added error messages, form          |
-                    |                    | validation and dialog boxes         |
+Raeesa              | 27/06/2020   | Added error messages, form
+                    |              | validation and dialog boxes
 --------------------------------------------------------------------------------
-| Raeesa             | 28/06/2020        | Added API and database functionality|
+ Raeesa             | 28/06/2      | Added API and database functionality
 --------------------------------------------------------------------------------
-| Raeesa             | 03/07/2020        | Changed API                         |
+ Raeesa             | 03/07/2020   | Changed API
 --------------------------------------------------------------------------------
-| Raeesa             | 04/07/2020        |Added welcome page redirect and local|
-                                           storage                             |
+ Raeesa             | 04/07/2020   | Added welcome page redirect and local
+                                   |   storage
 --------------------------------------------------------------------------------
-| Tia                | 10/07/2020        | Added hide/show password field
+ Danel              | 05/07/2020   | Added autocomplete
 --------------------------------------------------------------------------------
+
 Functional Description:
   This file contains the SignUp class that creates the class that creates the
   UI. The SignUpState class handles the building of the UI and making all the
   components functional and responsive.
   This file will also handle sending the information that is entered to the
   database to verify if they can create an account.
+
 Classes in the File:
-- SignUp
-- SignUpState
-- User
--Gym
+  - SignUp
+  - SignUpState
+  - User
+  - Gym
  */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gym_moves/User/MemberPages.dart';
-import 'package:gym_moves/User/LogIn.dart';
-import 'package:gym_moves/User/ManagerPages.dart';
-import 'package:gym_moves/User/InstructorPages.dart';
+import 'package:gymmoves/User/MemberPages.dart';
+import 'package:gymmoves/User/LogIn.dart';
+import 'package:gymmoves/User/ManagerPages.dart';
+import 'package:gymmoves/User/InstructorPages.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:async';
-import 'package:flutter/scheduler.dart';
 
 /*Class Name:
   SignUp
+
 Purpose:
   This class creates the class that will build the page. It ensures state
   remains, so that when the keyboard closes the for fields do not clear.
@@ -70,7 +71,7 @@ class SignUp extends StatefulWidget {
 /*Class Name:
   Gym
 Purpose:
-  This class creates the Json object of the gyms, received from the API.
+  This class interprets the Json object of the gyms, received from the API.
  */
 class Gym {
   final int gymId;
@@ -99,63 +100,46 @@ class SignUpState extends State<SignUp> {
   String password = "";
   String gym = "";
   String username = "";
-  bool hidePassword = true;
 
   final signUpFormKey = GlobalKey<FormState>();
 
-  Future loadFuture;
-  List<dynamic> send = [];
-
-//  send.add("v");
-
+  List<Gym> gyms = [];
   int arrLength = 0;
-  String one = "";
-  String two = "";
 
   @override
   void initState() {
     _makeGetRequest();
     super.initState();
-    loadFuture = _makeGetRequest();
   }
 
   AutoCompleteTextField searchTextField;
-  TextEditingController controller = new TextEditingController();
-  GlobalKey<AutoCompleteTextFieldState<Gym>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<Gym>> gymsKey = new GlobalKey();
 
   /*
-  Method Name: _makeGetRequest
-  Purpose: This method is used to make a get request and fetch the different gym's
-  and their branches. This list will be used for the auto-complete field, "Gym".
+  Method Name:
+    _makeGetRequest
+
+  Purpose:
+     This method is used to make a get request and fetch the different gym's
+    and their branches. This list will be used for the auto-complete field, "Gym".
 */
   _makeGetRequest() async {
     String url = 'https://gymmoveswebapi.azurewebsites.net/api/gym/getall';
     Response response = await get(url);
-    int statusCode = response.statusCode;
-    Map<String, String> headers = response.headers;
-    String contentType = headers['content-type'];
-    String jsonR = response.body;
+    String responseBody = response.body;
 
-    List<dynamic> list = json.decode(jsonR);
-    int length = list.length;
-    arrLength = length;
-    List<dynamic> send2 = [];
-    for (int i = 0; i < length; i++) {
-      Gym gym = Gym.fromJson(list[i]);
+    List<dynamic> gymsJson = json.decode(responseBody);
+    arrLength = gymsJson.length;
 
-      String g = gym.gymName + ", " + gym.gymBranch;
-      send2.add(g);
-      send = send2;
+    for (int i = 0; i < arrLength; i++) {
+      gyms.add(Gym.fromJson(gymsJson[i]));
     }
-    one = send[0];
-    two = send[1];
-    print(send[0]);
-//    return send;
   }
 
   /*
    Method Name:
     build
+
    Purpose:
     This method builds the UI for the screen for a user to sign up. It calls the
     necessary function in order to send the data to the database. If the sign up
@@ -164,18 +148,15 @@ class SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-//  _makeGetRequest();
-//    return new FutureBuilder(
-//        future: loadFuture,
-//        builder: (BuildContext context, AsyncSnapshot snapshot) {
-//      if (snapshot.connectionState == ConnectionState.done) {
+
     final gymIdField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
-            child: TextFormField(
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
+            child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: false,
                 style: TextStyle(
@@ -184,7 +165,7 @@ class SignUpState extends State<SignUp> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Gym Member ID',
+                    labelText: 'Member ID',
                     contentPadding: const EdgeInsets.all(15.0),
                     border: InputBorder.none,
                     labelStyle: new TextStyle(color: Colors.black54),
@@ -200,14 +181,15 @@ class SignUpState extends State<SignUp> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final usernameField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
             child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: false,
@@ -233,21 +215,21 @@ class SignUpState extends State<SignUp> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final passwordField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: hidePassword,
+                obscureText: true,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
-//                maxLines: 9,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -267,60 +249,53 @@ class SignUpState extends State<SignUp> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
+
+    searchTextField = AutoCompleteTextField<Gym>(
+      style: TextStyle(
+        color: Colors.black54,
+      ),
+      itemBuilder: (context, item) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              item.gymName + ", " + item.gymBranch,
+              style: TextStyle(fontSize: 0.04 * media.size.width),
+            )
+          ],
+        );
+      },
+      itemFilter: (item, query) {
+        return item.gymName.toLowerCase().startsWith(query.toLowerCase());
+      },
+      itemSorter: (a, b) {
+        return a.gymName.compareTo(b.gymName);
+      },
+      itemSubmitted: (item) {
+        setState(() => searchTextField.textField.controller.text =
+            item.gymName + ", " + item.gymBranch);
+        gym = item.gymName + ", " + item.gymBranch;
+      },
+      key: gymsKey,
+      suggestions: gyms,
+      clearOnSubmit: false,
+      decoration: InputDecoration(
+          labelText: 'Gym',
+          labelStyle: new TextStyle(color: Colors.black54),
+          border: InputBorder.none,
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+    );
 
     final gymField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+            padding: EdgeInsets.all(0.01 * media.size.width),
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
-            child: AutoCompleteTextField<dynamic>(
-              style: TextStyle(
-                color: Colors.black54,
-              ),
-              itemBuilder: (context, item) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      item.gymName,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(15.0),
-                    ),
-                    Text(
-                      item.gymBranch,
-                    )
-                  ],
-                );
-              },
-              itemFilter: (item, query) {
-                return item.gymName
-                    .toLowerCase()
-                    .startsWith(query.toLowerCase());
-              },
-              itemSorter: (a, b) {
-                return a.gymName.compareTo(b.gymName);
-              },
-              itemSubmitted: (item) {
-                setState(() =>
-                    searchTextField.textField.controller.text = item.gymName);
-              },
-              key: key,
-              suggestions: send,
-              clearOnSubmit: false,
-              textSubmitted: (text) => setState(() {
-                gym = text;
-              }),
-              decoration: InputDecoration(
-                  labelText: 'Gym',
-                  labelStyle: new TextStyle(color: Colors.black54),
-                  border: InputBorder.none,
-                  enabledBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none)),
-            )),
+            height: 0.085 * media.size.height,
+            alignment: Alignment.centerLeft,
+            child: searchTextField),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.white);
 
@@ -412,29 +387,24 @@ class SignUpState extends State<SignUp> {
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
                         0.08 * 0.3 * media.size.height),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          hidePassword = !hidePassword;
-                        });
-                      },
-                      child:  Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility,
-                      
-                    )
-                  ), )
+                    child: SvgPicture.string(
+                      lock,
+                      width: media.size.width * 0.05,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    ))
               ]),
               SizedBox(height: 0.06 * media.size.height),
             ])),
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
-                child: RaisedButton(
+                child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
-                    sendValuesToDatabase(gymMemberId, password, gym, username);
+                    sendValuesToDatabase();
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
@@ -484,19 +454,19 @@ class SignUpState extends State<SignUp> {
       ]),
     );
   }
-//        });
-//  }
 
   /*
-  Method Name: _showAlertDialog
-  Purpose: This method is used when validating the form.
+  Method Name:
+    _showAlertDialog
+  Purpose:
+    This method is used when validating the form.
            If a field is invalid or incomplete, the alert dialog will show.
 */
 
   void _showAlertDialog(String message, String message2) {
     // set up the button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -519,15 +489,16 @@ class SignUpState extends State<SignUp> {
   }
 
 /*
-  Method Name: sendValuesToDatabase
-  Purpose: This method is called when the send button is pressed.
-           It sends the values to the database to be stored.
+  Method Name:
+    sendValuesToDatabase
+  Purpose:
+    This method is called when the send button is pressed. It sends the values
+    to the database to be stored.
 */
-
-  sendValuesToDatabase(id, password, gym, username) async {
+  sendValuesToDatabase() async {
     bool secure = validateStructure(password);
 
-    if (id == "" || password == "" || gym == "" || username == "") {
+    if (gymMemberId == "" || password == "" || gym == "" || username == "") {
       _showAlertDialog(
           "Please fill in missing fields", "All fields are required");
     } else if (secure == false) {
@@ -535,62 +506,47 @@ class SignUpState extends State<SignUp> {
           "Your password needs to be 8 characters long, with at least one special character, number, small letter and capital letter",
           "Password invalid");
     } else {
-//      _showAlertDialog("message", "");
-      _makePostRequest(id, password, gym, username);
+      _makePostRequest();
     }
   }
 
   /*
-  Method Name: _makePostRequest
-  Purpose: This method is called when the all the fields in the form has been verified.
-           It makes a post request to our API with the respective fields, ensuring that
-           this user is registered to a gym. Once they're logged in, it redirects them to
-           their respective welcome pages.
+  Method Name:
+    _makePostRequest
+  Purpose:
+    This method is called when the all the fields in the form has been verified.
+    It makes a post request to our API with the respective fields, ensuring that
+    this user is registered to a gym. Once they're logged in, it redirects them to
+    their respective welcome pages.
 */
-  _makePostRequest(gymMemberId, password, gym, user) async {
+  _makePostRequest() async {
     String url = 'https://gymmoveswebapi.azurewebsites.net/api/signup';
-    Map<String, String> headers = {"Content-type": "application/json"};
 
-    String branch = gym;
-    var v = branch.split(", ");
+    var gymArray = gym.split(", ");
 
     final http.Response response = await http.post(
       url,
       headers: <String, String>{'Content-type': 'application/json'},
       body: jsonEncode({
-        "username": user,
+        "username": username,
         "password": password,
         "gymMemberID": gymMemberId,
-        "gymBranch": v[0],
-        "gymName": v[1],
+        "gymName": gymArray[0],
+        "gymBranch": gymArray[1],
       }),
     );
 
-    print(jsonEncode({
-      "username": user,
-      "password": password,
-      "gymMemberID": gymMemberId,
-      "gymName": v[0],
-      "gymBranch": v[1],
-    }));
+    String responseBody = response.body;
 
-    int statusCode = response.statusCode;
-
-    print(statusCode);
-    String rbody = response.body;
-    String stat = statusCode.toString();
-
-    User userjson = User.fromJson(json.decode(rbody));
+    User userjson = User.fromJson(json.decode(responseBody));
     bool usernameValid = userjson.usernameValid;
     bool gymMemberIdValid = userjson.gymMemberIdValid;
     int userType = userjson.userType;
     String name = userjson.name;
-//
-//_showAlertDialog(rbody, stat);
 
     if (usernameValid == false && gymMemberIdValid == true) {
       _showAlertDialog(
-          "Your username is taken, try a different one.", 'User name invalid');
+          "Your username is taken, try a different one.", 'Username invalid');
     } else if (gymMemberIdValid == false && usernameValid == true) {
       _showAlertDialog("Did you make a typo in your Gym ID?", "Gym ID invalid");
     } else if (gymMemberIdValid == false && usernameValid == false) {
@@ -601,9 +557,10 @@ class SignUpState extends State<SignUp> {
       final prefs = await SharedPreferences.getInstance();
       /* set value */
       prefs.setString('gymId', gymMemberId);
-      prefs.setString('userName', user);
+      prefs.setString('username', username);
       prefs.setInt('type', userType);
       prefs.setString("name", name);
+      prefs.setString("gymName", gymArray[0]);
 
       if (userType == 0) {
         Navigator.of(context).pop();
@@ -631,7 +588,6 @@ class SignUpState extends State<SignUp> {
           "Try again in a few minutes", "Sorry, there's a problem on our side");
     }
   }
-//  }
 
 /*
   Method Name: validateStructure

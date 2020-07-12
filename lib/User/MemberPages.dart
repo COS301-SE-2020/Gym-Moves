@@ -1,23 +1,18 @@
 /*
 File Name
   MemberPages.dart
-
 Author:
   Danel
-
 Date Created
   27/06/2020
-
 Update History:
 --------------------------------------------------------------------------------
 | Name               | Date              | Changes                             |
 --------------------------------------------------------------------------------
-
 Functional Description:
   This file contains the MemberPages class that handles building the UI for
   the Welcome page and the menu. It also implements the scroll screen the user
   will first encounter. It also shows the announcements to users.
-
 Classes in the File:
 - MemberPages
 - MemberPagesState
@@ -27,15 +22,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import 'package:gym_moves/Dashboard/ViewPredictions.dart';
-import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
-import 'package:gym_moves/User/ViewMyProfile.dart';
-import 'package:gym_moves/GymClass/ViewAllClassesMember.dart';
+import 'package:gymmoves/Dashboard/ViewPredictions.dart';
+import 'package:gymmoves/GymClass/ViewMyClassesMember.dart';
+import 'package:gymmoves/User/ViewMyProfile.dart';
+import 'package:gymmoves/GymClass/ViewAllClassesMember.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 /*
 Class Name:
   MemberPages
-
 Purpose:
   This class creates the class that will build the page. It allows for dynamic
   adding of elements onto the welcome page.
@@ -50,7 +46,6 @@ class MemberPages extends StatefulWidget {
 /*
 Class Name:
   MemberPagesState
-
 Purpose:
   This class builds the UI for the scrollable welcome and menu page for members.
   It also ensures all the menu options are functional and that the UI is
@@ -65,9 +60,32 @@ class MemberPagesState extends State<MemberPages> {
     initialPage: 1,
   );
 
+
+  /* This will store the name of the person.*/
+  String name = "";
+
+  /* This will store the number of people that are currently at the gym.*/
+  String numberOfPeople = "";
+
+  /* This will store the gym name.*/
+  String gymName = "";
+
+  Future local;
+
+  @override
+  void initState() {
+    local = _getDetails();
+    super.initState();
+  }
+
+  _getDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    name = prefs.get("name");
+    gymName = prefs.get("gymName");
+  }
+
   /*
    Method Name: build
-
    Purpose:
     This method builds the UI for the screen. It calls the necessary
     function in order to display the dynamic information the user needs
@@ -77,157 +95,296 @@ class MemberPagesState extends State<MemberPages> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    /* This will store the name of the person.*/
-    String name = "";
-    /* This will store the number of people that are currently at the gym.*/
-    String numberOfPeople = "";
-    /* This will store the gym name.*/
-    String gymName = "";
-
-    return Scaffold(
-        backgroundColor: const Color(0xff513369),
-        body: PageView(controller: controller, children: <Widget>[
-          Column(),
-          Stack(children: <Widget>[
-            Container(
-              width: media.size.width,
-              height: media.size.height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: const AssetImage('assets/LeftSidePool.png'),
-                  fit: BoxFit.fill,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(1.0), BlendMode.dstIn
+    return new FutureBuilder(
+        future: local,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+                backgroundColor: const Color(0xff513369),
+                body: PageView(controller: controller, children: <Widget>[
+                  Column(),
+                  Stack(children: <Widget>[
+                    Container(
+                      width: media.size.width,
+                      height: media.size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: const AssetImage('assets/LeftSidePool.png'),
+                          fit: BoxFit.fill,
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(1.0), BlendMode.dstIn
+                          ),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                        offset: Offset(0.0, 0.4 * media.size.height),
+                        child: Container(
+                            height: 1 / 5 * media.size.height,
+                            width: media.size.width,
+                            child: AutoSizeText('Welcome $name!',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 42,
+                                    color: const Color(0xffffffff),
+                                    shadows: [
+                                      Shadow(
+                                        color: const Color(0xbd000000),
+                                        offset: Offset(0, 3),
+                                        blurRadius: 6,
+                                      )
+                                    ]),
+                                maxLines: 1,
+                                textAlign: TextAlign.center)
+                        )
+                    ),
+                    Transform.translate(
+                        offset: Offset(0.0, 0.5 * media.size.height),
+                        child: Container(
+                            height: 1 / 10 * media.size.height,
+                            width: media.size.width,
+                            child: Text(
+                              'Number of people at $gymName:',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: media.size.width * 0.05,
+                                color: const Color(0xffffffff),
+                                shadows: [
+                                  Shadow(
+                                    color: const Color(0xbd000000),
+                                    offset: Offset(0, 3),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                        )
+                    ),
+                    Transform.translate(
+                        offset: Offset(0.0, 0.56 * media.size.height),
+                        child: Container(
+                            height: 1 / 10 * media.size.height,
+                            width: media.size.width,
+                            child: Text(
+                              numberOfPeople,
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: media.size.width * 0.05,
+                                color: const Color(0xffffffff),
+                                shadows: [
+                                  Shadow(
+                                    color: const Color(0xbd000000),
+                                    offset: Offset(0, 3),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                        )
+                    )
+                  ]
                   ),
-                ),
-              ),
-            ),
-            Transform.translate(
-                offset: Offset(0.0, 0.4 * media.size.height),
-                child: Container(
-                    height: 1 / 5 * media.size.height,
-                    width: media.size.width,
-                    child: AutoSizeText('Welcome $name!',
-                        style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 42,
-                            color: const Color(0xffffffff),
-                            shadows: [
-                              Shadow(
-                                color: const Color(0xbd000000),
-                                offset: Offset(0, 3),
-                                blurRadius: 6,
-                              )
-                            ]),
-                        maxLines: 1,
-                        textAlign: TextAlign.center)
-                )
-            ),
-            Transform.translate(
-                offset: Offset(0.0, 0.5 * media.size.height),
-                child: Container(
-                    height: 1 / 10 * media.size.height,
-                    width: media.size.width,
-                    child: Text(
-                      'Number of people at $gymName:',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: media.size.width * 0.05,
-                        color: const Color(0xffffffff),
-                        shadows: [
-                          Shadow(
-                            color: const Color(0xbd000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          ),
-                        ],
+                  Stack(children: <Widget>[
+                    Container(
+                      width: media.size.width,
+                      height: media.size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: const AssetImage('assets/RightSidePool.png'),
+                          fit: BoxFit.fill,
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                    )
-                )
-            ),
-            Transform.translate(
-                offset: Offset(0.0, 0.56 * media.size.height),
-                child: Container(
-                    height: 1 / 10 * media.size.height,
-                    width: media.size.width,
-                    child: Text(
-                      numberOfPeople,
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: media.size.width * 0.05,
-                        color: const Color(0xffffffff),
-                        shadows: [
-                          Shadow(
-                            color: const Color(0xbd000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
+                    ),
+                    Transform.translate(
+                        offset:
+                        Offset(0.1 * media.size.width, 1.8 / 6 * media.size.height),
+                        child: getMenuContainers(0.8, 0.1, media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.1 * media.size.width, 2.8 / 6 * media.size.height),
+                        child: getMenuContainers(0.8, 0.1, media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.1 * media.size.width, 3.8 / 6 * media.size.height),
+                        child: getMenuContainers(0.8, 0.1, media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.15 * media.size.width, 2 / 6 * media.size.height),
+                        child: getMenuOptionText('View classes', media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.15 * media.size.width, 3 / 6 * media.size.height),
+                        child: getMenuOptionText('View predictions', media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.15 * media.size.width, 4 / 6 * media.size.height),
+                        child: getMenuOptionText('View my profile', media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.8 * media.size.width, 2 / 6 * media.size.height),
+                        child: getArrow(0.05, media, ViewAllClassesMember())),
+                    Transform.translate(
+                        offset:
+                        Offset(0.8 * media.size.width, 3 / 6 * media.size.height),
+                        child: getArrow(0.05, media, ViewPredictions())),
+                    Transform.translate(
+                        offset:
+                        Offset(0.8 * media.size.width, 4 / 6 * media.size.height),
+                        child: getArrow(0.05, media, ViewMyProfile())),
+                  ])
+                ]));
+          } else {
+            return Scaffold(
+                backgroundColor: const Color(0xff513369),
+                body: PageView(controller: controller, children: <Widget>[
+                  Column(),
+                  Stack(children: <Widget>[
+                    Container(
+                      width: media.size.width,
+                      height: media.size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: const AssetImage('assets/LeftSidePool.png'),
+                          fit: BoxFit.fill,
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(1.0), BlendMode.dstIn
                           ),
-                        ],
+                        ),
                       ),
-                      textAlign: TextAlign.center,
+                    ),
+                    Transform.translate(
+                        offset: Offset(0.0, 0.4 * media.size.height),
+                        child: Container(
+                            height: 1 / 5 * media.size.height,
+                            width: media.size.width,
+                            child: AutoSizeText('Welcome $name!',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 42,
+                                    color: const Color(0xffffffff),
+                                    shadows: [
+                                      Shadow(
+                                        color: const Color(0xbd000000),
+                                        offset: Offset(0, 3),
+                                        blurRadius: 6,
+                                      )
+                                    ]),
+                                maxLines: 1,
+                                textAlign: TextAlign.center)
+                        )
+                    ),
+                    Transform.translate(
+                        offset: Offset(0.0, 0.5 * media.size.height),
+                        child: Container(
+                            height: 1 / 10 * media.size.height,
+                            width: media.size.width,
+                            child: Text(
+                              'Number of people at $gymName:',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: media.size.width * 0.05,
+                                color: const Color(0xffffffff),
+                                shadows: [
+                                  Shadow(
+                                    color: const Color(0xbd000000),
+                                    offset: Offset(0, 3),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                        )
+                    ),
+                    Transform.translate(
+                        offset: Offset(0.0, 0.56 * media.size.height),
+                        child: Container(
+                            height: 1 / 10 * media.size.height,
+                            width: media.size.width,
+                            child: Text(
+                              numberOfPeople,
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: media.size.width * 0.05,
+                                color: const Color(0xffffffff),
+                                shadows: [
+                                  Shadow(
+                                    color: const Color(0xbd000000),
+                                    offset: Offset(0, 3),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                        )
                     )
-                )
-            )
-          ]
-          ),
-          Stack(children: <Widget>[
-            Container(
-              width: media.size.width,
-              height: media.size.height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: const AssetImage('assets/RightSidePool.png'),
-                  fit: BoxFit.fill,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(1.0), BlendMode.dstIn),
-                ),
-              ),
-            ),
-            Transform.translate(
-                offset:
-                    Offset(0.1 * media.size.width, 1.8 / 6 * media.size.height),
-                child: getMenuContainers(0.8, 0.1, media)),
-            Transform.translate(
-                offset:
-                    Offset(0.1 * media.size.width, 2.8 / 6 * media.size.height),
-                child: getMenuContainers(0.8, 0.1, media)),
-            Transform.translate(
-                offset:
-                    Offset(0.1 * media.size.width, 3.8 / 6 * media.size.height),
-                child: getMenuContainers(0.8, 0.1, media)),
-            Transform.translate(
-                offset:
-                    Offset(0.15 * media.size.width, 2 / 6 * media.size.height),
-                child: getMenuOptionText('View classes', media)),
-            Transform.translate(
-                offset:
-                    Offset(0.15 * media.size.width, 3 / 6 * media.size.height),
-                child: getMenuOptionText('View predictions', media)),
-            Transform.translate(
-                offset:
-                    Offset(0.15 * media.size.width, 4 / 6 * media.size.height),
-                child: getMenuOptionText('View my profile', media)),
-            Transform.translate(
-                offset:
-                    Offset(0.8 * media.size.width, 2 / 6 * media.size.height),
-                child: getArrow(0.05, media, ViewMyClassesMember())),
-            Transform.translate(
-                offset:
-                    Offset(0.8 * media.size.width, 3 / 6 * media.size.height),
-                child: getArrow(0.05, media, ViewPredictions())),
-            Transform.translate(
-                offset:
-                    Offset(0.8 * media.size.width, 4 / 6 * media.size.height),
-                child: getArrow(0.05, media, ViewMyProfile())),
-          ])
-        ]));
+                  ]
+                  ),
+                  Stack(children: <Widget>[
+                    Container(
+                      width: media.size.width,
+                      height: media.size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: const AssetImage('assets/RightSidePool.png'),
+                          fit: BoxFit.fill,
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                        offset:
+                        Offset(0.1 * media.size.width, 1.8 / 6 * media.size.height),
+                        child: getMenuContainers(0.8, 0.1, media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.1 * media.size.width, 2.8 / 6 * media.size.height),
+                        child: getMenuContainers(0.8, 0.1, media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.1 * media.size.width, 3.8 / 6 * media.size.height),
+                        child: getMenuContainers(0.8, 0.1, media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.15 * media.size.width, 2 / 6 * media.size.height),
+                        child: getMenuOptionText('View classes', media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.15 * media.size.width, 3 / 6 * media.size.height),
+                        child: getMenuOptionText('View predictions', media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.15 * media.size.width, 4 / 6 * media.size.height),
+                        child: getMenuOptionText('View my profile', media)),
+                    Transform.translate(
+                        offset:
+                        Offset(0.8 * media.size.width, 2 / 6 * media.size.height),
+                        child: getArrow(0.05, media, ViewMyClassesMember())),
+                    Transform.translate(
+                        offset:
+                        Offset(0.8 * media.size.width, 3 / 6 * media.size.height),
+                        child: getArrow(0.05, media, ViewPredictions())),
+                    Transform.translate(
+                        offset:
+                        Offset(0.8 * media.size.width, 4 / 6 * media.size.height),
+                        child: getArrow(0.05, media, ViewMyProfile())),
+                  ])
+                ]));
+          }
+        });
   }
+
+
 
   /*
    Method Name:
     getArrow
-
    Purpose:
     This method returns a front facing arrow that is used to navigate.
    */
@@ -246,7 +403,6 @@ class MemberPagesState extends State<MemberPages> {
   /*
    Method Name:
     getMenuContainers
-
    Purpose:
     This method returns the containers that hold the menu options.
    */
@@ -265,7 +421,6 @@ class MemberPagesState extends State<MemberPages> {
   /*
    Method Name:
     getMenuOptionText
-
    Purpose:
     This method returns the text of the options.
    */
@@ -284,10 +439,8 @@ class MemberPagesState extends State<MemberPages> {
   /*
    Method Name:
     getAnnouncements
-
    Purpose:
     This method returns a listview that as all the announcements.
-
    Extra:
     There is one hard coded announcement block. This will change once
     implemented properly.

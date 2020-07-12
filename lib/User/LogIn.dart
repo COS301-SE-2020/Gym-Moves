@@ -10,14 +10,13 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-|   Name   | Date              | Changes                             
+| Date       | Author       | Changes
 --------------------------------------------------------------------------------
-| Tia     |    01/07/2020     |  Added outline of login function and LoginRequest 
+01/01/2020   |    Tia       |  Added outline of login function and LoginRequest
 --------------------------------------------------------------------------------
-| Tia      |    04/07/2020     |  Fixed login request 
+04/01/2020   |    Tia       |  Fixed login request
 --------------------------------------------------------------------------------
-| Tia      |    10/07/2020     | Added hide/show password field
---------------------------------------------------------------------------------
+
 Functional Description:
   This file contains the LogIn class that calls the class that creates the UI.
   The LogInState class handles the building of the UI and making all the
@@ -32,12 +31,12 @@ Classes in the File:
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gym_moves/User/InstructorPages.dart';
-import 'package:gym_moves/User/ManagerPages.dart';
-import 'package:gym_moves/User/MemberPages.dart';
+import 'package:gymmoves/User/InstructorPages.dart';
+import 'package:gymmoves/User/ManagerPages.dart';
+import 'package:gymmoves/User/MemberPages.dart';
 
-import 'package:gym_moves/User/SignUp.dart';
-import 'package:gym_moves/User/ForgotPassword.dart';
+import 'package:gymmoves/User/SignUp.dart';
+import 'package:gymmoves/User/ForgotPassword.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -67,9 +66,29 @@ Purpose:
 class LogInState extends State<LogIn> {
   String password = "";
   String username = "";
-  bool hidePassword = true;
+  String gymName = "";
 
   final logInFormKey = GlobalKey<FormState>();
+
+  /*
+  Method Name:
+    _makeGetRequest
+
+  Purpose:
+     This method is used to make a get request and fetch the different gym's
+    and their branches. This list will be used for the auto-complete field, "Gym".
+*/
+  _makeGetRequest(id) async {
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/gym/getall';
+    var response = await http.get(url);
+    String responseBody = response.body;
+
+    List<dynamic> gymsJson = json.decode(responseBody);
+
+    gymName = Gym.fromJson(gymsJson[id-1]).gymName;
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +98,9 @@ class LogInState extends State<LogIn> {
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+          alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
             child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: false,
@@ -106,17 +126,18 @@ class LogInState extends State<LogIn> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     final passwordField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+            alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: hidePassword,
+                obscureText: true,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -139,7 +160,7 @@ class LogInState extends State<LogIn> {
                   });
                 })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white);
 
     return Scaffold(
       backgroundColor: const Color(0xff513369),
@@ -203,21 +224,16 @@ class LogInState extends State<LogIn> {
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
                         0.08 * 0.3 * media.size.height),
-                        child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          hidePassword = !hidePassword;
-                        });
-                      },
-                      child:  Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility,
-                      
-                    )
-                  ) )
+                    child: SvgPicture.string(
+                      lock,
+                      width: media.size.width * 0.04,
+                      color: Colors.black45,
+                      allowDrawingOutsideViewBox: true,
+                    ))
               ])
             ])),
         Container(
-            padding: EdgeInsets.fromLTRB(0.05 * media.size.height, 0.0,
+            padding: EdgeInsets.fromLTRB(0.05 * media.size.height, 0.01 * media.size.height,
                 0.18 * media.size.width, 0.05 * media.size.height),
             width: media.size.width,
             child: GestureDetector(
@@ -303,15 +319,22 @@ class LogInState extends State<LogIn> {
       body: jsonEncode(
           <String, String>{'username': username, 'password': password}),
     );
-    
+
     LoginResponse res = LoginResponse.fromJson(json.decode(response.body));
+
+    print(res);
 
     if (res.passwordValid && res.usernameValid) {
       final prefs = await SharedPreferences.getInstance();
 
+      await _makeGetRequest(res.gymID);
+
       prefs.setInt('gymId', res.gymID);
-      prefs.setString('userName', res.name);
+      prefs.setString('username', username);
       prefs.setInt('type', res.userType);
+      prefs.setString("name", res.name);
+      prefs.setString("gymName", gymName);
+
       Navigator.pop(context);
 
       if (res.userType == 0) {
@@ -335,13 +358,13 @@ class LogInState extends State<LogIn> {
       String errMessage = "";
       if (!res.passwordValid && res.usernameValid) {
         errMessage =
-            "Please ensure that the password is correct and try again.";
+        "Please ensure that the password is correct and try again.";
       } else if (res.passwordValid && !res.usernameValid) {
         errMessage =
-            "Please ensure that the username is correct and try again.";
+        "Please ensure that the username is correct and try again.";
       } else {
         errMessage =
-            "Your username or password is incorrect. Please try again.";
+        "Your username or password is incorrect. Please try again.";
       }
 
       Widget okButton = FlatButton(
@@ -383,15 +406,15 @@ class LoginResponse {
 
   LoginResponse(
       {this.usernameValid,
-      this.passwordValid,
-      this.gymID,
-      this.userType,
-      this.gymMemberID,
-      this.name});
+        this.passwordValid,
+        this.gymID,
+        this.userType,
+        this.gymMemberID,
+        this.name});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      gymID: json['gymId'],
+      gymID: json['gymID'],
       gymMemberID: json['gymMemberID'],
       name: json['name'],
       userType: json['userType'],
@@ -401,8 +424,10 @@ class LoginResponse {
   }
 }
 
+
 const String lock =
     '<svg viewBox="292.0 395.0 16.0 17.5" ><path transform="translate(292.0, 395.0)" d="M 14.28200817108154 7.65625 L 13.42508792877197 7.65625 L 13.42508792877197 5.1953125 C 13.42508792877197 2.3310546875 10.99000549316406 0 7.9979248046875 0 C 5.005844116210938 0 2.570761442184448 2.3310546875 2.570761442184448 5.1953125 L 2.570761442184448 7.65625 L 1.713841080665588 7.65625 C 0.7676579356193542 7.65625 0 8.39111328125 0 9.296875 L 0 15.859375 C 0 16.76513671875 0.7676579356193542 17.5 1.713841080665588 17.5 L 14.28200817108154 17.5 C 15.22819137573242 17.5 15.995849609375 16.76513671875 15.995849609375 15.859375 L 15.995849609375 9.296875 C 15.995849609375 8.39111328125 15.22819137573242 7.65625 14.28200817108154 7.65625 Z M 10.56868648529053 7.65625 L 5.427163124084473 7.65625 L 5.427163124084473 5.1953125 C 5.427163124084473 3.83837890625 6.580435276031494 2.734375 7.9979248046875 2.734375 C 9.415414810180664 2.734375 10.56868648529053 3.83837890625 10.56868648529053 5.1953125 L 10.56868648529053 7.65625 Z" fill="#b9a8bf" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 
 const String person =
     '<svg viewBox="291.0 393.0 16.9 21.1" ><path transform="translate(291.0, 393.0)" d="M 8.433197021484375 10.53529357910156 C 11.09492588043213 10.53529357910156 13.25216770172119 8.17719841003418 13.25216770172119 5.267646789550781 C 13.25216770172119 2.358094692230225 11.09492588043213 0 8.433197021484375 0 C 5.771469116210938 0 3.614227533340454 2.358094930648804 3.614227533340454 5.267646789550781 C 3.614227533340454 8.17719841003418 5.771469116210938 10.53529357910156 8.433197021484375 10.53529357910156 Z M 11.80647563934326 11.85220527648926 L 11.17775058746338 11.85220527648926 C 10.34195995330811 12.27197074890137 9.412049293518066 12.51066112518311 8.433197021484375 12.51066112518311 C 7.454344272613525 12.51066112518311 6.528197765350342 12.27197074890137 5.688642978668213 11.85220527648926 L 5.05991792678833 11.85220527648926 C 2.266421794891357 11.85220527648926 0 14.32964515686035 0 17.38323402404785 L 0 19.09521865844727 C 0 20.18578720092773 0.8094363808631897 21.07058715820313 1.807113766670227 21.07058715820313 L 15.05928134918213 21.07058715820313 C 16.05695915222168 21.07058715820313 16.86639404296875 20.18578720092773 16.86639404296875 19.09521865844727 L 16.86639404296875 17.38323402404785 C 16.86639404296875 14.32964515686035 14.59997272491455 11.85220527648926 11.80647563934326 11.85220527648926 Z" fill="#b9a8bf" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+

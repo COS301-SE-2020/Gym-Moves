@@ -10,13 +10,12 @@ Date Created:
 
 Update History:
 --------------------------------------------------------------------------------
-| Name          |    Date             |     Changes
+Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-| Danel         |      24/06/2020     |    Fixed input and scrolling
+24/06/2020    |    Danel       |    Fixed input and scrolling
 --------------------------------------------------------------------------------
-| Danel         |      28/06/2020     |    Added date picker
+28/06/2020    |    Danel       |    Added date picker
 --------------------------------------------------------------------------------
-|Tia            |     04/07/2020      | Added Announcement API call function
 
 Functional Description:
   This file implements the the UI for managers to be able to send announcements.
@@ -28,6 +27,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*
@@ -317,10 +317,11 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     This method is called when the send button is pressed. It tells the API to
     send this announcement as a notification to the members.
 */
+
   void sendValuesToNotify(String heading, String details) async {
     final prefs = await SharedPreferences.getInstance();
 
-    final int gymId = prefs.getInt('gymId');
+    final int gymId = 0; //prefs.getInt('gymId');
 
     final http.Response response = await http.post(
       'https://gymmoveswebapi.azurewebsites.net/api/sendNotification',
@@ -344,8 +345,12 @@ class SendAnnouncementState extends State<SendAnnouncement> {
       message = "Could not send announcement. Please try again later.";
     }
 
-    Widget okButton =
-        FlatButton(child: Text("OK"), onPressed: () => Navigator.pop(context));
+    Widget okButton = FlatButton(
+        child: Text(
+          "Ok",
+          style: TextStyle(color: Color(0xff513369)),
+        ),
+        onPressed: () => Navigator.pop(context));
 
     AlertDialog alert = AlertDialog(
       title: Text(title),

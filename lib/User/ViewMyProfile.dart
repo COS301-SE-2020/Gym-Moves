@@ -31,10 +31,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:gym_moves/Announcement/SetNotificationType.dart';
-import 'package:gym_moves/User/ChangePassword.dart';
-import 'package:gym_moves/User/HelpManual.dart';
-import 'package:gym_moves/User/LogIn.dart';
+import 'package:gymmoves/Announcement/SetNotificationType.dart';
+import 'package:gymmoves/User/ChangePassword.dart';
+import 'package:gymmoves/User/HelpManual.dart';
+import 'package:gymmoves/User/LogIn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*
@@ -64,6 +64,24 @@ Purpose:
 class ViewMyProfileState extends State<ViewMyProfile> {
   ViewMyProfileState({Key key});
 
+  /* This will hold the user's name. */
+  String name = "";
+
+  Future nameFromLocal;
+
+  @override
+  void initState() {
+   nameFromLocal = _getName();
+    super.initState();
+  }
+
+  _getName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    name = prefs.get("name");
+
+  }
+
+
   /*
    Method Name:
     build
@@ -74,160 +92,294 @@ class ViewMyProfileState extends State<ViewMyProfile> {
    */
   @override
   Widget build(BuildContext context) {
-    /* This will hold the user's name. */
-    String name = "";
 
     MediaQueryData media = MediaQuery.of(context);
 
-    return Scaffold(
-      backgroundColor: const Color(0xff513369),
-      body: Column(children: <Widget>[
-        Stack(children: <Widget>[
-          Container(
-              width: media.size.width,
-              height: 0.4 * media.size.height,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: const AssetImage('assets/RightSidePoolHalf.png'),
-                    fit: BoxFit.fill,
-                    colorFilter: new ColorFilter.mode(
-                        Colors.black.withOpacity(1.0), BlendMode.dstIn),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0x46000000),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                    )
-                  ])),
-          Transform.translate(
-              offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SvgPicture.string(backButton,
-                      width: 0.07 * media.size.width,
-                      allowDrawingOutsideViewBox: true))),
-          Container(
-              width: media.size.width,
-              height: 0.4 * media.size.height,
-              child: Center(
-                  child: Container(
-                      width: 0.48 * media.size.width,
-                      height: 0.4 * 0.65 * media.size.height,
+    return new FutureBuilder(
+        future: nameFromLocal,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+              backgroundColor: const Color(0xff513369),
+              body: Column(children: <Widget>[
+                Stack(children: <Widget>[
+                  Container(
+                      width: media.size.width,
+                      height: 0.4 * media.size.height,
                       decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(85.5, 81.0)),
-                        color: const Color(0xffffffff),
-                        border: Border.all(
-                            width: 1.0, color: const Color(0xff707070)),
-                      ),
+                          image: DecorationImage(
+                            image: const AssetImage('assets/RightSidePoolHalf.png'),
+                            fit: BoxFit.fill,
+                            colorFilter: new ColorFilter.mode(
+                                Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x46000000),
+                              offset: Offset(0, 3),
+                              blurRadius: 6,
+                            )
+                          ])),
+                  Transform.translate(
+                      offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: SvgPicture.string(backButton,
+                              width: 0.07 * media.size.width,
+                              allowDrawingOutsideViewBox: true))),
+                  Container(
+                      width: media.size.width,
+                      height: 0.4 * media.size.height,
                       child: Center(
-                          child: AutoSizeText(
-                        name,
-                        style: TextStyle(
-                          fontFamily: 'FreestyleScript',
-                          fontSize: media.size.width * 0.12,
-                          color: const Color(0xff391f57),
-                          shadows: [
-                            Shadow(
-                              color: const Color(0xbd000000),
-                              offset: Offset(0, 1),
-                              blurRadius: 0,
-                            ),
-                          ],
-                        ),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                      )))))
-        ]),
-        SizedBox(height: 0.05 * media.size.height),
-        Stack(children: <Widget>[
-          getOptionContainer(media, ChangePassword()),
-          Transform.translate(
-              offset: Offset(0.8 * 0.82 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getIcon(pen, 0.08 * 0.5 * media.size.height)),
-          Transform.translate(
-              offset: Offset(0.8 * 0.1 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getOptionText(media, "Change Password"))
-        ]),
-        SizedBox(height: 0.05 * media.size.height),
-        Stack(children: <Widget>[
-          getOptionContainer(media, HelpManual()),
-          Transform.translate(
-              offset: Offset(0.8 * 0.82 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)),
-          Transform.translate(
-              offset: Offset(0.8 * 0.1 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getOptionText(media, "Help Manual")),
-        ]),
-        SizedBox(height: 0.05 * media.size.height),
-        Stack(children: <Widget>[
-          getOptionContainer(media, SetNotificationType()),
-          Transform.translate(
-              offset: Offset(0.8 * 0.82 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getIcon(bell, 0.08 * 0.5 * media.size.height)),
-          Transform.translate(
-              offset: Offset(0.8 * 0.1 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getOptionText(media, "Notifications"))
-        ]),
-        SizedBox(height: 0.05 * media.size.height),
-        Stack(children: <Widget>[
-          GestureDetector(
-              onTap: () {
-                userLogout();
-              },
-              child: Container(
-                  width: 0.8 * media.size.width,
-                  height: 0.08 * media.size.height,
-                  padding: EdgeInsets.all(0.025 * media.size.width),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(29.0),
-                      color: Color(0x26ffffff),
-                      border: Border.all(
-                          width: 1.0, color: const Color(0x3d707070))))),
-          Transform.translate(
-              offset: Offset(0.8 * 0.8 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getIcon(logout, 0.08 * 0.5 * media.size.height)),
-          Transform.translate(
-              offset: Offset(0.8 * 0.1 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getOptionText(media, "Logout"))
-        ])
-      ]),
-    );
+                          child: Container(
+                              width: 0.48 * media.size.width,
+                              height: 0.4 * 0.65 * media.size.height,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.elliptical(85.5, 81.0)),
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    width: 1.0, color: const Color(0xff707070)),
+                              ),
+                              child: Center(
+                                  child: AutoSizeText(
+                                    name,
+                                    style: TextStyle(
+                                      fontFamily: 'FreestyleScript',
+                                      fontSize: media.size.width * 0.12,
+                                      color: const Color(0xff391f57),
+                                      shadows: [
+                                        Shadow(
+                                          color: const Color(0xbd000000),
+                                          offset: Offset(0, 1),
+                                          blurRadius: 0,
+                                        ),
+                                      ],
+                                    ),
+                                    maxLines: 1,
+                                    textAlign: TextAlign.center,
+                                  )))))
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  getOptionContainer(media, ChangePassword()),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.82 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(pen, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Change Password"))
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  getOptionContainer(media, HelpManual()),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.82 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Help Manual")),
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  getOptionContainer(media, SetNotificationType()),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.82 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(bell, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Notifications"))
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  GestureDetector(
+                      onTap: () {
+                        userLogout();
+                      },
+                      child: Container(
+                          width: 0.8 * media.size.width,
+                          height: 0.08 * media.size.height,
+                          padding: EdgeInsets.all(0.025 * media.size.width),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(29.0),
+                              color: Color(0x26ffffff),
+                              border: Border.all(
+                                  width: 1.0, color: const Color(0x3d707070))))),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.8 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(logout, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Logout"))
+                ])
+              ]),
+            );
+          } else {
+            return Scaffold(
+              backgroundColor: const Color(0xff513369),
+              body: Column(children: <Widget>[
+                Stack(children: <Widget>[
+                  Container(
+                      width: media.size.width,
+                      height: 0.4 * media.size.height,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: const AssetImage('assets/RightSidePoolHalf.png'),
+                            fit: BoxFit.fill,
+                            colorFilter: new ColorFilter.mode(
+                                Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x46000000),
+                              offset: Offset(0, 3),
+                              blurRadius: 6,
+                            )
+                          ])),
+                  Transform.translate(
+                      offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: SvgPicture.string(backButton,
+                              width: 0.07 * media.size.width,
+                              allowDrawingOutsideViewBox: true))),
+                  Container(
+                      width: media.size.width,
+                      height: 0.4 * media.size.height,
+                      child: Center(
+                          child: Container(
+                              width: 0.48 * media.size.width,
+                              height: 0.4 * 0.65 * media.size.height,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.elliptical(85.5, 81.0)),
+                                color: const Color(0xffffffff),
+                                border: Border.all(
+                                    width: 1.0, color: const Color(0xff707070)),
+                              ),
+                              child: Center(
+                                  child: AutoSizeText(
+                                    name,
+                                    style: TextStyle(
+                                      fontFamily: 'FreestyleScript',
+                                      fontSize: media.size.width * 0.12,
+                                      color: const Color(0xff391f57),
+                                      shadows: [
+                                        Shadow(
+                                          color: const Color(0xbd000000),
+                                          offset: Offset(0, 1),
+                                          blurRadius: 0,
+                                        ),
+                                      ],
+                                    ),
+                                    maxLines: 1,
+                                    textAlign: TextAlign.center,
+                                  )))))
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  getOptionContainer(media, ChangePassword()),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.82 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(pen, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Change Password"))
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  getOptionContainer(media, HelpManual()),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.82 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Help Manual")),
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  getOptionContainer(media, SetNotificationType()),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.82 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(bell, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Notifications"))
+                ]),
+                SizedBox(height: 0.05 * media.size.height),
+                Stack(children: <Widget>[
+                  GestureDetector(
+                      onTap: () {
+                        userLogout();
+                      },
+                      child: Container(
+                          width: 0.8 * media.size.width,
+                          height: 0.08 * media.size.height,
+                          padding: EdgeInsets.all(0.025 * media.size.width),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(29.0),
+                              color: Color(0x26ffffff),
+                              border: Border.all(
+                                  width: 1.0, color: const Color(0x3d707070))))),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.8 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getIcon(logout, 0.08 * 0.5 * media.size.height)),
+                  Transform.translate(
+                      offset: Offset(0.8 * 0.1 * media.size.width,
+                          0.08 * 0.25 * media.size.height),
+                      child: getOptionText(media, "Logout"))
+                ])
+              ]),
+            );
+          }
+        });
+
+
 
 
   }
 
-      /*
+  /*
   Method Name: logout
 
-  Purpose: This method is called when the logout is tapped. It will clear the 
+  Purpose: This method is called when the logout is tapped. It will clear the
   local storage and go to the logi page.
 */
-    userLogout() async {
+  userLogout() async {
     final prefs = await SharedPreferences.getInstance();
 
     prefs.remove('gymId');
-    prefs.remove('userType');
-    prefs.remove('userName');
+    prefs.remove('type');
+    prefs.remove('username');
+    prefs.remove('name');
+    prefs.remove('gymName');
 
-      Navigator.pop(context);
-      Navigator.pop(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LogIn()),
-      );
-    }
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogIn()),
+    );
+  }
 
   /*
    Method Name:

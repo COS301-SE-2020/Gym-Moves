@@ -1,25 +1,20 @@
 /*
 File Name:
   ClassDetails.dart
-
 Author:
   Raeesa
-
 Date Created:
   17/06/2020
-
 Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 24/06/2020    |    Danel       |    Stars can be added dynamically
 --------------------------------------------------------------------------------
-
 Functional Description:
   This file implements the ClassDetailsState class. It creates the UI for users
   to be able to see details of a class. It also implements the SendAnnouncement
   class which calls the other class to be built.
-
 Classes in the File:
 - ClassDetails
 - ClassDetailsState
@@ -33,16 +28,21 @@ import 'package:auto_size_text/auto_size_text.dart';
 /*
 Class Name:
   ClassDetails
-
 Purpose:
   This class is used to create the ClassDetailsState that builds the UI for
   viewing classes. It allows for widgets to be dynamically added as well.
-
  */
 
 class ClassDetails extends StatefulWidget {
-  const ClassDetails( {Key key, String instructorName, String className, String classDay, String classTime, int classAvailableSpots,
-  String classDescription}) : super(key: key);
+  final String instructorName;
+  final String className;
+  final String classDay;
+  final String classTime;
+  final String classAvailableSpots;
+  final String classDescription;
+
+  const ClassDetails({Key key, this.instructorName = "No data available", this.className = "No data available", this.classDay="No data available",
+    this.classTime= "No data available", this.classAvailableSpots= "No data available", this.classDescription= "No data available"}) : super(key: key);
 
   @override
   ClassDetailsState createState() => ClassDetailsState();
@@ -51,7 +51,6 @@ class ClassDetails extends StatefulWidget {
 /*
 Class Name:
   ClassDetailsState
-
 Purpose:
   This class is used to create the UI for users to see the classes. It also
   handles the request to the API to get the details of a class to display.
@@ -60,17 +59,9 @@ Purpose:
 class ClassDetailsState extends State<ClassDetails> {
   ClassDetailsState({Key key});
 
-  String instructorName = "";
-  String className = "";
-  String classDay = "";
-  String classTime = "";
-  String classAvailableSpots = "";
-  String classDescription = "";
-
   /*
    Method Name:
     build
-
    Purpose:
     This method builds the UI and also calls the necessary functions that make
     a request to the API to get the class details.
@@ -92,73 +83,73 @@ class ClassDetailsState extends State<ClassDetails> {
                     width: media.size.width,
                     height: media.size.height * 0.4,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: const AssetImage(
-                            'assets/RightSidePoolHalf.png'
+                        image: DecorationImage(
+                          image: const AssetImage(
+                              'assets/RightSidePoolHalf.png'
+                          ),
+                          fit: BoxFit.fill,
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(1.0), BlendMode.dstIn
+                          ),
                         ),
-                        fit: BoxFit.fill,
-                        colorFilter: new ColorFilter.mode(
-                            Colors.black.withOpacity(1.0), BlendMode.dstIn
-                        ),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x46000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        ),
-                      ]),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x46000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
+                        ]),
                   )
               ),
               Transform.translate(
                   offset: Offset(0.0, -0.033 * media.size.height),
                   child: SizedBox(
-                    width: media.size.width,
-                    height: media.size.height * 0.4,
-                    child: Center(
-                        child: Container(
-                      width: 0.55 * media.size.width,
-                      height: 0.31 * media.size.height,
+                      width: media.size.width,
+                      height: media.size.height * 0.4,
                       child: Center(
-                          child: AutoSizeText(
-                        className,
-                        style: TextStyle(
-                          fontFamily: 'FreestyleScript',
-                          fontSize: 0.15 * media.size.width,
-                          color: const Color(0xff391f57),
-                          shadows: [
-                            Shadow(
-                              color: const Color(0x38000000),
-                              offset: Offset(0, 3),
-                              blurRadius: 6,
-                            )
-                          ]),
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
-                      )
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(110.5, 108.0)),
-                        color: const Color(0xffffffff),
-                        border: Border.all(
-                            width: 1.0, color: const Color(0xff707070)
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x8f000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
+                          child: Container(
+                              width: 0.55 * media.size.width,
+                              height: 0.31 * media.size.height,
+                              child: Center(
+                                  child: AutoSizeText(
+                                    widget.className,
+                                    style: TextStyle(
+                                        fontFamily: 'FreestyleScript',
+                                        fontSize: 0.15 * media.size.width,
+                                        color: const Color(0xff391f57),
+                                        shadows: [
+                                          Shadow(
+                                            color: const Color(0x38000000),
+                                            offset: Offset(0, 3),
+                                            blurRadius: 6,
+                                          )
+                                        ]),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  )
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.elliptical(110.5, 108.0)),
+                                  color: const Color(0xffffffff),
+                                  border: Border.all(
+                                      width: 1.0, color: const Color(0xff707070)
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0x8f000000),
+                                      offset: Offset(0, 3),
+                                      blurRadius: 6,
+                                    )
+                                  ]
+                              )
                           )
-                        ]
                       )
-                    )
-                    )
                   )
               ),
               Transform.translate(
                   offset:
-                      Offset(0.05 * media.size.width, 0.02 * media.size.height),
+                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -170,12 +161,12 @@ class ClassDetailsState extends State<ClassDetails> {
               ),
               Transform.translate(
                   offset:
-                      Offset(0.33 * media.size.width, 0.06 * media.size.height),
+                  Offset(0.33 * media.size.width, 0.06 * media.size.height),
                   child: SvgPicture.string(
-                    dumbbell,
-                    width: 0.55 * media.size.width * 0.7,
-                    height: 0.31 * media.size.height * 0.7,
-                    allowDrawingOutsideViewBox: true
+                      dumbbell,
+                      width: 0.55 * media.size.width * 0.7,
+                      height: 0.31 * media.size.height * 0.7,
+                      allowDrawingOutsideViewBox: true
                   )
               )
             ]
@@ -221,7 +212,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                instructorName,
+                widget.instructorName,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -272,7 +263,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classDay,
+                widget.classDay,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -302,7 +293,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classTime,
+                widget.classTime,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -332,7 +323,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classAvailableSpots,
+                widget.classAvailableSpots,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -362,7 +353,7 @@ class ClassDetailsState extends State<ClassDetails> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classDescription,
+                widget.classDescription,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -382,30 +373,27 @@ class ClassDetailsState extends State<ClassDetails> {
   /*
    Method Name:
     getClassDetails
-
    Purpose:
     This method will get the details of the class.
-
    Extra:
     Currently hardcoded. This will be changed.
    */
   void getClassDetails(){
-    className = "a name";
-    classAvailableSpots = "a number";
-    instructorName = "a persons name";
-    classDescription = "a description";
-    classTime = "a time";
-    classDay = "a day";
+    /*className = widget.className;
+    classAvailableSpots = widget.classAvailableSpots;
+    instructorName = widget.instructorName;
+    classDescription = widget.classDescription;
+    classTime = widget.classTime;
+    classDay = widget.classDay;
+    */
   }
 
   /*
    Method Name:
     getStarsForInstructor
-
    Purpose:
     This method will get the rating for the specific instructor for the class
     and show the correct stars.
-
    Extra:
     Rating is currently hardcoded. This will be changed.
    */
@@ -450,11 +438,9 @@ class ClassDetailsState extends State<ClassDetails> {
   /*
    Method Name:
     getStarsForClass
-
    Purpose:
     This method will get the rating for the specific class and show the
     correct stars.
-
    Extra: Rating is currently hardcoded. This will be changed.
    */
 

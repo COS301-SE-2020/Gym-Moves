@@ -32,11 +32,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'dart:convert';
-//import 'package:intl/intl.dart';
-//import 'package:intl/date_symbol_data_local.dart';
 /*
 Class Name:
   AddAClass
@@ -68,25 +63,8 @@ class AddAClassState extends State<AddAClass> {
   String minute = DateTime.now().minute.toString();
   String second = DateTime.now().second.toString();
   String description = "";
-  DateTime time = DateTime.now();
-  String startTime = "15:30:00"; //DateFormat('kk:mm:ss \n EEE d MMM').format(time);
-  String endTime ="15:30:00";// DateFormat('kk:mm:ss \n EEE d MMM').format(time);
-
-
-  final nameHolder = TextEditingController();
-  final dayHolder = TextEditingController();
-  final instructorHolder = TextEditingController();
-  final descriptionHolder = TextEditingController();
-  //final currentStudentsHolder = TextEditingController(); // fields to be added
-  //final maxCapacityHolder = TextEditingController();
 
   final editFormKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    sendValuesToDatabase();
-    super.initState();
-  }
 
   /*
    Method Name:
@@ -108,7 +86,6 @@ class AddAClassState extends State<AddAClass> {
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             child: TextFormField(
-                controller : nameHolder,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -179,7 +156,6 @@ class AddAClassState extends State<AddAClass> {
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             child: SimpleAutoCompleteTextField(
-              controller : instructorHolder,
               style: TextStyle(
                 color: Colors.black54,
               ),
@@ -283,7 +259,6 @@ class AddAClassState extends State<AddAClass> {
             height: 0.3 * media.size.height,
             width: 0.7 * media.size.width,
             child: TextFormField(
-                controller : descriptionHolder,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -413,38 +388,6 @@ class AddAClassState extends State<AddAClass> {
   }
 
   /*
-  Method Name:
-    _showAlertDialog
-  Purpose:
-    This method is used when adding a new class to the database.
-           If a class is added successfully, the alert dialog will show to confirm this.
-*/
-
-  void _showAlertDialog(String message, String message2) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text(message2),
-      content: Text(message),
-      actions: [
-        okButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-  /*
   Method name:
     sendValuesToDatabase
 
@@ -464,65 +407,6 @@ class AddAClassState extends State<AddAClass> {
     if (int.parse(hour) < 6 || int.parse(hour) > 20) {
       _errorDialogue("Time has to be after 6am and before 8pm.");
       return;
-    }
-  _makePostRequest();
-
-  }
-
-/*
-  Method Name:
-    _makePostRequest
-  Purpose:
-    This method is called when the all the fields in the form have been verified.
-    It makes a post request to our API with the respective fields, to allow a manager to add
-    a new class to the database. Once the class has been added successfully the fields are
-    returned to default values and the manager can add another class.
-*/
-
-/*
-  Method Name:
-    _defaultFields
-  Purpose:
-   Once a class has been added successfully the fields are
-    returned to default values so that the manager can add another class.
-*/
-
-void _defaultFields() {
-   nameHolder.clear();
-  dayHolder.clear();
-   instructorHolder.clear();
-   descriptionHolder.clear();
-}
-
-
-
-  _makePostRequest() async {
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/add';
-
-    final http.Response response = await http.post(
-      url,
-      headers: <String, String>{'Content-type': 'application/json'},
-      body: jsonEncode({
-        "Username": "testmanager",
-        "NewClass": [{
-            "GymId": 1,
-            "Instructor": instructorName,
-            "Name": className,
-            "Description": description,
-            "Day": day,
-            "StartTime":startTime,// this is fixed for now (note: to ask Danel if I can add these fields)
-            "EndTime": endTime, // this is fixed for now (note: to ask Danel if I can add these fields)
-            "MaxCapacity": 20, // this is fixed for now (note: to ask Danel if I can add these fields)
-            "CurrentStudents": 20 // this is fixed for now (note: to ask Danel if I can add these fields)
-        }],
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      _showAlertDialog("SUCCESSFUL", "The class was added successfully.");
-      _defaultFields();
-    } else {
-      _showAlertDialog("UNSUCCESSFUL", "There was a problem on our side, please try again in a few minutes.");
     }
   }
 
