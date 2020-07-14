@@ -16,6 +16,9 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 09/07/2020    | Danel          | Added working email send
 --------------------------------------------------------------------------------
+14/07/2020    | Danel          | Change email receiver added
+--------------------------------------------------------------------------------
+
 
 
 Functional Description:
@@ -61,6 +64,8 @@ namespace GymMovesWebAPI.Controllers {
         private readonly IPasswordResetRepository resetPasswordRepository;
         private readonly IMailer mailer;
 
+        string emailReceiver = "u18008659@tuks.co.za";
+
         /*
         Method Name:
             UserController
@@ -85,9 +90,7 @@ namespace GymMovesWebAPI.Controllers {
             This method handles a user sign up request.
        */
         [HttpPost("signup")]
-        public async Task<ActionResult<SignUpResponseModel>> signUp(SignUpRequestModel user) {
-
-            SignUpResponseModel response = new SignUpResponseModel();
+        public async Task<ActionResult<UserResponseModel>> signUp(SignUpRequestModel user) {
 
             Users newUserAccount = new Users();
 
@@ -96,75 +99,39 @@ namespace GymMovesWebAPI.Controllers {
             newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(user.gymName.Trim(), user.gymBranch.Trim());
             newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
 
-          
             GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId, 
                 newUserAccount.GymIdForeignKey);
 
-            /* If member null, such person does not exist. */
+
             if (member == null) {
-                response.usernameValid = true;
-                response.gymMemberIdValid = false;
-                response.userType = 0;
-
-                response.name = "";
-                response.gymMemberID = "";
-                response.gymID = -1;
-
-                return Unauthorized(response);
+                return Unauthorized("This gym member ID does not exist.");
             }
 
-            /* Get the member from the user repo that has the entered member ID and gym. */
             Users checkIfUserHasAccount = await userGymMovesRepository.getUserByMemberID(member.MembershipId, 
                 member.GymId);
 
-            /* If null, person has account.*/
-            if(checkIfUserHasAccount != null) {
-                response.usernameValid = false;
-                response.gymMemberIdValid = false;
-                response.userType = 0;
-
-                response.name = "";
-                response.gymMemberID = "";
-                response.gymID = -1;
-
-                return BadRequest(response);
+            if(checkIfUserHasAccount != null) { 
+                return BadRequest("There is already an account for this gym member.");
             }
-
 
             newUserAccount.Name = member.Name;
             newUserAccount.Surname = member.Surname;
             newUserAccount.PhoneNumber = member.PhoneNumber;
             newUserAccount.Email = member.Email;
 
-            /* Since person exists, get their user type. */
             newUserAccount.UserType = member.UserType;
 
-            /* Need to check if username unique. */
             Users checkIfUsernameExists = await userGymMovesRepository.getUser(newUserAccount.Username);
 
-            /* If not null, it means username already exists.*/
-            if (checkIfUsernameExists != null) {
-                response.usernameValid = false;
-                response.gymMemberIdValid = true;
-                response.userType = 0;
+           if (checkIfUsernameExists != null) {
+                return Unauthorized("This username is already in use.");
+           }
 
-                response.name = "";
-                response.gymMemberID = "";
-                response.gymID = -1;
-
-                return Unauthorized(response);
-            }
-
-            /* random will generate different salt lengths of between 5 and 10. */
             Random random = new Random();
             newUserAccount.Salt = getRandomString(random.Next(5, 10));
-
             string hash = getHash(SHA256.Create(), user.password + newUserAccount.Salt);
-
-            /* Set new accounts password as the hash. */
             newUserAccount.Password = hash;
 
-            /* Check if new account added. */
             bool added = await userGymMovesRepository.addUser(newUserAccount);
 
             if (added) {
@@ -178,27 +145,16 @@ namespace GymMovesWebAPI.Controllers {
 
                 added = await notificationSettingRepository.addUser(newUserNotifs);
 
-                response.usernameValid = true;
-                response.gymMemberIdValid = true;
+                UserResponseModel response = new UserResponseModel();
                 response.userType = newUserAccount.UserType;
-
                 response.name = newUserAccount.Name;
                 response.gymMemberID = newUserAccount.MembershipId;
-                 response.gymID = newUserAccount.GymIdForeignKey;
+                response.gymID = newUserAccount.GymIdForeignKey;
 
                 return Ok(response);
             }
             else {
-
-                response.usernameValid = false;
-                response.gymMemberIdValid = false;
-                response.userType = 0;
-
-                response.name = "";
-                response.gymMemberID = "";
-                response.gymID = -1;
-
-                return StatusCode(500, response);
+                return StatusCode(500, "Unable to create this account right now.");
 
             }
 
@@ -211,33 +167,20 @@ namespace GymMovesWebAPI.Controllers {
             This method handles a user login request.
        */
         [HttpPost("login")]
-        public async Task<ActionResult<LogInResponseModel>> logIn(LogInRequestModel user) {
-
-            LogInResponseModel response = new LogInResponseModel();
+        public async Task<ActionResult<UserResponseModel>> logIn(LogInRequestModel user) {
 
             Users checkUser = await userGymMovesRepository.getUser(user.username.Trim());
 
             /* If null, no user with that username exists.*/
             if (checkUser == null) {
-
-                response.usernameValid = false;
-                response.passwordValid = true;
-                response.userType = 0;
-
-                response.name = "";
-                response.gymMemberID = "";
-                response.gymID = -1;
-
-                return Unauthorized(response);
+                return NotFound("Nobody with that username exists.");
             }
 
             /* Verify correct password has been entered.*/
             if (verifyHash(SHA256.Create(), user.password + checkUser.Salt, checkUser.Password)) {
 
-                response.usernameValid = true;
-                response.passwordValid = true;
+                UserResponseModel response = new UserResponseModel();
                 response.userType = checkUser.UserType;
-
                 response.name = checkUser.Name;
                 response.gymMemberID = checkUser.MembershipId;
                 response.gymID = checkUser.GymIdForeignKey;
@@ -245,15 +188,7 @@ namespace GymMovesWebAPI.Controllers {
                 return Ok(response);
             }
             else {
-                response.usernameValid = true;
-                response.passwordValid = false;
-                response.userType = 0;
-
-                response.name = "";
-                response.gymMemberID = "";
-                response.gymID = -1;
-
-                return Unauthorized(response);
+                return Unauthorized("Password is incorrect.");
             }
 
         }
@@ -337,7 +272,7 @@ namespace GymMovesWebAPI.Controllers {
             This method will send a code via email to the user.
        */
        [HttpGet("getCode")]
-        public async Task<ActionResult<string>> getCode(string username)  {
+        public async Task<ActionResult> getCode(string username)  {
 
             /* Check if user already has a code.*/
             PasswordReset checkIfHasCode = await resetPasswordRepository.getUser(username);
@@ -346,7 +281,8 @@ namespace GymMovesWebAPI.Controllers {
                bool deleted =  await resetPasswordRepository.deleteUser(checkIfHasCode);
 
                 if (!deleted) {
-                    return StatusCode(500, "You have a code but we cannot generate a new one for you.");
+                    return StatusCode(500, "You have a code already and we cannot generate a " +
+                        "new one for you.");
                 }
             }
 
@@ -375,7 +311,7 @@ namespace GymMovesWebAPI.Controllers {
 
                 if(added) {
                     int statusCode = await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Gym Moves Code", 
-                        message, "u18008659@tuks.co.za");
+                        message, emailReceiver);
 
                     if(statusCode == 202) {
                         return Ok();
@@ -392,7 +328,7 @@ namespace GymMovesWebAPI.Controllers {
 
             }
             else {
-                return Unauthorized("This is not a valid username.");
+                return NotFound("This is not a valid username.");
             }
         }
 
@@ -403,14 +339,14 @@ namespace GymMovesWebAPI.Controllers {
             This method will change the password for the user and check they entered the correct code.
        */
         [HttpPost("forgotPassword")]
-        public async Task<ActionResult<string>> forgotPassword(ForgotPasswordRequestModel user){
+        public async Task<ActionResult> forgotPassword(ForgotPasswordRequestModel user){
 
             /* Get the user record to change.*/
             Users userToChange = await userGymMovesRepository.getUser(user.username);
             
             /* No such user exists.*/
             if (userToChange == null) {
-                return Unauthorized("This username does not exist! Are you sure you typed the correct one?");
+                return NotFound("This username does not exist! Are you sure you typed the correct one?");
             }
 
 
@@ -419,7 +355,7 @@ namespace GymMovesWebAPI.Controllers {
 
             /* No such user exists.*/
             if (userInCodeTabe == null) {
-                return Unauthorized("This user does not have a code! Are you sure you received one?");
+                return NotFound("This user does not have a code! Are you sure you received one?");
             }
 
 
@@ -460,14 +396,14 @@ namespace GymMovesWebAPI.Controllers {
             This method will change the password for the user.
        */
         [HttpPost("changePassword")]
-        public async Task<ActionResult<string>> changePassword(ChangePasswordRequestModel user) {
+        public async Task<ActionResult> changePassword(ChangePasswordRequestModel user) {
 
             /* Get the user record to change.*/
             Users userToChange = await userGymMovesRepository.getUser(user.username);
 
             /* If null, user does not exit.*/
             if (userToChange == null) {
-                return Unauthorized("This user doesn't exist.");
+                return NotFound("This user doesn't exist.");
             }
 
             /* Verifies the old password matches the one in the db. */
@@ -490,5 +426,12 @@ namespace GymMovesWebAPI.Controllers {
                 return Unauthorized("The password you entered is not correct.");
             }    
         }
+
+        [HttpGet("allInstructors")]
+        public async Task<ActionResult<GymMember[]>> getAllInstructors(int gymID)
+        {
+            return Ok(await gymMembersRepository.getAllInstructors(gymID));
+        }
+
     }
 }

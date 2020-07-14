@@ -9,6 +9,7 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
         public Task<bool> addMember(GymMember member);
         public Task<GymMember> getMember(string membershipId, int gymId);
         public Task<bool> deleteMember(GymMember member);
+        public Task<GymMember[]> getAllInstructors(int gymID);
 
     }
 }

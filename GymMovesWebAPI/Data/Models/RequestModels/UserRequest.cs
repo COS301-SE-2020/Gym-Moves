@@ -62,19 +62,6 @@ namespace GymMovesWebAPI.Data.Models.RequestModels{
 
     /*
     Class Name:
-        GetCodeUserModel
-
-    Purpose:
-        This class handles the incoming JSON structure
-        of a get code request.
-    */
-    public class GetCodeRequestModel
-    {
-        public string username { get; set; }
-    }
-
-    /*
-    Class Name:
         ForgotPasswordRequestModel
 
     Purpose:

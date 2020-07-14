@@ -60,7 +60,9 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
         {
             IQueryable<Gym> query = context.Gyms;
             query = query.Where(p => p.GymBranch == branch);
-            query = query.Where(p => p.GymName == name);
+
+            if(query != null)
+                query = query.Where(p => p.GymName == name);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -69,7 +71,8 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
         {
             IQueryable<Users> query = context.Users;
             query = query.Where(p => p.GymIdForeignKey == gymID);
-            query = query.Where(p => p.UserType == UserTypes.Member);
+            if (query != null)
+                query = query.Where(p => p.UserType == UserTypes.Member);
 
             return await query.ToArrayAsync();
         }

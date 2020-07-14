@@ -52,6 +52,8 @@ namespace GymMovesWebAPI.Controllers {
         private INotificationsRepository notificationsRepository;
         private readonly IMailer mailer;
 
+        string emailReceiver = "u18059903@tuks.co.za";
+
         public NotificationsController(INotificationSettingsRepository notificationSettingsRep, INotificationsRepository notificationsRep,
             IGymRepository gymRepo, IMailer mail) { 
             
@@ -64,7 +66,6 @@ namespace GymMovesWebAPI.Controllers {
 
         private async Task<bool> addAnnouncement(NotificationRequest req) {
             DateTime dateTime = convertToDate(req);
-            
             Notifications notif = new Notifications() { Body = req.body, GymIdForeignKey = req.gymId, Heading = req.heading, Date = dateTime };
 
             return await notificationsRepository.addNotification(notif);
@@ -89,16 +90,16 @@ namespace GymMovesWebAPI.Controllers {
 
                     Users[] Members = await gymRepository.getMembers(req.gymId);
 
-
+                    string from = "tiamangena@gmail.com"; //From address   
+                    await mailer.sendEmail(from, "Gym Moves Notifications", req.heading, req.body, emailReceiver);
+                    
                     foreach (Users user in Members) {
 
                         NotificationSettings settings = await notificationSettingsRepository.getSettingsOfUser
                             (user.Username);
 
-
-                        if (settings.Email) {
-                            string from = "tiamangena@gmail.com"; //From address    
-                            await mailer.sendEmail(from, "Notifications", req.heading, req.body, user.Email, true);
+                        if (settings.Email) { 
+                            await mailer.sendEmail(from, "Gym Moves Notifications", req.heading, req.body, user.Email);
                         }
                     }
 
@@ -183,8 +184,8 @@ namespace GymMovesWebAPI.Controllers {
                 }
             }
 
-            if (notifications.Length == 0) {
-                return Unauthorized("This is not a valid gym.");
+            if (notifications == null || notifications.Length == 0) {
+                return NotFound("There are no announcements.");
             }
             else {
                 return Ok(announcementsThatHaveBeenMade);

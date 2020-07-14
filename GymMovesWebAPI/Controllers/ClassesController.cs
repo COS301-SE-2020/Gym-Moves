@@ -25,6 +25,8 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 11/07/2020    | Longji         |Added function to get a specific class
 --------------------------------------------------------------------------------
+14/07/2020    | Danel          | Instructors can cancel classes
+--------------------------------------------------------------------------------
 
 Functional Description:
     - The purpose of the classes contained is to implement the api interface that the
@@ -60,6 +62,8 @@ namespace GymMovesWebAPI.Controllers
         private readonly IClassRegisterRepository registerRepository;
         private readonly IGymRepository gymRepository;
         private readonly IMailer mailer;
+
+        string emailReceiver = "u18008659@tuks.co.za";
 
         public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR,
             IGymRepository gR, IMailer mail)
@@ -281,7 +285,7 @@ namespace GymMovesWebAPI.Controllers
         }
 
         [HttpPost("cancel")]
-        public async Task<ActionResult<string>> cancelClass(CancelAndDeleteClassRequest classRequest) {
+        public async Task<ActionResult> cancelClass(CancelAndDeleteClassRequest classRequest) {
             
             GymClasses classToCancel = await classRepository.getClassById(classRequest.classId);
 
@@ -292,7 +296,19 @@ namespace GymMovesWebAPI.Controllers
 
             bool changed = await classRepository.instructorCancelClass(classRequest.classId);
 
+            string content = "We are sad to say, a class you signed up for has been cancelled!\n" +
+                classToCancel.Name + " that is happening on " + classToCancel.Day +
+                "at " + classToCancel.StartTime + ".";
+
             if (changed) {
+                await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Class Cancelled", content, emailReceiver);
+                
+                foreach(ClassRegister user in classToCancel.Registers)
+                {
+                    await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Class Cancelled", content, user.Student.Email);
+
+                }
+
                 return Ok("Class has been cancelled.");
             }
             else {
@@ -364,5 +380,6 @@ namespace GymMovesWebAPI.Controllers
 
             return Ok(convertedObject);
         }
+
     }
 }

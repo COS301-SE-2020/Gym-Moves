@@ -26,7 +26,9 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
         public async Task<GymMember> getMember(string membershipId, int gymId) {
             IQueryable<GymMember> query = context.GymMembers;
             query = query.Where(p => p.MembershipId == membershipId);
-            query = query.Where(p => p.GymId == gymId);
+
+            if (query != null)
+                query = query.Where(p => p.GymId == gymId);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -34,6 +36,20 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
         public async Task<bool> deleteMember(GymMember member) {
             context.Remove(member);
             return (await context.SaveChangesAsync()) > 0;
+        }
+
+        public async Task<GymMember[]> getAllInstructors(int gymID)
+        {
+            IQueryable<GymMember> query = context.GymMembers;
+            query = query.Where(p => p.GymId == gymID);
+
+            if (query != null)
+            {
+                query = query.Where(p => p.UserType == Enums.UserTypes.Instructor);
+            }
+            
+            return await query.ToArrayAsync();
+           
         }
     }
 }
