@@ -25,6 +25,8 @@ Raeesa              | 27/06/2020   | Added error messages, form
 --------------------------------------------------------------------------------
  Danel              | 05/07/2020   | Added autocomplete
 --------------------------------------------------------------------------------
+ Danel              | 15/07/2020   | Added hashing of password
+--------------------------------------------------------------------------------
 
 Functional Description:
   This file contains the SignUp class that creates the class that creates the
@@ -51,6 +53,7 @@ import 'package:gym_moves/User/InstructorPages.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 /*Class Name:
   SignUp
@@ -68,25 +71,6 @@ class SignUp extends StatefulWidget {
   SignUpState createState() => SignUpState();
 }
 
-/*Class Name:
-  Gym
-Purpose:
-  This class interprets the Json object of the gyms, received from the API.
- */
-class Gym {
-  final int gymId;
-  final String gymName;
-  final String gymBranch;
-
-  Gym({this.gymId, this.gymName, this.gymBranch});
-
-  factory Gym.fromJson(Map<String, dynamic> json) {
-    return Gym(
-        gymId: json['gymId'],
-        gymName: json['gymName'],
-        gymBranch: json['gymBranch']);
-  }
-}
 
 /*
 Class Name:
@@ -104,11 +88,10 @@ class SignUpState extends State<SignUp> {
   final signUpFormKey = GlobalKey<FormState>();
 
   List<Gym> gyms = [];
-  int arrLength = 0;
 
   @override
   void initState() {
-    _makeGetRequest();
+    _getGyms();
     super.initState();
   }
 
@@ -117,21 +100,19 @@ class SignUpState extends State<SignUp> {
 
   /*
   Method Name:
-    _makeGetRequest
+    _getGyms
 
   Purpose:
      This method is used to make a get request and fetch the different gym's
     and their branches. This list will be used for the auto-complete field, "Gym".
 */
-  _makeGetRequest() async {
+  _getGyms() async {
     String url = 'https://gymmoveswebapi.azurewebsites.net/api/gym/getall';
     Response response = await get(url);
-    String responseBody = response.body;
 
-    List<dynamic> gymsJson = json.decode(responseBody);
-    arrLength = gymsJson.length;
+    List<dynamic> gymsJson = json.decode(response.body);
 
-    for (int i = 0; i < arrLength; i++) {
+    for (int i = 0; i < gymsJson.length; i++) {
       gyms.add(Gym.fromJson(gymsJson[i]));
     }
   }
@@ -284,7 +265,8 @@ class SignUpState extends State<SignUp> {
           labelText: 'Gym',
           labelStyle: new TextStyle(color: Colors.black54),
           border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)
+      ),
     );
 
     final gymField = Material(
@@ -313,17 +295,17 @@ class SignUpState extends State<SignUp> {
                   image: const AssetImage('assets/Bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.82), BlendMode.dstIn),
+                      Colors.black.withOpacity(0.82), BlendMode.dstIn
+                  ),
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: const Color(0x22000000),
                     offset: Offset(0, 3),
                     blurRadius: 6,
-                  ),
-                ],
-              ),
-            ),
+                  )
+                ])
+            )
           ),
           Transform.translate(
             offset: Offset(0.08 * media.size.width, 0.08 * media.size.height),
@@ -346,62 +328,72 @@ class SignUpState extends State<SignUp> {
                 gymIdField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height),
+                        0.08 * 0.3 * media.size.height
+                    ),
                     child: SvgPicture.string(
                       idCard,
                       width: media.size.width * 0.06,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    ))
+                    )
+                )
               ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 gymField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height),
+                        0.08 * 0.3 * media.size.height
+                    ),
                     child: SvgPicture.string(
                       dumbbell,
                       height: 0.04 * media.size.height,
                       width: 0.04 * media.size.width,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    ))
+                    )
+                )
               ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 usernameField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.25 * media.size.height),
+                        0.08 * 0.25 * media.size.height
+                    ),
                     child: SvgPicture.string(
                       person,
                       width: media.size.width * 0.05,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    ))
+                    )
+                )
               ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 passwordField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height),
+                        0.08 * 0.3 * media.size.height
+                    ),
                     child: SvgPicture.string(
                       lock,
                       width: media.size.width * 0.05,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    ))
+                    )
+                )
               ]),
               SizedBox(height: 0.06 * media.size.height),
-            ])),
+            ])
+        ),
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
                     sendValuesToDatabase();
@@ -414,10 +406,13 @@ class SignUpState extends State<SignUp> {
                       'Submit',
                       style: TextStyle(
                           fontSize: 0.05 * media.size.width,
-                          fontFamily: 'Roboto'),
-                    ),
-                  ),
-                ))),
+                          fontFamily: 'Roboto'
+                      )
+                    )
+                  )
+                )
+            )
+        ),
         SizedBox(height: 0.06 * media.size.height),
         Center(
             child: GestureDetector(
@@ -445,11 +440,11 @@ class SignUpState extends State<SignUp> {
                     fontWeight: FontWeight.w800,
                   ),
                 )
-              ],
-            ),
+              ]),
             textAlign: TextAlign.center,
           ),
-        )),
+        )
+        ),
         SizedBox(height: 0.05 * media.size.height),
       ]),
     );
@@ -462,7 +457,6 @@ class SignUpState extends State<SignUp> {
     This method is used when validating the form.
            If a field is invalid or incomplete, the alert dialog will show.
 */
-
   void _showAlertDialog(String message, String message2) {
     // set up the button
     Widget okButton = FlatButton(
@@ -500,27 +494,30 @@ class SignUpState extends State<SignUp> {
 
     if (gymMemberId == "" || password == "" || gym == "" || username == "") {
       _showAlertDialog(
-          "Please fill in missing fields", "All fields are required");
+          "Please fill in missing fields.", "All fields are required!");
     } else if (secure == false) {
       _showAlertDialog(
-          "Your password needs to be 8 characters long, with at least one special character, number, small letter and capital letter",
+          "Your password needs to be 8 characters long, with at least one special character, number, small letter and capital letter.",
           "Password invalid");
     } else {
-      _makePostRequest();
+      _signUpUser();
     }
   }
 
   /*
   Method Name:
-    _makePostRequest
+    _signUpUser
   Purpose:
     This method is called when the all the fields in the form has been verified.
     It makes a post request to our API with the respective fields, ensuring that
     this user is registered to a gym. Once they're logged in, it redirects them to
     their respective welcome pages.
 */
-  _makePostRequest() async {
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/signup';
+  _signUpUser() async {
+    var bytes = utf8.encode(password);
+    var hashPassword = sha256.convert(bytes);
+
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/user/signup';
 
     var gymArray = gym.split(", ");
 
@@ -529,7 +526,7 @@ class SignUpState extends State<SignUp> {
       headers: <String, String>{'Content-type': 'application/json'},
       body: jsonEncode({
         "username": username,
-        "password": password,
+        "password": hashPassword.toString(),
         "gymMemberID": gymMemberId,
         "gymName": gymArray[0],
         "gymBranch": gymArray[1],
@@ -538,60 +535,47 @@ class SignUpState extends State<SignUp> {
 
     String responseBody = response.body;
 
-    User userjson = User.fromJson(json.decode(responseBody));
-    bool usernameValid = userjson.usernameValid;
-    bool gymMemberIdValid = userjson.gymMemberIdValid;
-    int userType = userjson.userType;
-    String name = userjson.name;
+    if (response.statusCode == 200) {
+      User userJson = User.fromJson(json.decode(responseBody));
 
-    if (usernameValid == false && gymMemberIdValid == true) {
-      _showAlertDialog(
-          "Your username is taken, try a different one.", 'Username invalid');
-    } else if (gymMemberIdValid == false && usernameValid == true) {
-      _showAlertDialog("Did you make a typo in your Gym ID?", "Gym ID invalid");
-    } else if (gymMemberIdValid == false && usernameValid == false) {
-      _showAlertDialog(
-          "Gym ID does not exist, and username is already taken.", "Invalid");
-    } else if (usernameValid == true && gymMemberIdValid == true) {
       /* local storage */
       final prefs = await SharedPreferences.getInstance();
+
       /* set value */
-      prefs.setString('gymId', gymMemberId);
+      prefs.setInt('gymId', userJson.gymID);
       prefs.setString('username', username);
-      prefs.setInt('type', userType);
-      prefs.setString("name", name);
+      prefs.setInt('type', userJson.userType);
+      prefs.setString("name", userJson.name);
       prefs.setString("gymName", gymArray[0]);
 
-      if (userType == 0) {
-        Navigator.of(context).pop();
+      Navigator.of(context).pop();
+
+      if (userJson.userType == 0) {
         Navigator.of(context)
             .push(new MaterialPageRoute(builder: (BuildContext context) {
           return new MemberPages();
         }));
-      } else if (userType == 1) {
-        Navigator.of(context).pop();
+      } else if (userJson.userType == 1) {
         Navigator.of(context)
             .push(new MaterialPageRoute(builder: (BuildContext context) {
           return new InstructorPages();
         }));
-      } else if (userType == 2) {
-        Navigator.of(context).pop();
+      } else if (userJson.userType == 2) {
         Navigator.of(context)
             .push(new MaterialPageRoute(builder: (BuildContext context) {
           return new ManagerPages();
         }));
-      } else {
-        _showAlertDialog("Not a valid gym member", "Gym ID invalid");
       }
     } else {
-      _showAlertDialog(
-          "Try again in a few minutes", "Sorry, there's a problem on our side");
+      _showAlertDialog(responseBody, "Sign Up Error");
     }
   }
 
 /*
-  Method Name: validateStructure
-  Purpose: This method validates that the password the user entered, is secure.
+  Method Name:
+    validateStructure
+  Purpose:
+    This method validates that the password the user entered, is secure.
 */
   bool validateStructure(String password) {
     String pattern =
@@ -605,23 +589,41 @@ class SignUpState extends State<SignUp> {
 Class Name:
   User
 Purpose:
-This class is the response body that we receive from the API
+  This class is the response body that we receive from the API.
  */
 class User {
-  final bool usernameValid;
-  final bool gymMemberIdValid;
   final int userType;
   final String name;
+  final int gymID;
 
-  User({this.usernameValid, this.gymMemberIdValid, this.userType, this.name});
+  User({this.userType, this.name, this.gymID});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      usernameValid: json['usernameValid'],
-      gymMemberIdValid: json['gymMemberIdValid'],
-      userType: json['userType'],
-      name: json['name'],
+        userType: json['userType'],
+        name: json['name'],
+        gymID: json['gymID']
     );
+  }
+}
+
+/*Class Name:
+  Gym
+Purpose:
+  This class interprets the Json object of the gyms, received from the API.
+ */
+class Gym {
+  final int gymId;
+  final String gymName;
+  final String gymBranch;
+
+  Gym({this.gymId, this.gymName, this.gymBranch});
+
+  factory Gym.fromJson(Map<String, dynamic> json) {
+    return Gym(
+        gymId: json['gymId'],
+        gymName: json['gymName'],
+        gymBranch: json['gymBranch']);
   }
 }
 

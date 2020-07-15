@@ -31,6 +31,8 @@ import 'package:gym_moves/Announcement/SendAnnouncement.dart';
 import 'package:gym_moves/GymClass/EditClassesManager.dart';
 import 'package:gym_moves/Dashboard/Dashboard.dart';
 import 'package:gym_moves/User/ViewMyProfile.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 /*
 Class Name:
@@ -77,8 +79,13 @@ class ManagerPagesState extends State<ManagerPages> {
 
   Future local;
 
+  Future announcements;
+
+  List<Announcement> announcementsList = [];
+
   @override
   void initState() {
+    announcements = _getAnnouncementsFromDB();
     local = _getDetails();
     super.initState();
   }
@@ -108,7 +115,69 @@ class ManagerPagesState extends State<ManagerPages> {
             return Scaffold(
                 backgroundColor: const Color(0xff513369),
                 body: PageView(controller: controller, children: <Widget>[
-                  Column(),
+                  Column(children: <Widget>[
+                    Stack(children: <Widget>[
+                      Transform.translate(
+                          offset: Offset(0.0, -0.035 * media.size.height),
+                          child: Container(
+                              width: media.size.width,
+                              height: 0.13 * media.size.height,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image:
+                                    const AssetImage('assets/Banner.jpg'),
+                                    fit: BoxFit.fill,
+                                    colorFilter: new ColorFilter.mode(
+                                        Colors.black.withOpacity(0.52),
+                                        BlendMode.dstIn),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0x46000000),
+                                      offset: Offset(0, 3),
+                                      blurRadius: 6,
+                                    )
+                                  ]))),
+                      Container(
+                        width: media.size.width,
+                        child: Text(
+                          'Announcements',
+                          style: TextStyle(
+                            fontFamily: 'FreestyleScript',
+                            fontSize: 0.13 * media.size.width,
+                            color: const Color(0xffffffff),
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ]),
+                    Expanded(
+                        child: new FutureBuilder(
+                          future: announcements,
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return getAnnouncements(media);
+                            } else {
+                              return Text(
+                                'Busy getting your announcements.',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: media.size.width * 0.05,
+                                  color: const Color(0xffffffff),
+                                  shadows: [
+                                    Shadow(
+                                      color: const Color(0xbd000000),
+                                      offset: Offset(0, 3),
+                                      blurRadius: 6,
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                              );
+                            }
+                          },
+                        ))
+                  ]),
                   Stack(children: <Widget>[
                     Container(
                       width: media.size.width,
@@ -477,6 +546,118 @@ class ManagerPagesState extends State<ManagerPages> {
         border: Border.all(width: 1.0, color: const Color(0x30707070)),
       ),
     );
+  }
+
+  /*
+   Method Name:
+    getAnnouncements
+
+   Purpose:
+    This method returns a listview that as all the announcements.
+
+   */
+  Widget getAnnouncements(media) {
+    List<Widget> displayedAnnouncements = [];
+
+    if (announcementsList.length == 0) {
+      return Center(
+          child: Container(
+              height: 1 / 10 * media.size.height,
+              width: media.size.width,
+              child: Text(
+                'There are currently no recent announcements.',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: media.size.width * 0.05,
+                  color: const Color(0xffffffff),
+                  shadows: [
+                    Shadow(
+                      color: const Color(0xbd000000),
+                      offset: Offset(0, 3),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+              )));
+    } else {
+      for (Announcement announce in announcementsList) {
+        displayedAnnouncements.add(
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Stack(children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(0.015 * media.size.height),
+                  width: 0.7 * media.size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(19.0),
+                    color: const Color(0x26ffffff),
+                    border: Border.all(width: 1.0, color: const Color(0x26707070)),
+                  ),
+                  child: Text(announce.heading + "\n\n\n" + announce.body,
+                      style: TextStyle(
+                          color: Colors.white, fontSize: 0.035 * media.size.width)),
+                ),
+                Transform.translate(
+                    offset: Offset(0.6 * 0.9 * media.size.width,
+                        0.3 * 0.15 * media.size.height),
+                    child: SizedBox(
+                        width: 0.7 * media.size.width,
+                        child: Text(
+                            announce.date.day.toString() +
+                                "/" +
+                                announce.date.month.toString() +
+                                "/" +
+                                announce.date.year.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 0.025 * media.size.width)))),
+              ])
+            ]));
+
+        displayedAnnouncements.add(SizedBox(height: 0.025 * media.size.height));
+      }
+    }
+
+    return ListView(
+        padding: const EdgeInsets.all(15), children: displayedAnnouncements);
+  }
+
+  _getAnnouncementsFromDB() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String gymId = prefs.get("gymId").toString();
+
+    String url =
+        'https://gymmoveswebapi.azurewebsites.net/api/notifications/getAllAnnouncements?gymID=$gymId';
+    Response response = await get(url);
+
+    if (response.statusCode == 200) {
+      List<dynamic> announcementsJson = json.decode(response.body);
+
+      for (int i = 0; i < announcementsJson.length; i++) {
+        announcementsList.add(Announcement.fromJson(announcementsJson[i]));
+      }
+    }
+  }
+}
+
+/*
+Class Name:
+  Announcement
+
+Purpose:
+  Structure of an announcement.
+
+*/
+class Announcement {
+  final String heading;
+  final String body;
+  final DateTime date;
+
+  Announcement({this.heading, this.body, this.date});
+
+  factory Announcement.fromJson(Map<dynamic, dynamic> json) {
+    return Announcement(
+        heading: json['heading'], body: json['body'], date: DateTime.parse(json['date']));
   }
 }
 

@@ -27,7 +27,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*
@@ -290,8 +289,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         borderRadius: BorderRadius.circular(10.0)),
                     color: const Color(0xffffffff).withOpacity(0.3),
                     onPressed: () {
-                      sendValuesToNotify(
-                          _headingOfAnnouncement, _detailsOfAnnouncement);
+                      sendValuesToNotify();
                     },
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
@@ -318,18 +316,18 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     send this announcement as a notification to the members.
 */
 
-  void sendValuesToNotify(String heading, String details) async {
+  void sendValuesToNotify() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final int gymId = 0; //prefs.getInt('gymId');
+    final int gymId = prefs.getInt('gymId');
 
     final http.Response response = await http.post(
-      'https://gymmoveswebapi.azurewebsites.net/api/sendNotification',
+      'https://gymmoveswebapi.azurewebsites.net/api/notifications/sendNotification',
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode({
         'gymId': gymId,
-        'heading': heading,
-        'body': details,
+        'heading': _headingOfAnnouncement,
+        'body': _detailsOfAnnouncement,
         'announcementDay': day,
         'announcementMonth': month,
         'announcementYear': year
@@ -339,7 +337,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     String message = "";
     if (response.statusCode == 200) {
       title = "Success!";
-      message = response.body;
+      message = Message.fromJson(jsonDecode(response.body)).message;
     } else {
       title = "Oh no!";
       message = "Could not send announcement. Please try again later.";
@@ -365,6 +363,18 @@ class SendAnnouncementState extends State<SendAnnouncement> {
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+}
+
+class Message {
+  final String message;
+
+  Message({this.message});
+
+  factory Message.fromJson(Map<String, dynamic> json) {
+    return Message(
+        message: json['message']
     );
   }
 }

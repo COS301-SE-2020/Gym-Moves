@@ -28,6 +28,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 /*
 Class Name:
@@ -62,10 +63,10 @@ class SetNotificationTypeState extends State<SetNotificationType> {
   bool emailNotificationsChanged = false;
 
   /*Url of API*/
-  String url = "https://gymmoveswebapi.azurewebsites.net/api/";
+  String url = "https://gymmoveswebapi.azurewebsites.net/api/notifications/";
 
   /*This will be the users username.*/
-  String username = "myusername";
+  String username = "";
 
   Future loadSettingsFuture;
 
@@ -293,7 +294,7 @@ class SetNotificationTypeState extends State<SetNotificationType> {
    */
   sendToDatabase() async {
     final http.Response response = await http.post(
-      url + "changenotification",
+      url + "changeNotificationSettings",
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -329,19 +330,14 @@ class SetNotificationTypeState extends State<SetNotificationType> {
      This method gets what the members current notification preferences are.
    */
   getNotificationValues() async {
-    final http.Response response = await http.post(
-      url + "getnotifications",
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-      }),
-    );
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.get("username");
+
+    final http.Response response = await http.get(
+      url + "getNotificationSettings?username="  + username);
 
     if (response.statusCode != 200) {
-      _errorDialogue(
-          "We could not get any of your information. Please try again later.");
+      _errorDialogue(response.body);
     } else {
       Notifications notifications =
           Notifications.fromJson(json.decode(response.body));
@@ -384,6 +380,14 @@ class SetNotificationTypeState extends State<SetNotificationType> {
     );
   }
 
+  /*
+   Method Name:
+    _successDialogue
+
+   Purpose:
+     This method shows a dialogue if there was success with getting or sending
+     information from or to the database.
+   */
   _successDialogue(text) async {
     return showDialog<void>(
       context: context,

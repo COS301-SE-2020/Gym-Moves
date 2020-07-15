@@ -10,11 +10,11 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-| Name               | Date              | Changes                             |
+| Name               | Date              | Changes
 --------------------------------------------------------------------------------
-| Danel              | 26/06/2020        | Made UI responsive and functional   |
+| Danel              | 26/06/2020        | Made UI responsive and functional
 --------------------------------------------------------------------------------
-| Tia              | 05/07/2020        | Added logout function   |
+| Tia              | 05/07/2020        | Added logout function
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -75,6 +75,13 @@ class ViewMyProfileState extends State<ViewMyProfile> {
     super.initState();
   }
 
+  /*
+   Method Name:
+    _getName
+
+   Purpose:
+    Gets the user's name from local storage.
+   */
   _getName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     name = prefs.get("name");
@@ -111,7 +118,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                             image: const AssetImage('assets/RightSidePoolHalf.png'),
                             fit: BoxFit.fill,
                             colorFilter: new ColorFilter.mode(
-                                Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                                Colors.black.withOpacity(1.0), BlendMode.dstIn
+                            ),
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -119,7 +127,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                               offset: Offset(0, 3),
                               blurRadius: 6,
                             )
-                          ])),
+                          ])
+                  ),
                   Transform.translate(
                       offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
                       child: GestureDetector(
@@ -128,7 +137,10 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                           },
                           child: SvgPicture.string(backButton,
                               width: 0.07 * media.size.width,
-                              allowDrawingOutsideViewBox: true))),
+                              allowDrawingOutsideViewBox: true
+                          )
+                      )
+                  ),
                   Container(
                       width: media.size.width,
                       height: 0.4 * media.size.height,
@@ -141,7 +153,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                                 BorderRadius.all(Radius.elliptical(85.5, 81.0)),
                                 color: const Color(0xffffffff),
                                 border: Border.all(
-                                    width: 1.0, color: const Color(0xff707070)),
+                                    width: 1.0, color: const Color(0xff707070)
+                                )
                               ),
                               child: Center(
                                   child: AutoSizeText(
@@ -154,49 +167,64 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                                         Shadow(
                                           color: const Color(0xbd000000),
                                           offset: Offset(0, 1),
-                                          blurRadius: 0,
-                                        ),
-                                      ],
-                                    ),
+                                          blurRadius: 0
+                                        )
+                                      ]),
                                     maxLines: 1,
-                                    textAlign: TextAlign.center,
-                                  )))))
+                                    textAlign: TextAlign.center
+                                  )
+                              )
+                          )
+                      )
+                  )
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
                   getOptionContainer(media, ChangePassword()),
                   Transform.translate(
                       offset: Offset(0.8 * 0.82 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getIcon(pen, 0.08 * 0.5 * media.size.height)),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getIcon(pen, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Change Password"))
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Change Password")
+                  )
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
                   getOptionContainer(media, HelpManual()),
                   Transform.translate(
                       offset: Offset(0.8 * 0.82 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Help Manual")),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Help Manual")
+                  ),
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
                   getOptionContainer(media, SetNotificationType()),
                   Transform.translate(
                       offset: Offset(0.8 * 0.82 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getIcon(bell, 0.08 * 0.5 * media.size.height)),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getIcon(bell, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Notifications"))
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Notifications")
+                  )
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
@@ -212,15 +240,22 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                               borderRadius: BorderRadius.circular(29.0),
                               color: Color(0x26ffffff),
                               border: Border.all(
-                                  width: 1.0, color: const Color(0x3d707070))))),
+                                  width: 1.0, color: const Color(0x3d707070)
+                              )
+                          )
+                      )
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.8 * media.size.width,
                           0.08 * 0.25 * media.size.height),
-                      child: getIcon(logout, 0.08 * 0.5 * media.size.height)),
+                      child: getIcon(logout, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Logout"))
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Logout")
+                  )
                 ])
               ]),
             );
@@ -237,7 +272,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                             image: const AssetImage('assets/RightSidePoolHalf.png'),
                             fit: BoxFit.fill,
                             colorFilter: new ColorFilter.mode(
-                                Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                                Colors.black.withOpacity(1.0), BlendMode.dstIn
+                            ),
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -245,7 +281,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                               offset: Offset(0, 3),
                               blurRadius: 6,
                             )
-                          ])),
+                          ])
+                  ),
                   Transform.translate(
                       offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
                       child: GestureDetector(
@@ -254,7 +291,10 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                           },
                           child: SvgPicture.string(backButton,
                               width: 0.07 * media.size.width,
-                              allowDrawingOutsideViewBox: true))),
+                              allowDrawingOutsideViewBox: true
+                          )
+                      )
+                  ),
                   Container(
                       width: media.size.width,
                       height: 0.4 * media.size.height,
@@ -267,7 +307,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                                 BorderRadius.all(Radius.elliptical(85.5, 81.0)),
                                 color: const Color(0xffffffff),
                                 border: Border.all(
-                                    width: 1.0, color: const Color(0xff707070)),
+                                    width: 1.0, color: const Color(0xff707070
+                                )),
                               ),
                               child: Center(
                                   child: AutoSizeText(
@@ -286,43 +327,59 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                                     ),
                                     maxLines: 1,
                                     textAlign: TextAlign.center,
-                                  )))))
+                                  )
+                              )
+                          )
+                      )
+                  )
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
                   getOptionContainer(media, ChangePassword()),
                   Transform.translate(
                       offset: Offset(0.8 * 0.82 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getIcon(pen, 0.08 * 0.5 * media.size.height)),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getIcon(pen, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Change Password"))
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Change Password")
+                  )
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
                   getOptionContainer(media, HelpManual()),
                   Transform.translate(
                       offset: Offset(0.8 * 0.82 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)),
+                          0.08 * 0.25 * media.size.height)
+                      ,
+                      child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Help Manual")),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Help Manual")
+                  ),
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
                   getOptionContainer(media, SetNotificationType()),
                   Transform.translate(
                       offset: Offset(0.8 * 0.82 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getIcon(bell, 0.08 * 0.5 * media.size.height)),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getIcon(bell, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Notifications"))
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Notifications")
+                  )
                 ]),
                 SizedBox(height: 0.05 * media.size.height),
                 Stack(children: <Widget>[
@@ -338,31 +395,35 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                               borderRadius: BorderRadius.circular(29.0),
                               color: Color(0x26ffffff),
                               border: Border.all(
-                                  width: 1.0, color: const Color(0x3d707070))))),
+                                  width: 1.0, color: const Color(0x3d707070)
+                              )
+                          )
+                      )
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.8 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getIcon(logout, 0.08 * 0.5 * media.size.height)),
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getIcon(logout, 0.08 * 0.5 * media.size.height)
+                  ),
                   Transform.translate(
                       offset: Offset(0.8 * 0.1 * media.size.width,
-                          0.08 * 0.25 * media.size.height),
-                      child: getOptionText(media, "Logout"))
+                          0.08 * 0.25 * media.size.height
+                      ),
+                      child: getOptionText(media, "Logout")
+                  )
                 ])
-              ]),
+              ])
             );
           }
         });
-
-
-
-
   }
 
   /*
-  Method Name: logout
+  Method Name: userLogout
 
   Purpose: This method is called when the logout is tapped. It will clear the
-  local storage and go to the logi page.
+  local storage and go to the login page.
 */
   userLogout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -377,7 +438,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
     Navigator.pop(context);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LogIn()),
+      MaterialPageRoute(builder: (context) => LogIn()
+      ),
     );
   }
 
@@ -392,7 +454,8 @@ class ViewMyProfileState extends State<ViewMyProfile> {
     return GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => nextPage));
+              context, MaterialPageRoute(builder: (context) => nextPage)
+          );
         },
         child: Container(
             width: 0.8 * media.size.width,
@@ -402,7 +465,9 @@ class ViewMyProfileState extends State<ViewMyProfile> {
               borderRadius: BorderRadius.circular(29.0),
               color: Color(0x26ffffff),
               border: Border.all(width: 1.0, color: const Color(0x3d707070)),
-            )));
+            )
+        )
+    );
   }
 
   /*

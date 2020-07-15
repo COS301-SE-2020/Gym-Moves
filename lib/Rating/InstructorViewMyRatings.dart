@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'ManagerViewInstructorRatings.dart';
 import '../GymClass/ClassDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class InstructorViewMyRatings extends StatefulWidget {
   const InstructorViewMyRatings({Key key}) : super(key: key);
@@ -12,21 +14,30 @@ class InstructorViewMyRatings extends StatefulWidget {
 }
 
 class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
+  List<Class> classes = [];
+
+  @override
+  void initState() {
+    //_makeGetRequest();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    return Scaffold(
+    return new Scaffold(
         backgroundColor: const Color(0xff513369),
-        body: Column(children: <Widget>[
+      //  body:
+
+       /* Column(children: <Widget>[
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
               height: 0.35 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image:
-                      const AssetImage('assets/RightSidePoolHalf.png'),
+                  image: const AssetImage('assets/RightSidePoolHalf.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.black.withOpacity(1.0), BlendMode.dstIn),
@@ -74,105 +85,121 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
             Container(
                 width: media.size.width,
                 height: 0.4 * media.size.height,
-                child: Row(children: getStarsForInstructor(media), mainAxisAlignment: MainAxisAlignment.center,))
+                child: Row(
+                  children: getStarsForInstructor(media),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ))
           ]),
-          Expanded(child: getClasses(media))
-        ]));
+          Expanded(
+              child: new FutureBuilder(
+                  future: _makeGetRequest(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return new ListView.builder(
+                          itemBuilder: (BuildContext context, int index) {
+                            return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Stack(children: <Widget>[
+                                    GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ClassDetails(),
+                                              ));
+                                        },
+                                        child: Container(
+                                            width: 0.7 * media.size.width,
+                                            height: 0.2 * media.size.height,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(19.0),
+                                              color: const Color(0x26ffffff),
+                                              border: Border.all(
+                                                  width: 1.0,
+                                                  color:
+                                                      const Color(0x26707070)),
+                                            ))),
+                                    Transform.translate(
+                                        offset: Offset(
+                                            0.33 * 0.8 * media.size.width,
+                                            0.65 * 0.25 * media.size.height),
+                                        child: Row(
+                                            children: getStarsForClass(media))),
+                                    Transform.translate(
+                                        offset: Offset(0.05 * media.size.width,
+                                            0.02 * media.size.height),
+                                        child: SizedBox(
+                                            width: 0.7 * media.size.width,
+                                            child: Text(
+                                                "Class Name: " +
+                                                    classes[index].name,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 0.035 *
+                                                        media.size.width)))),
+                                    Transform.translate(
+                                        offset: Offset(0.05 * media.size.width,
+                                            0.07 * media.size.height),
+                                        child: SizedBox(
+                                            width: 0.7 * media.size.width,
+                                            child: Text(
+                                                "Class Day: " +
+                                                    classes[index].day,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 0.035 *
+                                                        media.size.width)))),
+                                    Transform.translate(
+                                        offset: Offset(0.05 * media.size.width,
+                                            0.12 * media.size.height),
+                                        child: SizedBox(
+                                            width: 0.7 * media.size.width,
+                                            child: Text(
+                                                "Class Time: " +
+                                                    classes[index].start +
+                                                    " - " +
+                                                    classes[index].end,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 0.035 *
+                                                        media.size.width))))
+                                  ])
+                                ]);
+                          },
+                          itemCount: classes.length);
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }))
+        ])*/);
   }
 
-  /* Can only implement once API working */
-  Widget getClasses(MediaQueryData media) {
-    List<Widget> classes = new List();
+  /*Method Name:
+    _makeGetRequest
 
-    /*
-  Explanation : This will be when there are no classes assigned to the
-                instructor.
-   */
-    if (false) {
-      /*
-    A pop up dialog would be nice for this.
-     */
-      classes.add(Text(
-        "You are currently not instructing any classes!",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 0.05 * media.size.width,
-            color: Colors.white70),
-      ));
+  Purpose:
+     This method is used to make a get request and fetch the different gym's
+    and their branches. This list will be used for the auto-complete field, "Gym".
+*/
+  _makeGetRequest() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.get("username");
+
+    String url =
+        'https://gymmoveswebapi.azurewebsites.net/api/classes/instructorlist?'
+                'username=' +
+            username;
+    Response response = await get(url);
+    String responseBody = response.body;
+
+    List<dynamic> classesJson = json.decode(responseBody);
+
+    for (int i = 0; i < classesJson.length; i++) {
+      classes.add(Class.fromJson(classesJson[i]));
     }
-    /*
-  Explanation : This will be when there are classes assigned to the
-                instructor.
-   */
-    else {
-      int amountOfClasses = 5;
-
-      for (int i = 0; i < amountOfClasses; i++) {
-        classes.add(GestureDetector(
-            onTap: () {
-              /* Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ClassDetails(className: "Spin Busters")),
-              );*/
-            },
-            child: Row(mainAxisAlignment:MainAxisAlignment.center,children: <Widget>[ Stack(children: <Widget>[
-              GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ClassDetails(),
-                        ));
-                  },
-                  child: Container(
-                      width: 0.7 * media.size.width,
-                      height: 0.2 * media.size.height,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(19.0),
-                        color: const Color(0x26ffffff),
-                        border: Border.all(
-                            width: 1.0, color: const Color(0x26707070)),
-                      ))),
-              Transform.translate(
-                  offset: Offset(0.33 * 0.8 * media.size.width,
-                      0.65 * 0.25 * media.size.height),
-                  child: Row(children: getStarsForClass(media))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
-                  child: SizedBox(
-                      width: 0.7 * media.size.width,
-                      child: Text("Class Name: ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width)))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.07 * media.size.height),
-                  child: SizedBox(
-                      width:0.7 * media.size.width,
-                      child: Text("Class Day: ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width)))),
-              Transform.translate(
-                  offset:
-                  Offset(0.05 * media.size.width, 0.12 * media.size.height),
-                  child: SizedBox(
-                      width: 0.7 * media.size.width,
-                      child: Text("Class Time: ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 0.035 * media.size.width))))
-            ])])));
-
-        classes.add(SizedBox(height: 20));
-      }
-    }
-    return ListView(padding: const EdgeInsets.all(15), children: classes);
   }
 }
 
@@ -268,6 +295,48 @@ List<Widget> getStarsForInstructor(MediaQueryData media) {
   return stars;
 }
 
+class Class {
+  final int classId;
+  final int gymId;
+  final String username;
+  final String name;
+  final String description;
+  final String day;
+  final String start;
+  final String end;
+  final int max;
+  final int current;
+  final bool cancelled;
+
+  Class(
+      {this.classId,
+      this.gymId,
+      this.username,
+      this.name,
+      this.description,
+      this.day,
+      this.start,
+      this.end,
+      this.max,
+      this.current,
+      this.cancelled});
+
+  factory Class.fromJson(Map<String, dynamic> json) {
+    return Class(
+        classId: json['ClassId'],
+        gymId: json['GymId'],
+        username: json['Instructor'],
+        name: json['Name'],
+        description: json['Description'],
+        day: json['Day'],
+        start: json['StartTime'],
+        end: json['EndTime'],
+        max: json['MaxCapacity'],
+        current: json['CurrentStudents'],
+        cancelled: json['Cancelled']);
+  }
+}
+
 const String backArrow =
     '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 const String emptyStar =
@@ -276,3 +345,5 @@ const String fullStar =
     '<svg viewBox="323.2 330.6 13.8 11.4" ><path transform="translate(320.18, 327.59)" d="M 9.920000076293945 12.19414806365967 L 14.19656085968018 14.44000053405762 L 13.06168079376221 10.207200050354 L 16.84000015258789 7.35924243927002 L 11.86452007293701 6.991957664489746 L 9.920000076293945 3 L 7.975480079650879 6.991957664489746 L 3 7.35924243927002 L 6.778319835662842 10.207200050354 L 5.643439769744873 14.44000053405762 L 9.920000076293945 12.19414806365967 Z" fill="#ffff50" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 const String halfStar =
     '<svg viewBox="279.2 324.6 13.8 11.4" ><path transform="translate(276.18, 321.59)" d="M 16.84000015258789 7.35924243927002 L 11.86452007293701 6.985937118530273 L 9.920000076293945 3 L 7.975480079650879 6.991957664489746 L 3 7.35924243927002 L 6.778319835662842 10.207200050354 L 5.643439769744873 14.44000053405762 L 9.920000076293945 12.19414806365967 L 14.19656085968018 14.44000053405762 L 13.06860065460205 10.207200050354 L 16.84000015258789 7.35924243927002 Z M 9.920000076293945 11.06821155548096 L 9.920000076293945 5.468631744384766 L 11.10332012176514 7.90113639831543 L 14.13428020477295 8.129936218261719 L 11.83684062957764 9.863999366760254 L 12.52884006500244 12.44101047515869 L 9.920000076293945 11.06821155548096 Z" fill="#ffff50" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+
+
