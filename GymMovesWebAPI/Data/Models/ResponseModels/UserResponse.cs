@@ -24,6 +24,7 @@ Functional Description:
 
 List of Classes:
     - UserResponseModel
+    - InstructorResponseModel
 
  */
 
@@ -44,5 +45,20 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
         public string name { get; set; }
         public string gymMemberID { get; set; }
         public int gymID { get; set; }
+    }
+
+    /*
+   Class Name:
+       InstructorResponseModel
+
+   Purpose:
+       This class defines the structure of the get all
+       instructors responses.
+   */
+    public class InstructorResponseModel
+    {
+        public string name { get; set; }
+        public string surname { get; set; }
+        public string username { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace GymMovesWebAPI.Data.Models.RequestModels {
     public class GymClassRequest {
-        /* Who made the request */
         public string Username { get; set; }
         public GymClassResponse NewClass { get; set; }
     }
@@ -18,7 +17,14 @@ namespace GymMovesWebAPI.Data.Models.RequestModels {
         public int ClassId { get; set; }
     }
 
-    public class CancelAndDeleteClassRequest {
+    /* Class name:
+           CancelClassRequest
+       
+       Purpose:
+           To handle the incoming cancel request.
+     */
+
+    public class CancelClassRequest {
         public string username { get; set; }
         public int classId { get; set; }
     }

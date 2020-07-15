@@ -119,7 +119,7 @@ namespace GymMovesWebAPI.Controllers {
           This method handles the changing of the notification settings.
        */
         [HttpPost("changeNotificationSettings")]
-        public async Task<ActionResult> changeNotificationSetting(NotificationsSettingsRequest request) {
+        public async Task<ActionResult> changeNotificationSetting(ChangeNotificationsSettingsRequest request) {
 
             bool changed = await notificationSettingsRepository.changeSetting(request.username, request.email, request.push);
 
@@ -141,13 +141,13 @@ namespace GymMovesWebAPI.Controllers {
          This method handles the getting of the notification settings.
       */
         [HttpGet("getNotificationSettings")]
-        public async Task<ActionResult<GetNotificationResponse>> getNotificationSettings(string username) {
+        public async Task<ActionResult<GetNotificationSettingsResponse>> getNotificationSettings(string username) {
 
             NotificationSettings settings = await notificationSettingsRepository.getSettingsOfUser(username);
 
             if (settings != null) {
 
-                GetNotificationResponse response = new GetNotificationResponse();
+                GetNotificationSettingsResponse response = new GetNotificationSettingsResponse();
 
                 response.email = settings.Email;
                 response.push = settings.PushNotifications;

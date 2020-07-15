@@ -286,8 +286,14 @@ namespace GymMovesWebAPI.Controllers
             }
         }
 
+        /*
+        Method Name:
+            cancelClass
+        Purpose:
+            This function handles the api request that results in a class being cancelled and uncancelled. 
+        */
         [HttpPost("cancel")]
-        public async Task<ActionResult> cancelClass(CancelAndDeleteClassRequest classRequest) {
+        public async Task<ActionResult> cancelClass(CancelClassRequest classRequest) {
             
             GymClasses classToCancel = await classRepository.getClassById(classRequest.classId);
 
@@ -299,16 +305,15 @@ namespace GymMovesWebAPI.Controllers
             bool changed = await classRepository.instructorCancelClass(classRequest.classId);
 
             string content = "We are sad to say, a class you signed up for has been cancelled!\n" +
-                classToCancel.Name + " that is happening on " + classToCancel.Day +
+                classToCancel.Name + " that was supposed to happen on " + classToCancel.Day +
                 "at " + classToCancel.StartTime + ".";
 
             if (changed) {
                 await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Class Cancelled", content, emailReceiver);
                 
-                foreach(ClassRegister user in classToCancel.Registers)
-                {
+                foreach(ClassRegister user in classToCancel.Registers) {
+                    
                     await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Class Cancelled", content, user.Student.Email);
-
                 }
 
                 return Ok("Class has been cancelled.");

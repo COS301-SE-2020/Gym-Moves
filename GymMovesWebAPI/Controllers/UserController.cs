@@ -16,7 +16,7 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 09/07/2020    | Danel          | Added working email send
 --------------------------------------------------------------------------------
-14/07/2020    | Danel          | Change email receiver added
+14/07/2020    | Danel          | Change password fix and get instructors
 --------------------------------------------------------------------------------
 
 
@@ -41,7 +41,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace GymMovesWebAPI.Controllers {
 
@@ -379,7 +380,7 @@ namespace GymMovesWebAPI.Controllers {
                 }
                 else {
                     await resetPasswordRepository.deleteUser(userInCodeTabe);
-                    return StatusCode(500, "We were unable to change your password.");
+                    return StatusCode(500, "This is already your existing password.");
                 }
 
             }
@@ -398,10 +399,8 @@ namespace GymMovesWebAPI.Controllers {
         [HttpPost("changePassword")]
         public async Task<ActionResult> changePassword(ChangePasswordRequestModel user) {
 
-            /* Get the user record to change.*/
             Users userToChange = await userGymMovesRepository.getUser(user.username);
 
-            /* If null, user does not exit.*/
             if (userToChange == null) {
                 return NotFound("This user doesn't exist.");
             }
@@ -419,7 +418,7 @@ namespace GymMovesWebAPI.Controllers {
                     return Ok("Successully changed your password.");
                 }
                 else {
-                    return StatusCode(500, "Unable to change your password now, please try again later.");
+                    return StatusCode(500, "This is already your password.");
                 }
             }
             else {
@@ -427,11 +426,33 @@ namespace GymMovesWebAPI.Controllers {
             }    
         }
 
+         /*
+        Method Name:
+            allInstructors
+        Purpose:
+            This method will return all instructors for a specific gym.
+       */
         [HttpGet("allInstructors")]
-        public async Task<ActionResult<GymMember[]>> getAllInstructors(int gymID)
+        public async Task<ActionResult<InstructorResponseModel[]>> getAllInstructors(int gymID)
         {
-            return Ok(await gymMembersRepository.getAllInstructors(gymID));
+
+            Users[] instructors = await userGymMovesRepository.getAllInstructors(gymID);
+            List<InstructorResponseModel> instructorsToReturn = new List<InstructorResponseModel>();
+
+            foreach(Users user in instructors)
+            {
+                instructorsToReturn.Add(new InstructorResponseModel
+                {
+                    name = user.Name,
+                    surname = user.Surname,
+                    username = user.Username
+                });
+            }
+
+            return Ok(instructorsToReturn);
         }
 
     }
 }
+ 
+ 

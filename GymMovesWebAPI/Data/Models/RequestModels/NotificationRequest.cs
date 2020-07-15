@@ -21,8 +21,7 @@ Functional Description:
 
 List of Classes:
     - NotificationRequest
-    - NotificationsSettingsRequest
-    - GetNotificationRequest
+    - ChangeNotificationsSettingsRequest
 
  */
 
@@ -49,7 +48,7 @@ namespace GymMovesWebAPI.Data.Models.RequestModels
     Purpose:
         This class is the structure of the incoming change setting request.
     */
-    public class NotificationsSettingsRequest
+    public class ChangeNotificationsSettingsRequest
     {
         public bool push { get; set; }
         public bool email { get; set; }
