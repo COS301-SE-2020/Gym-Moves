@@ -12,20 +12,22 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-29/06/2020    | Longji         |Created the initial class file with functions that
-              |                |allow adding of new classes, listing classes by the
-              |                |user, instructor or the gym. Also added function to
-              |                |signup users to classes.
+29/06/2020    | Longji         | Created the initial class file with functions that
+              |                | allow adding of new classes, listing classes by the
+              |                | user, instructor or the gym. Also added function to
+              |                | signup users to classes.
 --------------------------------------------------------------------------------
-03/07/2020    | Longji         |Removed function used for adding new users for test
-              |                |purposes.
+03/07/2020    | Longji         | Removed function used for adding new users for test
+              |                | purposes.
 --------------------------------------------------------------------------------
-08/07/2020    | Longji         |Added functions to remove a class and a function to
-                               |deregister a user from the class.
+08/07/2020    | Longji         | Added functions to remove a class and a function to
+                               | deregister a user from the class.
 --------------------------------------------------------------------------------
-11/07/2020    | Longji         |Added function to get a specific class
+11/07/2020    | Longji         | Added function to get a specific class
 --------------------------------------------------------------------------------
 14/07/2020    | Danel          | Instructors can cancel classes
+--------------------------------------------------------------------------------
+15/07/2020    | Longji         | Added API call to get a specific user, class combination.
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -381,5 +383,21 @@ namespace GymMovesWebAPI.Controllers
             return Ok(convertedObject);
         }
 
+        [HttpGet("userclass")]
+        public async Task<ActionResult<bool>> getSpecificUserAndClass(string username, int classid) {
+            if (await userRepository.getUser(username) == null) {
+                return StatusCode(StatusCodes.Status404NotFound, $"User with username {username} does not exist!");
+            }
+
+            if (await classRepository.getClassById(classid) == null) {
+                return StatusCode(StatusCodes.Status404NotFound, $"Class with class id {classid} does not exist!");
+            }
+
+            if (await registerRepository.getSpecificUserAndClass(username, classid) != null) {
+                return Ok(true);
+            } else {
+                return Ok(false);
+            }
+        }
     }
 }
