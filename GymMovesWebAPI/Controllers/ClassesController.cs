@@ -284,8 +284,14 @@ namespace GymMovesWebAPI.Controllers
             }
         }
 
+        /*
+        Method Name:
+            cancelClass
+        Purpose:
+            This function handles the api request that results in a class being cancelled and uncancelled. 
+        */
         [HttpPost("cancel")]
-        public async Task<ActionResult> cancelClass(CancelAndDeleteClassRequest classRequest) {
+        public async Task<ActionResult> cancelClass(CancelClassRequest classRequest) {
             
             GymClasses classToCancel = await classRepository.getClassById(classRequest.classId);
 
