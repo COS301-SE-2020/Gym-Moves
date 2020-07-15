@@ -18,13 +18,13 @@ namespace GymMovesWebAPI.Data.Models.RequestModels {
     }
 
     /* Class name:
-           CancelAndDeleteClassRequest
+           CancelClassRequest
        
        Purpose:
-           To handle the incoming cancel and deletion request.
+           To handle the incoming cancel request.
      */
 
-    public class CancelAndDeleteClassRequest {
+    public class CancelClassRequest {
         public string username { get; set; }
         public int classId { get; set; }
     }
