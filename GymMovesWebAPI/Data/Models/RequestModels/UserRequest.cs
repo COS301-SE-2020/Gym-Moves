@@ -13,6 +13,7 @@ Update History:
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 03/07/2020    | Danel          |    Added more request models
+--------------------------------------------------------------------------------
 
 
 Functional Description:
@@ -22,7 +23,6 @@ Functional Description:
 List of Classes:
     - SignUpRequestModel
     - LogInRequestModel
-    - GetCodeRequestModel
     - ForgotPasswordRequestModel
     - ChangePasswordRequestModel
 

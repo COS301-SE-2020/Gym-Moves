@@ -12,8 +12,10 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-03/07/2020    | Danel          | Added chnage password functionality and added
+03/07/2020    | Danel          | Added change password functionality and added
               |                | an implementation.
+--------------------------------------------------------------------------------
+15/07/2020    | Danel          | Added get instructors.
 --------------------------------------------------------------------------------
 
 
@@ -80,6 +82,25 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
 
 
             return (await context.SaveChangesAsync()) > 0;
+        }
+
+        /*
+       Method Name:
+           getAllInstructors
+       Purpose:
+           This gets all instructors from a specific gym.
+       */
+        public async Task<Users[]> getAllInstructors(int gymID) {
+            IQueryable<Users> query = context.Users;
+            query = query.Where(p => p.GymIdForeignKey == gymID);
+
+            if (query != null)
+            {
+                query = query.Where(p => p.UserType == Enums.UserTypes.Instructor);
+            }
+
+            return await query.ToArrayAsync();
+
         }
 
     }

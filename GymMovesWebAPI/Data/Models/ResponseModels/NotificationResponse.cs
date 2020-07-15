@@ -22,7 +22,7 @@ Functional Description:
 
 List of Classes:
     - NotificationResponse
-    - GetNotificationResponse
+    - GetNotificationSettingsResponse
 
  */
 
@@ -32,14 +32,13 @@ using System.Text;
 
 namespace GymMovesWebAPI.Data.Models.ResponseModels
 {
-    public class NotificationResponse
-    {
+    public class NotificationResponse {
         public string message { get; set; }
     }
 
-    public class GetNotificationResponse
+    public class GetNotificationSettingsResponse
     {
-        public bool push { get; set; }
         public bool email { get; set; }
+        public bool push { get; set; }
     }
 }
