@@ -31,10 +31,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:gymmoves/Announcement/SetNotificationType.dart';
-import 'package:gymmoves/User/ChangePassword.dart';
-import 'package:gymmoves/User/HelpManual.dart';
-import 'package:gymmoves/User/LogIn.dart';
+import 'package:gym_moves/Announcement/SetNotificationType.dart';
+import 'package:gym_moves/User/ChangePassword.dart';
+import 'package:gym_moves/User/HelpManual.dart';
+import 'package:gym_moves/User/LogIn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*

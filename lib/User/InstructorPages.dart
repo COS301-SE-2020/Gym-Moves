@@ -28,9 +28,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gymmoves/GymClass/EditClassesInstructor.dart';
-import 'package:gymmoves/Rating/InstructorViewMyRatings.dart';
-import 'package:gymmoves/User/ViewMyProfile.dart';
+import 'package:gym_moves/GymClass/EditClassesInstructor.dart';
+import 'package:gym_moves/Rating/InstructorViewMyRatings.dart';
+import 'package:gym_moves/User/ViewMyProfile.dart';
 
 /*
 Class Name:
@@ -220,7 +220,7 @@ class InstructorPagesState extends State<InstructorPages> {
                     Transform.translate(
                         offset: Offset(0.15 * media.size.width,
                             2.35 / 5 * media.size.height),
-                        child: getMenuOptionText('View my ratings', media)),
+                        child: getMenuOptionText('View my classes', media)),
                     Transform.translate(
                         offset: Offset(0.15 * media.size.width,
                             3.35 / 5 * media.size.height),

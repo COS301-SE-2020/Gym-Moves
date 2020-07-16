@@ -111,13 +111,13 @@ class QrGeneratorState extends State<QrGenerator> {
                 key: globalKey,
                 child: QrImage(
                   data: _dataString,
-                  size: 0.5 * bodyHeight,
+                  size: 0.5 * bodyHeight,/*
                   onError: (ex) {
                     print("[QR] ERROR - $ex");
                     setState((){
                       _inputErrorText = "Error! Maybe your input value is too long?";
                     });
-                  },
+                  },*/
                 ),
               ),
             ),

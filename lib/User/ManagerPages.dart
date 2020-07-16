@@ -26,11 +26,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gymmoves/Rating/ManagerViewClassRatings.dart';
-import 'package:gymmoves/Announcement/SendAnnouncement.dart';
-import 'package:gymmoves/GymClass/EditClassesManager.dart';
-import 'package:gymmoves/Dashboard/Dashboard.dart';
-import 'package:gymmoves/User/ViewMyProfile.dart';
+import 'package:gym_moves/Rating/ManagerViewClassRatings.dart';
+import 'package:gym_moves/Announcement/SendAnnouncement.dart';
+import 'package:gym_moves/GymClass/EditClassesManager.dart';
+import 'package:gym_moves/Dashboard/Dashboard.dart';
+import 'package:gym_moves/User/ViewMyProfile.dart';
 
 /*
 Class Name:

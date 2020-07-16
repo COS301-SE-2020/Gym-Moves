@@ -44,10 +44,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gymmoves/User/MemberPages.dart';
-import 'package:gymmoves/User/LogIn.dart';
-import 'package:gymmoves/User/ManagerPages.dart';
-import 'package:gymmoves/User/InstructorPages.dart';
+import 'package:gym_moves/User/MemberPages.dart';
+import 'package:gym_moves/User/LogIn.dart';
+import 'package:gym_moves/User/ManagerPages.dart';
+import 'package:gym_moves/User/InstructorPages.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -520,7 +520,7 @@ class SignUpState extends State<SignUp> {
     their respective welcome pages.
 */
   _makePostRequest() async {
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/signup';
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/user/signup';
 
     var gymArray = gym.split(", ");
 

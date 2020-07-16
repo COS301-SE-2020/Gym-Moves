@@ -62,7 +62,7 @@ class SetNotificationTypeState extends State<SetNotificationType> {
   bool emailNotificationsChanged = false;
 
   /*Url of API*/
-  String url = "https://gymmoveswebapi.azurewebsites.net/api/";
+  String url = "https://gymmoveswebapi.azurewebsites.net/api/notifications";
 
   /*This will be the users username.*/
   String username = "myusername";

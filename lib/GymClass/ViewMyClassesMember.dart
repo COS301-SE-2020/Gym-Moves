@@ -24,10 +24,10 @@ Classes in the File:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:gymmoves/GymClass/ClassDetails.dart';
-import 'package:gymmoves/GymClass/ViewAllClassesMember.dart';
+import 'package:gym_moves/GymClass/ClassDetails.dart';
+import 'package:gym_moves/GymClass/ViewAllClassesMember.dart';
 import 'dart:convert';
-import 'package:gymmoves/GymClass/BookClass.dart';
+import 'package:gym_moves/GymClass/BookClass.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

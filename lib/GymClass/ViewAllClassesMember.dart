@@ -24,8 +24,8 @@ Classes in the File:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
-import 'package:gymmoves/GymClass/ViewMyClassesMember.dart';
-import 'package:gymmoves/GymClass/BookClass.dart';
+import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
+import 'package:gym_moves/GymClass/BookClass.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart';

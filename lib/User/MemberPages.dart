@@ -22,10 +22,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import 'package:gymmoves/Dashboard/ViewPredictions.dart';
-import 'package:gymmoves/GymClass/ViewMyClassesMember.dart';
-import 'package:gymmoves/User/ViewMyProfile.dart';
-import 'package:gymmoves/GymClass/ViewAllClassesMember.dart';
+import 'package:gym_moves/Dashboard/ViewPredictions.dart';
+import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
+import 'package:gym_moves/User/ViewMyProfile.dart';
+import 'package:gym_moves/GymClass/ViewAllClassesMember.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 

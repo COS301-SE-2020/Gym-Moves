@@ -36,7 +36,7 @@ class ChangePasswordState extends State<ChangePassword> {
   final changeFormKey = GlobalKey<FormState>();
 
   /*Url of API*/
-  String url = "https://gymmoveswebapi.azurewebsites.net/api/";
+  String url = "https://gymmoveswebapi.azurewebsites.net/api/user/";
 
   /*
    Method Name:

@@ -324,7 +324,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     final int gymId = 0; //prefs.getInt('gymId');
 
     final http.Response response = await http.post(
-      'https://gymmoveswebapi.azurewebsites.net/api/sendNotification',
+      'https://gymmoveswebapi.azurewebsites.net/api/notifications/sendNotification',
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode({
         'gymId': gymId,

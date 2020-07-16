@@ -27,10 +27,10 @@ Classes in the File:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:gymmoves/User/MemberPages.dart';
-import 'package:gymmoves/User/LogIn.dart';
-import 'package:gymmoves/User/ManagerPages.dart';
-import 'package:gymmoves/User/InstructorPages.dart';
+import 'package:gym_moves/User/MemberPages.dart';
+import 'package:gym_moves/User/LogIn.dart';
+import 'package:gym_moves/User/ManagerPages.dart';
+import 'package:gym_moves/User/InstructorPages.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -400,7 +400,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
            requesting a code for a new password.
 */
   _sendCode(username) async {
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/ForgotPassword';
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/user/ForgotPassword';
     Map<String, String> headers = {"Content-type": "application/json"};
     String jsonString = '{""User": username}';
     Response response = (await post(url, headers: headers, body: jsonString));
@@ -427,7 +427,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
 */
   _makePostRequest(password, code) async {
     // set up POST request arguments
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/ForgotPassword';
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/user/ForgotPassword';
     Map<String, String> headers = {"Content-type": "application/json"};
     String jsonString = '{""password": password, "code": code}';
     // make POST request
