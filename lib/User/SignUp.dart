@@ -71,7 +71,6 @@ class SignUp extends StatefulWidget {
   SignUpState createState() => SignUpState();
 }
 
-
 /*
 Class Name:
   SignUpState
@@ -86,6 +85,7 @@ class SignUpState extends State<SignUp> {
   String username = "";
 
   final signUpFormKey = GlobalKey<FormState>();
+  bool hidePassword = true;
 
   List<Gym> gyms = [];
 
@@ -207,7 +207,7 @@ class SignUpState extends State<SignUp> {
             alignment: Alignment.centerLeft,
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: true,
+                obscureText: hidePassword,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -265,8 +265,7 @@ class SignUpState extends State<SignUp> {
           labelText: 'Gym',
           labelStyle: new TextStyle(color: Colors.black54),
           border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)
-      ),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)),
     );
 
     final gymField = Material(
@@ -286,27 +285,24 @@ class SignUpState extends State<SignUp> {
       body: ListView(children: <Widget>[
         Stack(children: <Widget>[
           Transform.translate(
-            offset: Offset(0.0, -0.035 * media.size.height),
-            child: Container(
-              width: media.size.width,
-              height: 0.4 * media.size.height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: const AssetImage('assets/Bicycles.jpg'),
-                  fit: BoxFit.fill,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.82), BlendMode.dstIn
-                  ),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x22000000),
-                    offset: Offset(0, 3),
-                    blurRadius: 6,
-                  )
-                ])
-            )
-          ),
+              offset: Offset(0.0, -0.035 * media.size.height),
+              child: Container(
+                  width: media.size.width,
+                  height: 0.4 * media.size.height,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: const AssetImage('assets/Bicycles.jpg'),
+                        fit: BoxFit.fill,
+                        colorFilter: new ColorFilter.mode(
+                            Colors.black.withOpacity(0.82), BlendMode.dstIn),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0x22000000),
+                          offset: Offset(0, 3),
+                          blurRadius: 6,
+                        )
+                      ]))),
           Transform.translate(
             offset: Offset(0.08 * media.size.width, 0.08 * media.size.height),
             child: Text(
@@ -328,91 +324,80 @@ class SignUpState extends State<SignUp> {
                 gymIdField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height
-                    ),
+                        0.08 * 0.3 * media.size.height),
                     child: SvgPicture.string(
                       idCard,
                       width: media.size.width * 0.06,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
+                    ))
               ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 gymField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height
-                    ),
+                        0.08 * 0.3 * media.size.height),
                     child: SvgPicture.string(
                       dumbbell,
                       height: 0.04 * media.size.height,
                       width: 0.04 * media.size.width,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
+                    ))
               ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 usernameField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.25 * media.size.height
-                    ),
+                        0.08 * 0.25 * media.size.height),
                     child: SvgPicture.string(
                       person,
                       width: media.size.width * 0.05,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
+                    ))
               ]),
               SizedBox(height: 0.06 * media.size.height),
               Stack(children: <Widget>[
                 passwordField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height
-                    ),
-                    child: SvgPicture.string(
-                      lock,
-                      width: media.size.width * 0.05,
-                      color: Colors.black45,
-                      allowDrawingOutsideViewBox: true,
-                    )
-                )
+                        0.08 * 0.3 * media.size.height),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hidePassword = !hidePassword;
+                          });
+                        },
+                        child: Icon(
+                          hidePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        )))
               ]),
               SizedBox(height: 0.06 * media.size.height),
-            ])
-        ),
+            ])),
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
                 child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)
-                  ),
-                  color: const Color(0xffffffff).withOpacity(0.3),
-                  onPressed: () {
-                    sendValuesToDatabase();
-                  },
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                          fontSize: 0.05 * media.size.width,
-                          fontFamily: 'Roboto'
-                      )
-                    )
-                  )
-                )
-            )
-        ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    color: const Color(0xffffffff).withOpacity(0.3),
+                    onPressed: () {
+                      sendValuesToDatabase();
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text('Submit',
+                            style: TextStyle(
+                                fontSize: 0.05 * media.size.width,
+                                fontFamily: 'Roboto')))))),
         SizedBox(height: 0.06 * media.size.height),
         Center(
             child: GestureDetector(
@@ -425,26 +410,25 @@ class SignUpState extends State<SignUp> {
           },
           child: Text.rich(
             TextSpan(
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 0.04 * media.size.width,
-                color: const Color(0xffffffff),
-              ),
-              children: [
-                TextSpan(
-                  text: 'Have an account? ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: const Color(0xffffffff),
                 ),
-                TextSpan(
-                  text: 'Log in!',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
+                children: [
+                  TextSpan(
+                    text: 'Have an account? ',
                   ),
-                )
-              ]),
+                  TextSpan(
+                    text: 'Log in!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  )
+                ]),
             textAlign: TextAlign.center,
           ),
-        )
-        ),
+        )),
         SizedBox(height: 0.05 * media.size.height),
       ]),
     );
@@ -600,10 +584,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        userType: json['userType'],
-        name: json['name'],
-        gymID: json['gymID']
-    );
+        userType: json['userType'], name: json['name'], gymID: json['gymID']);
   }
 }
 

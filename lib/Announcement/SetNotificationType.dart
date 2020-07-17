@@ -42,39 +42,6 @@ Purpose:
 class SetNotificationType extends StatefulWidget {
   const SetNotificationType({Key key}) : super(key: key);
 
-Purpose:
-  This class builds the UI for members to be able to decide what type of
-  notifications they want. It let's users decide between on and off switches.
- */
-class SetNotificationTypeState extends State<SetNotificationType> {
-  /* These make sure the switches are in the correct position. We need to get
-     these values from the API.  */
-  bool pushNotifications = false;
-  bool pushNotificationsChanged = false;
-  bool emailNotifications = false;
-  bool emailNotificationsChanged = false;
-
-  /*Url of API*/
-  String url = "https://gymmoveswebapi.azurewebsites.net/api/notifications";
-
-  /*This will be the users username.*/
-  String username = "myusername";
-
-  Future loadSettingsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    loadSettingsFuture = getNotificationValues();
-  }
-
-  /*
-   Method Name:
-    build
-
-   Purpose:
-     This method builds the UI of the screen. It also builds the switches.
-   */
   @override
   SetNotificationTypeState createState() => SetNotificationTypeState();
 }

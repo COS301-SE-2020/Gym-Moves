@@ -10,11 +10,11 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-| Name               | Date              | Changes
+ Name               | Date              | Changes
 --------------------------------------------------------------------------------
-| Danel              | 26/06/2020        | Made UI responsive and functional
+ Danel              | 26/06/2020        | Made UI responsive and functional
 --------------------------------------------------------------------------------
-| Tia              | 05/07/2020        | Added logout function
+ Tia              | 05/07/2020          | Added logout function
 --------------------------------------------------------------------------------
 
 Functional Description:

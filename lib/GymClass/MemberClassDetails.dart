@@ -1,23 +1,30 @@
 /*
 File Name:
-  ClassDetails.dart
+  MemberClassDetails.dart
+
 Author:
   Raeesa
+
 Date Created:
-  17/06/2020
+  07/07/2020
+
 Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-24/06/2020    |    Danel       |    Stars can be added dynamically
+07/07/2020      Raeesa         |    Users can book and unbook classes
 --------------------------------------------------------------------------------
+12/07/2020      Raeesa         |    added class details
+--------------------------------------------------------------------------------
+
 Functional Description:
-  This file implements the ClassDetailsState class. It creates the UI for users
+  This file implements the BookClassState class. It creates the UI for users
   to be able to see details of a class. It also implements the SendAnnouncement
   class which calls the other class to be built.
+
 Classes in the File:
-- ClassDetails
-- ClassDetailsState
+- BookClass
+- BookClassState
  */
 
 import 'dart:convert';
@@ -31,47 +38,52 @@ import 'package:http/http.dart' as http;
 
 /*
 Class Name:
-  ClassDetails
+  BookClass
+
 Purpose:
-  This class is used to create the ClassDetailsState that builds the UI for
+  This class is used to create the BookClassState that builds the UI for
   viewing classes. It allows for widgets to be dynamically added as well.
+
  */
+class BookClass extends StatefulWidget {
+  final String instructor;
+  final String classN;
+  final String classD;
+  final String classT;
+  final int availableSpots;
+  final String description;
+  final int id;
 
-class ClassDetails extends StatefulWidget {
-  final String instructorName;
-  final String className;
-  final String classDay;
-  final String classTime;
-  final String classAvailableSpots;
-  final String classDescription;
-  final int classId;
-
-  const ClassDetails({Key key, 
-  this.instructorName = "No data available", 
-  this.className = "No data available", 
-  this.classDay="No data available",
-    this.classTime= "No data available", 
-    this.classAvailableSpots= "No data available", 
-    this.classDescription= "No data available",
-    this.classId = 1}) : super(key: key);
+  BookClass(
+      {Key key,
+      this.instructor = "",
+      this.classN = "",
+      this.classD = "",
+      this.classT = "",
+      this.availableSpots = 0,
+      this.description = "",
+      this.id = 0})
+      : super(key: key);
 
   @override
-  ClassDetailsState createState() => ClassDetailsState();
+  BookClassState createState() => BookClassState();
 }
 
 /*
 Class Name:
-  ClassDetailsState
+  BookClassState
+
 Purpose:
   This class is used to create the UI for users to see the classes. It also
   handles the request to the API to get the details of a class to display.
  */
 
-class ClassDetailsState extends State<ClassDetails> {
-  ClassDetailsState({Key key});
+class BookClassState extends State<BookClass> {
+  BookClassState({Key key});
 
   @override
   void initState() {
+    getBookClass();
     super.initState();
   }
 
@@ -82,11 +94,12 @@ class ClassDetailsState extends State<ClassDetails> {
   String classAvailableSpots = "";
   String classDescription = "";
   int classID;
-  static String cancel = "cancel";
+  String book = "";
 
   /*
    Method Name:
     build
+
    Purpose:
     This method builds the UI and also calls the necessary functions that make
     a request to the API to get the class details.
@@ -95,7 +108,7 @@ class ClassDetailsState extends State<ClassDetails> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    getClassDetails();
+    getBookClass();
 
     return Scaffold(
         backgroundColor: const Color(0xff513369),
@@ -109,13 +122,11 @@ class ClassDetailsState extends State<ClassDetails> {
                     height: media.size.height * 0.4,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: const AssetImage(
-                              'assets/RightSidePoolHalf.png'
-                          ),
+                          image:
+                              const AssetImage('assets/RightSidePoolHalf.png'),
                           fit: BoxFit.fill,
                           colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(1.0), BlendMode.dstIn
-                          ),
+                              Colors.black.withOpacity(1.0), BlendMode.dstIn),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -124,8 +135,7 @@ class ClassDetailsState extends State<ClassDetails> {
                             blurRadius: 6,
                           ),
                         ]),
-                  )
-              ),
+                  )),
               Transform.translate(
                   offset: Offset(0.0, -0.033 * media.size.height),
                   child: SizedBox(
@@ -137,58 +147,51 @@ class ClassDetailsState extends State<ClassDetails> {
                               height: 0.31 * media.size.height,
                               child: Center(
                                   child: AutoSizeText(
-                                    widget.className,
-                                    style: TextStyle(
-                                        fontFamily: 'FreestyleScript',
-                                        fontSize: 0.15 * media.size.width,
-                                        color: const Color(0xff391f57),
-                                        shadows: [
-                                          Shadow(
-                                            color: const Color(0x38000000),
-                                            offset: Offset(0, 3),
-                                            blurRadius: 6,
-                                          )
-                                        ]),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 3,
-                                  )
-                              ),
+                                className,
+                                style: TextStyle(
+                                    fontFamily: 'FreestyleScript',
+                                    fontSize: 0.15 * media.size.width,
+                                    color: const Color(0xff391f57),
+                                    shadows: [
+                                      Shadow(
+                                        color: const Color(0x38000000),
+                                        offset: Offset(0, 3),
+                                        blurRadius: 6,
+                                      )
+                                    ]),
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                              )),
                               decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.elliptical(110.5, 108.0)),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.elliptical(110.5, 108.0)),
                                   color: const Color(0xffffffff),
                                   border: Border.all(
-                                      width: 1.0, color: const Color(0xff707070)
-                                  ),
+                                      width: 1.0,
+                                      color: const Color(0xff707070)),
                                   boxShadow: [
                                     BoxShadow(
                                       color: const Color(0x8f000000),
                                       offset: Offset(0, 3),
                                       blurRadius: 6,
                                     )
-                                  ]
-                              )
-                          )
-                      )
-                  )
-              ),
+                                  ]))))),
               Transform.translate(
                   offset:
-                  Offset(290, 256),
-                  child: RaisedButton(
+                      Offset(0.7 * media.size.width, 0.4 * media.size.height),
+                  child: FlatButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     color: const Color(0xffffffff).withOpacity(0.3),
-
                     onPressed: () {
-                     cancelClass();
+                      sendValuesToDatabase();
                     },
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
-                        cancel,
+                        book,
                         style: TextStyle(
                             fontSize: 0.05 * media.size.width,
                             fontFamily: 'Roboto'),
@@ -197,32 +200,25 @@ class ClassDetailsState extends State<ClassDetails> {
                   )),
               Transform.translate(
                   offset:
-                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
+                  Offset(0.04 * media.size.width, 0.02 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
                       child: SvgPicture.string(backArrow,
                           allowDrawingOutsideViewBox: true,
-                          width: 0.06 * media.size.width)
-                  )
-              ),
+                          width: 0.06 * media.size.width))),
               Transform.translate(
                   offset:
-                  Offset(0.33 * media.size.width, 0.06 * media.size.height),
-                  child: SvgPicture.string(
-                      dumbbell,
+                      Offset(0.33 * media.size.width, 0.06 * media.size.height),
+                  child: SvgPicture.string(dumbbell,
                       width: 0.55 * media.size.width * 0.7,
                       height: 0.31 * media.size.height * 0.7,
-                      allowDrawingOutsideViewBox: true
-                  )
-              )
-            ]
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.0, 0.0, 0.0
-              ),
+                      allowDrawingOutsideViewBox: true))
+            ]),
+           /* Container(
+              padding:
+                  EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
               child: Text(
                 'Class Rating: ',
                 style: TextStyle(
@@ -236,14 +232,11 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
                 padding: EdgeInsets.fromLTRB(
-                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-                ),
-                child: Row(children: getStarsForClass(media))
-            ),
+                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
+                child: Row(children: getStarsForClass(media))),*/
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
-              ),
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Instructor: ',
                 style: TextStyle(
@@ -257,10 +250,9 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-              ),
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
               child: Text(
-                widget.instructorName,
+                instructorName,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -269,11 +261,10 @@ class ClassDetailsState extends State<ClassDetails> {
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
-            ),
+            ),/*
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
-              ),
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Instructor Rating: ',
                 style: TextStyle(
@@ -287,14 +278,11 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
                 padding: EdgeInsets.fromLTRB(
-                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-                ),
-                child: Row(children: getStarsForInstructor(media))
-            ),
+                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
+                child: Row(children: getStarsForInstructor(media))),*/
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
-              ),
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Day: ',
                 style: TextStyle(
@@ -308,10 +296,9 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-              ),
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
               child: Text(
-                widget.classDay,
+                classDay,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -323,8 +310,7 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
-              ),
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Time: ',
                 style: TextStyle(
@@ -338,10 +324,9 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-              ),
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
               child: Text(
-                widget.classTime,
+                classTime,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -353,8 +338,7 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
-              ),
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Available Spots: ',
                 style: TextStyle(
@@ -368,10 +352,9 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-              ),
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
               child: Text(
-                widget.classAvailableSpots,
+                classAvailableSpots,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -383,8 +366,7 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
-              ),
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Description: ',
                 style: TextStyle(
@@ -398,10 +380,9 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-              ),
+                0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.05*media.size.height),
               child: Text(
-                widget.classDescription,
+                classDescription,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -411,101 +392,39 @@ class ClassDetailsState extends State<ClassDetails> {
               ),
               alignment: Alignment.centerLeft,
             ),
-          ]
-          )
-        ]
-        )
-    );
-  }
-
-  cancelClass() async{
-    if(cancel == "cancel"){
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String name = prefs.get("username");
-    getClassDetails();
-
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/cancel';
-    final http.Response response = await http.post(
-      url,
-      headers: <String, String>{'Content-type': 'application/json'},
-      body: jsonEncode({
-        "Username": name,
-        "ClassId": classID,
-
-      }),
-    );
-
-    int stat = response.statusCode;
-
-    if (stat == 200) {
-
-        setState(() {
-          cancel = "uncancel";
-          _showAlertDialog("You've successfully cancelled this class.", "Success!");
-        });
-
-    }
-    else{
-      if(cancel=="cancel") {
-        setState(() {
-          cancel = "uncancel";
-          _showAlertDialog(response.body, "Error");
-        });
-      }
-      
-      }
-  }
-
-    void _showAlertDialog(String message, String message2) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text(message2),
-      content: Text(message),
-      actions: [
-        okButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-    }
+            SizedBox(
+              height: 0.02 * media.size.height,
+            )
+          ])
+        ]));
   }
 
   /*
    Method Name:
-    getClassDetails
+    getBookClass
+
    Purpose:
     This method will get the details of the class.
-   Extra:
-    Currently hardcoded. This will be changed.
+
    */
-  void getClassDetails(){
-    className = widget.className;
-    classAvailableSpots = widget.classAvailableSpots;
-    instructorName = widget.instructorName;
-    classDescription = widget.classDescription;
-    classTime = widget.classTime;
-    classDay = widget.classDay;
-    
+  void getBookClass() {
+    className = this.widget.classN;
+    classAvailableSpots = this.widget.availableSpots.toString();
+    instructorName = this.widget.instructor;
+    classDescription = this.widget.description;
+    classTime = this.widget.classT;
+    classDay = this.widget.classD;
+    classID = this.widget.id;
   }
 
   /*
    Method Name:
     getStarsForInstructor
+
    Purpose:
     This method will get the rating for the specific instructor for the class
     and show the correct stars.
+
    Extra:
     Rating is currently hardcoded. This will be changed.
    */
@@ -550,12 +469,13 @@ class ClassDetailsState extends State<ClassDetails> {
   /*
    Method Name:
     getStarsForClass
+
    Purpose:
     This method will get the rating for the specific class and show the
     correct stars.
+
    Extra: Rating is currently hardcoded. This will be changed.
    */
-
   List<Widget> getStarsForClass(MediaQueryData media) {
     List<Widget> stars = [];
 
@@ -591,6 +511,91 @@ class ClassDetailsState extends State<ClassDetails> {
     }
 
     return stars;
+  }
+
+  /*makes a api request to book or cancel a specific class for user*/
+  sendValuesToDatabase() async {
+    /*Get user name from local storage */
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.get("username");
+
+    if (book == "Book") {
+
+      String url =
+          'https://gymmoveswebapi.azurewebsites.net/api/classes/signup';
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{'Content-type': 'application/json'},
+        body: jsonEncode({
+          "Username": username,
+          "ClassId": classID,
+        }),
+      );
+
+      int stat = response.statusCode;
+
+      if (stat == 200) {
+        setState(() {
+          book = "Unbook";
+          _showAlertDialog(
+              "You've successfully enrolled for this class.", "Success!");
+        });
+      } else if (response.statusCode == 404) {
+        _showAlertDialog("You're not a registered member", "Unsuccessful!");
+      } else if (response.statusCode == 400) {
+        book = "Unbook";
+        _showAlertDialog("You're already enrolled for this class.",
+            "Did you mean to un-book?");
+      }
+    }
+    else if (book == "Unbook") {
+      String url =
+          'https://gymmoveswebapi.azurewebsites.net/api/classes/deregister';
+
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{'Content-type': 'application/json'},
+        body: jsonEncode({
+          "Username": username,
+          "ClassId": 3,
+        }),
+      );
+
+      int stat = response.statusCode;
+
+      if (stat == 200) {
+        setState(() {
+          book = "Book";
+          _showAlertDialog(
+              "You've successfully un-enrolled for this class", "Success!");
+        });
+      }
+    }
+  }
+
+  void _showAlertDialog(String message, String message2) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(message2),
+      content: Text(message),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 

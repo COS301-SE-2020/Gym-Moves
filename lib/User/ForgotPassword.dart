@@ -61,6 +61,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
   String password = "";
   String code = "";
   String username = "";
+  bool hidePassword = true;
 
   String url = "https://gymmoveswebapi.azurewebsites.net/api/user/";
 
@@ -111,7 +112,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
             padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: true,
+                obscureText: hidePassword,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -297,12 +298,18 @@ class ForgotPasswordState extends State<ForgotPassword> {
                       offset: Offset(0.7 * 0.85 * media.size.width,
                           0.08 * 0.3 * media.size.height
                       ),
-                      child: SvgPicture.string(
-                        lock,
-                        width: media.size.width * 0.04,
-                        color: Colors.black45,
-                        allowDrawingOutsideViewBox: true,
-                      )
+                      child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              hidePassword = !hidePassword;
+                            });
+                          },
+                          child: Icon(
+                            hidePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
+                          ))
                   )
                 ]),
                 SizedBox(height: 0.03 * media.size.height),
@@ -347,7 +354,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
       _errorDialogue(response.body);
     }
     else{
-      _successDialogue(response.body);
+      _successDialogue("Code sent to your email successfully.");
     }
   }
 

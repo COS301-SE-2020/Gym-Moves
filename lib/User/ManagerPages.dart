@@ -25,11 +25,9 @@ Classes in the File:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:gym_moves/GymClass/ManagerViewClasses.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gym_moves/Rating/ManagerViewClassRatings.dart';
 import 'package:gym_moves/Announcement/SendAnnouncement.dart';
-import 'package:gym_moves/GymClass/EditClassesManager.dart';
-import 'package:gym_moves/Dashboard/Dashboard.dart';
 import 'package:gym_moves/User/ViewMyProfile.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -268,10 +266,6 @@ class ManagerPagesState extends State<ManagerPages> {
                     ),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            0.8 / 6 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
                             1.8 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
@@ -283,51 +277,30 @@ class ManagerPagesState extends State<ManagerPages> {
                             3.8 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
-                            4.8 / 6 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(
-                            0.15 * media.size.width, 1 / 6 * media.size.height),
-                        child:
-                            getMenuOptionText('Send an announcement', media)),
-                    Transform.translate(
                         offset: Offset(
                             0.15 * media.size.width, 2 / 6 * media.size.height),
-                        child: getMenuOptionText('Edit the classes', media)),
+                        child: getMenuOptionText('Send an announcement', media)),
                     Transform.translate(
                         offset: Offset(
                             0.15 * media.size.width, 3 / 6 * media.size.height),
-                        child: getMenuOptionText('View all ratings', media)),
+                        child: getMenuOptionText('View all classes', media)),
                     Transform.translate(
                         offset: Offset(
                             0.15 * media.size.width, 4 / 6 * media.size.height),
-                        child: getMenuOptionText('View the dashboard', media)),
-                    Transform.translate(
-                        offset: Offset(
-                            0.15 * media.size.width, 5 / 6 * media.size.height),
                         child: getMenuOptionText('View my profile', media)),
                     Transform.translate(
                         offset: Offset(
-                            0.8 * media.size.width, 1 / 6 * media.size.height),
-                        child: getArrow(0.05, media, SendAnnouncement())),
-                    Transform.translate(
-                        offset: Offset(
                             0.8 * media.size.width, 2 / 6 * media.size.height),
-                        child: getArrow(0.05, media, EditClassesManager())),
+                        child: getArrow(0.06, media, SendAnnouncement())),
                     Transform.translate(
                         offset: Offset(
                             0.8 * media.size.width, 3 / 6 * media.size.height),
                         child:
-                            getArrow(0.05, media, ManagerViewClassRatings())),
+                        getArrow(0.06, media, ManagerViewClasses())),
                     Transform.translate(
                         offset: Offset(
                             0.8 * media.size.width, 4 / 6 * media.size.height),
-                        child: getArrow(0.05, media, Dashboard())),
-                    Transform.translate(
-                        offset: Offset(
-                            0.8 * media.size.width, 5 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyProfile()))
+                        child: getArrow(0.06, media, ViewMyProfile()))
                   ])
                 ]));
           } else {
@@ -425,10 +398,6 @@ class ManagerPagesState extends State<ManagerPages> {
                     ),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            0.8 / 6 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
                             1.8 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
@@ -440,51 +409,30 @@ class ManagerPagesState extends State<ManagerPages> {
                             3.8 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
-                            4.8 / 6 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(
-                            0.15 * media.size.width, 1 / 6 * media.size.height),
-                        child:
-                            getMenuOptionText('Send an announcement', media)),
-                    Transform.translate(
                         offset: Offset(
                             0.15 * media.size.width, 2 / 6 * media.size.height),
-                        child: getMenuOptionText('Edit the classes', media)),
+                        child: getMenuOptionText('Send an announcement', media)),
                     Transform.translate(
                         offset: Offset(
                             0.15 * media.size.width, 3 / 6 * media.size.height),
-                        child: getMenuOptionText('View all ratings', media)),
+                        child: getMenuOptionText('View all classes', media)),
                     Transform.translate(
                         offset: Offset(
                             0.15 * media.size.width, 4 / 6 * media.size.height),
-                        child: getMenuOptionText('View the dashboard', media)),
-                    Transform.translate(
-                        offset: Offset(
-                            0.15 * media.size.width, 5 / 6 * media.size.height),
                         child: getMenuOptionText('View my profile', media)),
                     Transform.translate(
                         offset: Offset(
-                            0.8 * media.size.width, 1 / 6 * media.size.height),
-                        child: getArrow(0.05, media, SendAnnouncement())),
-                    Transform.translate(
-                        offset: Offset(
                             0.8 * media.size.width, 2 / 6 * media.size.height),
-                        child: getArrow(0.05, media, EditClassesManager())),
+                        child: getArrow(0.06, media, SendAnnouncement())),
                     Transform.translate(
                         offset: Offset(
                             0.8 * media.size.width, 3 / 6 * media.size.height),
                         child:
-                            getArrow(0.05, media, ManagerViewClassRatings())),
+                            getArrow(0.06, media, ManagerViewClasses())),
                     Transform.translate(
                         offset: Offset(
                             0.8 * media.size.width, 4 / 6 * media.size.height),
-                        child: getArrow(0.05, media, Dashboard())),
-                    Transform.translate(
-                        offset: Offset(
-                            0.8 * media.size.width, 5 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyProfile()))
+                        child: getArrow(0.06, media, ViewMyProfile()))
                   ])
                 ]));
           }

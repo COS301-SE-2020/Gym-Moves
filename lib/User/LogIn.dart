@@ -74,6 +74,7 @@ class LogInState extends State<LogIn> {
   String gymName = "";
 
   final logInFormKey = GlobalKey<FormState>();
+  bool hidePassword = true;
 
   /*
   Method Name:
@@ -145,7 +146,7 @@ class LogInState extends State<LogIn> {
             height: 0.085 * media.size.height,
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: true,
+                obscureText: hidePassword,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -240,12 +241,18 @@ class LogInState extends State<LogIn> {
                     offset: Offset(0.7 * 0.85 * media.size.width,
                         0.08 * 0.3 * media.size.height
                     ),
-                    child: SvgPicture.string(
-                      lock,
-                      width: media.size.width * 0.04,
-                      color: Colors.black45,
-                      allowDrawingOutsideViewBox: true,
-                    )
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hidePassword = !hidePassword;
+                          });
+                        },
+                        child: Icon(
+                          hidePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ))
                 )
               ])
             ])

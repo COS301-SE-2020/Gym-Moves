@@ -1,35 +1,84 @@
-import 'package:flutter/cupertino.dart';
+/*
+File Name
+  MemberViewAllClasses.dart
+Author:
+  Danel
+Date Created
+  27/06/2020
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author    |     Changes
+--------------------------------------------------------------------------------
+06/07/2020       Ayanda      |    Added Get request
+--------------------------------------------------------------------------------
+12/07/2020       Tia         |   Added View classes
+--------------------------------------------------------------------------------
+12/07/2020      Raeesa       |   Added class details
+--------------------------------------------------------------------------------
+Functional Description:
+Classes in the File:
+- ViewAllClassesMember
+- ViewAllClassesMemberState
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'ManagerViewInstructorRatings.dart';
-import '../GymClass/ClassDetails.dart';
-
-import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
+import 'package:gym_moves/GymClass/MemberClassDetails.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InstructorViewMyRatings extends StatefulWidget {
-  const InstructorViewMyRatings({Key key}) : super(key: key);
+import 'package:http/http.dart';
+
+/*
+Class Name:
+  ViewAllClassesMember
+Purpose:
+  This class creates the class that will build the page.
+ */
+class ViewAllClassesMember extends StatefulWidget {
+  const ViewAllClassesMember({Key key}) : super(key: key);
 
   @override
-  InstructorViewMyRatingsState createState() => InstructorViewMyRatingsState();
+  ViewAllClassesMemberState createState() => ViewAllClassesMemberState();
 }
 
-class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
-  int gymId = 0;
-  String expResponse = "";
-  Future<String> res;
+/*
+Class Name:
+  ViewAllClassesMemberState
+Purpose:
+  This class will build the page, and receive a response from the database.
+ */
+class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   List<ViewResponse> allClasses = [];
+  String expResponse = "";
   String className = "";
   String classDay = "";
   String classTime = "";
   String instructorName = "";
   int classAvailableSpots = 0;
   String classDescription = "";
-  int classID=0;
+  int classID = 0;
+  Future<String> res;
+
+  /* This will hold the user's `type` and gymid. */
+  int gymid = 0;
+  int type = 0;
+
+  Future idFromLocal;
+  Future typeFromLocal;
+  List<dynamic> classesJson = [];
+
+  /*
+   Method Name:
+    build
+   Purpose:
+   */
 
   @override
   void initState() {
+    idFromLocal = _getId();
+    typeFromLocal = _getType();
     super.initState();
 
     res = _makeGetRequest();
@@ -45,7 +94,7 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
-              height: 0.35 * media.size.height,
+              height: 0.3 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: const AssetImage('assets/RightSidePoolHalf.png'),
@@ -76,46 +125,120 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                   ),
                 )),
             Transform.translate(
-              offset: Offset(0.27 * media.size.width, 0.07 * media.size.height),
-              child: Container(
-                child: Text(
-                  'Your rating:',
-                  style: TextStyle(
-                    fontFamily: 'FreestyleScript',
-                    fontSize: 0.1 * media.size.width,
-                    color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w300,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                width: 0.5 * media.size.width,
-                height: 0.2 * media.size.height,
-                padding: EdgeInsets.all(10.0),
+              offset: Offset(0.5 * media.size.width, 0.3 * media.size.height),
+              child: SvgPicture.string(
+                underline,
+                width: media.size.width * 0.5,
+                allowDrawingOutsideViewBox: true,
               ),
             ),
-            Container(
-                width: media.size.width,
-                height: 0.4 * media.size.height,
-                child: Row(
-                  children: getStarsForInstructor(media),
-                  mainAxisAlignment: MainAxisAlignment.center,
+            Transform.translate(
+                offset: Offset(0.0, 0.23 * media.size.height),
+                child: Container(
+                    child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewMyClassesMember()),
+                    );
+                  },
+                  child: Container(
+                    child: Text(
+                      'View Mine',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 0.05 * media.size.width,
+                        color: const Color(0xffffffff),
+                        fontWeight: FontWeight.w300,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    width: 0.5 * media.size.width,
+                    height: 0.1 * media.size.height,
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                ))),
+            Transform.translate(
+                offset:
+                    Offset(0.5 * media.size.width, 0.23 * media.size.height),
+                child: Container(
+                  child: Text(
+                    'View All',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 0.05 * media.size.width,
+                      color: const Color(0xffffffff),
+                      fontWeight: FontWeight.w300,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  width: 0.5 * media.size.width,
+                  height: 0.075 * media.size.height,
+                  color: Colors.white.withOpacity(0.1),
+                  padding: EdgeInsets.all(10.0),
                 ))
           ]),
-          Expanded(child: getClasses(media))
+          Expanded(
+            child: FutureBuilder<String>(
+              future: res,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return getClasses(media);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                // By default, show a loading spinner.
+                return Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ));
+              },
+            ),
+          )
         ]));
   }
 
+  /*
+  Method Name:
+    _getId
+  Purpose:
+     This method is used to get the gymId from local storage.
+*/
+  _getId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    gymid = prefs.get("gymId");
+  }
+
+  /*
+  Method Name:
+    _getType
+  Purpose:
+     This method is used to get the user type from local storage.
+*/
+  _getType() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    type = prefs.get("type");
+  }
+
+  /*
+  Method Name:
+    _makeGetRequest
+  Purpose:
+     This method is used to make a get request and fetch the all the classes available at a specific gym.
+*/
   Future<String> _makeGetRequest() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    gymId = prefs.get("username");
+    gymid = prefs.get("gymId");
 
-    String uName = gymId.toString();
+    String gID = gymid.toString();
     String url =
-        'https://gymmoveswebapi.azurewebsites.net/api/classes/instructorlist?username=$uName';
+        'https://gymmoveswebapi.azurewebsites.net/api/classes/gymlist?gymid=$gID';
     Response response = await get(url);
     String responseBody = response.body;
 
-    expResponse = responseBody;
+    classesJson = json.decode(responseBody);
 
     if (response.statusCode == 200) {
       return responseBody;
@@ -124,13 +247,15 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
     }
   }
 
+  /*
+   Method Name:
+    getClasses
+   Purpose: This method gets the response from the API and displays it on screen.
+   */
   Widget getClasses(MediaQueryData media) {
     List<Widget> classes = new List();
 
-    if (expResponse.isEmpty) {
-      /*
-    A pop up dialog would be nice for this.
-     */
+    if (classesJson.length == 0) {
       return Container(
           height: 1 / 10 * media.size.height,
           width: media.size.width,
@@ -151,7 +276,6 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
             textAlign: TextAlign.center,
           ));
     } else {
-      List<dynamic> classesJson = json.decode(expResponse);
 
       for (int i = 0; i < classesJson.length; i++) {
         allClasses.add(ViewResponse.fromJson(classesJson[i]));
@@ -162,8 +286,8 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
         className = allClasses[i].Name;
         classDay = allClasses[i].Day;
         instructorName = allClasses[i].Instructor;
-        classAvailableSpots =
-            allClasses[i].MaxCapacity - allClasses[i].CurrentStudents;
+        classAvailableSpots = allClasses[i].MaxCapacity -
+            allClasses[i].CurrentStudents;
         classTime = allClasses[i].StartTime;
         classDescription = allClasses[i].Description;
         classID = allClasses[i].ClassId;
@@ -173,40 +297,32 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ClassDetails(
-                          instructorName: instructorName,
-                          className: className,
-                          classDay: classDay,
-                          classTime: classTime,
-                          classAvailableSpots : classAvailableSpots.toString(),
-                          classDescription: classDescription.toString(),
-                          classId: classID)));
+                      builder: (context) => BookClass(
+                          instructor: instructorName,
+                          classN: className,
+                          classD: classDay,
+                          classT: classTime,
+                          availableSpots: classAvailableSpots,
+                          description: classDescription.toString(),
+                          id: classID)));
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Stack(children: <Widget>[
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ClassDetails(),
-                              ));
-                        },
-                        child: Container(
-                            width: 0.7 * media.size.width,
-                            height: 0.2 * media.size.height,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(19.0),
-                              color: const Color(0x26ffffff),
-                              border: Border.all(
-                                  width: 1.0, color: const Color(0x26707070)),
-                            ))),
-                    Transform.translate(
+                    Container(
+                        width: 0.7 * media.size.width,
+                        height: 0.2 * media.size.height,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(19.0),
+                          color: const Color(0x26ffffff),
+                          border: Border.all(
+                              width: 1.0, color: const Color(0x26707070)),
+                        )),
+                    /* Transform.translate(
                         offset: Offset(0.33 * 0.8 * media.size.width,
                             0.65 * 0.25 * media.size.height),
-                        child: Row(children: getStarsForClass(media))),
+                        child: Row(children: getStarsForClass(media))),*/
                     Transform.translate(
                         offset: Offset(
                             0.05 * media.size.width, 0.02 * media.size.height),
@@ -244,113 +360,14 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
   }
 }
 
-/* Can only implement once API working 
-  Widget getClasses(MediaQueryData media) {
-    List<Widget> classes = new List();
-
-    /*
-  Explanation : This will be when there are no classes assigned to the
-                instructor.
-   */
-    if (false) {
-      /*
-    A pop up dialog would be nice for this.
-     */
-      classes.add(Text(
-        "You are currently not instructing any classes!",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 0.05 * media.size.width,
-            color: Colors.white70),
-      ));
-    }
-    /*
-  Explanation : This will be when there are classes assigned to the
-                instructor.
-   */
-    else {
-      int amountOfClasses = 5;
-
-      for (int i = 0; i < amountOfClasses; i++) {
-        classes.add(GestureDetector(
-            onTap: () {
-              /* Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ClassDetails(className: "Spin Busters")),
-              );*/
-            },
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Stack(children: <Widget>[
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ClassDetails(),
-                              ));
-                        },
-                        child: Container(
-                            width: 0.7 * media.size.width,
-                            height: 0.2 * media.size.height,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(19.0),
-                              color: const Color(0x26ffffff),
-                              border: Border.all(
-                                  width: 1.0, color: const Color(0x26707070)),
-                            ))),
-                    Transform.translate(
-                        offset: Offset(0.33 * 0.8 * media.size.width,
-                            0.65 * 0.25 * media.size.height),
-                        child: Row(children: getStarsForClass(media))),
-                    Transform.translate(
-                        offset: Offset(
-                            0.05 * media.size.width, 0.02 * media.size.height),
-                        child: SizedBox(
-                            width: 0.7 * media.size.width,
-                            child: Text("Class Name: ",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 0.035 * media.size.width)))),
-                    Transform.translate(
-                        offset: Offset(
-                            0.05 * media.size.width, 0.07 * media.size.height),
-                        child: SizedBox(
-                            width: 0.7 * media.size.width,
-                            child: Text("Class Day: ",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 0.035 * media.size.width)))),
-                    Transform.translate(
-                        offset: Offset(
-                            0.05 * media.size.width, 0.12 * media.size.height),
-                        child: SizedBox(
-                            width: 0.7 * media.size.width,
-                            child: Text("Class Time: ",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 0.035 * media.size.width))))
-                  ])
-                ])));
-
-        classes.add(SizedBox(height: 20));
-      }
-    }
-    return ListView(padding: const EdgeInsets.all(15), children: classes);
-  }
-}*/
-
 /*
-   Method Name: getStarsForClass
-
-   Purpose: This method will get the rating for the specific class and show the
-            correct stars.
-
-   Extra: Rating is currently hardcoded. This will be changed.
+   Method Name:
+    getStarsForClass
+   Purpose:
+    This method will get the rating for the specific class and show the
+    correct stars.
+   Extra:
+    Rating is currently hardcoded. This will be changed.
    */
 
 List<Widget> getStarsForClass(MediaQueryData media) {
@@ -391,51 +408,39 @@ List<Widget> getStarsForClass(MediaQueryData media) {
 }
 
 /*
-   Method Name: getStarsForInstructor
-
-   Purpose: This method will get the rating for the specific instructor for the
-            class and show the correct stars.
-
-   Extra: Rating is currently hardcoded. This will be changed.
+   Method Name:
+    _alertDialog
+   Purpose:
+     This method shows a dialogue if there are currently has no classes available at the gym.
    */
-
-List<Widget> getStarsForInstructor(MediaQueryData media) {
-  List<Widget> stars = [];
-
-  int full = 2;
-  int half = 1;
-  int empty = 2;
-
-  for (int i = full; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      fullStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  for (int i = half; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      halfStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  for (int i = empty; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      emptyStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  return stars;
+_alertDialog(text) async {
+  return showDialog<void>(
+    //context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('No results!'),
+        content: Text(text),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              'Ok',
+              style: TextStyle(color: Color(0xff513369)),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
+/*
+Purpose:
+This class will be used to parse the response from the api which contains all the available classes at the gym.
+*/
 class ViewResponse {
   final int ClassId;
   final int GymId;
@@ -451,16 +456,16 @@ class ViewResponse {
 
   ViewResponse(
       {this.ClassId,
-        this.GymId,
-        this.Instructor,
-        this.Name,
-        this.Description,
-        this.Day,
-        this.StartTime,
-        this.EndTime,
-        this.MaxCapacity,
-        this.CurrentStudents,
-        this.Cancelled});
+      this.GymId,
+      this.Instructor,
+      this.Name,
+      this.Description,
+      this.Day,
+      this.StartTime,
+      this.EndTime,
+      this.MaxCapacity,
+      this.CurrentStudents,
+      this.Cancelled});
 
   factory ViewResponse.fromJson(Map<String, dynamic> json) {
     return ViewResponse(
@@ -478,6 +483,8 @@ class ViewResponse {
   }
 }
 
+const String underline =
+    '<svg viewBox="203.5 276.5 162.0 1.0" ><path transform="translate(203.5, 276.5)" d="M 0 0 L 162 0" fill="none" stroke="#ffffff" stroke-width="3" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 const String backArrow =
     '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 const String emptyStar =

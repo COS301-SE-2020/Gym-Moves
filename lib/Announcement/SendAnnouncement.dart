@@ -315,7 +315,6 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     This method is called when the send button is pressed. It tells the API to
     send this announcement as a notification to the members.
 */
-
   void sendValuesToNotify() async {
     final prefs = await SharedPreferences.getInstance();
 

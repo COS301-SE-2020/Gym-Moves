@@ -27,8 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import 'package:gym_moves/Dashboard/ViewPredictions.dart';
-import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
+import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
 import 'package:gym_moves/User/ViewMyProfile.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -267,40 +266,28 @@ class MemberPagesState extends State<MemberPages> {
                     ),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            1.8 / 6 * media.size.height),
+                            2.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            2.8 / 6 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
-                            3.8 / 6 * media.size.height),
+                            3.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(
-                            0.15 * media.size.width, 2 / 6 * media.size.height),
+                            0.15 * media.size.width, 2.5 / 6 * media.size.height),
                         child: getMenuOptionText('View classes', media)),
                     Transform.translate(
                         offset: Offset(
-                            0.15 * media.size.width, 3 / 6 * media.size.height),
-                        child: getMenuOptionText('View predictions', media)),
-                    Transform.translate(
-                        offset: Offset(
-                            0.15 * media.size.width, 4 / 6 * media.size.height),
+                            0.15 * media.size.width, 3.5 / 6 * media.size.height),
                         child: getMenuOptionText('View my profile', media)),
                     Transform.translate(
                         offset: Offset(
-                            0.8 * media.size.width, 2 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyClassesMember())),
+                            0.8 * media.size.width, 2.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, ViewMyClassesMember())),
                     Transform.translate(
                         offset: Offset(
-                            0.8 * media.size.width, 3 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewPredictions())),
-                    Transform.translate(
-                        offset: Offset(
-                            0.8 * media.size.width, 4 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyProfile())),
+                            0.8 * media.size.width, 3.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, ViewMyProfile())),
                   ])
                 ]));
           } else {
@@ -398,40 +385,28 @@ class MemberPagesState extends State<MemberPages> {
                     ),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            1.8 / 6 * media.size.height),
+                            2.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            2.8 / 6 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
-                            3.8 / 6 * media.size.height),
+                            3.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(
-                            0.15 * media.size.width, 2 / 6 * media.size.height),
+                            0.15 * media.size.width, 2.5 / 6 * media.size.height),
                         child: getMenuOptionText('View classes', media)),
                     Transform.translate(
                         offset: Offset(
-                            0.15 * media.size.width, 3 / 6 * media.size.height),
-                        child: getMenuOptionText('View predictions', media)),
-                    Transform.translate(
-                        offset: Offset(
-                            0.15 * media.size.width, 4 / 6 * media.size.height),
+                            0.15 * media.size.width, 3.5 / 6 * media.size.height),
                         child: getMenuOptionText('View my profile', media)),
                     Transform.translate(
                         offset: Offset(
-                            0.8 * media.size.width, 2 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyClassesMember())),
+                            0.8 * media.size.width, 2.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, ViewMyClassesMember())),
                     Transform.translate(
                         offset: Offset(
-                            0.8 * media.size.width, 3 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewPredictions())),
-                    Transform.translate(
-                        offset: Offset(
-                            0.8 * media.size.width, 4 / 6 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyProfile())),
+                            0.8 * media.size.width, 3.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, ViewMyProfile())),
                   ])
                 ]));
           }

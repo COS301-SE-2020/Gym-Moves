@@ -62,6 +62,9 @@ class ChangePasswordState extends State<ChangePassword> {
 
   String url = "https://gymmoveswebapi.azurewebsites.net/api/user/";
 
+  bool hideOldPassword = true;
+  bool hideNewPassword = true;
+
   /*
    Method Name:
     build
@@ -82,36 +85,31 @@ class ChangePasswordState extends State<ChangePassword> {
             height: 0.085 * media.size.height,
             padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextFormField(
-                obscureText: true,
+                obscureText: hideOldPassword,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
                 decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Colors.transparent,
                     labelText: 'Current password',
                     contentPadding: const EdgeInsets.all(15.0),
                     border: InputBorder.none,
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     oldPassword = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white
-    );
+        color: Colors.white);
 
     final newPasswordField = Material(
         shadowColor: Colors.black,
@@ -121,7 +119,7 @@ class ChangePasswordState extends State<ChangePassword> {
             height: 0.085 * media.size.height,
             padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextFormField(
-                obscureText: true,
+                obscureText: hideNewPassword,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -135,19 +133,15 @@ class ChangePasswordState extends State<ChangePassword> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(19.0))),
                 onChanged: (value) {
                   setState(() {
                     newPassword = value;
                   });
-                })
-        ),
+                })),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
         color: Colors.white);
 
@@ -175,26 +169,19 @@ class ChangePasswordState extends State<ChangePassword> {
                           offset: Offset(0, 3),
                           blurRadius: 6,
                         )
-                      ])
-              )
-          ),
+                      ]))),
           Transform.translate(
               offset: Offset(0.0, 0.04 * media.size.height),
               child: Transform.translate(
                   offset: Offset(
-                      0.05 * media.size.width, -0.02 * media.size.height
-                  ),
+                      0.05 * media.size.width, -0.02 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
                       child: SvgPicture.string(backArrow,
                           allowDrawingOutsideViewBox: true,
-                          width: 0.06 * media.size.width
-                      )
-                  )
-              )
-          ),
+                          width: 0.06 * media.size.width)))),
           Container(
               alignment: Alignment.centerRight,
               width: media.size.width,
@@ -215,19 +202,51 @@ class ChangePasswordState extends State<ChangePassword> {
                   ],
                 ),
                 textAlign: TextAlign.right,
-              )
-          )
+              ))
         ]),
         SizedBox(height: 0.03 * media.size.height),
         Form(
             key: changeFormKey,
             child: Column(children: <Widget>[
-              currentPasswordField,
+              Stack(children: <Widget>[
+                currentPasswordField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hideOldPassword = !hideOldPassword;
+                          });
+                        },
+                        child: Icon(
+                          hideOldPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ))),
+              ]),
               SizedBox(height: 0.06 * media.size.height),
-              newPasswordField,
+              Stack(children: <Widget>[
+                newPasswordField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hideNewPassword = !hideNewPassword;
+                          });
+                        },
+                        child: Icon(
+                          hideNewPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        )))
+              ]),
               SizedBox(height: 0.06 * media.size.height),
-            ])
-        ),
+            ])),
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
@@ -249,9 +268,7 @@ class ChangePasswordState extends State<ChangePassword> {
                           fontFamily: 'Roboto'),
                     ),
                   ),
-                )
-            )
-        ),
+                ))),
         SizedBox(height: 0.06 * media.size.height),
       ]),
     );
@@ -265,7 +282,6 @@ class ChangePasswordState extends State<ChangePassword> {
     This function will send the updated details to the database.
    */
   changePassword() async {
-
     final prefs = await SharedPreferences.getInstance();
     username = await prefs.get("username");
 
@@ -274,8 +290,7 @@ class ChangePasswordState extends State<ChangePassword> {
     if (newPassword == "" || oldPassword == "") {
       _errorDialogue("Please fill in both the fields");
       return;
-    }
-    else if (secure == false) {
+    } else if (secure == false) {
       _errorDialogue("Your new password needs to be 8 characters long, with at "
           "least one special character, one number, one small letter and one "
           "capital letter");
@@ -368,12 +383,12 @@ class ChangePasswordState extends State<ChangePassword> {
   Purpose: This method validates that the password the user entered, is secure.
 */
   bool validateStructure(String password) {
-    String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(password);
   }
 }
-
 
 const String backArrow =
     '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

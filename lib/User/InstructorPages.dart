@@ -28,8 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gym_moves/GymClass/EditClassesInstructor.dart';
-import 'package:gym_moves/Rating/InstructorViewMyRatings.dart';
+import 'package:gym_moves/GymClass/InstructorViewClasses.dart';
 import 'package:gym_moves/User/ViewMyProfile.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
@@ -89,6 +88,7 @@ class InstructorPagesState extends State<InstructorPages> {
     local = _getDetails();
     super.initState();
   }
+
 
   _getDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -271,41 +271,28 @@ class InstructorPagesState extends State<InstructorPages> {
                     ),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            1.2 / 5 * media.size.height),
+                            2.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            2.2 / 5 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
-                            3.2 / 5 * media.size.height),
+                            3.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(0.15 * media.size.width,
-                            1.35 / 5 * media.size.height),
-                        child: getMenuOptionText('Edit my classes', media)),
+                            2.5 / 6 * media.size.height),
+                        child: getMenuOptionText('View my classes', media)),
                     Transform.translate(
                         offset: Offset(0.15 * media.size.width,
-                            2.35 / 5 * media.size.height),
-                        child: getMenuOptionText('View my ratings', media)),
-                    Transform.translate(
-                        offset: Offset(0.15 * media.size.width,
-                            3.35 / 5 * media.size.height),
+                            3.5 / 6 * media.size.height),
                         child: getMenuOptionText('View my profile', media)),
                     Transform.translate(
                         offset: Offset(0.8 * media.size.width,
-                            1.4 / 5 * media.size.height),
-                        child: getArrow(0.05, media, EditClassesInstructor())),
+                            2.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, InstructorViewClasses())),
                     Transform.translate(
                         offset: Offset(0.8 * media.size.width,
-                            2.4 / 5 * media.size.height),
-                        child:
-                            getArrow(0.05, media, InstructorViewMyRatings())),
-                    Transform.translate(
-                        offset: Offset(0.8 * media.size.width,
-                            3.4 / 5 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyProfile()))
+                            3.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, ViewMyProfile()))
                   ])
                 ]));
           } else {
@@ -406,41 +393,28 @@ class InstructorPagesState extends State<InstructorPages> {
                     ),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            1.2 / 5 * media.size.height),
+                            2.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(0.1 * media.size.width,
-                            2.2 / 5 * media.size.height),
-                        child: getMenuContainers(0.8, 0.1, media)),
-                    Transform.translate(
-                        offset: Offset(0.1 * media.size.width,
-                            3.2 / 5 * media.size.height),
+                            3.3 / 6 * media.size.height),
                         child: getMenuContainers(0.8, 0.1, media)),
                     Transform.translate(
                         offset: Offset(0.15 * media.size.width,
-                            1.35 / 5 * media.size.height),
-                        child: getMenuOptionText('Edit my classes', media)),
+                            2.5 / 6 * media.size.height),
+                        child: getMenuOptionText('View my classes', media)),
                     Transform.translate(
                         offset: Offset(0.15 * media.size.width,
-                            2.35 / 5 * media.size.height),
-                        child: getMenuOptionText('View my ratings', media)),
-                    Transform.translate(
-                        offset: Offset(0.15 * media.size.width,
-                            3.35 / 5 * media.size.height),
+                            3.5 / 6 * media.size.height),
                         child: getMenuOptionText('View my profile', media)),
                     Transform.translate(
                         offset: Offset(0.8 * media.size.width,
-                            1.4 / 5 * media.size.height),
-                        child: getArrow(0.05, media, EditClassesInstructor())),
+                            2.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, InstructorViewClasses())),
                     Transform.translate(
                         offset: Offset(0.8 * media.size.width,
-                            2.4 / 5 * media.size.height),
-                        child:
-                            getArrow(0.05, media, InstructorViewMyRatings())),
-                    Transform.translate(
-                        offset: Offset(0.8 * media.size.width,
-                            3.4 / 5 * media.size.height),
-                        child: getArrow(0.05, media, ViewMyProfile()))
+                            3.5 / 6 * media.size.height),
+                        child: getArrow(0.06, media, ViewMyProfile()))
                   ])
                 ]));
           }

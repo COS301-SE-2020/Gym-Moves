@@ -24,6 +24,8 @@ Functional Description:
 Classes in the File:
 - AddAClass
 - AddAClassState
+- NewClass
+- Instructor
  */
 
 import 'package:flutter/cupertino.dart';
@@ -60,12 +62,15 @@ class AddAClassState extends State<AddAClass> {
   String instructorUsername = "";
   String instructorName = "";
   String day = "";
+
   String startHour = DateTime.now().hour.toString();
   String startMinute = DateTime.now().minute.toString();
   String startSecond = DateTime.now().second.toString();
+
   String endHour = DateTime.now().hour.toString();
   String endMinute = DateTime.now().minute.toString();
   String endSecond = DateTime.now().second.toString();
+
   String description = "";
   String max = "0";
   String current = "0";
@@ -86,19 +91,19 @@ class AddAClassState extends State<AddAClass> {
 
   @override
   void initState() {
-    _makeGetRequest();
+    _getInstructors();
     super.initState();
   }
 
   /*
   Method Name:
-    _makeGetRequest
+    _getInstructors
 
   Purpose:
-     This method is used to make a get request and fetch the different gym's
-    and their branches. This list will be used for the auto-complete field, "Gym".
+     This method is used to make a get request and fetch the instructors
+     of a gym.
 */
-  _makeGetRequest() async {
+  _getInstructors() async {
     final prefs = await SharedPreferences.getInstance();
     int gymId = prefs.get("gymId");
     String url = 'https://gymmoveswebapi.azurewebsites.net/api/user/allInstructors?gymID=' + gymId.toString();
@@ -271,7 +276,7 @@ class AddAClassState extends State<AddAClass> {
                       startSecond = "00";
 
                       setState(() {
-                        startTime = startHour+":"+startMinute+":"+startSecond;
+                        startTime = startHour+":"+startMinute;
                       });
                     });
               },
@@ -288,7 +293,7 @@ class AddAClassState extends State<AddAClass> {
                           child: Row(
                             children: <Widget>[
                               Text(
-                                startHour + ":" + startMinute + ":" + startSecond,
+                                startHour + ":" + startMinute,
                                 style: TextStyle(
                                     color: Colors.black54,
                                     fontSize: 0.04 * media.size.width),
@@ -338,7 +343,7 @@ class AddAClassState extends State<AddAClass> {
                       endSecond = "00";
 
                       setState(() {
-                        endTime = endHour+":"+endMinute+":"+endSecond;
+                        endTime = endHour+":"+endMinute;
                       });
                     });
               },
@@ -355,7 +360,7 @@ class AddAClassState extends State<AddAClass> {
                           child: Row(
                             children: <Widget>[
                               Text(
-                                endHour + ":" + endMinute + ":" + endSecond,
+                                endHour + ":" + endMinute,
                                 style: TextStyle(
                                     color: Colors.black54,
                                     fontSize: 0.04 * media.size.width),
@@ -617,7 +622,7 @@ class AddAClassState extends State<AddAClass> {
       return;
     }
 
-    _makePostRequest();
+    _addClass();
 
   }
 
@@ -640,14 +645,14 @@ class AddAClassState extends State<AddAClass> {
 
 /*
   Method Name:
-    _makePostRequest
+    _addClass
   Purpose:
     This method is called when the all the fields in the form have been verified.
     It makes a post request to our API with the respective fields, to allow a manager to add
     a new class to the database. Once the class has been added successfully the fields are
     returned to default values and the manager can add another class.
 */
-  _makePostRequest() async {
+  _addClass() async {
     String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/add';
 
     final prefs = await SharedPreferences.getInstance();
@@ -731,6 +736,12 @@ class NewClass {
       };
 }
 
+/*
+Class Name:
+  Instructor
+Purpose:
+  This class is the structure of an instructor.
+ */
 class Instructor {
   final String name;
   final String surname;
