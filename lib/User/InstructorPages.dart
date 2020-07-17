@@ -90,7 +90,6 @@ class InstructorPagesState extends State<InstructorPages> {
     super.initState();
   }
 
-
   _getDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     name = prefs.get("name");

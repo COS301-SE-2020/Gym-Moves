@@ -38,9 +38,9 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "gymmoves.gym_moves"
-        minSdkVersion 16
-        targetSdkVersion 28
+        applicationId "com.example.gymmoves"
+        minSdkVersion 19
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

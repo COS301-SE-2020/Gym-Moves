@@ -58,7 +58,7 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   String instructorName = "";
   int classAvailableSpots = 0;
   String classDescription = "";
-  int classID = 0;
+  int classID=0;
   Future<String> res;
 
   /* This will hold the user's `type` and gymid. */
@@ -67,8 +67,6 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
 
   Future idFromLocal;
   Future typeFromLocal;
-  List<dynamic> classesJson = [];
-
   /*
    Method Name:
     build
@@ -113,7 +111,7 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
             ),
             Transform.translate(
                 offset:
-                    Offset(0.04 * media.size.width, 0.04 * media.size.height),
+                Offset(0.04 * media.size.width, 0.04 * media.size.height),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -136,33 +134,33 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                 offset: Offset(0.0, 0.23 * media.size.height),
                 child: Container(
                     child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ViewMyClassesMember()),
-                    );
-                  },
-                  child: Container(
-                    child: Text(
-                      'View Mine',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 0.05 * media.size.width,
-                        color: const Color(0xffffffff),
-                        fontWeight: FontWeight.w300,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewMyClassesMember()),
+                        );
+                      },
+                      child: Container(
+                        child: Text(
+                          'View Mine',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 0.05 * media.size.width,
+                            color: const Color(0xffffffff),
+                            fontWeight: FontWeight.w300,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        width: 0.5 * media.size.width,
+                        height: 0.1 * media.size.height,
+                        padding: EdgeInsets.all(10.0),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    width: 0.5 * media.size.width,
-                    height: 0.1 * media.size.height,
-                    padding: EdgeInsets.all(10.0),
-                  ),
-                ))),
+                    ))),
             Transform.translate(
                 offset:
-                    Offset(0.5 * media.size.width, 0.23 * media.size.height),
+                Offset(0.5 * media.size.width, 0.23 * media.size.height),
                 child: Container(
                   child: Text(
                     'View All',
@@ -192,8 +190,8 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                 // By default, show a loading spinner.
                 return Center(
                     child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                ));
+                      backgroundColor: Colors.white,
+                    ));
               },
             ),
           )
@@ -238,7 +236,7 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
     Response response = await get(url);
     String responseBody = response.body;
 
-    classesJson = json.decode(responseBody);
+    expResponse = responseBody;
 
     if (response.statusCode == 200) {
       return responseBody;
@@ -250,12 +248,16 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   /*
    Method Name:
     getClasses
-   Purpose: This method gets the response from the API and displays it on screen.
+   Purpose: This method gets the reponse from the API and displays it on screen.
    */
+
   Widget getClasses(MediaQueryData media) {
     List<Widget> classes = new List();
 
-    if (classesJson.length == 0) {
+    if (expResponse.isEmpty) {
+      /*
+    A pop up dialog would be nice for this.
+     */
       return Container(
           height: 1 / 10 * media.size.height,
           width: media.size.width,
@@ -276,6 +278,7 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
             textAlign: TextAlign.center,
           ));
     } else {
+      List<dynamic> classesJson = json.decode(expResponse);
 
       for (int i = 0; i < classesJson.length; i++) {
         allClasses.add(ViewResponse.fromJson(classesJson[i]));
@@ -286,11 +289,11 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
         className = allClasses[i].Name;
         classDay = allClasses[i].Day;
         instructorName = allClasses[i].Instructor;
-        classAvailableSpots = allClasses[i].MaxCapacity -
-            allClasses[i].CurrentStudents;
+        classAvailableSpots =
+            allClasses[i].MaxCapacity - allClasses[i].CurrentStudents;
         classTime = allClasses[i].StartTime;
         classDescription = allClasses[i].Description;
-        classID = allClasses[i].ClassId;
+        classID=allClasses[i].ClassId;
 
         classes.add(GestureDetector(
             onTap: () {
@@ -302,27 +305,37 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                           classN: className,
                           classD: classDay,
                           classT: classTime,
-                          availableSpots: classAvailableSpots,
-                          description: classDescription.toString(),
-                          id: classID)));
+                          AvailableSpots: classAvailableSpots,
+                          Description: classDescription.toString(),
+                          ID: classID
+                      )
+                  ));
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Stack(children: <Widget>[
-                    Container(
-                        width: 0.7 * media.size.width,
-                        height: 0.2 * media.size.height,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(19.0),
-                          color: const Color(0x26ffffff),
-                          border: Border.all(
-                              width: 1.0, color: const Color(0x26707070)),
-                        )),
-                    /* Transform.translate(
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookClass(),
+                              ));
+                        },
+                        child: Container(
+                            width: 0.7 * media.size.width,
+                            height: 0.2 * media.size.height,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(19.0),
+                              color: const Color(0x26ffffff),
+                              border: Border.all(
+                                  width: 1.0, color: const Color(0x26707070)),
+                            ))),
+                    Transform.translate(
                         offset: Offset(0.33 * 0.8 * media.size.width,
                             0.65 * 0.25 * media.size.height),
-                        child: Row(children: getStarsForClass(media))),*/
+                        child: Row(children: getStarsForClass(media))),
                     Transform.translate(
                         offset: Offset(
                             0.05 * media.size.width, 0.02 * media.size.height),
@@ -456,16 +469,16 @@ class ViewResponse {
 
   ViewResponse(
       {this.ClassId,
-      this.GymId,
-      this.Instructor,
-      this.Name,
-      this.Description,
-      this.Day,
-      this.StartTime,
-      this.EndTime,
-      this.MaxCapacity,
-      this.CurrentStudents,
-      this.Cancelled});
+        this.GymId,
+        this.Instructor,
+        this.Name,
+        this.Description,
+        this.Day,
+        this.StartTime,
+        this.EndTime,
+        this.MaxCapacity,
+        this.CurrentStudents,
+        this.Cancelled});
 
   factory ViewResponse.fromJson(Map<String, dynamic> json) {
     return ViewResponse(

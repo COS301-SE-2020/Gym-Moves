@@ -20,10 +20,14 @@ Classes in the File:
 - ClassDetailsState
  */
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 /*
 Class Name:
@@ -40,9 +44,16 @@ class ClassDetails extends StatefulWidget {
   final String classTime;
   final String classAvailableSpots;
   final String classDescription;
+  final int classId;
 
-  const ClassDetails({Key key, this.instructorName = "", this.className = "", this.classDay="",
-    this.classTime= "", this.classAvailableSpots= "", this.classDescription= ""}) : super(key: key);
+  const ClassDetails({Key key, 
+  this.instructorName = "No data available", 
+  this.className = "No data available", 
+  this.classDay="No data available",
+    this.classTime= "No data available", 
+    this.classAvailableSpots= "No data available", 
+    this.classDescription= "No data available",
+    this.classId = 1}) : super(key: key);
 
   @override
   ClassDetailsState createState() => ClassDetailsState();
@@ -59,6 +70,20 @@ Purpose:
 class ClassDetailsState extends State<ClassDetails> {
   ClassDetailsState({Key key});
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  String instructorName = '';
+  String className = "";
+  String classDay = "";
+  String classTime = "";
+  String classAvailableSpots = "";
+  String classDescription = "";
+  int classID;
+  static String cancel = "cancel";
+
   /*
    Method Name:
     build
@@ -69,6 +94,8 @@ class ClassDetailsState extends State<ClassDetails> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
+
+    getClassDetails();
 
     return Scaffold(
         backgroundColor: const Color(0xff513369),
@@ -147,6 +174,29 @@ class ClassDetailsState extends State<ClassDetails> {
               ),
               Transform.translate(
                   offset:
+                  Offset(290, 256),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    color: const Color(0xffffffff).withOpacity(0.3),
+
+                    onPressed: () {
+                     cancelClass();
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        cancel,
+                        style: TextStyle(
+                            fontSize: 0.05 * media.size.width,
+                            fontFamily: 'Roboto'),
+                      ),
+                    ),
+                  )),
+              Transform.translate(
+                  offset:
                   Offset(0.05 * media.size.width, 0.02 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
@@ -169,7 +219,7 @@ class ClassDetailsState extends State<ClassDetails> {
               )
             ]
             ),
-          /*  Container(
+            Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.0, 0.0, 0.0
               ),
@@ -189,7 +239,7 @@ class ClassDetailsState extends State<ClassDetails> {
                     0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
                 ),
                 child: Row(children: getStarsForClass(media))
-            ),*/
+            ),
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
@@ -220,7 +270,7 @@ class ClassDetailsState extends State<ClassDetails> {
               ),
               alignment: Alignment.centerLeft,
             ),
-           /* Container(
+            Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
               ),
@@ -234,13 +284,13 @@ class ClassDetailsState extends State<ClassDetails> {
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
-            ),*/
-           /* Container(
+            ),
+            Container(
                 padding: EdgeInsets.fromLTRB(
                     0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
                 ),
                 child: Row(children: getStarsForInstructor(media))
-            ),*/
+            ),
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0
@@ -348,7 +398,7 @@ class ClassDetailsState extends State<ClassDetails> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.05*media.size.height
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
                 widget.classDescription,
@@ -366,6 +416,88 @@ class ClassDetailsState extends State<ClassDetails> {
         ]
         )
     );
+  }
+
+  cancelClass() async{
+    if(cancel == "cancel"){
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String name = prefs.get("username");
+    getClassDetails();
+
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/cancel';
+    final http.Response response = await http.post(
+      url,
+      headers: <String, String>{'Content-type': 'application/json'},
+      body: jsonEncode({
+        "Username": name,
+        "ClassId": classID,
+
+      }),
+    );
+
+    int stat = response.statusCode;
+
+    if (stat == 200) {
+
+        setState(() {
+          cancel = "uncancel";
+          _showAlertDialog("You've successfully cancelled this class.", "Success!");
+        });
+
+    }
+    else{
+      if(cancel=="cancel") {
+        setState(() {
+          cancel = "uncancel";
+          _showAlertDialog(response.body, "Error");
+        });
+      }
+      
+      }
+  }
+
+    void _showAlertDialog(String message, String message2) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(message2),
+      content: Text(message),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+    }
+  }
+
+  /*
+   Method Name:
+    getClassDetails
+   Purpose:
+    This method will get the details of the class.
+   Extra:
+    Currently hardcoded. This will be changed.
+   */
+  void getClassDetails(){
+    className = widget.className;
+    classAvailableSpots = widget.classAvailableSpots;
+    instructorName = widget.instructorName;
+    classDescription = widget.classDescription;
+    classTime = widget.classTime;
+    classDay = widget.classDay;
+    
   }
 
   /*

@@ -51,7 +51,7 @@ Purpose:
  */
 class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   List<ViewResponse> allClasses = [];
-
+  String expResponse = "%";
   String className = "";
   String classDay = "";
   String classTime = "";
@@ -60,8 +60,6 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   String classDescription = "";
   int classID =0;
   Future<String> res;
-
-  List<dynamic> classesJson = [];
 
   /* This will hold the user's `type` and gymid. */
   String username = "";
@@ -247,12 +245,12 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
     Response response = await get(url);
     String responseBody = response.body;
 
-    classesJson = json.decode(responseBody);
+    expResponse = responseBody;
 
     if (response.statusCode == 200) {
       return responseBody;
     } else {
-      throw Exception('Failed to retrieve user data. Please try again later');
+      throw Exception('Failed to retrieve user data. Please Try Again Later');
     }
   }
 
@@ -291,28 +289,10 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   Widget getClasses(MediaQueryData media) {
     List<Widget> classes = new List();
 
-    if (classesJson.length == 0) {
-      return Container(
-          height: 1 / 10 * media.size.height,
-          width: media.size.width,
-          padding: EdgeInsets.all(0.05 * media.size.width),
-          child: Text(
-            'You are currently not signed up to any classes.',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: media.size.width * 0.05,
-              color: const Color(0xffffffff),
-              shadows: [
-                Shadow(
-                  color: const Color(0xbd000000),
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                ),
-              ],
-            ),
-            textAlign: TextAlign.center,
-          ));
+    if (expResponse.isEmpty) {
+      _showAlertDialog("You are not booked for any classes", "Book now");
     } else {
+      List<dynamic> classesJson = json.decode(expResponse);
 
       for (int i = 0; i < classesJson.length; i++) {
         allClasses.add(ViewResponse.fromJson(classesJson[i]));
@@ -339,9 +319,9 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                         classN: className,
                         classD: classDay,
                         classT: classTime,
-                        availableSpots: classAvailableSpots,
-                        description: classDescription.toString(),
-                        id: classID
+                        AvailableSpots: classAvailableSpots,
+                        Description: classDescription.toString(),
+                        ID: classID
                     )),
               );
             },
@@ -349,7 +329,23 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Stack(children: <Widget>[
-                   Container(
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookClass(
+                                    instructor: instructorName,
+                                    classN: className,
+                                    classD: classDay,
+                                    classT: classTime,
+                                    AvailableSpots: classAvailableSpots,
+                                    Description: classDescription.toString(),
+                                    ID: classID
+                                ),
+                              ));
+                        },
+                        child: Container(
                             width: 0.7 * media.size.width,
                             height: 0.2 * media.size.height,
                             decoration: BoxDecoration(
@@ -357,7 +353,7 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                               color: const Color(0x26ffffff),
                               border: Border.all(
                                   width: 1.0, color: const Color(0x26707070)),
-                            )),
+                            ))),
                     Transform.translate(
                         offset: Offset(0.33 * 0.8 * media.size.width,
                             0.65 * 0.25 * media.size.height),

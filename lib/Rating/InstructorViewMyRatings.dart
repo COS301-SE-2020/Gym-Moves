@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'ManagerViewInstructorRatings.dart';
 import '../GymClass/ClassDetails.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InstructorViewMyRatings extends StatefulWidget {
   const InstructorViewMyRatings({Key key}) : super(key: key);
@@ -14,23 +16,32 @@ class InstructorViewMyRatings extends StatefulWidget {
 }
 
 class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
-  List<Class> classes = [];
+  int gymId = 0;
+  String expResponse = "";
+  Future<String> res;
+  List<ViewResponse> allClasses = [];
+  String className = "";
+  String classDay = "";
+  String classTime = "";
+  String instructorName = "";
+  int classAvailableSpots = 0;
+  String classDescription = "";
+  int classID=0;
 
   @override
   void initState() {
-    //_makeGetRequest();
     super.initState();
+
+    res = _makeGetRequest();
   }
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    return new Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xff513369),
-      //  body:
-
-       /* Column(children: <Widget>[
+        body: Column(children: <Widget>[
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
@@ -90,118 +101,248 @@ class InstructorViewMyRatingsState extends State<InstructorViewMyRatings> {
                   mainAxisAlignment: MainAxisAlignment.center,
                 ))
           ]),
-          Expanded(
-              child: new FutureBuilder(
-                  future: _makeGetRequest(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return new ListView.builder(
-                          itemBuilder: (BuildContext context, int index) {
-                            return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Stack(children: <Widget>[
-                                    GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ClassDetails(),
-                                              ));
-                                        },
-                                        child: Container(
-                                            width: 0.7 * media.size.width,
-                                            height: 0.2 * media.size.height,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(19.0),
-                                              color: const Color(0x26ffffff),
-                                              border: Border.all(
-                                                  width: 1.0,
-                                                  color:
-                                                      const Color(0x26707070)),
-                                            ))),
-                                    Transform.translate(
-                                        offset: Offset(
-                                            0.33 * 0.8 * media.size.width,
-                                            0.65 * 0.25 * media.size.height),
-                                        child: Row(
-                                            children: getStarsForClass(media))),
-                                    Transform.translate(
-                                        offset: Offset(0.05 * media.size.width,
-                                            0.02 * media.size.height),
-                                        child: SizedBox(
-                                            width: 0.7 * media.size.width,
-                                            child: Text(
-                                                "Class Name: " +
-                                                    classes[index].name,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 0.035 *
-                                                        media.size.width)))),
-                                    Transform.translate(
-                                        offset: Offset(0.05 * media.size.width,
-                                            0.07 * media.size.height),
-                                        child: SizedBox(
-                                            width: 0.7 * media.size.width,
-                                            child: Text(
-                                                "Class Day: " +
-                                                    classes[index].day,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 0.035 *
-                                                        media.size.width)))),
-                                    Transform.translate(
-                                        offset: Offset(0.05 * media.size.width,
-                                            0.12 * media.size.height),
-                                        child: SizedBox(
-                                            width: 0.7 * media.size.width,
-                                            child: Text(
-                                                "Class Time: " +
-                                                    classes[index].start +
-                                                    " - " +
-                                                    classes[index].end,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 0.035 *
-                                                        media.size.width))))
-                                  ])
-                                ]);
-                          },
-                          itemCount: classes.length);
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  }))
-        ])*/);
+          Expanded(child: getClasses(media))
+        ]));
   }
 
-  /*Method Name:
-    _makeGetRequest
-
-  Purpose:
-     This method is used to make a get request and fetch the different gym's
-    and their branches. This list will be used for the auto-complete field, "Gym".
-*/
-  _makeGetRequest() async {
+  Future<String> _makeGetRequest() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.get("username");
+    gymId = prefs.get("username");
 
+    String uName = gymId.toString();
     String url =
-        'https://gymmoveswebapi.azurewebsites.net/api/classes/instructorlist?'
-                'username=' +
-            username;
+        'https://gymmoveswebapi.azurewebsites.net/api/classes/instructorlist?username=$uName';
     Response response = await get(url);
     String responseBody = response.body;
 
-    List<dynamic> classesJson = json.decode(responseBody);
+    expResponse = responseBody;
 
-    for (int i = 0; i < classesJson.length; i++) {
-      classes.add(Class.fromJson(classesJson[i]));
+    if (response.statusCode == 200) {
+      return responseBody;
+    } else {
+      throw Exception('Failed to retrieve user data. Please Try Again Later');
     }
   }
+
+  Widget getClasses(MediaQueryData media) {
+    List<Widget> classes = new List();
+
+    if (expResponse.isEmpty) {
+      /*
+    A pop up dialog would be nice for this.
+     */
+      return Container(
+          height: 1 / 10 * media.size.height,
+          width: media.size.width,
+          child: Text(
+            'There are currently no available classes at the gym.',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: media.size.width * 0.05,
+              color: const Color(0xffffffff),
+              shadows: [
+                Shadow(
+                  color: const Color(0xbd000000),
+                  offset: Offset(0, 3),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ));
+    } else {
+      List<dynamic> classesJson = json.decode(expResponse);
+
+      for (int i = 0; i < classesJson.length; i++) {
+        allClasses.add(ViewResponse.fromJson(classesJson[i]));
+      }
+      int amountOfClasses = allClasses.length;
+
+      for (int i = 0; i < amountOfClasses; i++) {
+        className = allClasses[i].Name;
+        classDay = allClasses[i].Day;
+        instructorName = allClasses[i].Instructor;
+        classAvailableSpots =
+            allClasses[i].MaxCapacity - allClasses[i].CurrentStudents;
+        classTime = allClasses[i].StartTime;
+        classDescription = allClasses[i].Description;
+        classID = allClasses[i].ClassId;
+
+        classes.add(GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ClassDetails(
+                          instructorName: instructorName,
+                          className: className,
+                          classDay: classDay,
+                          classTime: classTime,
+                          classAvailableSpots : classAvailableSpots.toString(),
+                          classDescription: classDescription.toString(),
+                          classId: classID)));
+            },
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Stack(children: <Widget>[
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ClassDetails(),
+                              ));
+                        },
+                        child: Container(
+                            width: 0.7 * media.size.width,
+                            height: 0.2 * media.size.height,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(19.0),
+                              color: const Color(0x26ffffff),
+                              border: Border.all(
+                                  width: 1.0, color: const Color(0x26707070)),
+                            ))),
+                    Transform.translate(
+                        offset: Offset(0.33 * 0.8 * media.size.width,
+                            0.65 * 0.25 * media.size.height),
+                        child: Row(children: getStarsForClass(media))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.02 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Name: " + className,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.07 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Day: " + classDay,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.12 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Time: " + classTime,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width))))
+                  ])
+                ])));
+
+        classes.add(SizedBox(height: 20));
+      }
+    }
+    return ListView(padding: const EdgeInsets.all(15), children: classes);
+  }
 }
+
+/* Can only implement once API working 
+  Widget getClasses(MediaQueryData media) {
+    List<Widget> classes = new List();
+
+    /*
+  Explanation : This will be when there are no classes assigned to the
+                instructor.
+   */
+    if (false) {
+      /*
+    A pop up dialog would be nice for this.
+     */
+      classes.add(Text(
+        "You are currently not instructing any classes!",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 0.05 * media.size.width,
+            color: Colors.white70),
+      ));
+    }
+    /*
+  Explanation : This will be when there are classes assigned to the
+                instructor.
+   */
+    else {
+      int amountOfClasses = 5;
+
+      for (int i = 0; i < amountOfClasses; i++) {
+        classes.add(GestureDetector(
+            onTap: () {
+              /* Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ClassDetails(className: "Spin Busters")),
+              );*/
+            },
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Stack(children: <Widget>[
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ClassDetails(),
+                              ));
+                        },
+                        child: Container(
+                            width: 0.7 * media.size.width,
+                            height: 0.2 * media.size.height,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(19.0),
+                              color: const Color(0x26ffffff),
+                              border: Border.all(
+                                  width: 1.0, color: const Color(0x26707070)),
+                            ))),
+                    Transform.translate(
+                        offset: Offset(0.33 * 0.8 * media.size.width,
+                            0.65 * 0.25 * media.size.height),
+                        child: Row(children: getStarsForClass(media))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.02 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Name: ",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.07 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Day: ",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width)))),
+                    Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, 0.12 * media.size.height),
+                        child: SizedBox(
+                            width: 0.7 * media.size.width,
+                            child: Text("Class Time: ",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 0.035 * media.size.width))))
+                  ])
+                ])));
+
+        classes.add(SizedBox(height: 20));
+      }
+    }
+    return ListView(padding: const EdgeInsets.all(15), children: classes);
+  }
+}*/
 
 /*
    Method Name: getStarsForClass
@@ -295,45 +436,45 @@ List<Widget> getStarsForInstructor(MediaQueryData media) {
   return stars;
 }
 
-class Class {
-  final int classId;
-  final int gymId;
-  final String username;
-  final String name;
-  final String description;
-  final String day;
-  final String start;
-  final String end;
-  final int max;
-  final int current;
-  final bool cancelled;
+class ViewResponse {
+  final int ClassId;
+  final int GymId;
+  final String Instructor;
+  final String Name;
+  final String Description;
+  final String Day;
+  final String StartTime;
+  final String EndTime;
+  final int MaxCapacity;
+  final int CurrentStudents;
+  final bool Cancelled;
 
-  Class(
-      {this.classId,
-      this.gymId,
-      this.username,
-      this.name,
-      this.description,
-      this.day,
-      this.start,
-      this.end,
-      this.max,
-      this.current,
-      this.cancelled});
+  ViewResponse(
+      {this.ClassId,
+        this.GymId,
+        this.Instructor,
+        this.Name,
+        this.Description,
+        this.Day,
+        this.StartTime,
+        this.EndTime,
+        this.MaxCapacity,
+        this.CurrentStudents,
+        this.Cancelled});
 
-  factory Class.fromJson(Map<String, dynamic> json) {
-    return Class(
-        classId: json['ClassId'],
-        gymId: json['GymId'],
-        username: json['Instructor'],
-        name: json['Name'],
-        description: json['Description'],
-        day: json['Day'],
-        start: json['StartTime'],
-        end: json['EndTime'],
-        max: json['MaxCapacity'],
-        current: json['CurrentStudents'],
-        cancelled: json['Cancelled']);
+  factory ViewResponse.fromJson(Map<String, dynamic> json) {
+    return ViewResponse(
+        ClassId: json['classId'],
+        GymId: json['gymId'],
+        Instructor: json['instructor'],
+        Name: json['name'],
+        Description: json['description'],
+        Day: json['day'],
+        StartTime: json['startTime'],
+        EndTime: json['endTime'],
+        MaxCapacity: json['maxCapacity'],
+        CurrentStudents: json['currentStudents'],
+        Cancelled: json['cancelled']);
   }
 }
 
@@ -345,5 +486,3 @@ const String fullStar =
     '<svg viewBox="323.2 330.6 13.8 11.4" ><path transform="translate(320.18, 327.59)" d="M 9.920000076293945 12.19414806365967 L 14.19656085968018 14.44000053405762 L 13.06168079376221 10.207200050354 L 16.84000015258789 7.35924243927002 L 11.86452007293701 6.991957664489746 L 9.920000076293945 3 L 7.975480079650879 6.991957664489746 L 3 7.35924243927002 L 6.778319835662842 10.207200050354 L 5.643439769744873 14.44000053405762 L 9.920000076293945 12.19414806365967 Z" fill="#ffff50" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 const String halfStar =
     '<svg viewBox="279.2 324.6 13.8 11.4" ><path transform="translate(276.18, 321.59)" d="M 16.84000015258789 7.35924243927002 L 11.86452007293701 6.985937118530273 L 9.920000076293945 3 L 7.975480079650879 6.991957664489746 L 3 7.35924243927002 L 6.778319835662842 10.207200050354 L 5.643439769744873 14.44000053405762 L 9.920000076293945 12.19414806365967 L 14.19656085968018 14.44000053405762 L 13.06860065460205 10.207200050354 L 16.84000015258789 7.35924243927002 Z M 9.920000076293945 11.06821155548096 L 9.920000076293945 5.468631744384766 L 11.10332012176514 7.90113639831543 L 14.13428020477295 8.129936218261719 L 11.83684062957764 9.863999366760254 L 12.52884006500244 12.44101047515869 L 9.920000076293945 11.06821155548096 Z" fill="#ffff50" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
-
-
