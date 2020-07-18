@@ -55,8 +55,10 @@ class BookClass extends StatefulWidget {
   final int AvailableSpots;
   final String Description;
   final int ID;
-  BookClass({Key key, this.instructor= "Mellanie Wessels", this.classN="Spinning", this.classD="Wednesday", this.classT="4 PM", this.AvailableSpots=20,
-    this.Description="Ready to sweat like crazy?", this.ID=1}) : super(key: key);
+  final int MaxSpots;
+  final int TakenSpots;
+  BookClass({Key key, this.instructor, this.classN, this.classD, this.classT, this.AvailableSpots,
+    this.Description, this.ID,this.MaxSpots,this.TakenSpots}) : super(key: key);
 
   @override
   BookClassState createState() => BookClassState();
@@ -88,7 +90,7 @@ class BookClassState extends State<BookClass> {
   String className = "";
   String classDay = "";
   String classTime = "";
-  String classAvailableSpots = "";
+  int classAvailableSpots = 0;
   String classDescription = "";
   int classID;
   String book = "loading...";
@@ -110,21 +112,24 @@ class BookClassState extends State<BookClass> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     name = prefs.get("username");
 
+//    classAvailableSpots=this.widget.AvailableSpots;
+
     String user = "username="+ name;
     String userclass = "&classid=" + classes;
     String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/userclass?'+ user + userclass;
 
     Response response = await get(url);
     String responseBody = response.body;
-//    print(responseBody);
     if(responseBody == "true")
       {
         setState(() {
+          classAvailableSpots = this.widget.MaxSpots - this.widget.TakenSpots;
           book = "unbook";
         });
       }
     else{
       setState(() {
+        classAvailableSpots = this.widget.MaxSpots - this.widget.TakenSpots;
         book = "book";
       });
     }
@@ -141,7 +146,6 @@ class BookClassState extends State<BookClass> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-
     getBookClass();
     _makeGetRequest();
     return Scaffold(
@@ -422,7 +426,7 @@ class BookClassState extends State<BookClass> {
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
               ),
               child: Text(
-                classAvailableSpots,
+                classAvailableSpots.toString(),
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
@@ -480,7 +484,7 @@ class BookClassState extends State<BookClass> {
   void getBookClass() {
 
     className = this.widget.classN;
-    classAvailableSpots = this.widget.AvailableSpots.toString();
+    classAvailableSpots = this.widget.MaxSpots - this.widget.TakenSpots;
     instructorName = this.widget.instructor;
     classDescription = this.widget.Description;
     classTime = this.widget.classT;
@@ -604,15 +608,20 @@ class BookClassState extends State<BookClass> {
     );
 
     int stat = response.statusCode;
-//print(stat);
-//print(book);
+
     if (stat == 200) {
+
 
         setState(() {
           book = "unbook";
+          classAvailableSpots = this.widget.MaxSpots - this.widget.TakenSpots;
           _showAlertDialog("You've successfully enrolled for this class.", "Success!");
         });
 
+    }
+
+    else if(this.widget.MaxSpots==this.widget.TakenSpots){
+      _showAlertDialog("Sorry! The class has reached its maximum capacity. Try booking for another class", "Class is full!");
     }
 
     else if (response.statusCode== 404) {
@@ -639,6 +648,7 @@ class BookClassState extends State<BookClass> {
         if (stat == 200) {
           setState(() {
             book = "book";
+            classAvailableSpots = this.widget.MaxSpots - this.widget.TakenSpots;
             _showAlertDialog("You've successfully un-enrolled for this class", "Success!");
           });
         }
