@@ -59,6 +59,8 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
   int classAvailableSpots = 0;
   String classDescription = "";
   int classID =0;
+  int max = 0;
+  int taken= 0;
   Future<String> res;
 
   /* This will hold the user's `type` and gymid. */
@@ -306,6 +308,8 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
         instructorName = allClasses[i].instructor;
         classAvailableSpots =
             allClasses[i].maxCapacity - allClasses[i].currentStudents;
+        max= allClasses[i].maxCapacity;
+        taken=allClasses[i].currentStudents;
         classTime = allClasses[i].startTime;
         classDescription = allClasses[i].description;
         classID=allClasses[i].classId;
@@ -321,7 +325,9 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                         classT: classTime,
                         AvailableSpots: classAvailableSpots,
                         Description: classDescription.toString(),
-                        ID: classID
+                        ID: classID,
+                        MaxSpots: max,
+                        TakenSpots: taken
                     )),
               );
             },
@@ -341,7 +347,9 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                                     classT: classTime,
                                     AvailableSpots: classAvailableSpots,
                                     Description: classDescription.toString(),
-                                    ID: classID
+                                    ID: classID,
+                                    MaxSpots: max,
+                                    TakenSpots: taken
                                 ),
                               ));
                         },
