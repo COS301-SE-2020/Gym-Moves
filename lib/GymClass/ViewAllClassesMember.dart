@@ -59,6 +59,9 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
   int classAvailableSpots = 0;
   String classDescription = "";
   int classID=0;
+  int max = 0;
+  int taken= 0;
+  
   Future<String> res;
 
   /* This will hold the user's `type` and gymid. */
@@ -294,6 +297,8 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
         classTime = allClasses[i].StartTime;
         classDescription = allClasses[i].Description;
         classID=allClasses[i].ClassId;
+        max= allClasses[i].MaxCapacity;
+        taken=allClasses[i].CurrentStudents;
 
         classes.add(GestureDetector(
             onTap: () {
@@ -307,7 +312,9 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                           classT: classTime,
                           AvailableSpots: classAvailableSpots,
                           Description: classDescription.toString(),
-                          ID: classID
+                          ID: classID,
+                          MaxSpots: max,
+                          TakenSpots: taken
                       )
                   ));
             },
