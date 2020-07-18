@@ -33,6 +33,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,7 +56,7 @@ class BookClass extends StatefulWidget {
   final String Description;
   final int ID;
   BookClass({Key key, this.instructor= "Mellanie Wessels", this.classN="Spinning", this.classD="Wednesday", this.classT="4 PM", this.AvailableSpots=20,
-    this.Description="Ready to sweat like crazy?", this.ID=3}) : super(key: key);
+    this.Description="Ready to sweat like crazy?", this.ID=1}) : super(key: key);
 
   @override
   BookClassState createState() => BookClassState();
@@ -90,8 +91,45 @@ class BookClassState extends State<BookClass> {
   String classAvailableSpots = "";
   String classDescription = "";
   int classID;
-  static String book = "book";
+  String book = "loading...";
 
+
+
+  /*
+   Method Name:
+    makeGetRequest
+
+   Purpose:
+    This function checks to see if the user is signed up for the class, and sets
+    their state accordingly, so see if they should be able to book or unbook for
+    a class.
+   */
+  _makeGetRequest() async {
+    classID = this.widget.ID;
+    String classes = classID.toString();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    name = prefs.get("username");
+
+    String user = "username="+ name;
+    String userclass = "&classid=" + classes;
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/userclass?'+ user + userclass;
+
+    Response response = await get(url);
+    String responseBody = response.body;
+//    print(responseBody);
+    if(responseBody == "true")
+      {
+        setState(() {
+          book = "unbook";
+        });
+      }
+    else{
+      setState(() {
+        book = "book";
+      });
+    }
+
+  }
   /*
    Method Name:
     build
@@ -105,7 +143,7 @@ class BookClassState extends State<BookClass> {
     MediaQueryData media = MediaQuery.of(context);
 
     getBookClass();
-
+    _makeGetRequest();
     return Scaffold(
         backgroundColor: const Color(0xff513369),
         body: ListView(children: <Widget>[
@@ -566,7 +604,8 @@ class BookClassState extends State<BookClass> {
     );
 
     int stat = response.statusCode;
-
+//print(stat);
+//print(book);
     if (stat == 200) {
 
         setState(() {
@@ -581,14 +620,8 @@ class BookClassState extends State<BookClass> {
       }
 
     else if (response.statusCode== 400) {
-      if(book=="book") {
-        setState(() {
-          book = "unbook";
-          _showAlertDialog("You're already enrolled for this class.", "Did you mean to un-book?");
-        });
-      }
-      // send A request here to unbook the class
-      else if(book == "unbook") {
+
+        if(book == "unbook") {
         String url = 'https://gymmoveswebapi.azurewebsites.net/api/classes/deregister';
 
         final http.Response response = await http.post(
@@ -596,7 +629,7 @@ class BookClassState extends State<BookClass> {
           headers: <String, String>{'Content-type': 'application/json'},
           body: jsonEncode({
             "Username": name,
-            "ClassId": 3,
+            "ClassId": classID,
 
           }),
         );
