@@ -573,6 +573,14 @@ class BookClassState extends State<BookClass> {
     }
   }
 
+  /*
+   Method Name:
+    _showAlertDialog
+
+   Purpose:
+    This method will show an alert dialogue with the parameters as the dialogue text.
+   */
+
   void _showAlertDialog(String message, String message2) {
     // set up the button
     Widget okButton = FlatButton(

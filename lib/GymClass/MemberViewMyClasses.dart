@@ -9,13 +9,17 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author    |     Changes
 --------------------------------------------------------------------------------
-06/07/2020       Ayanda      |    Added Get request
+06/07/2020    |   Ayanda      |    Added Get request
 --------------------------------------------------------------------------------
-12/07/2020       Tia         |   Added View classes
+12/07/2020    |   Tia         |   Added View classes
 --------------------------------------------------------------------------------
-12/07/2020      Raeesa       |   Added class details
+12/07/2020    |  Raeesa       |   Added class details
 --------------------------------------------------------------------------------
 Functional Description:
+
+This file implements the ViewMyClassesMemberState class. It creates the UI for users
+  to be able to see all the class. It also implements the view class details.
+
 Classes in the File:
 - ViewAllClassesMember
 - ViewAllClassesMemberState
@@ -254,6 +258,13 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
     }
   }
 
+  /*
+   Method Name:
+    _showAlertDialog
+
+   Purpose:
+    This method will show an alert dialogue with the parameters as the dialogue text.
+   */
   void _showAlertDialog(String message, String message2) {
     // set up the button
     Widget okButton = FlatButton(
@@ -333,13 +344,13 @@ class ViewMyClassesMemberState extends State<ViewMyClassesMember> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => BookClass(
-                        instructor: instructorName,
-                        classN: className,
-                        classD: classDay,
-                        classT: classTime,
-                        availableSpots: classAvailableSpots,
-                        description: classDescription.toString(),
-                        id: classID
+                        instructor: allClasses[i].instructor,
+                          classN: allClasses[i].name,
+                          classD: allClasses[i].day,
+                          classT: allClasses[i].startTime,
+                          availableSpots: allClasses[i].maxCapacity - allClasses[i].currentStudents,
+                          description: allClasses[i].description.toString(),
+                          id: allClasses[i].classId
                     )),
               );
             },

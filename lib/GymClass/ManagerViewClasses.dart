@@ -1,3 +1,29 @@
+/*
+File Name
+  ManagerViewClasses.dart
+Author:
+  Danel
+Date Created
+  27/06/2020
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author    |     Changes
+--------------------------------------------------------------------------------
+06/07/2020    |   Ayanda      |    Added Get request
+--------------------------------------------------------------------------------
+12/07/2020    |   Tia         |   Added View classes
+--------------------------------------------------------------------------------
+12/07/2020    |  Raeesa       |   Added class details
+--------------------------------------------------------------------------------
+Functional Description:
+ This file implements the ManagerViewClassesState class. It creates the UI for users
+  to be able to see all the class. It also implements the view class details.
+
+Classes in the File:
+- ManagerViewClasses
+- ManagerViewClassesState
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_moves/GymClass/ManagerClassDetails.dart';
@@ -210,13 +236,13 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ManagerClassDetails(
-                          instructor: instructorName,
-                          classN: className,
-                          classD: classDay,
-                          classT: classTime,
-                          availableSpots: classAvailableSpots,
-                          description: classDescription.toString(),
-                          id: classID)));
+                          instructor: allClasses[i].instructor,
+                          classN: allClasses[i].name,
+                          classD: allClasses[i].day,
+                          classT: allClasses[i].startTime,
+                          availableSpots: allClasses[i].maxCapacity - allClasses[i].currentStudents,
+                          description: allClasses[i].description.toString(),
+                          id: allClasses[i].classId)));
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

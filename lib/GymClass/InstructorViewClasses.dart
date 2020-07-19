@@ -26,6 +26,7 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
   String instructorName = "";
   int classAvailableSpots = 0;
   String classDescription = "";
+  String cancelled = "";
   int classID = 0;
   Future<String> res;
 
@@ -59,8 +60,7 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                 height: 0.13 * media.size.height,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image:
-                      const AssetImage('assets/Banner.jpg'),
+                      image: const AssetImage('assets/Banner.jpg'),
                       fit: BoxFit.fill,
                       colorFilter: new ColorFilter.mode(
                           Colors.black.withOpacity(0.52), BlendMode.dstIn),
@@ -71,11 +71,10 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                         offset: Offset(0, 3),
                         blurRadius: 6,
                       )
-                    ])
-            ),
+                    ])),
             Transform.translate(
                 offset:
-                Offset(0.04 * media.size.width, 0.05 * media.size.height),
+                    Offset(0.04 * media.size.width, 0.05 * media.size.height),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -99,8 +98,8 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                 // By default, show a loading spinner.
                 return Center(
                     child: CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                    ));
+                  backgroundColor: Colors.white,
+                ));
               },
             ),
           )
@@ -210,13 +209,14 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => InstructorClassDetails(
-                          instructor: instructorName,
-                          classN: className,
-                          classD: classDay,
-                          classT: classTime,
-                          availableSpots: classAvailableSpots,
-                          description: classDescription.toString(),
-                          id: classID, cancel: allClasses[i].cancelled)));
+                          instructor: allClasses[i].instructor,
+                          classN: allClasses[i].name,
+                          classD: allClasses[i].day,
+                          classT: allClasses[i].startTime,
+                          availableSpots: allClasses[i].maxCapacity - allClasses[i].currentStudents,
+                          description: allClasses[i].description.toString(),
+                          id: allClasses[i].classId,
+                          cancel: allClasses[i].cancelled)));
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -368,16 +368,16 @@ class ViewResponse {
 
   ViewResponse(
       {this.classId,
-        this.gymId,
-        this.instructor,
-        this.name,
-        this.description,
-        this.day,
-        this.startTime,
-        this.endTime,
-        this.maxCapacity,
-        this.currentStudents,
-        this.cancelled});
+      this.gymId,
+      this.instructor,
+      this.name,
+      this.description,
+      this.day,
+      this.startTime,
+      this.endTime,
+      this.maxCapacity,
+      this.currentStudents,
+      this.cancelled});
 
   factory ViewResponse.fromJson(Map<String, dynamic> json) {
     return ViewResponse(

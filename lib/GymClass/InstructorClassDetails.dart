@@ -14,6 +14,8 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 24/06/2020    |    Danel       |    Stars can be added dynamically
 --------------------------------------------------------------------------------
+13/07/2020    |    Tia         |    Added View classes and cance class request
+
 
 Functional Description:
   This file implements the ClassDetailsState class. It creates the UI for users
@@ -389,9 +391,15 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
           ])
         ]));
   }
+  /*
+   Method Name:
+    cancelClass
 
+   Purpose:
+    This method will make a post request to the api and cancel the class.
+
+   */
   cancelClass() async {
-    if (cancel == "cancel") {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String name = prefs.get("username");
       getClass();
@@ -407,24 +415,29 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
         }),
       );
 
-      int stat = response.statusCode;
-
-      if (stat == 200) {
+      if (response.statusCode == 200) {
         setState(() {
-          cancelString = "uncancel";
+          if(this.widget.cancel)
+            cancelString = "Uncancel";
+          else 
+            cancelString = "Cancel";
+        });
           _showAlertDialog(
               "You've successfully cancelled this class.", "Success!");
-        });
       } else {
-        if (cancelString == "cancel") {
-          setState(() {
-            cancelString = "uncancel";
-            _showAlertDialog(response.body, "Error");
-          });
-        }
+        _showAlertDialog(
+              response.body + " " + response.statusCode.toString(), "Error!");
       }
-    }
+    
   }
+
+  /*
+   Method Name:
+    _showAlertDialog
+
+   Purpose:
+    This method will show an alert dialogue with the parameters as the dialogue text.
+   */
 
   void _showAlertDialog(String message, String message2) {
     // set up the button
@@ -465,6 +478,11 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
     classTime = this.widget.classT;
     classDay = this.widget.classD;
     classID = this.widget.id;
+
+    if (this.widget.cancel)
+      cancelString = "Uncancel";
+    else
+      cancelString = "Cancel";
   }
 
   /*

@@ -542,7 +542,13 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
     return stars;
   }
 
+  /*
+   Method Name:
+    deleteClass
 
+   Purpose:
+    This method will send a request to the api to delete a class from the database.
+   */
   _deleteClass() async {
 
 
@@ -563,6 +569,14 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
 
 
   }
+
+  /*
+   Method Name:
+    checkIfSureAboutDelete
+
+   Purpose:
+    This method will show an alert dialogues asking if the user is sure that they want to delete the class.
+   */
 
   void checkIfSureAboutDelete() {
     Widget yesButton = FlatButton(
@@ -598,6 +612,13 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
     );
   }
 
+  /*
+   Method Name:
+    _popUp
+
+   Purpose:
+    This method will show an alert dialogue with the parameters as the dialogue text.
+   */
   void _popUp(String heading, String body) {
     Widget okButton = FlatButton(
       child: Text("Ok", style: TextStyle(color: Color(0xff513369))),

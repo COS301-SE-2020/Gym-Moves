@@ -9,13 +9,16 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author    |     Changes
 --------------------------------------------------------------------------------
-06/07/2020       Ayanda      |    Added Get request
+06/07/2020    |   Ayanda      |    Added Get request
 --------------------------------------------------------------------------------
-12/07/2020       Tia         |   Added View classes
+12/07/2020    |   Tia         |   Added View classes
 --------------------------------------------------------------------------------
-12/07/2020      Raeesa       |   Added class details
+12/07/2020    |  Raeesa       |   Added class details
 --------------------------------------------------------------------------------
 Functional Description:
+This file implements the ManagerViewClassesState class. It creates the UI for users
+  to be able to see all the class. It also implements the view class details.
+
 Classes in the File:
 - ViewAllClassesMember
 - ViewAllClassesMemberState
@@ -298,13 +301,13 @@ class ViewAllClassesMemberState extends State<ViewAllClassesMember> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => BookClass(
-                          instructor: instructorName,
-                          classN: className,
-                          classD: classDay,
-                          classT: classTime,
-                          availableSpots: classAvailableSpots,
-                          description: classDescription.toString(),
-                          id: classID)));
+                          instructor: allClasses[i].Instructor,
+                          classN: allClasses[i].Name,
+                          classD: allClasses[i].Day,
+                          classT: allClasses[i].StartTime,
+                          availableSpots: allClasses[i].MaxCapacity - allClasses[i].CurrentStudents,
+                          description: allClasses[i].Description.toString(),
+                          id: allClasses[i].ClassId)));
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
