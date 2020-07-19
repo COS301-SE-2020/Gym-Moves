@@ -25,7 +25,7 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 11/07/2020    | Longji         | Added function to get a specific class
 --------------------------------------------------------------------------------
-14/07/2020    | Danel          | Instructors can cancel classes
+18/07/2020    | Danel          | Instructors can cancel classes
 --------------------------------------------------------------------------------
 15/07/2020    | Longji         | Added API call to get a specific user, class combination.
 --------------------------------------------------------------------------------
@@ -291,37 +291,53 @@ namespace GymMovesWebAPI.Controllers
             }
         }
 
-        /*
-        Method Name:
-            cancelClass
-        Purpose:
-            This function handles the api request that results in a class being cancelled and uncancelled. 
-        */
         [HttpPost("cancel")]
         public async Task<ActionResult> cancelClass(CancelClassRequest classRequest) {
             
-            GymClasses classToCancel = await classRepository.getClassById(classRequest.classId);
+            GymClasses classToChange = await classRepository.getClassById(classRequest.classId);
 
-            if(classToCancel.InstructorUsername != classRequest.username) {
+            if (classToChange == null) {
+
+                return NotFound("This class ID does not exist.");
+            }
+
+            if (classToChange.InstructorUsername != classRequest.username) {
                
                 return Unauthorized("This instructor does not teach this class.");
             }
 
+            string content = "";
+            string returnMessage = "";
+            bool oldWay = classToChange.Cancelled;
+
+            if (oldWay) {
+
+                returnMessage = "This class has been uncancelled.";
+            }
+            else {
+                content = "We are sad to say, a class you signed up for has been cancelled!\n" +
+               classToChange.Name + " that was supposed to happen on " + classToChange.Day +
+               " at " + classToChange.StartTime + ".";
+
+                returnMessage = "This class has been cancelled. Remember to uncancel it when you can.";
+            }
+
             bool changed = await classRepository.instructorCancelClass(classRequest.classId);
 
-            string content = "We are sad to say, a class you signed up for has been cancelled!\n" +
-                classToCancel.Name + " that was supposed to happen on " + classToCancel.Day +
-                "at " + classToCancel.StartTime + ".";
 
-            if (changed) {
+            if (changed && (oldWay == false)) {
                 await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Class Cancelled", content, emailReceiver);
                 
-                foreach(ClassRegister user in classToCancel.Registers) {
+                //Causes error
+                /*foreach(ClassRegister user in classToChange.Registers) {
                     
                     await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Class Cancelled", content, user.Student.Email);
-                }
+                }*/
 
-                return Ok("Class has been cancelled.");
+                return Ok(returnMessage);
+            }
+            else if(changed && (oldWay == true)) {
+                return Ok(returnMessage);
             }
             else {
                 return StatusCode(500, "We were unable to change the class on our side. Please try again later.");
