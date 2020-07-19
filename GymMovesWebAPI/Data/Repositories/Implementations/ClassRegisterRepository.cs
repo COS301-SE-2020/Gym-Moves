@@ -41,6 +41,16 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return (await context.SaveChangesAsync()) > 0;
         }
 
+        public async Task<bool> removeRegisters(ClassRegister[] registers) {
+            if (registers.Length == 0) {
+                return true;
+            }
+
+            context.Remove(registers);
+
+            return (await context.SaveChangesAsync()) > 0;
+        }
+
         public async Task<ClassRegister[]> getClassRegisters(int classId) {
             IQueryable<ClassRegister> query = context.ClassRegisters;
             query = query.Where(p => p.ClassIdForeignKey == classId);

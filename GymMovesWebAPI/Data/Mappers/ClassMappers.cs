@@ -23,7 +23,10 @@ List of Classes:
  */
 
 using GymMovesWebAPI.Data.Models.DatabaseModels;
+using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Data.Models.ResponseModels;
+using Microsoft.CodeAnalysis.Differencing;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace GymMovesWebAPI.Data.Mappers {
     public static class ClassMappers {
@@ -81,6 +84,34 @@ namespace GymMovesWebAPI.Data.Mappers {
             }
 
             return targets;
+        }
+
+        public static void editRequestToGymClassModel(EditGymClassRequest source, GymClasses target) {
+            target.ClassId = source.ClassId;
+            target.InstructorUsername = source.InstructorUsername;
+            target.Name = source.Name;
+            target.Description = source.Description;
+            target.Day = source.Day;
+            target.StartTime = source.StartTime;
+            target.EndTime = source.EndTime;
+            target.MaxCapacity = source.MaxCapacity;
+            target.Cancelled = source.Cancelled;
+        }
+
+        public static EditGymClassRequest classToClassRequestModel(GymClasses source) {
+            EditGymClassRequest target = new EditGymClassRequest();
+
+            target.ClassId = source.ClassId;
+            target.InstructorUsername = source.InstructorUsername;
+            target.Name = source.Name;
+            target.Description = source.Description;
+            target.Day = source.Day;
+            target.StartTime = source.StartTime;
+            target.EndTime = source.EndTime;
+            target.MaxCapacity = source.MaxCapacity;
+            target.Cancelled = source.Cancelled;
+
+            return target;
         }
     }
 }

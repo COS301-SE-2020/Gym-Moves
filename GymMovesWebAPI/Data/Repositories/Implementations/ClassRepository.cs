@@ -74,6 +74,14 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<GymClasses> editClass(GymClasses edit) {
+            context.Update(edit);
+            if (await context.SaveChangesAsync() > 0) {
+                return context.Classes.Where(p => p.ClassId == edit.ClassId).FirstOrDefault();
+            } else {
+                return null;
+            }
+        } 
 
         public async Task<bool> instructorCancelClass(int classId) {
             var classToChange = context.Classes.First(a => a.ClassId == classId);

@@ -29,6 +29,10 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 15/07/2020    | Longji         | Added API call to get a specific user, class combination.
 --------------------------------------------------------------------------------
+18/07/2020    | Longji         | Added API call to edit a class.
+              |                | Fixed mistakes in the remove classes api function.
+--------------------------------------------------------------------------------
+
 
 Functional Description:
     - The purpose of the classes contained is to implement the api interface that the
@@ -41,6 +45,7 @@ List of Classes:
     - ClassesController
 */
 
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Mappers;
@@ -352,27 +357,29 @@ namespace GymMovesWebAPI.Controllers
             Users user = await userRepository.getUser(removeClass.Username);
 
             if (user == null) {
-                return StatusCode(StatusCodes.Status404NotFound, "The user requesting for the class to be added could not be found!");
+                return StatusCode(StatusCodes.Status404NotFound, "The user requesting for the class to be removed could not be found!");
             }
 
             if (user.UserType == UserTypes.Manager) {
-                if (user.GymIdForeignKey == removeClass.ClassId) {
-                    GymClasses targetClass = await classRepository.getClassById(removeClass.ClassId);
-                    if (targetClass != null) {
-                        if (await classRepository.removeClass(targetClass)) {
-                            return Ok(true);
-                        } else {
-                            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attempting to delete the class from the database!");
-                        }
-                    } else {
-                        return StatusCode(StatusCodes.Status404NotFound, "The class being removed, does not exist!");
-                    }
-                } else {
-                    return StatusCode(StatusCodes.Status403Forbidden, "Managers can only add new classes for the gym they're assigned to!");
+                GymClasses targetClass = await classRepository.getClassById(removeClass.ClassId);
+                if (targetClass == null) {
+                    return StatusCode(StatusCodes.Status404NotFound, "The class being removed was not found!");
                 }
-            } else {
-                return StatusCode(StatusCodes.Status401Unauthorized, "Only managers can add new classes!");
+
+                if (targetClass.GymIdForeignKey != user.GymIdForeignKey) {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "Managers can only remove class for their own gym!");
+                }
+
+                /* Multithread remove and notifying users */
+
+                if (await classRepository.removeClass(targetClass) == true) {
+                    return Ok(true);
+                } else {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong removing the class from the database!");
+                }
             }
+   
+            return StatusCode(StatusCodes.Status401Unauthorized, "Only managers can remove classes!");
         }
 
         [HttpGet("class")]
@@ -402,6 +409,35 @@ namespace GymMovesWebAPI.Controllers
                 return Ok(true);
             } else {
                 return Ok(false);
+            }
+        }
+
+        [HttpPost("edit")]
+        public async Task<ActionResult<EditGymClassRequest>> editClass(EditGymClassRequest edit) {
+            Users user = await userRepository.getUser(edit.EditorUsername);
+
+            if (user == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "User making the edit to the class was not found!");
+            }
+
+            if (user.UserType != UserTypes.Manager) {
+                return StatusCode(StatusCodes.Status401Unauthorized, "User making the edit is not a manager!");
+            }
+
+            GymClasses target = await classRepository.getClassById(edit.ClassId);
+
+            if (target == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "The class you wish to edit does not exist!");
+            }
+
+            ClassMappers.editRequestToGymClassModel(edit, target);
+
+            target = await classRepository.editClass(target);
+
+            if (target != null) {
+                return ClassMappers.classToClassRequestModel(target);
+            } else {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong trying to update the class!");
             }
         }
     }
