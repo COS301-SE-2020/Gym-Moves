@@ -31,21 +31,25 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
+
 /*
 Class Name:
-  BookClass
+  MemberClassDetails
 
 Purpose:
   This class is used to create the BookClassState that builds the UI for
   viewing classes. It allows for widgets to be dynamically added as well.
 
  */
-class BookClass extends StatefulWidget {
+class MemberClassDetails extends StatefulWidget {
   final String instructor;
   final String classN;
   final String classD;
@@ -54,7 +58,7 @@ class BookClass extends StatefulWidget {
   final String description;
   final int id;
 
-  BookClass(
+  MemberClassDetails(
       {Key key,
       this.instructor = "",
       this.classN = "",
@@ -66,24 +70,25 @@ class BookClass extends StatefulWidget {
       : super(key: key);
 
   @override
-  BookClassState createState() => BookClassState();
+  MemberClassDetailsState createState() => MemberClassDetailsState();
 }
 
 /*
 Class Name:
-  BookClassState
+  MemberClassDetailsState
 
 Purpose:
   This class is used to create the UI for users to see the classes. It also
   handles the request to the API to get the details of a class to display.
  */
 
-class BookClassState extends State<BookClass> {
-  BookClassState({Key key});
+class MemberClassDetailsState extends State<MemberClassDetails> {
+  MemberClassDetailsState({Key key});
 
   @override
   void initState() {
     getBookClass();
+    _getUserClassStatus();
     super.initState();
   }
 
@@ -94,7 +99,7 @@ class BookClassState extends State<BookClass> {
   String classAvailableSpots = "";
   String classDescription = "";
   int classID;
-  String book = "";
+  String book = "Loading...";
 
   /*
    Method Name:
@@ -107,8 +112,6 @@ class BookClassState extends State<BookClass> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-
-    getBookClass();
 
     return Scaffold(
         backgroundColor: const Color(0xff513369),
@@ -178,32 +181,15 @@ class BookClassState extends State<BookClass> {
                                   ]))))),
               Transform.translate(
                   offset:
-                      Offset(0.7 * media.size.width, 0.4 * media.size.height),
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    color: const Color(0xffffffff).withOpacity(0.3),
-                    onPressed: () {
-                      sendValuesToDatabase();
-                    },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        book,
-                        style: TextStyle(
-                            fontSize: 0.05 * media.size.width,
-                            fontFamily: 'Roboto'),
-                      ),
-                    ),
-                  )),
-              Transform.translate(
-                  offset:
-                  Offset(0.04 * media.size.width, 0.02 * media.size.height),
+                      Offset(0.04 * media.size.width, 0.02 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MemberViewMyClasses()));
                       },
                       child: SvgPicture.string(backArrow,
                           allowDrawingOutsideViewBox: true,
@@ -216,7 +202,32 @@ class BookClassState extends State<BookClass> {
                       height: 0.31 * media.size.height * 0.7,
                       allowDrawingOutsideViewBox: true))
             ]),
-           /* Container(
+            Container(
+              alignment: Alignment.centerRight,
+              padding:
+                  EdgeInsets.fromLTRB(0.0, 0.0, 0.02 * media.size.width, 0.0),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                color: const Color(0xffffffff).withOpacity(0.2),
+                onPressed: () {
+                  sendValuesToDatabase();
+                },
+                textColor: Colors.white,
+                padding: const EdgeInsets.all(0.0),
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    book,
+                    style: TextStyle(
+                        fontSize: 0.035 * media.size.width,
+                        fontFamily: 'Roboto',
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+            /* Container(
               padding:
                   EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
               child: Text(
@@ -236,13 +247,13 @@ class BookClassState extends State<BookClass> {
                 child: Row(children: getStarsForClass(media))),*/
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
+                  0.05 * media.size.width, 0.0, 0.0, 0.0),
               child: Text(
                 'Instructor: ',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -256,12 +267,13 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
-            ),/*
+            ),
+            /*
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
@@ -288,7 +300,7 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -302,7 +314,7 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -316,7 +328,7 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -330,7 +342,7 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -344,7 +356,7 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -358,7 +370,7 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -372,21 +384,21 @@ class BookClassState extends State<BookClass> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(
-                0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.05*media.size.height),
+              padding: EdgeInsets.fromLTRB(0.1 * media.size.width,
+                  0.01 * media.size.height, 0.0, 0.05 * media.size.height),
               child: Text(
                 classDescription,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -513,14 +525,12 @@ class BookClassState extends State<BookClass> {
     return stars;
   }
 
-  /*makes a api request to book or cancel a specific class for user*/
   sendValuesToDatabase() async {
     /*Get user name from local storage */
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.get("username");
 
-    if (book == "Book") {
-
+    if (book == "Book Class") {
       String url =
           'https://gymmoveswebapi.azurewebsites.net/api/classes/signup';
       final http.Response response = await http.post(
@@ -532,23 +542,18 @@ class BookClassState extends State<BookClass> {
         }),
       );
 
-      int stat = response.statusCode;
-
-      if (stat == 200) {
+      if (response.statusCode == 200) {
         setState(() {
-          book = "Unbook";
+          book = "Unbook Class";
+          classAvailableSpots = (int.parse(classAvailableSpots) - 1).toString();
           _showAlertDialog(
-              "You've successfully enrolled for this class.", "Success!");
+              "Success!", "You've successfully enrolled for this class.");
         });
-      } else if (response.statusCode == 404) {
-        _showAlertDialog("You're not a registered member", "Unsuccessful!");
-      } else if (response.statusCode == 400) {
-        book = "Unbook";
-        _showAlertDialog("You're already enrolled for this class.",
-            "Did you mean to un-book?");
+
+      } else {
+        _showAlertDialog("Oh no!", response.body);
       }
-    }
-    else if (book == "Unbook") {
+    } else if (book == "Unbook Class") {
       String url =
           'https://gymmoveswebapi.azurewebsites.net/api/classes/deregister';
 
@@ -557,31 +562,25 @@ class BookClassState extends State<BookClass> {
         headers: <String, String>{'Content-type': 'application/json'},
         body: jsonEncode({
           "Username": username,
-          "ClassId": 3,
+          "ClassId": classID,
         }),
       );
 
-      int stat = response.statusCode;
-
-      if (stat == 200) {
+      if (response.statusCode == 200) {
         setState(() {
-          book = "Book";
+          book = "Book Class";
+          classAvailableSpots = (int.parse(classAvailableSpots) + 1).toString();
           _showAlertDialog(
-              "You've successfully un-enrolled for this class", "Success!");
+              "Success!", "You've successfully un-enrolled for this class");
         });
+
+      } else {
+        _showAlertDialog("Oh no!", response.body);
       }
     }
   }
 
-  /*
-   Method Name:
-    _showAlertDialog
-
-   Purpose:
-    This method will show an alert dialogue with the parameters as the dialogue text.
-   */
-
-  void _showAlertDialog(String message, String message2) {
+  void _showAlertDialog(String heading, String body) {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
@@ -591,8 +590,8 @@ class BookClassState extends State<BookClass> {
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text(message2),
-      content: Text(message),
+      title: Text(heading),
+      content: Text(body),
       actions: [
         okButton,
       ],
@@ -604,6 +603,43 @@ class BookClassState extends State<BookClass> {
         return alert;
       },
     );
+  }
+
+  /*
+   Method Name:
+    _getUserClassStatus
+
+   Purpose:
+    This function checks to see if the user is signed up for the class, and sets
+    their state accordingly, so see if they should be able to book or unbook for
+    a class.
+   */
+  _getUserClassStatus() async {
+    classID = this.widget.id;
+    String classes = classID.toString();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.get("username");
+
+    String user = "username=" + username;
+    String userClass = "&classid=" + classes;
+    String url =
+        'https://gymmoveswebapi.azurewebsites.net/api/classes/userclass?' +
+            user +
+            userClass;
+
+    Response response = await get(url);
+
+    if (response.statusCode == 200 && response.body == "true") {
+      setState(() {
+        book = "Unbook Class";
+      });
+    } else if (response.statusCode == 200) {
+      setState(() {
+        book = "Book Class";
+      });
+    } else {
+      _showAlertDialog("Oh no!", response.body);
+    }
   }
 }
 

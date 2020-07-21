@@ -280,7 +280,6 @@ class LogInState extends State<LogIn> {
         ),
         Center(
             child: SizedBox(
-                width: 0.25 * media.size.width,
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)
@@ -296,7 +295,7 @@ class LogInState extends State<LogIn> {
                     child: Text(
                       'Submit',
                       style: TextStyle(
-                          fontSize: 0.05 * media.size.width,
+                          fontSize: 0.04 * media.size.width,
                           fontFamily: 'Roboto'
                               ''),
                     )

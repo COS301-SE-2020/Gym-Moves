@@ -382,7 +382,6 @@ class SignUpState extends State<SignUp> {
             ])),
         Center(
             child: SizedBox(
-                width: 0.25 * media.size.width,
                 child: FlatButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
@@ -396,7 +395,7 @@ class SignUpState extends State<SignUp> {
                         padding: const EdgeInsets.all(10.0),
                         child: Text('Submit',
                             style: TextStyle(
-                                fontSize: 0.05 * media.size.width,
+                                fontSize: 0.04 * media.size.width,
                                 fontFamily: 'Roboto')))))),
         SizedBox(height: 0.06 * media.size.height),
         Center(

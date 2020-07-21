@@ -264,7 +264,7 @@ class ChangePasswordState extends State<ChangePassword> {
                     child: Text(
                       'Change',
                       style: TextStyle(
-                          fontSize: 0.05 * media.size.width,
+                          fontSize: 0.04 * media.size.width,
                           fontFamily: 'Roboto'),
                     ),
                   ),

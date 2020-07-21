@@ -14,8 +14,6 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 24/06/2020    |    Danel       |    Stars can be added dynamically
 --------------------------------------------------------------------------------
-13/07/2020    |    Tia         |    Added View classes and cance class request
-
 
 Functional Description:
   This file implements the ClassDetailsState class. It creates the UI for users
@@ -32,6 +30,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:gym_moves/GymClass/InstructorViewClasses.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -82,6 +81,7 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
   @override
   void initState() {
     super.initState();
+    getClass();
   }
 
   String instructorName = '';
@@ -92,7 +92,7 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
   String classDescription = "";
   int classID;
   bool cancel;
-  static String cancelString = "cancel";
+  static String cancelString = "Loading...";
 
   /*
    Method Name:
@@ -105,303 +105,357 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    getClass();
-
     return Scaffold(
         backgroundColor: const Color(0xff513369),
-        body: ListView(children: <Widget>[
-          Column(children: <Widget>[
-            Stack(children: <Widget>[
-              Transform.translate(
-                  offset: Offset(0.0, -0.033 * media.size.height),
-                  child: Container(
-                    width: media.size.width,
-                    height: media.size.height * 0.4,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              const AssetImage('assets/RightSidePoolHalf.png'),
-                          fit: BoxFit.fill,
-                          colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(1.0), BlendMode.dstIn),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x46000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          ),
-                        ]),
-                  )),
-              Transform.translate(
-                  offset: Offset(0.0, -0.033 * media.size.height),
-                  child: SizedBox(
-                      width: media.size.width,
-                      height: media.size.height * 0.4,
-                      child: Center(
-                          child: Container(
-                              width: 0.55 * media.size.width,
-                              height: 0.31 * media.size.height,
-                              child: Center(
-                                  child: AutoSizeText(
-                                className,
-                                style: TextStyle(
-                                    fontFamily: 'FreestyleScript',
-                                    fontSize: 0.15 * media.size.width,
-                                    color: const Color(0xff391f57),
-                                    shadows: [
-                                      Shadow(
-                                        color: const Color(0x38000000),
+        body: ListView(
+            children: <Widget>[
+              Column(
+                  children: <Widget>[
+                    Stack(
+                        children: <Widget>[
+                          Transform.translate(
+                              offset: Offset(0.0, -0.033 * media.size.height),
+                              child: Container(
+                                width: media.size.width,
+                                height: media.size.height * 0.4,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                      const AssetImage(
+                                          'assets/RightSidePoolHalf.png'
+                                      ),
+                                      fit: BoxFit.fill,
+                                      colorFilter: new ColorFilter.mode(
+                                          Colors.black.withOpacity(1.0),
+                                          BlendMode.dstIn
+                                      ),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0x46000000),
                                         offset: Offset(0, 3),
                                         blurRadius: 6,
                                       )
-                                    ]),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                              )),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(110.5, 108.0)),
-                                  color: const Color(0xffffffff),
-                                  border: Border.all(
-                                      width: 1.0,
-                                      color: const Color(0xff707070)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x8f000000),
-                                      offset: Offset(0, 3),
-                                      blurRadius: 6,
-                                    )
-                                  ]))))),
-              Transform.translate(
-                  offset: Offset(290, 256),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    color: const Color(0xffffffff).withOpacity(0.3),
-                    onPressed: () {
-                      cancelClass();
-                    },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        cancelString,
-                        style: TextStyle(
-                            fontSize: 0.05 * media.size.width,
-                            fontFamily: 'Roboto'),
+                                    ]
+                                )
+                              )
+                          ),
+                          Transform.translate(
+                              offset: Offset(0.0, -0.033 * media.size.height),
+                              child: SizedBox(
+                                  width: media.size.width,
+                                  height: media.size.height * 0.4,
+                                  child: Center(
+                                      child: Container(
+                                          width: 0.55 * media.size.width,
+                                          height: 0.31 * media.size.height,
+                                          child: Center(
+                                              child: AutoSizeText(
+                                                className,
+                                                style: TextStyle(
+                                                    fontFamily: 'FreestyleScript',
+                                                    fontSize: 0.15 * media.size.width,
+                                                    color: const Color(0xff391f57),
+                                                    shadows: [
+                                                      Shadow(
+                                                        color: const Color(0x38000000),
+                                                        offset: Offset(0, 3),
+                                                        blurRadius: 6,
+                                                      )
+                                                    ]
+                                                ),
+                                                textAlign: TextAlign.center,
+                                                maxLines: 3,
+                                              )
+                                          ),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.elliptical(110.5, 108.0)
+                                              ),
+                                              color: const Color(0xffffffff),
+                                              border: Border.all(
+                                                  width: 1.0,
+                                                  color: const Color(0xff707070)
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color(0x8f000000),
+                                                  offset: Offset(0, 3),
+                                                  blurRadius: 6,
+                                                )
+                                              ]
+                                          )
+                                      )
+                                  )
+                              )
+                          ),
+                          Transform.translate(
+                              offset:
+                              Offset(0.05 * media.size.width, 0.02 *
+                                  media.size.height),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => InstructorViewClasses()));
+                                    },
+                                  child: SvgPicture.string(backArrow,
+                                      allowDrawingOutsideViewBox: true,
+                                      width: 0.06 * media.size.width
+                                  )
+                              )
+                          ),
+                          Transform.translate(
+                              offset:
+                              Offset(0.33 * media.size.width, 0.06 *
+                                  media.size.height),
+                              child: SvgPicture.string(
+                                  dumbbell,
+                                  width: 0.55 * media.size.width * 0.7,
+                                  height: 0.31 * media.size.height * 0.7,
+                                  allowDrawingOutsideViewBox: true
+                              )
+                          )
+                        ]
+                    ),
+                    Container(
+                      padding:
+                      EdgeInsets.fromLTRB(0.0, 0.0, 0.02 * media.size.width, 0.0),
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)
+                        ),
+                        color: const Color(0xffffffff).withOpacity(0.2),
+                        onPressed: () {
+                          cancelClass();
+                        },
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(0.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            cancelString,
+                            style: TextStyle(
+                                fontSize: 0.035 * media.size.width,
+                                fontFamily: 'Roboto',
+                                color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
-                  )),
-              Transform.translate(
-                  offset:
-                      Offset(0.05 * media.size.width, 0.02 * media.size.height),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: SvgPicture.string(backArrow,
-                          allowDrawingOutsideViewBox: true,
-                          width: 0.06 * media.size.width))),
-              Transform.translate(
-                  offset:
-                      Offset(0.33 * media.size.width, 0.06 * media.size.height),
-                  child: SvgPicture.string(dumbbell,
-                      width: 0.55 * media.size.width * 0.7,
-                      height: 0.31 * media.size.height * 0.7,
-                      allowDrawingOutsideViewBox: true))
-            ]),
-            Container(
-              padding:
-                  EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
-              child: Text(
-                'Class Rating: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-                padding: EdgeInsets.fromLTRB(
-                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-                child: Row(children: getStarsForClass(media))),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Instructor: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-              child: Text(
-                instructorName,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Instructor Rating: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-                padding: EdgeInsets.fromLTRB(
-                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-                child: Row(children: getStarsForInstructor(media))),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Day: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-              child: Text(
+                    /*Container(
+                      padding:
+                      EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
+                      child: Text(
+                        'Class Rating: ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white70,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(
+                            0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
+                        ),
+                        child: Row(children: getStarsForClass(media))
+                    ),*/
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.05 * media.size.width, 0.0, 0.0, 0.0),
+                      child: Text(
+                        'Instructor: ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.1 * media.size.width, 0.01 * media.size.height,
+                          0.0, 0.0
+                      ),
+                      child: Text(
+                        instructorName,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    /*Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.05 * media.size.width, 0.05 * media.size.height,
+                          0.0, 0.0
+                      ),
+                      child: Text(
+                        'Instructor Rating: ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white70,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(
+                            0.1 * media.size.width, 0.01 * media.size.height,
+                            0.0, 0.0
+                        ),
+                        child: Row(children: getStarsForInstructor(media))
+                    ),*/
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.05 * media.size.width, 0.05 * media.size.height,
+                          0.0, 0.0),
+                      child: Text(
+                        'Day: ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.1 * media.size.width, 0.01 * media.size.height,
+                          0.0, 0.0
+                      ),
+                      child: Text(
                 classDay,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Time: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-              child: Text(
-                classTime,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Available Spots: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-              child: Text(
-                classAvailableSpots,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Description: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-              child: Text(
-                classDescription,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-          ])
-        ]));
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.05 * media.size.width, 0.05 * media.size.height,
+                          0.0, 0.0),
+                      child: Text(
+                        'Time: ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.1 * media.size.width, 0.01 * media.size.height,
+                          0.0, 0.0
+                      ),
+                      child: Text(
+                        classTime,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.05 * media.size.width, 0.05 * media.size.height,
+                          0.0, 0.0),
+                      child: Text(
+                        'Available Spots: ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.1 * media.size.width, 0.01 * media.size.height,
+                          0.0, 0.0),
+                      child: Text(
+                        classAvailableSpots,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.05 * media.size.width, 0.05 * media.size.height,
+                          0.0, 0.0),
+                      child: Text(
+                        'Description: ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.1 * media.size.width, 0.01 * media.size.height,
+                          0.0, 0.0
+                      ),
+                      child: Text(
+                        classDescription,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 0.04 * media.size.width,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                  ]
+              )
+            ]
+        )
+    );
   }
-  /*
-   Method Name:
-    cancelClass
 
-   Purpose:
-    This method will make a post request to the api and cancel the class.
-
-   */
   cancelClass() async {
+
+    if (cancelString == "Cancel Class") {
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String name = prefs.get("username");
+      String username = prefs.get("username");
       getClass();
 
       String url =
@@ -410,36 +464,55 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
         url,
         headers: <String, String>{'Content-type': 'application/json'},
         body: jsonEncode({
-          "Username": name,
+          "Username": username,
+          "ClassId": classID,
+        }),
+      );
+
+
+      if (response.statusCode == 200) {
+        setState(() {
+          cancelString = "Uncancel Class";
+          _showAlertDialog(
+              "Success!", response.body);
+          cancel = !cancel;
+        });
+      } else {
+         _showAlertDialog("Error", response.body);
+        }
+      }
+    else if (cancelString == "Uncancel Class") {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String username = prefs.get("username");
+      getClass();
+
+      String url =
+          'https://gymmoveswebapi.azurewebsites.net/api/classes/cancel';
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{'Content-type': 'application/json'},
+        body: jsonEncode({
+          "Username": username,
           "ClassId": classID,
         }),
       );
 
       if (response.statusCode == 200) {
         setState(() {
-          if(this.widget.cancel)
-            cancelString = "Uncancel";
-          else 
-            cancelString = "Cancel";
-        });
+          cancelString = "Cancel Class";
+          cancel = !cancel;
           _showAlertDialog(
-              "You've successfully cancelled this class.", "Success!");
+              "Success!", response.body);
+        });
       } else {
-        _showAlertDialog(
-              response.body + " " + response.statusCode.toString(), "Error!");
+        _showAlertDialog("Error", response.body);
       }
-    
+    }
   }
 
-  /*
-   Method Name:
-    _showAlertDialog
 
-   Purpose:
-    This method will show an alert dialogue with the parameters as the dialogue text.
-   */
-
-  void _showAlertDialog(String message, String message2) {
+  void _showAlertDialog(String heading, String body) {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
@@ -449,8 +522,8 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text(message2),
-      content: Text(message),
+      title: Text(heading),
+      content: Text(body),
       actions: [
         okButton,
       ],
@@ -478,11 +551,14 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
     classTime = this.widget.classT;
     classDay = this.widget.classD;
     classID = this.widget.id;
+    cancel = this.widget.cancel;
 
-    if (this.widget.cancel)
-      cancelString = "Uncancel";
-    else
-      cancelString = "Cancel";
+    if(this.widget.cancel){
+      cancelString = "Uncancel Class";
+    }
+    else{
+      cancelString = "Cancel Class";
+    }
   }
 
   /*
@@ -587,3 +663,4 @@ const String fullStar =
     '<svg viewBox="323.2 330.6 13.8 11.4" ><path transform="translate(320.18, 327.59)" d="M 9.920000076293945 12.19414806365967 L 14.19656085968018 14.44000053405762 L 13.06168079376221 10.207200050354 L 16.84000015258789 7.35924243927002 L 11.86452007293701 6.991957664489746 L 9.920000076293945 3 L 7.975480079650879 6.991957664489746 L 3 7.35924243927002 L 6.778319835662842 10.207200050354 L 5.643439769744873 14.44000053405762 L 9.920000076293945 12.19414806365967 Z" fill="#ffff50" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 const String halfStar =
     '<svg viewBox="279.2 324.6 13.8 11.4" ><path transform="translate(276.18, 321.59)" d="M 16.84000015258789 7.35924243927002 L 11.86452007293701 6.985937118530273 L 9.920000076293945 3 L 7.975480079650879 6.991957664489746 L 3 7.35924243927002 L 6.778319835662842 10.207200050354 L 5.643439769744873 14.44000053405762 L 9.920000076293945 12.19414806365967 L 14.19656085968018 14.44000053405762 L 13.06860065460205 10.207200050354 L 16.84000015258789 7.35924243927002 Z M 9.920000076293945 11.06821155548096 L 9.920000076293945 5.468631744384766 L 11.10332012176514 7.90113639831543 L 14.13428020477295 8.129936218261719 L 11.83684062957764 9.863999366760254 L 12.52884006500244 12.44101047515869 L 9.920000076293945 11.06821155548096 Z" fill="#ffff50" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+

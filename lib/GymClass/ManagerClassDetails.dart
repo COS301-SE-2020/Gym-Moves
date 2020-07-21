@@ -56,6 +56,7 @@ class ManagerClassDetails extends StatefulWidget {
   final int availableSpots;
   final String description;
   final int id;
+  final bool cancelled;
 
   ManagerClassDetails(
       {Key key,
@@ -65,7 +66,8 @@ class ManagerClassDetails extends StatefulWidget {
       this.classT = "",
       this.availableSpots = 0,
       this.description = "",
-      this.id = 0})
+      this.id = 0,
+      this.cancelled = false})
       : super(key: key);
 
   @override
@@ -97,7 +99,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
   String classAvailableSpots = "";
   String classDescription = "";
   int classID = -1;
-  String book = "";
+  bool cancelled = false;
 
   /*
    Method Name:
@@ -246,6 +248,34 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 ),
               )
             ]),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.02 * media.size.height, 0.0, 0.0),
+              child: Text(
+                'Status: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
+              child: Text(
+                cancelled ? "Cancelled" : "Not Cancelled",
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 0.04 * media.size.width,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
             /* Container(
               padding:
                   EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
@@ -266,7 +296,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 child: Row(children: getStarsForClass(media))),*/
             Container(
               padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.02 * media.size.height, 0.0, 0.0),
+                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Instructor: ',
                 style: TextStyle(
@@ -445,6 +475,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
     classTime = this.widget.classT;
     classDay = this.widget.classD;
     classID = this.widget.id;
+    cancelled = this.widget.cancelled;
   }
 
   /*
@@ -542,13 +573,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
     return stars;
   }
 
-  /*
-   Method Name:
-    deleteClass
 
-   Purpose:
-    This method will send a request to the api to delete a class from the database.
-   */
   _deleteClass() async {
 
 
@@ -569,14 +594,6 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
 
 
   }
-
-  /*
-   Method Name:
-    checkIfSureAboutDelete
-
-   Purpose:
-    This method will show an alert dialogues asking if the user is sure that they want to delete the class.
-   */
 
   void checkIfSureAboutDelete() {
     Widget yesButton = FlatButton(
@@ -612,13 +629,6 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
     );
   }
 
-  /*
-   Method Name:
-    _popUp
-
-   Purpose:
-    This method will show an alert dialogue with the parameters as the dialogue text.
-   */
   void _popUp(String heading, String body) {
     Widget okButton = FlatButton(
       child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
