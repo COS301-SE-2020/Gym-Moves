@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "569296490118",
+    "firebase_url": "https://finalgymmoves.firebaseio.com",
+    "project_id": "finalgymmoves",
+    "storage_bucket": "finalgymmoves.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569296490118:android:6ad9f8e233ed8e16134b07",
+        "android_client_info": {
+          "package_name": "com.example.gymmoves"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569296490118-ovtbh9v77tgpaak6k5qivmoph3dq9vks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2O9Rh7RHLrHHmyBTcffRAhy4z5epNYF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569296490118-ovtbh9v77tgpaak6k5qivmoph3dq9vks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
