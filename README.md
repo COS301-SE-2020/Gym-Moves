@@ -23,26 +23,26 @@ Link to google drive folder with video: [Demo 2 Video](https://drive.google.com/
 
 #### Version 1
 View only link on Overleaf: [SRS_V1 Overleaf](https://www.overleaf.com/read/chgypmxyntsm) <br/>
-Link to folder with pdf: [SRS_V1 PDF](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+Link to drive folder with pdf: [SRS_V1 PDF](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
 
 #### Version 2
 
 View only link on Overleaf: [SRS_V2 Overleaf](https://www.overleaf.com/read/pccntnjzxgyf)<br/>
-Link to folder with pdf: [SRS_V2 PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
+Link to drive folder with pdf: [SRS_V2 PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
 
 <br/>
 
 ### User Manual Document
 
 View only link on overleaf: [User Manual Overleaf](https://www.overleaf.com/read/szdbsjkrbxdx) <br/>
-Link to folder with User Manual document as a pdf: [User Manual PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
+Link to drive folder with pdf: [User Manual PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
 
 <br/>
 
 ### Coding Standards Document
 
-View only link to Coding Standards document on overleaf: [Coding Standards Overleaf](https://www.overleaf.com/read/chssqmjbrmmx)<br/>
-Link to folder with Coding Standards document as a pdf: [Coding Standards PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
+View only link on overleaf: [Coding Standards Overleaf](https://www.overleaf.com/read/chssqmjbrmmx)<br/>
+Link to drive folder with pdf: [Coding Standards PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
 
 
 
