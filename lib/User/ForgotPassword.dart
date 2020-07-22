@@ -17,6 +17,9 @@ Update History:
  Danel              | 30/06/2020        | Fixed hard coded values and added
                                         | functions
 --------------------------------------------------------------------------------
+ Danel              | 15/07/2020        | Added hashing
+--------------------------------------------------------------------------------
+
 
 Functional Description:
   This file contains the Forget password functionality, which enables a user to
@@ -36,6 +39,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:crypto/crypto.dart';
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({
@@ -57,9 +61,9 @@ class ForgotPasswordState extends State<ForgotPassword> {
   String password = "";
   String code = "";
   String username = "";
+  bool hidePassword = true;
 
-  /*Url of API*/
-  String url = "https://gymmoveswebapi.azurewebsites.net/api/";
+  String url = "https://gymmoveswebapi.azurewebsites.net/api/user/";
 
   @override
   Widget build(BuildContext context) {
@@ -108,11 +112,10 @@ class ForgotPasswordState extends State<ForgotPassword> {
             padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: true,
+                obscureText: hidePassword,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
-//                maxLines: 9,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -122,17 +125,21 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderRadius: BorderRadius.circular(19.0))
+                ),
                 onChanged: (value) {
                   setState(() {
                     password = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+        color: Colors.white
+    );
 
     final codeField = Material(
         shadowColor: Colors.black,
@@ -143,11 +150,9 @@ class ForgotPasswordState extends State<ForgotPassword> {
             padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: true,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
-//                maxLines: 9,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -183,7 +188,8 @@ class ForgotPasswordState extends State<ForgotPassword> {
                           image: const AssetImage('assets/Banner.jpg'),
                           fit: BoxFit.fill,
                           colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(0.52), BlendMode.dstIn),
+                              Colors.black.withOpacity(0.52), BlendMode.dstIn
+                          ),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -191,7 +197,9 @@ class ForgotPasswordState extends State<ForgotPassword> {
                             offset: Offset(0, 3),
                             blurRadius: 6,
                           )
-                        ]))),
+                        ])
+                )
+            ),
             Container(
               width: media.size.width,
               child: Text(
@@ -213,11 +221,15 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     },
                     child: SvgPicture.string(backArrow,
                         allowDrawingOutsideViewBox: true,
-                        width: 0.06 * media.size.width)))
+                        width: 0.06 * media.size.width)
+                )
+            )
           ]),
           Container(
+            width: media.size.width*0.95,
             child: Text(
-              'We will send a code to your email, please \n enter it in order to reset your password.',
+              'We will send a code to your email, please enter it in order to '
+                  'reset your password.',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 0.045 * media.size.width,
@@ -284,13 +296,21 @@ class ForgotPasswordState extends State<ForgotPassword> {
                   passwordField,
                   Transform.translate(
                       offset: Offset(0.7 * 0.85 * media.size.width,
-                          0.08 * 0.3 * media.size.height),
-                      child: SvgPicture.string(
-                        lock,
-                        width: media.size.width * 0.04,
-                        color: Colors.black45,
-                        allowDrawingOutsideViewBox: true,
-                      ))
+                          0.08 * 0.3 * media.size.height
+                      ),
+                      child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              hidePassword = !hidePassword;
+                            });
+                          },
+                          child: Icon(
+                            hidePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
+                          ))
+                  )
                 ]),
                 SizedBox(height: 0.03 * media.size.height),
                 Center(
@@ -298,7 +318,8 @@ class ForgotPasswordState extends State<ForgotPassword> {
                         width: 0.38 * media.size.width,
                         child: FlatButton(
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
+                              borderRadius: BorderRadius.circular(10.0)
+                          ),
                           color: const Color(0xffffffff).withOpacity(0.3),
                           onPressed: () {
                             forgotPassword();
@@ -311,43 +332,50 @@ class ForgotPasswordState extends State<ForgotPassword> {
                               'Change password',
                               style: TextStyle(
                                   fontSize: 0.04 * media.size.width,
-                                  fontFamily: 'Roboto'),
+                                  fontFamily: 'Roboto'
+                              ),
                             ),
                           ),
-                        ))),
+                        )
+                    )
+                ),
               ],
             ),
           )
-        ]));
-  }
-
-  getCode() async {
-    final http.Response response = await http.post(
-      url + "getcode",
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({'username': username}),
+        ])
     );
   }
 
+  getCode() async {
+    final http.Response response = await http.get(url + "getCode?username=" +
+        username);
+
+    if(response.statusCode != 200){
+      _errorDialogue(response.body);
+    }
+    else{
+      _successDialogue("Code sent to your email successfully.");
+    }
+  }
+
   forgotPassword() async {
+
+    var bytes = utf8.encode(password);
+    var hashPassword = sha256.convert(bytes);
+
     final http.Response response = await http.post(
-      url + "forgotpassword",
+      url + "forgotPassword",
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(
-          {'username': username, 'code': code, 'password': password}),
+          {'username': username, 'code': code, 'password': hashPassword.toString()}),
     );
 
-    ForgotPasswordMessage message =
-        ForgotPasswordMessage.fromJson(json.decode(response.body));
-
     if (response.statusCode == 200) {
-      _successDialogue(message.message);
+      _successDialogue(response.body);
     } else {
-      _errorDialogue(message.message);
+      _errorDialogue(response.body);
     }
   }
 
@@ -408,25 +436,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
   }
 }
 
-/*
-Class Name:
 
-
-Purpose:
-
- */
-class ForgotPasswordMessage {
-  final String message;
-
-  ForgotPasswordMessage({this.message});
-
-  factory ForgotPasswordMessage.fromJson(Map<String, dynamic> json) {
-    return ForgotPasswordMessage(message: json['message']);
-  }
-}
-
-const String banner =
-    '<svg viewBox="0.0 0.0 423.0 99.0" ><path  d="M 0 0 L 422.9787292480469 0 L 422.9787292480469 99 L 0 99 L 0 0 Z" fill="#907d9f" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" filter="url(#shadow)"/></svg>';
 const String backArrow =
     '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 const String person =

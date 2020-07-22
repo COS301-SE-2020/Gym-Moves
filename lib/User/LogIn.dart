@@ -10,12 +10,15 @@ Date Created
 
 Update History:
 --------------------------------------------------------------------------------
-| Date       | Author       | Changes                             
+| Date       | Author       | Changes
 --------------------------------------------------------------------------------
-01/01/2020   |    Tia       |  Added outline of login function and LoginRequest 
+01/01/2020   |    Tia       |  Added outline of login function and LoginRequest
 --------------------------------------------------------------------------------
-04/01/2020   |    Tia       |  Fixed login request 
+04/01/2020   |    Tia       |  Fixed login request
 --------------------------------------------------------------------------------
+15/01/2020   |    Danel     |  Added hashing
+--------------------------------------------------------------------------------
+
 
 Functional Description:
   This file contains the LogIn class that calls the class that creates the UI.
@@ -27,6 +30,7 @@ Functional Description:
 Classes in the File:
 - LogIn
 - LogInState
+- LoginResponse
  */
 
 import 'package:flutter/material.dart';
@@ -41,6 +45,7 @@ import 'package:gym_moves/User/ForgotPassword.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:crypto/crypto.dart';
 
 /*
 Class Name:
@@ -66,8 +71,28 @@ Purpose:
 class LogInState extends State<LogIn> {
   String password = "";
   String username = "";
+  String gymName = "";
 
   final logInFormKey = GlobalKey<FormState>();
+  bool hidePassword = true;
+
+  /*
+  Method Name:
+    _getAllGyms
+
+  Purpose:
+     This method is used to make a get request and fetch the different gym's
+    and their branches.
+*/
+  _getAllGyms(id) async {
+    String url = 'https://gymmoveswebapi.azurewebsites.net/api/gym/getall';
+    var response = await http.get(url);
+    String responseBody = response.body;
+
+    List<dynamic> gymsJson = json.decode(responseBody);
+
+    gymName = Gym.fromJson(gymsJson[id - 1]).gymName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +102,9 @@ class LogInState extends State<LogIn> {
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+            alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
             child: TextField(
                 cursorColor: Colors.black45,
                 obscureText: false,
@@ -94,27 +120,33 @@ class LogInState extends State<LogIn> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     username = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white
+    );
 
     final passwordField = Material(
         shadowColor: Colors.black,
         elevation: 15,
         child: Container(
+            alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
-            height: 0.08 * media.size.height,
+            height: 0.085 * media.size.height,
             child: TextField(
                 cursorColor: Colors.black45,
-                obscureText: true,
+                obscureText: hidePassword,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -127,17 +159,22 @@ class LogInState extends State<LogIn> {
                     labelStyle: new TextStyle(color: Colors.black54),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderSide: BorderSide.none
+                    ),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderRadius: BorderRadius.circular(19.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     password = value;
                   });
-                })),
+                })
+        ),
         borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+        color: Colors.white
+    );
 
     return Scaffold(
       backgroundColor: const Color(0xff513369),
@@ -153,17 +190,17 @@ class LogInState extends State<LogIn> {
                   image: const AssetImage('assets/Bicycles.jpg'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.82), BlendMode.dstIn),
+                      Colors.black.withOpacity(0.82), BlendMode.dstIn
+                  )
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: const Color(0x22000000),
                     offset: Offset(0, 3),
                     blurRadius: 6,
-                  ),
-                ],
-              ),
-            ),
+                  )
+                ])
+            )
           ),
           Transform.translate(
             offset: Offset(0.08 * media.size.width, 0.08 * media.size.height),
@@ -175,8 +212,8 @@ class LogInState extends State<LogIn> {
                 color: const Color(0xffffffff),
               ),
               textAlign: TextAlign.left,
-            ),
-          ),
+            )
+          )
         ]),
         SizedBox(height: 10.0),
         Form(
@@ -187,31 +224,45 @@ class LogInState extends State<LogIn> {
                 usernameField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.25 * media.size.height),
+                        0.08 * 0.25 * media.size.height
+                    ),
                     child: SvgPicture.string(
                       person,
                       width: media.size.width * 0.04,
                       color: Colors.black45,
                       allowDrawingOutsideViewBox: true,
-                    ))
+                    )
+                )
               ]),
               SizedBox(height: 0.05 * media.size.height),
               Stack(children: <Widget>[
                 passwordField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height),
-                    child: SvgPicture.string(
-                      lock,
-                      width: media.size.width * 0.04,
-                      color: Colors.black45,
-                      allowDrawingOutsideViewBox: true,
-                    ))
+                        0.08 * 0.3 * media.size.height
+                    ),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hidePassword = !hidePassword;
+                          });
+                        },
+                        child: Icon(
+                          hidePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ))
+                )
               ])
-            ])),
+            ])
+        ),
         Container(
-            padding: EdgeInsets.fromLTRB(0.05 * media.size.height, 0.0,
-                0.18 * media.size.width, 0.05 * media.size.height),
+            padding: EdgeInsets.fromLTRB(
+                0.05 * media.size.height,
+                0.01 * media.size.height,
+                0.18 * media.size.width,
+                0.05 * media.size.height),
             width: media.size.width,
             child: GestureDetector(
                 onTap: () {
@@ -224,16 +275,19 @@ class LogInState extends State<LogIn> {
                   "Forgot password?",
                   textAlign: TextAlign.right,
                   style: TextStyle(color: Colors.white),
-                ))),
+                )
+            )
+        ),
         Center(
             child: SizedBox(
                 width: 0.25 * media.size.width,
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
-                    verifyUser(username, password);
+                    verifyUser();
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
@@ -243,10 +297,13 @@ class LogInState extends State<LogIn> {
                       'Submit',
                       style: TextStyle(
                           fontSize: 0.05 * media.size.width,
-                          fontFamily: 'Roboto'),
-                    ),
-                  ),
-                ))),
+                          fontFamily: 'Roboto'
+                              ''),
+                    )
+                  )
+                )
+            )
+        ),
         SizedBox(height: 30),
         Center(
             child: GestureDetector(
@@ -272,39 +329,54 @@ class LogInState extends State<LogIn> {
                           text: 'Sign up!',
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
-                          ),
+                          )
                         )
                       ]),
                   textAlign: TextAlign.center,
-                ))),
+                )
+            )
+        ),
         SizedBox(height: 30),
       ]),
     );
   }
 
   /*
-  Method Name: verifyUser
+  Method Name:
+    verifyUser
 
-  Purpose: This method is called when the send button is pressed. It verifies
-           that the user does exist and what type of user they are.
+  Purpose:
+    This method is called when the send button is pressed. It verifies
+     that the user does exist and what type of user they are.
 */
+  verifyUser() async {
 
-  verifyUser(username, password) async {
+    var bytes = utf8.encode(password);
+    var hashPassword = sha256.convert(bytes);
+
     final http.Response response = await http.post(
-      'https://gymmoveswebapi.azurewebsites.net/api/login',
+      'https://gymmoveswebapi.azurewebsites.net/api/user/login',
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(
-          <String, String>{'username': username, 'password': password}),
+          <String, String>{
+            'username': username,
+            'password': hashPassword.toString()
+          }),
     );
-    
-    LoginResponse res = LoginResponse.fromJson(json.decode(response.body));
 
-    if (res.passwordValid && res.usernameValid) {
+    if (response.statusCode == 200) {
+      LoginResponse res = LoginResponse.fromJson(json.decode(response.body));
+
       final prefs = await SharedPreferences.getInstance();
 
+      await _getAllGyms(res.gymID);
+
       prefs.setInt('gymId', res.gymID);
-      prefs.setString('userName', res.name);
+      prefs.setString('username', username);
       prefs.setInt('type', res.userType);
+      prefs.setString("name", res.name);
+      prefs.setString("gymName", gymName);
+
       Navigator.pop(context);
 
       if (res.userType == 0) {
@@ -312,33 +384,23 @@ class LogInState extends State<LogIn> {
           context,
           MaterialPageRoute(builder: (context) => MemberPages()),
         );
-      }
-      else if(res.userType == 2){
+      } else if (res.userType == 2) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ManagerPages()),
         );
-      } else if(res.userType == 1){
+      } else if (res.userType == 1) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => InstructorPages()),
         );
       }
     } else {
-      String errMessage = "";
-      if (!res.passwordValid && res.usernameValid) {
-        errMessage =
-            "Please ensure that the password is correct and try again.";
-      } else if (res.passwordValid && !res.usernameValid) {
-        errMessage =
-            "Please ensure that the username is correct and try again.";
-      } else {
-        errMessage =
-            "Your username or password is incorrect. Please try again.";
-      }
+      String errMessage = response.body;
 
       Widget okButton = FlatButton(
-          child: Text("OK"), onPressed: () => Navigator.pop(context));
+          child: Text("OK"), onPressed: () => Navigator.pop(context)
+      );
 
       AlertDialog alert = AlertDialog(
         title: Text("Login Error"),
@@ -363,33 +425,21 @@ Class Name:
   LoginResponse
 
 Purpose:
-  This class will be used to parse the response from the api and allow the user to log in.
+  This class will be used to parse the response from the api and allow the user
+  to log in.
 */
-
 class LoginResponse {
-  final bool usernameValid;
-  final bool passwordValid;
-  final int gymID;
   final int userType;
-  final String gymMemberID;
   final String name;
+  final int gymID;
 
-  LoginResponse(
-      {this.usernameValid,
-      this.passwordValid,
-      this.gymID,
-      this.userType,
-      this.gymMemberID,
-      this.name});
+  LoginResponse({this.userType, this.name, this.gymID});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      gymID: json['gymId'],
-      gymMemberID: json['gymMemberID'],
-      name: json['name'],
-      userType: json['userType'],
-      usernameValid: json['usernameValid'],
-      passwordValid: json['passwordValid'],
+        userType: json['userType'],
+        name: json['name'],
+        gymID: json['gymID']
     );
   }
 }

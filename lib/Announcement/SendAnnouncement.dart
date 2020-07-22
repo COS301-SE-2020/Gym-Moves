@@ -27,7 +27,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 /*
 Class Name:
@@ -57,6 +59,8 @@ Purpose:
 class SendAnnouncementState extends State<SendAnnouncement> {
   String _headingOfAnnouncement = "";
   String _detailsOfAnnouncement = "";
+  final String serverToken = 'AAAAhIy3DoY:APA91bE2u20l0jSUhOoLS9q5eZjN11Sul4RrLehbyaD0mu8-bf_TlXP-zeeCxsdchALwpGs3HdzrNPkezOZsSxWX_4Ouddy7VLlRUeJJ2wt2yqwY2WQn5NKMFhR0OQQytKEZmDqfKV_H';
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
   final announcementFormKey = GlobalKey<FormState>();
 
@@ -289,8 +293,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         borderRadius: BorderRadius.circular(10.0)),
                     color: const Color(0xffffffff).withOpacity(0.3),
                     onPressed: () {
-                      sendValuesToNotify(
-                          _headingOfAnnouncement, _detailsOfAnnouncement);
+                      sendValuesToNotify();
                     },
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
@@ -308,6 +311,44 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         ]));
   }
 
+  Future<Map<String, dynamic>> sendAndRetrieveMessage() async {
+    await firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: false),
+    );
+
+    await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': _headingOfAnnouncement,
+            'title': _detailsOfAnnouncement
+          },
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done'
+          },
+          'to': await firebaseMessaging.getToken(),
+        },
+      ),
+    );
+
+    final Completer<Map<String, dynamic>> completer =
+    Completer<Map<String, dynamic>>();
+
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        completer.complete(message);
+      },
+    );
+    return completer.future;
+  }
   /*
   Method Name:
     sendValuesToNotify
@@ -316,18 +357,20 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     This method is called when the send button is pressed. It tells the API to
     send this announcement as a notification to the members.
 */
-  void sendValuesToNotify(String heading, String details) async {
-    final prefs = await SharedPreferences.getInstance();
 
-    final int gymId = 0; //prefs.getInt('gymId');
+
+  void sendValuesToNotify() async {
+    final prefs = await SharedPreferences.getInstance();
+    sendAndRetrieveMessage();
+    final int gymId = prefs.getInt('gymId');
 
     final http.Response response = await http.post(
-      'https://gymmoveswebapi.azurewebsites.net/api/sendNotification',
+      'https://gymmoveswebapi.azurewebsites.net/api/notifications/sendNotification',
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode({
         'gymId': gymId,
-        'heading': heading,
-        'body': details,
+        'heading': _headingOfAnnouncement,
+        'body': _detailsOfAnnouncement,
         'announcementDay': day,
         'announcementMonth': month,
         'announcementYear': year
@@ -337,14 +380,18 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     String message = "";
     if (response.statusCode == 200) {
       title = "Success!";
-      message = response.body;
+      message = Message.fromJson(jsonDecode(response.body)).message;
     } else {
       title = "Oh no!";
       message = "Could not send announcement. Please try again later.";
     }
 
-    Widget okButton =
-        FlatButton(child: Text("OK"), onPressed: () => Navigator.pop(context));
+    Widget okButton = FlatButton(
+        child: Text(
+          "Ok",
+          style: TextStyle(color: Color(0xff513369)),
+        ),
+        onPressed: () => Navigator.pop(context));
 
     AlertDialog alert = AlertDialog(
       title: Text(title),
@@ -359,6 +406,18 @@ class SendAnnouncementState extends State<SendAnnouncement> {
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+}
+
+class Message {
+  final String message;
+
+  Message({this.message});
+
+  factory Message.fromJson(Map<String, dynamic> json) {
+    return Message(
+        message: json['message']
     );
   }
 }

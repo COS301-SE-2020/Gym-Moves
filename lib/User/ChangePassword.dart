@@ -1,18 +1,44 @@
-import 'dart:convert';
+/*
+File Name
+  ChangePassword.dart
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+Author:
+  Danel
+
+Date Created
+  30/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Name               | Date              | Changes
+--------------------------------------------------------------------------------
+  Danel              |  15/07/2020       | Added hashing
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+  This file is the screen that the user can change their password with.
+
+Classes in the File:
+- ChangePassword
+- ChangePasswordState
+ */
+
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /*
 Class Name:
-  AddAClass
+  ChangePassword
 
 Purpose:
   This class creates the class that will build the page.
  */
-
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key key}) : super(key: key);
 
@@ -22,21 +48,22 @@ class ChangePassword extends StatefulWidget {
 
 /*
 Class Name:
-  AddAClassState
+  ChangePasswordState
 
 Purpose:
   This class will build the page, and send information to the database.
  */
-
 class ChangePasswordState extends State<ChangePassword> {
   String newPassword = "";
   String oldPassword = "";
-  String username = "myusername";
+  String username = "";
 
   final changeFormKey = GlobalKey<FormState>();
 
-  /*Url of API*/
-  String url = "https://gymmoveswebapi.azurewebsites.net/api/";
+  String url = "https://gymmoveswebapi.azurewebsites.net/api/user/";
+
+  bool hideOldPassword = true;
+  bool hideNewPassword = true;
 
   /*
    Method Name:
@@ -58,14 +85,14 @@ class ChangePasswordState extends State<ChangePassword> {
             height: 0.085 * media.size.height,
             padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextFormField(
-                obscureText: true,
+                obscureText: hideOldPassword,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
                 ),
                 decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Colors.transparent,
                     labelText: 'Current password',
                     contentPadding: const EdgeInsets.all(15.0),
                     border: InputBorder.none,
@@ -92,7 +119,7 @@ class ChangePasswordState extends State<ChangePassword> {
             height: 0.085 * media.size.height,
             padding: EdgeInsets.all(0.01 * media.size.width),
             child: TextFormField(
-                obscureText: true,
+                obscureText: hideNewPassword,
                 cursorColor: Colors.black45,
                 style: TextStyle(
                   color: Colors.black54,
@@ -181,9 +208,43 @@ class ChangePasswordState extends State<ChangePassword> {
         Form(
             key: changeFormKey,
             child: Column(children: <Widget>[
-              currentPasswordField,
+              Stack(children: <Widget>[
+                currentPasswordField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hideOldPassword = !hideOldPassword;
+                          });
+                        },
+                        child: Icon(
+                          hideOldPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ))),
+              ]),
               SizedBox(height: 0.06 * media.size.height),
-              newPasswordField,
+              Stack(children: <Widget>[
+                newPasswordField,
+                Transform.translate(
+                    offset: Offset(0.7 * 0.85 * media.size.width,
+                        0.08 * 0.3 * media.size.height),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hideNewPassword = !hideNewPassword;
+                          });
+                        },
+                        child: Icon(
+                          hideNewPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        )))
+              ]),
               SizedBox(height: 0.06 * media.size.height),
             ])),
         Center(
@@ -194,7 +255,7 @@ class ChangePasswordState extends State<ChangePassword> {
                       borderRadius: BorderRadius.circular(10.0)),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
-                    sendValuesToDatabase();
+                    changePassword();
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
@@ -215,46 +276,49 @@ class ChangePasswordState extends State<ChangePassword> {
 
   /*
   Method name:
-    sendValuesToDatabase
+    changePassword
 
   Purpose:
     This function will send the updated details to the database.
    */
-  sendValuesToDatabase() async {
+  changePassword() async {
+    final prefs = await SharedPreferences.getInstance();
+    username = await prefs.get("username");
 
     bool secure = validateStructure(newPassword);
-
 
     if (newPassword == "" || oldPassword == "") {
       _errorDialogue("Please fill in both the fields");
       return;
-    }
-    else if (secure == false) {
+    } else if (secure == false) {
       _errorDialogue("Your new password needs to be 8 characters long, with at "
           "least one special character, one number, one small letter and one "
           "capital letter");
       return;
     }
 
+    var bytesOld = utf8.encode(oldPassword);
+    var hashPasswordOld = sha256.convert(bytesOld);
+
+    var bytesNew = utf8.encode(newPassword);
+    var hashPasswordNew = sha256.convert(bytesNew);
+
     final http.Response response = await http.post(
-      url + "changepassword",
+      url + "changePassword?username=" + username,
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
         'username': username,
-        'oldPassword': oldPassword,
-        'newPassword': newPassword,
+        'oldPassword': hashPasswordOld.toString(),
+        'newPassword': hashPasswordNew.toString()
       }),
     );
 
-    ChangePasswordMessage message =
-        ChangePasswordMessage.fromJson(json.decode(response.body));
-
     if (response.statusCode != 200) {
-      _errorDialogue(message.message);
+      _errorDialogue(response.body);
     } else {
-      _successDialogue(message.message);
+      _successDialogue(response.body);
     }
   }
 
@@ -319,26 +383,10 @@ class ChangePasswordState extends State<ChangePassword> {
   Purpose: This method validates that the password the user entered, is secure.
 */
   bool validateStructure(String password) {
-    String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(password);
-  }
-}
-
-/*
-Class Name:
-
-
-Purpose:
-
- */
-class ChangePasswordMessage {
-  final String message;
-
-  ChangePasswordMessage({this.message});
-
-  factory ChangePasswordMessage.fromJson(Map<String, dynamic> json) {
-    return ChangePasswordMessage(message: json['message']);
   }
 }
 

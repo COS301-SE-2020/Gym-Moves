@@ -1,35 +1,105 @@
 import 'package:flutter/material.dart';
-
-import 'package:gym_moves/Announcement/SendAnnouncement.dart';
-
-import 'package:gym_moves/Rating/ManagerViewClassRatings.dart';
-import 'package:gym_moves/Rating/ManagerViewInstructorRatings.dart';
-import 'package:gym_moves/Rating/InstructorViewMyRatings.dart';
-import 'package:gym_moves/User/ChangePassword.dart';
-
 import 'package:gym_moves/User/LogIn.dart';
-import 'package:gym_moves/User/SignUp.dart';
-import 'package:gym_moves/User/ViewMyProfile.dart';
-import 'package:gym_moves/User/ManagerPages.dart';
-import 'package:gym_moves/User/InstructorPages.dart';
-import 'package:gym_moves/User/MemberPages.dart';
-import 'package:gym_moves/User/ForgotPassword.dart';
-
-import 'package:gym_moves/Announcement/SetNotificationType.dart';
-
-import 'package:gym_moves/GymClass/ClassDetails.dart';
-import 'package:gym_moves/GymClass/EditClassesInstructor.dart';
-import 'package:gym_moves/GymClass/EditClassesManager.dart';
-import 'package:gym_moves/GymClass/EditClass.dart';
-import 'package:gym_moves/GymClass/AddAClass.dart';
-import 'package:gym_moves/GymClass/ViewAllClassesMember.dart';
-import 'package:gym_moves/GymClass/ViewMyClassesMember.dart';
+import 'package:gym_moves/Announcement/SendAnnouncement.dart';
+import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'dart:convert';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyAppExample());
 }
 
-class MyApp extends StatelessWidget {
+class Details {
+  final String body;
+  final String title;
+
+  Details({this.body, this.title});
+
+  factory Details.fromJson(Map<String, dynamic> json) {
+    return Details(
+        body: json['body'],
+        title: json['title'],
+    );
+  }
+}
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+  // Or do other work.
+}
+
+class MyAppExample extends StatefulWidget {
+  @override
+  MyApp createState() => MyApp();
+}
+
+class MyApp extends State<MyAppExample> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+   String mytitle = "";
+   String mybody = "";
+
+
+   String DecodeNotification(message)
+  {
+    Details res = Details.fromJson(json.decode(message.body));
+     mytitle = res.title;
+      mybody = res.body;
+      _alertDialog(mytitle, mybody);
+
+  }
+  _alertDialog(text1, text2 ) async {
+    return showDialog<void>(
+      //context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(text1),
+          content: Text(text2),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Ok',
+                style: TextStyle(color: Color(0xff513369)),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        DecodeNotification(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        DecodeNotification(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        DecodeNotification(message);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

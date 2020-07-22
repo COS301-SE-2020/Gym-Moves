@@ -366,7 +366,7 @@ class EditClassState extends State<EditClass> {
                   ),
                   color: const Color(0xffffffff).withOpacity(0.3),
                   onPressed: () {
-                    sendValuesToDatabase();
+                    _editClass();
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
@@ -391,12 +391,12 @@ class EditClassState extends State<EditClass> {
 
   /*
   Method name:
-    sendValuesToDatabase
+    _editClass
 
   Purpose:
     This function will send the updated details to the database.
    */
-  sendValuesToDatabase() {}
+  _editClass() {}
 
 }
 
