@@ -8,13 +8,13 @@ Gym Moves is an application that will make life easier for gym members and gym s
 
 ### Recorded Demo 1
 
-Link to google drive folder with video: [Demo1](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+Link to google drive folder with video: [Demo 1 Video](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
 
 <br/>
 
 ### Recorded Demo 2
 
-Link to google drive folder with video: 
+Link to google drive folder with video: [Demo 2 Video](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
 
 <br/>
 
@@ -22,27 +22,28 @@ Link to google drive folder with video:
 ### SRS Document
 
 #### Version 1
-View only link to SRS document on overleaf: [Gym Moves Document Version1](https://www.overleaf.com/read/chgypmxyntsm) <br/>
-Link to folder with SRS document as a pdf: [Gym Moves Version1 PDF](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+View only link on Overleaf: [SRS_V1 Overleaf](https://www.overleaf.com/read/chgypmxyntsm) <br/>
+Link to folder with pdf: [SRS_V1 PDF](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
 
 #### Version 2
 
-View only link to SRS document on overleaf:<br/>
-Link to folder with SRS document as a pdf: 
+View only link on Overleaf: [SRS_V2 Overleaf](https://www.overleaf.com/read/pccntnjzxgyf)<br/>
+Link to folder with pdf: [SRS_V2 PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
 
 <br/>
 
 ### User Manual Document
 
-View only link to User Manual document on overleaf: <br/>
-Link to folder with User Manual document as a pdf:
+View only link on overleaf: [User Manual Overleaf](https://www.overleaf.com/read/szdbsjkrbxdx) <br/>
+Link to folder with User Manual document as a pdf: [User Manual PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
 
 <br/>
 
 ### Coding Standards Document
 
-View only link to Coding Standards document on overleaf: <br/>
-Link to folder with Coding Standards document as a pdf:
+View only link to Coding Standards document on overleaf: [Coding Standards Overleaf](https://www.overleaf.com/read/chssqmjbrmmx)<br/>
+Link to folder with Coding Standards document as a pdf: [Coding Standards PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
+
 
 
 <br/>
