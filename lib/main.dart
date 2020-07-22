@@ -48,7 +48,13 @@ class MyApp extends State<MyAppExample> {
    String mytitle = "";
    String mybody = "";
 
+/*
+Class Name:
+  DecodeNotification
 
+Purpose:
+  This method deserialises the response received from the api.
+ */
    String DecodeNotification(message)
   {
     Details res = Details.fromJson(json.decode(message.body));
@@ -57,6 +63,14 @@ class MyApp extends State<MyAppExample> {
       _alertDialog(mytitle, mybody);
 
   }
+
+/*
+Class Name:
+  _alertDialog
+
+Purpose:
+  This method shows the message as a notification on the user's screen.
+ */
   _alertDialog(text1, text2 ) async {
     return showDialog<void>(
       //context: context,

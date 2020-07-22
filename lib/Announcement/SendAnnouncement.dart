@@ -310,8 +310,16 @@ class SendAnnouncementState extends State<SendAnnouncement> {
           SizedBox(height: 0.05 * media.size.height)
         ]));
   }
+/*
+Class Name:
+  sendPushNotification
 
-  Future<Map<String, dynamic>> sendAndRetrieveMessage() async {
+Purpose:
+  This method sends a post request to the api which then forwards the message as a notification
+  to the user.
+ */
+
+  Future<Map<String, dynamic>> sendPushNotification() async {
     await firebaseMessaging.requestNotificationPermissions(
       const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: false),
     );
@@ -361,7 +369,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
 
   void sendValuesToNotify() async {
     final prefs = await SharedPreferences.getInstance();
-    sendAndRetrieveMessage();
+    sendPushNotification();
     final int gymId = prefs.getInt('gymId');
 
     final http.Response response = await http.post(
