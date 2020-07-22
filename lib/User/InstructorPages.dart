@@ -544,7 +544,7 @@ class InstructorPagesState extends State<InstructorPages> {
               )));
     } else {
       for (Announcement announce in announcementsList) {
-        displayedAnnouncements.add(
+        displayedAnnouncements.insert(0,
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Stack(children: <Widget>[
             Container(
@@ -576,7 +576,7 @@ class InstructorPagesState extends State<InstructorPages> {
           ])
         ]));
 
-        displayedAnnouncements.add(SizedBox(height: 0.025 * media.size.height));
+        displayedAnnouncements.insert(0,SizedBox(height: 0.025 * media.size.height));
       }
     }
 

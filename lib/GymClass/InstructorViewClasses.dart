@@ -187,20 +187,14 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
       int amountOfClasses = allClasses.length;
 
       for (int i = 0; i < amountOfClasses; i++) {
-        className = allClasses[i].name;
-
-        classDay = allClasses[i].day;
 
         instructorName = allClasses[i].instructor;
-
-        classAvailableSpots =
-            allClasses[i].maxCapacity - allClasses[i].currentStudents;
-
+        className = allClasses[i].name;
+        classDay = allClasses[i].day;
         classTime = allClasses[i].startTime;
-
+        classAvailableSpots = allClasses[i].maxCapacity - allClasses[i].currentStudents;
         classDescription = allClasses[i].description;
 
-        classID = allClasses[i].classId;
 
         classes.add(GestureDetector(
             onTap: () {
@@ -215,7 +209,8 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                           availableSpots: allClasses[i].maxCapacity - allClasses[i].currentStudents,
                           description: allClasses[i].description.toString(),
                           id: allClasses[i].classId,
-                          cancel: allClasses[i].cancelled)));
+                          cancel : allClasses[i].cancelled
+                      )));
             },
             child:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <

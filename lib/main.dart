@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_moves/GymClass/ManagerViewClasses.dart';
 import 'package:gym_moves/User/LogIn.dart';
 
 

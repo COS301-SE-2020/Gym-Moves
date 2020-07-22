@@ -322,28 +322,29 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
       classes.add(SizedBox(height: 20));
 
       for (int i = 0; i < amountOfClasses; i++) {
+
+        instructorName = allClasses[i].instructor;
+        className = allClasses[i].name;
+        classDay = allClasses[i].day;
+        classTime = allClasses[i].startTime;
+        classAvailableSpots = allClasses[i].maxCapacity - allClasses[i].currentStudents;
+        classDescription = allClasses[i].description;
+
         if (!allClasses[i].cancelled) {
-          className = allClasses[i].name;
-          classDay = allClasses[i].day;
-          instructorName = allClasses[i].instructor;
-          classAvailableSpots =
-              allClasses[i].maxCapacity - allClasses[i].currentStudents;
-          classTime = allClasses[i].startTime;
-          classDescription = allClasses[i].description;
-          classID = allClasses[i].classId;
+
           classes.add(GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => MemberClassDetails(
-                          instructor: instructorName,
-                          classN: className,
-                          classD: classDay,
-                          classT: classTime,
-                          availableSpots: classAvailableSpots,
-                          description: classDescription.toString(),
-                          id: classID)),
+                    instructor: allClasses[i].instructor,
+                    classN: allClasses[i].name,
+                    classD: allClasses[i].day,
+                    classT: allClasses[i].startTime,
+                    availableSpots: allClasses[i].maxCapacity - allClasses[i].currentStudents,
+                    description: allClasses[i].description.toString(),
+                    id: allClasses[i].classId )),
                 );
               },
               child:

@@ -27,6 +27,7 @@ Functional Description:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:gym_moves/User/ManagerPages.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,6 +66,9 @@ class SendAnnouncementState extends State<SendAnnouncement> {
   String month = (new DateTime.now().month).toString();
   String year = (new DateTime.now().year).toString();
 
+  final headingHolder = TextEditingController();
+  final detailsHolder = TextEditingController();
+
   /*
    Method Name:
     build
@@ -85,6 +89,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             child: TextField(
+              controller: headingHolder,
                 cursorColor: Colors.black45,
                 obscureText: false,
                 style: TextStyle(
@@ -125,6 +130,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
             width: 0.7 * media.size.width,
             height: 0.3 * media.size.height,
             child: TextField(
+              controller:detailsHolder,
                 cursorColor: Colors.black45,
                 obscureText: false,
                 style: TextStyle(
@@ -270,6 +276,11 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                             child: GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ManagerPages()),
+                                  );
                                   },
                                 child: SvgPicture.string(backArrow,
                                     allowDrawingOutsideViewBox: true,
@@ -380,6 +391,9 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     if (response.statusCode == 200) {
       title = "Success!";
       message = Message.fromJson(jsonDecode(response.body)).message;
+
+      detailsHolder.clear();
+      headingHolder.clear();
     } else {
       title = "Oh no!";
       message = "Could not send announcement. Please try again later.";

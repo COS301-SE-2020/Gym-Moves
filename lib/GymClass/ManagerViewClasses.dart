@@ -215,20 +215,13 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
       int amountOfClasses = allClasses.length;
 
       for (int i = 0; i < amountOfClasses; i++) {
-        className = allClasses[i].name;
-
-        classDay = allClasses[i].day;
 
         instructorName = allClasses[i].instructor;
-
-        classAvailableSpots =
-            allClasses[i].maxCapacity - allClasses[i].currentStudents;
-
+        className = allClasses[i].name;
+        classDay = allClasses[i].day;
         classTime = allClasses[i].startTime;
-
+        classAvailableSpots = (allClasses[i].maxCapacity - allClasses[i].currentStudents);
         classDescription = allClasses[i].description;
-
-        classID = allClasses[i].classId;
 
         classes.add(GestureDetector(
             onTap: () {
@@ -236,13 +229,13 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ManagerClassDetails(
-                          instructor: instructorName,
-                          classN: className,
-                          classD: classDay,
-                          classT: classTime,
-                          availableSpots: classAvailableSpots,
-                          description: classDescription.toString(),
-                          id: classID, cancelled : allClasses[i].cancelled)));
+                          instructor: allClasses[i].instructor,
+                          classN: allClasses[i].name,
+                          classD: allClasses[i].day,
+                          classT: allClasses[i].startTime,
+                          availableSpots: (allClasses[i].maxCapacity - allClasses[i].currentStudents),
+                          description: allClasses[i].description.toString(),
+                          id: allClasses[i].classId, cancelled : allClasses[i].cancelled)));
             },
             child:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <
