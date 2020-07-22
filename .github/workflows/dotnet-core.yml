@@ -1,10 +1,10 @@
 name: .NET Core
 
-on:
+on: 
   push:
-    branches: [ WebAPI ]
-  pull_request:
-    branches: [ WebAPI ]
+    branches:
+    - WebAPI
+    
 
 jobs:
   build:
