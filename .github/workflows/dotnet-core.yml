@@ -3,8 +3,7 @@ name: .NET Core
 on: 
   push:
     branches:
-    - WebAPI
-    
+      - WebAPI    
 
 jobs:
   build:
