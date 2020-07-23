@@ -24,6 +24,7 @@ dependencies:
   qr_flutter: ^3.1.0
   flutter_spinkit: ^4.1.2
   nfc_in_flutter: 2.0.2
+  flutter_swiper: 1.1.6
   path_provider:
 
 
