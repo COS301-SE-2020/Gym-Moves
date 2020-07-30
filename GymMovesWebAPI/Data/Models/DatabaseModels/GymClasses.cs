@@ -32,7 +32,7 @@ namespace GymMovesWebAPI.Data.Models.DatabaseModels {
         public int ClassId { get; set; }
 
         public int GymIdForeignKey { get; set; }
-        [ForeignKey("GymIdGymIdForeignKey")]
+        [ForeignKey("GymIdForeignKey")]
         public Gym Gym { get; set; }
         
         public string InstructorUsername { get; set; }

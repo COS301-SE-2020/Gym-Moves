@@ -208,6 +208,14 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         UserType = UserTypes.Member
                     }
                 );
+
+            modelBuilder.Entity<LicenseKeys>()
+                .HasData(
+                    new {
+                        LicenseKey = "testkey",
+                        Email = "testmail@gmail.com"
+                    }
+                );
         }
     }
 }
