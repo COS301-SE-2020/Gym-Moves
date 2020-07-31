@@ -81,23 +81,12 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                 .IsUnique();
 
             modelBuilder.Entity<Gym>()
-                .HasMany(p => p.Classes)
-                .WithOne(p => p.Gym);
-
-            modelBuilder.Entity<Gym>()
                 .HasMany(p => p.Notifications)
                 .WithOne(p => p.Gym);
 
             modelBuilder.Entity<Gym>()
                 .HasMany(p => p.Users)
                 .WithOne(p => p.Gym);
-
-            modelBuilder.Entity<GymClasses>()
-                .HasOne(p => p.Gym)
-                .WithMany(p => p.Classes);
-
-            modelBuilder.Entity<GymClasses>()
-               .HasOne(p => p.Instructor);
 
             modelBuilder.Entity<GymClasses>()
                .HasOne(p => p.ClassRating)

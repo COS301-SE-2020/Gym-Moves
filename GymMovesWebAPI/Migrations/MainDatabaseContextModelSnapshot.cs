@@ -112,11 +112,14 @@ namespace GymMovesWebAPI.Migrations
                     b.Property<string>("EndTime")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GymId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GymIdForeignKey")
                         .HasColumnType("int");
 
                     b.Property<string>("InstructorUsername")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaxCapacity")
                         .HasColumnType("int");
@@ -129,9 +132,7 @@ namespace GymMovesWebAPI.Migrations
 
                     b.HasKey("ClassId");
 
-                    b.HasIndex("GymIdForeignKey");
-
-                    b.HasIndex("InstructorUsername");
+                    b.HasIndex("GymId");
 
                     b.ToTable("Classes");
                 });
@@ -389,15 +390,9 @@ namespace GymMovesWebAPI.Migrations
 
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymClasses", b =>
                 {
-                    b.HasOne("GymMovesWebAPI.Data.Models.DatabaseModels.Gym", "Gym")
+                    b.HasOne("GymMovesWebAPI.Data.Models.DatabaseModels.Gym", null)
                         .WithMany("Classes")
-                        .HasForeignKey("GymIdForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GymMovesWebAPI.Data.Models.DatabaseModels.Users", "Instructor")
-                        .WithMany()
-                        .HasForeignKey("InstructorUsername");
+                        .HasForeignKey("GymId");
                 });
 
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.InstructorRating", b =>
