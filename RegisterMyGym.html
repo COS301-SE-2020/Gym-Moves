@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -27,82 +27,82 @@
             padding: 50px 0;
         }
 
-        .registration-form form {
-            background-color: #fff;
-            max-width: 600px;
-            margin: auto;
-            padding: 50px 70px;
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
-        }
+            .registration-form form {
+                background-color: #fff;
+                max-width: 600px;
+                margin: auto;
+                padding: 50px 70px;
+                border-top-left-radius: 30px;
+                border-top-right-radius: 30px;
+                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+            }
 
-        .registration-form .form-icon {
-            text-align: center;
-            background-color: gainsboro;
-            border-radius: 50%;
-            font-size: 40px;
-            color: white;
-            width: 100px;
-            height: 100px;
-            margin: auto;
-            margin-bottom: 50px;
-            line-height: 100px;
-        }
+            .registration-form .form-icon {
+                text-align: center;
+                background-color: gainsboro;
+                border-radius: 50%;
+                font-size: 40px;
+                color: white;
+                width: 100px;
+                height: 100px;
+                margin: auto;
+                margin-bottom: 50px;
+                line-height: 100px;
+            }
 
-        .registration-form .item {
-            border-radius: 20px;
-            margin-bottom: 25px;
-            padding: 10px 20px;
-        }
+            .registration-form .item {
+                border-radius: 20px;
+                margin-bottom: 25px;
+                padding: 10px 20px;
+            }
 
-        .registration-form .create-account {
-            border-radius: 30px;
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            background-color: purple;
-            border: none;
-            color: white;
-            margin-top: 20px;
-        }
+            .registration-form .create-account {
+                border-radius: 30px;
+                padding: 10px 20px;
+                font-size: 18px;
+                font-weight: bold;
+                background-color: purple;
+                border: none;
+                color: white;
+                margin-top: 20px;
+            }
 
-        .registration-form .social-media {
-            max-width: 600px;
-            background-color: #fff;
-            margin: auto;
-            padding: 35px 0;
-            text-align: center;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            color: gainsboro;
-            border-top: 1px solid gainsboro;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
-        }
+            .registration-form .social-media {
+                max-width: 600px;
+                background-color: #fff;
+                margin: auto;
+                padding: 35px 0;
+                text-align: center;
+                border-bottom-left-radius: 30px;
+                border-bottom-right-radius: 30px;
+                color: gainsboro;
+                border-top: 1px solid gainsboro;
+                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+            }
 
-        .registration-form .social-icons {
-            margin-top: 30px;
-            margin-bottom: 16px;
-        }
+            .registration-form .social-icons {
+                margin-top: 30px;
+                margin-bottom: 16px;
+            }
 
-        .registration-form .social-icons a {
-            font-size: 23px;
-            margin: 0 3px;
-            color: gainsboro;
-            border: 1px solid;
-            border-radius: 50%;
-            width: 45px;
-            display: inline-block;
-            height: 45px;
-            text-align: center;
-            background-color: #fff;
-            line-height: 45px;
-        }
+                .registration-form .social-icons a {
+                    font-size: 23px;
+                    margin: 0 3px;
+                    color: gainsboro;
+                    border: 1px solid;
+                    border-radius: 50%;
+                    width: 45px;
+                    display: inline-block;
+                    height: 45px;
+                    text-align: center;
+                    background-color: #fff;
+                    line-height: 45px;
+                }
 
-        .registration-form .social-icons a:hover {
-            text-decoration: none;
-            opacity: 0.6;
-        }
+                    .registration-form .social-icons a:hover {
+                        text-decoration: none;
+                        opacity: 0.6;
+                    }
 
         @media (max-width: 576px) {
             .registration-form form {
@@ -132,7 +132,6 @@
         .bgColour {
             background-color: purple;
         }
-
     </style>
 
 </head>
@@ -175,7 +174,7 @@
 
 
     <div class="registration-form">
-        <form>
+        <form id="register" method="post">
 
             <div class="form-group">
                 <input type="text" class="form-control item" id="name" placeholder="Name">
@@ -184,25 +183,31 @@
                 <input type="text" class="form-control item" id="surname" placeholder="Surname">
             </div>
             <div class="form-group">
+                <input type="text" class="form-control item" id="username" placeholder="Username">
+            </div>
+            <div class="form-group">
                 <input type="text" class="form-control item" id="number" placeholder="Cellphone Number">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control item" id="email" placeholder="Email Address">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control item" id="gymMemberID" placeholder="Gym Member ID">
+                <input type="text" class="form-control item" id="memberid" placeholder="Gym Member ID">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control item" id="gymName" placeholder="Gym Name">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control item" id="gymBranch" placeholder="Gym Branch">
+                <input type="text" class="form-control item" id="gymBranch" placeholder="Gym Branch">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control item" id="code" placeholder="Code">
             </div>
+            <div class="form-group">
+                <input type="password" class="form-control item" id="password" placeholder="Password">
+            </div>
             <div align="center" class="form-group">
-                <button type="button" class="btn create-account">Register Gym</button>
+                <input type="submit" class="btn create-account" value="Register Gym">
             </div>
         </form>
     </div>
@@ -234,8 +239,46 @@
     <script src="assets/theme/js/script.js"></script>
 
 
-    <div id="scrollToTop" class="scrollToTop mbr-arrow-up"><a style="text-align: center;"><i
-                class="mbr-arrow-up-icon mbr-arrow-up-icon-cm cm-icon cm-icon-smallarrow-up"></i></a></div>
+    <div id="scrollToTop" class="scrollToTop mbr-arrow-up">
+        <a style="text-align: center;">
+            <i class="mbr-arrow-up-icon mbr-arrow-up-icon-cm cm-icon cm-icon-smallarrow-up"></i>
+        </a>
+    </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+        $("#register").click(function (e) {
+            var name = JSON.stringify($("#name").serializeJSON());
+            var surname = JSON.stringify($("#surname").serializeJSON());
+            var username = JSON.stringify($("#username").serializeJSON());
+            var number = JSON.stringify($("#number").serializeJSON());
+            var email = JSON.stringify($("#email").serializeJSON());
+            var memberid = JSON.stringify($("#memberid").serializeJSON());
+            var gymName = JSON.stringify($("#gymName").serializeJSON());
+            var gymBranch = JSON.stringify($("#gymBranch").serializeJSON());
+            var code = JSON.stringify($("#code").serializeJSON());
+            var password = JSON.stringify($("#password").serializeJSON());
+           
+            $.ajax({
+                url: "http://gymmoves/api/Gym/register",
+                type: "POST",
+                data: name,
+                surname,
+                username,
+                number,
+                email,
+                memberid,
+                gymName,
+                gymBranch,
+                code,
+                password,
+
+            });
+            e.preventDefault(); 
+
+        });
+    });
+</script>
 
 </html>
