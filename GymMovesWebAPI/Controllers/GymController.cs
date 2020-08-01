@@ -107,7 +107,7 @@ namespace GymMovesWebAPI.Controllers
             }
 
 
-            if (licenseKeys.LicenseKey != newGym.code || licenseKeys.Email != newGym.email)
+            if (licenseKeys.LicenseKey != newGym.code.Trim() || licenseKeys.Email != newGym.email.Trim())
             {
                 return Unauthorized("This is not the code registered to your email.");
             }
