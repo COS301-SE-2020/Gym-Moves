@@ -89,4 +89,28 @@ namespace GymMovesWebAPI.Data.Models.RequestModels{
         public string oldPassword { get; set; }
         public string newPassword { get; set; }
     }
+
+    /*
+Class Name:
+    GymSignUpRequestModel
+
+Purpose:
+    This class handles the incoming JSON structure
+    of a gym requesting to sign up to use the app.
+*/
+    public class GymSignUpRequestModel
+    {
+        public string name { get; set; }
+        public string surname { get; set; }
+        public string username { get; set; }
+        public string number { get; set; }
+        public string email { get; set; }
+        public string memberid { get; set; }
+        public string gymName { get; set; }
+        public string gymBranch { get; set; }
+        public string code { get; set; }
+        public string password { get; set; }
+
+
+    }
 }
