@@ -1,470 +1,270 @@
 <!--
 File Name
-  GymMovesIndex.html
+  GymInstructors.html
+
 Author:
   Danel
+
 Date Created
   26/06/2020
+
 Update History:
 --------------------------------------------------------------------------------
 | Date       | Author       | Changes
 --------------------------------------------------------------------------------
-04/01/2020   |    Tia       |  Added cascading images and logo
+27/07/2020   |    Danel     |  Added content
 --------------------------------------------------------------------------------
+01/08/2020   |    Tia       |  Added logo
+--------------------------------------------------------------------------------
+02/08/2020   |    Danel     |  Fixed CSS
+--------------------------------------------------------------------------------
+
 Functional Description:
-  This file contains the HTML and some css code for the index page of the web application.
+  This file contains the HTML and some css code for the gym instructors page. This page explains the features 
+  for a gym intstructor.
 
 -->
 
 <!DOCTYPE html>
+
 <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
+  
+        <title>Gym Moves</title>
+  
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
 
-<head>
-    <!-- Site made with Mobirise Website Builder v4.12.4, https://mobirise.com -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="generator" content="Mobirise v4.12.4, mobirise.com">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
-    <meta name="description" content="">
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
+
+            /* Navbar */
+            .barColour{
+                background-color  : #691b74;
+            }
+
+            @font-face {
+                font-family: 'FreestyleScript';
+                src: url('assets/freescript.ttf') format('truetype');
+            }
+
+            #heading{
+                font-family:FreestyleScript; 
+                font-size: 4em; 
+                color: white;
+                padding-top: 10px;
+                padding-left: 10px;
+            }
+
+            nav{
+                height: 90px;
+            }
+
+            /*Buttons*/
+            .button-colour{
+                background-color: #691b74;
+                color: white;
+            }
+
+            .button-colour:hover {
+                background-color: #55175e;
+                color: white;
+            }
 
 
-    <title>Gym Moves</title>
-    <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" href="assets/dropdown/css/style.css">
-    <link rel="stylesheet" href="assets/tether/tether.min.css">
-    <link rel="stylesheet" href="assets/theme/css/style.css">
-    <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css">
-    <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+            h4, a{
+                color: #691b74;
+            }
+
+            a:hover{
+                color: #691b74;
+            }
+
+            /*Footer sticky*/
+            .footer{
+                height: 80px;
+                color: white;
+                text-align: center;
+                padding: 2em;
+                flex-shrink: 0;
+                margin-top: auto;
+            }
+
+            * {box-sizing: border-box;}
+
+            .mySlides {display: none;}
+            img {vertical-align: middle;}
+
+            /* Slideshow container */
+            .slideshow-container {
+                max-width: 1000px;
+                position: relative;
+                margin: auto;
+            }
+
+            /* On smaller screens, decrease text size */
+            @media only screen and (max-width: 300px) {
+                .text {font-size: 11px}
+            }
 
 
+            .halfPG{
+                width: 28%;
+                float: right;
+                margin-right: 20%;
+            }
 
-</head>
+            .halfPG2{
+                width: 32%;
+                float:left;
+                margin-left: 20%;
+            }
 
-<body>
-    <style>
-        @font-face {
-            font-family: 'FreestyleScript';
-            src: url('assets/freescript.ttf') format('truetype');
-        }
+            .alHR{
+                margin-top: 100px;
+                margin-bottom: 100px;
+            }
 
-        .navbar-brand,
-        .navbar-nav li a {
-            line-height: 80px;
-            height: 80px;
-            padding-top: 0;
-        }
+            .intro{
+                font-size: 1.9em;
+                color: grey;
+            }
+        </style>
+      </head>
 
-        .nav-item {
-            color: white;
-            font-size: 1.15em;
-        }
+    <body style="font-family: Roboto; color: grey;">
 
-        .bgColour {
-            background-color: purple;
-        }
-
-        .halfPG{
-            width: 30%;
-            float: right;
-            margin-right: 20%;
-        }
-
-        .halfPG2{
-            width: 30%;
-            float:left;
-            margin-left: 20%;
-        }
-
-        .alHR{
-            margin-top: 300px;
-        }
-
-        .intro{
-            font-size: 1.9em;
-            color: black;
-        }
-
-    </style>
-
-</head>
-
-<body>
-    <nav class="navbar navbar-expand navbar-dark bgColour">
-        <a class="navbar-brand" href="#">
-            <div class="menu-logo">
-                <img style = "vertical-align: top;" src="assets/images/dumbbell-128x128_1.png" alt="" title="">
-                <div class="navbar-brand">
-                    <span class="navbar-caption-wrap">
-                        <div class="navbar-caption text-white display-1">
-                            <p style="font-family:FreestyleScript; font-size: 1.1em;">Gym Moves</p>
-                        </div>
-                    </span>
+        <section> 
+            <nav class="navbar navbar-expand navbar-dark barColour">         
+                <img style = "vertical-align: top; height: 90px;" src="assets/images/dumbbell-128x128-1.png" alt="" title="" >               
+                <div style="width: 40%;">
+                <p id="heading">Gym Moves</p>
                 </div>
-            </div>
-        </a>
-        <div>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" href="GymMovesIndex.html">About us <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymMembers.html">Gym Members</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymInstructors.html">Gym Instructors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymManagers.html">Gym Managers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="HowToRegisterMyGym.html">Register My Gym</a>
-                </li>
-
-            </ul>
-        </div>
-    </nav>
-
-    <br>
-
-    <section class="carousel slide cid-s4lddJ8Rmh halfPG" data-interval="false" id="slider2-e">
-
-
-        <div class="container content-slider">
-            <div class="content-slider-wrap">
-                <div>
-                    <div class="mbr-slider slide carousel" data-keyboard="false" data-ride="carousel"
-                        data-interval="4000" data-pause="true">
-                        <div class="carousel-inner" role="listbox">
-                            <div class="carousel-item slider-fullscreen-image active" data-bg-video-slide="false"
-                                style="background-image: url(assets/images/background1.jpg);">
-                                <div class="container container-slide">
-                                    <div class="image_wrapper"><img src="assets/images/login.jpg" alt="" title="">
-                                        <div class="carousel-caption justify-content-center">
-                                            <div class="col-10 align-center"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item slider-fullscreen-image" data-bg-video-slide="false"
-                                style="background-image: url(assets/images/background2.jpg);">
-                                <div class="container container-slide">
-                                    <div class="image_wrapper"><img src="assets/images/mMenu.JPG" alt="" title="">
-                                        <div class="carousel-caption justify-content-center">
-                                            <div class="col-10 align-center"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item slider-fullscreen-image" data-bg-video-slide="false"
-                                style="background-image: url(assets/images/background3.jpg);">
-                                <div class="container container-slide">
-                                    <div class="image_wrapper"><img src="assets/images/vClasses.jpg" alt="" title="">
-                                        <div class="carousel-caption justify-content-center">
-                                            <div class="col-10 align-center"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--
-                        <a data-app-prevent-settings="" class="carousel-control carousel-control-prev"
-                            role="button" data-slide="prev" href="#slider2-e">
-                            <span aria-hidden="true"class="mbri-left mbr-iconfont"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a data-app-prevent-settings="" class="carousel-control carousel-control-next" role="button"
-                            data-slide="next" href="#slider2-e">
-                            <span aria-hidden="true" class="mbri-right mbr-iconfont"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <br><br>
-
-    <section class="mbr-section article content1 cid-s4ldfi0zy1 halfPG2" id="content1-f">
-        <div class="container">
-            <div class="media-container-row">
-                <div class="mbr-text  col-12 mbr-fonts-style display-6 col-md-12" align="justify">
-                
-                        <p class = "intro">
-                            Easy to use, Convenient and Secure.
-                        </p>
-                        <p > 
-                            Gym Moves is here to make gym life better for everyone. It improves the communication
-                            between the staff and the gym members and it reduces the aggravation and annoyance of the members.
-                        </p>
-
-                      <!--  <p> 
-                            Gym managers can send out announcements that everyone who belongs to the gym can see. This ensures 
-                            everyone will know what is happening at their gym. This improves communication greatly, as anything
-                            a mangers needs the members to know can be sent out to everyone at the push of a button.
-                        </p>
-
-                        <p> 
-                            Have you ever arrived at gym and the class you came for is full or cancelled? That is something that is 
-                            so aggravating, and can be avoided using this application. Classes work on a booking system with this application. 
-                            Therefore as long as you book, you know you have secured a spot in that class. And if a class is cancelled, all 
-                            the gym members who have booked a spot in that class are informed that it is cancelled.
-                        </p>
-
-                        <p> 
-                            This application also lets all the gym members see how many people are currently at the gym. Meaning this 
-                            can be used to make an informed decision on whether to go to gym or not. This can lead to a reduction of 
-                            overcrowding at the gym, which in turn reduces the amount of wait time of machine equipment. Imagine how 
-                            much happier this will make every gym member.
-                        </p>-->
-                </div>
-            </div>
-        </div>
-    </section>
+                <div style="width: 50%;">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="GymMovesIndex.html">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="GymMembers.html">Gym Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="GymInstructors.html">Gym Instructors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="GymManagers.html">Gym Managers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="HowToRegisterMyGym.html">Register My Gym</a>
+                        </li>
     
-    <br><br>
-
-     <!--<section class="mbr-section content4 cid-s4ldL87skM" id="content4-g">
-        <div class="container">
-            <div class="media-container-row">
-                <div class="title col-12 col-md-8">
-                    <h2 class="align-center pb-3 mbr-fonts-style display-5">
-                        The Mobile Application</h2>
-                </div>
-            </div>
-        </div>
-    </section>
-    !-->
-    <br><br><br>
-
-    <hr class = "alHR" width="90%" color="purple">
-
-    <br>
-
-    <section class="mbr-section content4 cid-s4ldL87skM" id="content4-g">
-        <div class="container">
-            <div class="media-container-row">
-                <div class="title col-12 col-md-8">
-                    <h2 class="align-center pb-3 mbr-fonts-style display-5">
-                        What can I do with this application?</h2>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="tabs1 cid-s4lgbwxqIz" id="tabs1-h">
-
-            <div class="media-container-row">
-                <div class="col-12 col-md-8">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item"><a class="nav-link mbr-fonts-style show active display-7" role="tab"
-                                data-toggle="tab" href="#tabs1-h_tab0" aria-selected="true">
-                                Gym Members</a></li>
-                        <li class="nav-item"><a class="nav-link mbr-fonts-style show active display-7" role="tab"
-                                data-toggle="tab" href="#tabs1-h_tab1" aria-selected="true">Gym Instructors</a></li>
-                        <li class="nav-item"><a class="nav-link mbr-fonts-style show active display-7" role="tab"
-                                data-toggle="tab" href="#tabs1-h_tab2" aria-selected="true">
-                                Gym Managers</a></li>
-
-
-
                     </ul>
-                    <div class="tab-content">
-                        <div id="tab1" class="tab-pane in active" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="mbr-text py-5 mbr-fonts-style display-7">
-                                        You can see all the classes at the gym and book a spot in the ones you want to attend. 
-                                        You can make informed decisions as you can see how many people are at the gym. You are 
-                                        always up to date on what is happening at the gym as the manager can send announcements
-                                        to you.
-                                        <br><br>
-                                        Need more details? <a href="GymMembers.html">Click here.</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab2" class="tab-pane" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="mbr-text py-5 mbr-fonts-style display-7">
-                                        You can see and edit all the classes you have to teach. You can cancel the classes you 
-                                        are unable to teach. You also can see the announcements that are sent out by 
-                                        the managers.
-                                        <br><br>
-                                        Need more details? <a href="GymInstructors.html">Click here.</a><br>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab3" class="tab-pane" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="mbr-text py-5 mbr-fonts-style display-7">
-                                        You can send announcements to all the gym goers. You can keep track and edit all classes 
-                                        taught at the gym. You can see all the statistics of the gym as well.
-                                        <br><br> 
-                                        Need more details? <a href="GymManagers.html">Click here.</a><br>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+            </nav>
+    
+        </section>
+
+        <br><br><br>
+
+        <div class="slideshow-container halfPG">
+
+            <div class="mySlides">
+              <img src="assets/images/login.jpg" style="height:350px; width: 200px;">
             </div>
-        </div>
-    </section>
-
-
-    <!--<section class="mbr-section content4 cid-s4ldL87skM" id="content4-g">
-       <div class="container">
-            <div class="media-container-row">
-                <div class="title col-12 col-md-8">
-                    <h2 class="align-center pb-3 mbr-fonts-style display-5">
-                        What Our Users Have To Say</h2>
-                </div>
+            
+            <div class="mySlides">
+              <img src="assets/images/mMenu.JPG" style="height:350px">
             </div>
+            
+            <div class="mySlides">
+              <img src="assets/images/vClasses.JPG" style="height:350px">
+            </div>
+            
         </div>
-    </section>
 
-    <section class="testimonials1 cid-s4lcC1glbS" id="testimonials1-a">
-        <div class="container pt-3 mt-2">
-            <div class="media-container-row">
-                <div class="mbr-testimonial p-3 align-center col-12 col-md-6 col-lg-4">
-                    <div class="panel-item p-3">
-                        <div class="card-block">
-
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, aspernatur,
-                                voluptatibus, atque, tempore molestiae.
+        <section class="halfPG2">
+            <div class="container">
+                <div class="media-container-row">
+                    <div class="col-12 col-md-12" align="justify">
+                    
+                            <p class = "intro">
+                                Easy to use, Convenient and Secure.
                             </p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="mbr-author-name mbr-bold mbr-fonts-style display-7">
-                                John Smith
-                            </div>
-                            <small class="mbr-author-desc mbr-italic mbr-light mbr-fonts-style display-7">
-                                Developer
-                            </small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mbr-testimonial p-3 align-center col-12 col-md-6 col-lg-4">
-                    <div class="panel-item p-3">
-                        <div class="card-block">
-
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, aspernatur,
-                                voluptatibus, atque, tempore molestiae.
+                            <p > 
+                                Gym Moves is here to make gym life better for everyone. It improves the communication
+                                between the staff and the gym members and it reduces the aggravation and annoyance of the members.
                             </p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="mbr-author-name mbr-bold mbr-fonts-style display-7">
-                                John Smith
-                            </div>
-                            <small class="mbr-author-desc mbr-italic mbr-light mbr-fonts-style display-7">
-                                Developer
-                            </small>
-                        </div>
                     </div>
-                </div>
-
-                <div class="mbr-testimonial p-3 align-center col-12 col-md-6 col-lg-4">
-                    <div class="panel-item p-3">
-                        <div class="card-block">
-
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, aspernatur,
-                                voluptatibus, atque, tempore molestiae.
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="mbr-author-name mbr-bold mbr-fonts-style display-7">
-                                John Smith
-                            </div>
-                            <small class="mbr-author-desc mbr-italic mbr-light mbr-fonts-style display-7">
-                                Developer
-                            </small>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>--> 
-
-    <hr width="90%" color="purple">
-
-    <section class="mbr-section info1 cid-s4ld47hBEI" id="info1-d">
-
-        <div class="container">
-            <div class="row justify-content-center content-row">
-                <div class="media-container-column title col-12 col-lg-4 col-md-6">
-
-                    <h2 class="align-left pb-3 mbr-fonts-style display-5"><span style="font-weight: normal;">
-                            Want to register </span><span style="font-weight: normal;">your gym?</span></h2>
-                </div>
-                <div class="media-container-column col-12 col-lg-3 col-md-4">
-                    <div class="mbr-section-btn align-right py-4"><a class="btn btn-info-outline display-4"
-                            href="HowToRegisterMyGym.html">LEARN MORE</a></div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <br>
-    <br>
+            
+<script>
+    var slideIndex = 0;
+    showSlides();
+    
+    function showSlides() {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1}    
+      slides[slideIndex-1].style.display = "block";  
+      setTimeout(showSlides, 4000); // Change image every 2 seconds
+    }
+    </script>
 
-    <div class="media-container-row align-left">
-        <div class="col-12">
-        <p class="mbr-text mb-0 mbr-fonts-style display-7" style="font-size:1.2em">
-                Need to contact us? Email us at <a href="https://accounts.google.com/b/1/AddMailService" >lockdown.squad.301@gmail.com </a>
-            </p>
-        </div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<div style="width: 70%; text-align: justify; margin-left: 15%; color: grey;">
+    <p > 
+        Gym managers can send out announcements that everyone who belongs to the gym can see. This ensures 
+        everyone will know what is happening at their gym. This improves communication greatly, as anything
+        a mangers needs the members to know can be sent out to everyone at the push of a button.
+    </p>
+
+    <p> 
+        Have you ever arrived at gym and the class you came for is full or cancelled? That is something that is 
+        so aggravating, and can be avoided using this application. Classes work on a booking system with this application. 
+        Therefore as long as you book, you know you have secured a spot in that class. And if a class is cancelled, all 
+        the gym members who have booked a spot in that class are informed that it is cancelled.
+    </p>
+
+    <p> 
+        This application also lets all the gym members see how many people are currently at the gym. Meaning this 
+        can be used to make an informed decision on whether to go to gym or not. This can lead to a reduction of 
+        overcrowding at the gym, which in turn reduces the amount of wait time of machine equipment. Imagine how 
+        much happier this will make every gym member.
+    </p>
+ </div>
+
+ <br> 
+ <br>
+
+ <div class="media-container-row align-left">
+    <div class="col-12">
+    <p class="mbr-text mb-0 mbr-fonts-style display-7" style="font-size:1.2em">
+            Need to contact us? Email us at <a href="https://accounts.google.com/b/1/AddMailService" >lockdown.squad.301@gmail.com </a>
+        </p>
     </div>
+</div>
 
-    <br>
-
-
-    <section once="footers" class="cid-s4lcVycD0u" id="footer6-c">
-
-        <div class="container">
-            <div class="media-container-row align-center mbr-white">
-                
-                <div class="col-12">
-                    <p class="mbr-text mb-0 mbr-fonts-style display-7">
-                        © Copyright 2020 Gym Moves - All Rights Reserved
-                    </p>
-                </div>
+<br>
+       
+    
+        <section once="footers" class="footer barColour">
+            <div class="container">
+              
+              © Copyright 2020 Gym Moves - All Rights Reserved
+    
             </div>
-        </div>
-    </section>
+        </section>
 
-
-    <script src="assets/web/assets/jquery/jquery.min.js"></script>
-    <script src="assets/popper/popper.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/ytplayer/jquery.mb.ytplayer.min.js"></script>
-    <script src="assets/smoothscroll/smooth-scroll.js"></script>
-    <script src="assets/dropdown/js/nav-dropdown.js"></script>
-    <script src="assets/dropdown/js/navbar-dropdown.js"></script>
-    <script src="assets/tether/tether.min.js"></script>
-    <script src="assets/mbr-tabs/mbr-tabs.js"></script>
-    <script src="assets/vimeoplayer/jquery.mb.vimeo_player.js"></script>
-    <script src="assets/bootstrapcarouselswipe/bootstrap-carousel-swipe.js"></script>
-    <script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
-    <script src="assets/theme/js/script.js"></script>
-    <script src="assets/slidervideo/script.js"></script>
-
-
-    <div id="scrollToTop" class="scrollToTop mbr-arrow-up"><a style="text-align: center;"><i
-                class="mbr-arrow-up-icon mbr-arrow-up-icon-cm cm-icon cm-icon-smallarrow-up"></i></a></div>
-</body>
-
+    </body>
 </html>

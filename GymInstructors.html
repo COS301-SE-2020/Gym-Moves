@@ -1,16 +1,24 @@
 <!--
 File Name
   GymInstructors.html
+
 Author:
   Danel
+
 Date Created
   26/06/2020
+
 Update History:
 --------------------------------------------------------------------------------
 | Date       | Author       | Changes
 --------------------------------------------------------------------------------
-04/01/2020   |    Tia       |  Added logo
+27/07/2020   |    Danel     |  Added content
 --------------------------------------------------------------------------------
+01/08/2020   |    Tia       |  Added logo
+--------------------------------------------------------------------------------
+02/08/2020   |    Danel     |  Fixed CSS
+--------------------------------------------------------------------------------
+
 Functional Description:
   This file contains the HTML and some css code for the gym instructors page. This page explains the features 
   for a gym intstructor.
@@ -18,239 +26,99 @@ Functional Description:
 -->
 
 <!DOCTYPE html>
+
 <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
+  
+        <title>Gym Instructors on Gym Moves</title>
+  
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="assets/styles.css">
+      </head>
 
-<head>
-    <!-- Site made with Mobirise Website Builder v4.12.4, https://mobirise.com -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="generator" content="Mobirise v4.12.4, mobirise.com">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
-    <meta name="description" content="">
+    <body>
 
-    <title>Gym Instructor on Gym Moves</title>
-
-    <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" href="assets/tether/tether.min.css">
-    <link rel="stylesheet" href="assets/dropdown/css/style.css">
-    <link rel="stylesheet" href="assets/theme/css/style.css">
-    <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css">
-    <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
-
-    <style>
-        @font-face {
-            font-family: 'FreestyleScript';
-            src: url('assets/freescript.ttf') format('truetype');
-        }
-
-        .navbar-brand,
-        .navbar-nav li a {
-            line-height: 80px;
-            height: 80px;
-            padding-top: 0;
-        }
-
-        .bgColour {
-            background-color: purple;
-        }
-
-        .nav-item {
-            color: white;
-            font-size: 1.15em;
-        }
-
-    </style>
-
-</head>
-
-<body>
-    <nav class="navbar navbar-expand navbar-dark bgColour">
-        <a class="navbar-brand" href="#">
-            <div class="menu-logo">
-                <img style = "vertical-align: top;" src="assets/images/dumbbell-128x128_1.png" alt="" title="">
-                
-                <div class="navbar-brand">
-                    <span class="navbar-caption-wrap">
-                        <div class="navbar-caption text-white display-1">
-                            <p style="font-family:FreestyleScript; font-size: 1.1em;">Gym Moves</p>
-                        </div>
-                    </span>
+        <section> 
+            <nav class="navbar navbar-expand navbar-dark barColour">         
+                <img style = "vertical-align: top; height: 90px;" src="assets/images/dumbbell-128x128-1.png" alt="" title="" >               
+                <div style="width: 40%;">
+                <p id="heading">Gym Moves</p>
                 </div>
-            </div>
-        </a>
-        <div>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="GymMovesIndex.html">About us <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymMembers.html">Gym Members</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="GymInstructors.html">Gym Instructors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymManagers.html">Gym Managers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="HowToRegisterMyGym.html">Register My Gym</a>
-                </li>
-
-            </ul>
-        </div>
-    </nav>
-
-    <br>
-
-    <section class="mbr-section article content1 cid-s4ldfi0zy1" id="content1-f">
-        <div class="container">
-            <div class="media-container-row">
-                <div class="mbr-text col-12 mbr-fonts-style display-7 col-md-12">
-                    <p>
-                        As an instructor of a gym, you want to be able to let everyone know you are unable to teach 
-                        one of your classes. You want to be able to edit the classes you teach. You also want to be 
-                        able to see everything announced at the gym. This apllication will help you with this all.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="mbr-section article content12 cid-s4lmIWWjs1" id="content12-12">
-
-        <div class="container">
-            <div class="media-container-row">
-                <div class="mbr-text counter-container col-12 col-md-8 mbr-fonts-style display-7">
-                    <ul>
-                        <li><strong>Cancel a class</strong> - If you can't teach your class, let everyone 
-                        who booked a spot know that it won't be happening anymore by cancelling it. You do this 
-                        on the class details page.</li>
-                        <li><strong>Edit a class</strong> - If you're unhappy with any of the details of the classes you teach,
-                        you can edit them. This is also done through the class details page.</li>
-                        <li><strong>Be informed</strong> - You can also see all announcements made by the managers on the 
-                        announcements page.</li>
+                <div style="width: 50%;">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="GymMovesIndex.html">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="GymMembers.html">Gym Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="GymInstructors.html">Gym Instructors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="GymManagers.html">Gym Managers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="HowToRegisterMyGym.html">Register My Gym</a>
+                        </li>
+    
                     </ul>
                 </div>
-            </div>
-        </div>
-    </section>
+            </nav>
+    
+        </section>
 
-    <!--<section class="accordion1 cid-s4lmZqwv5I" id="accordion1-14">
+        <br><br><br>
 
-        <div class="container">
-            <div class="media-container-row">
-                <div class="col-12 col-md-8">
-                    <div class="section-head text-center space30">
-                        <h2 class="mbr-section-title pb-5 mbr-fonts-style display-2">
-                            Accordion FAQ
-                        </h2>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div id="bootstrap-accordion_39" class="panel-group accordionStyles accordion" role="tablist"
-                        aria-multiselectable="true">
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingOne">
-                                <a role="button" class="panel-title collapsed text-black" data-toggle="collapse"
-                                    data-core="" href="#collapse1_39" aria-expanded="false" aria-controls="collapse1">
-                                    <h4 class="mbr-fonts-style display-5">
-                                        <span class="sign mbr-iconfont mbri-arrow-down inactive"></span>
-                                        What is Mobirise?
-                                    </h4>
-                                </a>
-                            </div>
-                            <div id="collapse1_39" class="panel-collapse noScroll collapse " role="tabpanel"
-                                aria-labelledby="headingOne" data-parent="#bootstrap-accordion_39">
-                                <div class="panel-body p-4">
-                                    <p class="mbr-fonts-style panel-text display-7">
-                                        Mobirise is an offline app for Window and Mac to easily create small/medium
-                                        websites, landing pages, online resumes and portfolios, promo sites for
-                                        apps, events, services and products.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingTwo">
-                                <a role="button" class="collapsed panel-title text-black" data-toggle="collapse"
-                                    data-core="" href="#collapse2_39" aria-expanded="false" aria-controls="collapse2">
-                                    <h4 class="mbr-fonts-style display-5">
-                                        <span class="sign mbr-iconfont mbri-arrow-down inactive"></span> Is it good
-                                        for me?
-                                    </h4>
-                                </a>
-
-                            </div>
-                            <div id="collapse2_39" class="panel-collapse noScroll collapse" role="tabpanel"
-                                aria-labelledby="headingTwo" data-parent="#bootstrap-accordion_39">
-                                <div class="panel-body p-4">
-                                    <p class="mbr-fonts-style panel-text display-7">
-                                        Mobirise is perfect for non-techies who are not familiar with the
-                                        intricacies of web development and for designers who prefer to work as
-                                        visually as possible, without fighting with code. Also great for pro-coders
-                                        for fast prototyping and small customers' projects.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingThree">
-                                <a role="button" class="collapsed text-black panel-title" data-toggle="collapse"
-                                    data-core="" href="#collapse3_39" aria-expanded="false" aria-controls="collapse3">
-                                    <h4 class="mbr-fonts-style display-5">
-                                        <span class="sign mbr-iconfont mbri-arrow-down inactive"></span> Why
-                                        Mobirise?
-                                    </h4>
-                                </a>
-                            </div>
-                            <div id="collapse3_39" class="panel-collapse noScroll collapse" role="tabpanel"
-                                aria-labelledby="headingThree" data-parent="#bootstrap-accordion_39">
-                                <div class="panel-body p-4">
-                                    <p class="mbr-fonts-style panel-text display-7">
-                                        Key differences from traditional builders:<br>* Minimalistic, extremely
-                                        <strong>easy-to-use</strong> interface<br>*
-                                        <strong>Mobile</strong>-friendliness, latest website blocks and techniques
-                                        "out-the-box"<br>* <strong>Free</strong> for commercial and non-profit use
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+        <section class="text" style="text-align: justify;">
+            <div class="container">
+                <div class="media-container-row">
+                    <div class="col-12 col-md-12">
+                        <p>
+                            As an instructor of a gym, you want to be able to let everyone know you are unable to teach 
+                        one of your classes. You want to be able to edit the classes you teach. You also want to be 
+                        able to see everything announced at the gym. This application will help you with this all.
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section> -->
+        </section>
 
-    <section once="footers" class="cid-s4lcVycD0u" id="footer6-c">
-
-        <div class="container">
-            <div class="media-container-row align-center mbr-white">
-                <div class="col-12">
-                    <p class="mbr-text mb-0 mbr-fonts-style display-7">
-                        © Copyright 2020 Gym Moves - All Rights Reserved
-                    </p>
+        <br>
+    
+        <section>
+    
+            <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
+                <div class="media-container-row">
+                    <div class="col-12">
+                        <ul type="circle" >
+                            <li><strong>Cancel a class</strong> - If you can't teach your class, let everyone 
+                                who booked a spot know that it won't be happening anymore by cancelling it. You do this 
+                                on the class details page.</li>
+                                <li><strong>Edit a class</strong> - If you're unhappy with any of the details of the classes you teach,
+                                you can edit them. This is also done through the class details page.</li>
+                                <li><strong>Be informed</strong> - You can also see all announcements made by the managers on the 
+                                announcements page.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>    
 
+       
+        <br><br><br>
+    
+        <section once="footers" class="footer barColour">
+            <div class="container">
+              
+              © Copyright 2020 Gym Moves - All Rights Reserved
+    
+            </div>
+        </section>
 
-
-    <script src="assets/web/assets/jquery/jquery.min.js"></script>
-    <script src="assets/popper/popper.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/tether/tether.min.js"></script>
-    <script src="assets/smoothscroll/smooth-scroll.js"></script>
-    <script src="assets/dropdown/js/nav-dropdown.js"></script>
-    <script src="assets/dropdown/js/navbar-dropdown.js"></script>
-    <script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
-    <script src="assets/mbr-switch-arrow/mbr-switch-arrow.js"></script>
-    <script src="assets/theme/js/script.js"></script>
-
-
-    <div id="scrollToTop" class="scrollToTop mbr-arrow-up"><a style="text-align: center;"><i
-                class="mbr-arrow-up-icon mbr-arrow-up-icon-cm cm-icon cm-icon-smallarrow-up"></i></a></div>
-</body>
-
+    </body>
 </html>
