@@ -1,0 +1,157 @@
+﻿<!--
+File Name
+  LoginManager.html
+
+Author:
+  Danel
+
+Date Created
+  26/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Date       | Author       | Changes
+--------------------------------------------------------------------------------
+29/07/2020   |    Danel     |  Added login request and storage
+--------------------------------------------------------------------------------
+01/08/2020   |    Tia       |  Added logo
+--------------------------------------------------------------------------------
+02/08/2020   |    Danel     |   Fixed css
+--------------------------------------------------------------------------------
+
+Functional Description:
+  This file contains the HTML and some css code for the login page for gym managers.
+
+-->
+
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon">
+
+    <title>Login for Manager</title>
+
+    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-reboot.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/assets/styles.css")">
+</head>
+
+<body>
+    <section>
+        <nav class="navbar navbar-expand navbar-dark barColour">
+            <img style="vertical-align: top; height: 90px;" src="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" alt="" title="">
+            <div style="width: 40%;">
+                <p id="heading">Gym Moves</p>
+            </div>
+            <div style="width: 50%;">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Content("~/GymMoves")">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Content("~/GymMembers")">Gym Members</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Content("~/GymInstructors")">Gym Instructors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Content("~/GymManagers")">Gym Managers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Content("~/HowToRegisterMyGym")">Register My Gym</a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+    </section>
+
+    <br>
+    <br>
+
+    <section>
+        <div class="col-md-12 d-flex flex-column justify-content-center">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <div class="card-body">
+                    <form role="form" autocomplete="off" id="register" method="post" novalidate="">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control form-control-lg" name="username" id="username" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control form-control-lg" name="password" id="password" required="">
+                        </div>
+
+                        <div id="forgotPassword" align="right">
+                            Forgot password?
+                        </div>
+
+                        <br>
+
+                        <div align="center" class="form-group">
+                            <button type="button" class="btn button-colour" onclick="login()">Login</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section once="footers" class="footer barColour">
+        <div class="container">
+
+            © Copyright 2020 Gym Moves - All Rights Reserved
+
+        </div>
+    </section>
+
+    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
+
+    <script>
+
+        async function login() {
+
+            const msgBuffer = new TextEncoder('utf-8').encode(document.getElementById("password").value);
+
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+            const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+
+            var user =
+            {
+                'username': document.getElementById("username").value,
+                'password': hashHex
+            };
+
+            jQuery.ajax({
+                url: "@Url.Content("~/api/user/login")",
+                type: "POST",
+                data: JSON.stringify(user),
+                contentType: "application/json",
+                success: function (result) {
+                    document.cookie = "username=" + document.getElementById("username").value + ", path=/";
+                    window.location.href = "@Url.Content("~/MainPageForDashboard")";
+
+                }
+                ,
+                error: function (result) {
+                    window.alert(result.responseText);
+                }
+            });
+        }
+
+    </script>
+
+
+
+</body>
+
+
+
