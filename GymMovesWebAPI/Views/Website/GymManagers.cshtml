@@ -1,0 +1,158 @@
+﻿<!--
+File Name
+  GymManagers.html
+
+Author:
+  Danel
+
+Date Created
+  26/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Date       | Author       | Changes
+--------------------------------------------------------------------------------
+27/07/2020   |    Danel     |  Added content
+--------------------------------------------------------------------------------
+01/08/2020   |    Tia       |  Added logo
+--------------------------------------------------------------------------------
+02/08/2020   |    Danel     |  Fixed CSS
+--------------------------------------------------------------------------------
+
+Functional Description:
+  T  This file contains the HTML and some css code for the gym managers' page. This page explains the features
+  for a gym manager and allows the manager to login.
+
+-->
+
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon">
+
+        <title>Gym Mansgers on Gym Moves</title>
+
+        <link rel="stylesheet" href="@Url.Content("assets/bootstrap/css/bootstrap.min.css")">
+        <link rel="stylesheet" href="@Url.Content("assets/bootstrap/css/bootstrap-grid.min.css")">
+        <link rel="stylesheet" href="@Url.Content("assets/bootstrap/css/bootstrap-reboot.min.css")">
+        <link rel="stylesheet" href="@Url.Content("assets/styles.css")">
+    </head>
+
+    <body>
+
+        <section>
+            <nav class="navbar navbar-expand navbar-dark barColour">
+                <img style="vertical-align: top; height: 90px;" src="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" alt="" title="">
+                <div style="width: 40%;">
+                    <p id="heading">Gym Moves</p>
+                </div>
+                <div style="width: 50%;">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Content("~/GymMoves")">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Content("~/gymmembers")">Gym Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Content("~/gyminstructors")">Gym Instructors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="@Url.Content("~/gymmanagers")">Gym Managers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Content("~/howtoregistermygym")">Register My Gym</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+
+        </section>
+
+        <br>
+
+        <div align="right">
+            <div class="media-container-column col-8 col-lg-3 col-md-4">
+                <a id="managerPageLink"> <button id="managerPageButton" type="button" class="btn button-colour">Login</button> </a>
+            </div>
+        </div>
+
+        <script>
+        if (document.cookie != "") {
+            document.getElementById("managerPageButton").innerText = "View Dashboard";
+            document.getElementById("managerPageLink").href = "@Url.Content("~/MainPageForDashboard")";
+
+        }
+        else {
+            document.getElementById("managerPageButton").innerText = "Login";
+            document.getElementById("managerPageLink").href = "@Url.Content("~/managerlogin")";
+        }
+        </script>
+
+        <br><br>
+
+        <section class="text" style="text-align: justify;">
+            <div class="container">
+                <div class="media-container-row">
+                    <div class="col-12 col-md-12">
+                        <p>
+                            As a gym manager, you want to have that communication with all gym goers so that
+                            everyone knows of important events taking place at the gym. You want to be able to
+                            control the classes at the gym. You also want to know all the statistics of the gym so
+                            you know how to improve what is already there. This application helps you to do all that.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <br>
+
+        <section>
+
+            <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
+                <div class="media-container-row">
+                    <div class="col-12">
+                        <ul type="circle">
+                            <li>
+                                <strong>Send announcements</strong> - Keep everyone at the gym informed by sending
+                                them anouncements of what is happening at the gym. You can find the screen to send announcements
+                                as an option on the menu.
+                            </li>
+                            <li>
+                                <strong>Add classes</strong> - You can add a new class for the gym members to enjoy. You can
+                                do this from the screen where you can view all the classes.
+                            </li>
+                            <li>
+                                <strong>Edit classes</strong> - You can edit a class's details if you are unhappy with them.
+                                You can do this from the class detail screen.
+                            </li>
+                            <li>
+                                <strong>Remove classes</strong> - You can remove a class if you are unhappy with it.
+                                You can do this from the class detail screen.
+                            </li>
+                            <li>
+                                <strong>View the gym's dashboard</strong> - You can use the login button above to login. The
+                                dashboard will give you all sorts of information about the gym to allow you to make decisions on
+                                how to improve everything.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <br><br><br>
+
+        <section once="footers" class="footer barColour">
+            <div class="container">
+
+                © Copyright 2020 Gym Moves - All Rights Reserved
+
+            </div>
+        </section>
+
+    </body>
+
