@@ -39,6 +39,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
+import 'package:gym_moves/Rating/InstructorRating.dart';
 
 /*
 Class Name:
@@ -259,7 +260,23 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               ),
               alignment: Alignment.centerLeft,
             ),
-            Container(
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => InstructorRating(
+                      instructor: instructorName,
+                    classN: className,
+                    classD: classDay,
+                    classT: classTime,
+                    availableSpots: int.parse(classAvailableSpots),
+                    description: classDescription,
+                    id: classID
+                      )),
+                );
+              },
+              child: Container(
               padding: EdgeInsets.fromLTRB(
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
               child: Text(
@@ -272,7 +289,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
-            ),
+            )),
             /*
             Container(
               padding: EdgeInsets.fromLTRB(

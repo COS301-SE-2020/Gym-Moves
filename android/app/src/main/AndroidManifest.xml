@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gym_moves">
+    package="com.example.gymmoves">
 
 	<uses-permission android:name="android.permission.NFC" />
 	<uses-feature android:name="android.hardware.nfc" android:required="true" />

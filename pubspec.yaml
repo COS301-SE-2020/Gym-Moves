@@ -25,6 +25,7 @@ dependencies:
   flutter_spinkit: ^4.1.2
   nfc_in_flutter: 2.0.2
   flutter_swiper: 1.1.6
+  smooth_star_rating: ^1.1.1
   path_provider:
 
 
