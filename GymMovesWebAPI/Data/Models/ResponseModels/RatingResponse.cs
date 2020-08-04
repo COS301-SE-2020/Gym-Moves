@@ -9,4 +9,10 @@ namespace GymMovesWebAPI.Data.Models.ResponseModels {
         public int ratingSum { get; set; }
         public int ratingCount { get; set; }
     }
+
+    public class InstructorRatingResponse {
+        public string instructor { get; set; }
+        public int ratingSum { get; set; }
+        public int ratingCount { get; set; }
+    }
 }
