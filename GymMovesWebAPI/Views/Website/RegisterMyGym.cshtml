@@ -155,8 +155,19 @@ Functional Description:
     </section>
 
     <script>
+
+
         $(document).ready(function () {
             $("#register").click(function (e) {
+
+                const msgBuffer = new TextEncoder('utf-8').encode(document.getElementById("password").value);
+
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+                const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+
                 var name = JSON.stringify($("#name").serializeJSON());
                 var surname = JSON.stringify($("#surname").serializeJSON());
                 var username = JSON.stringify($("#username").serializeJSON());
@@ -166,7 +177,7 @@ Functional Description:
                 var gymName = JSON.stringify($("#gymName").serializeJSON());
                 var gymBranch = JSON.stringify($("#gymBranch").serializeJSON());
                 var code = JSON.stringify($("#code").serializeJSON());
-                var password = JSON.stringify($("#password").serializeJSON());
+                var password = JSON.stringify(hashHex.serializeJSON());
 
                 $.ajax({
                     url: "http://gymmoves/api/Gym/register",
