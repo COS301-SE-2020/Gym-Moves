@@ -35,9 +35,7 @@ Classes in the File:
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gym_moves/User/InstructorPages.dart';
-import 'package:gym_moves/User/ManagerPages.dart';
-import 'package:gym_moves/User/MemberPages.dart';
+import 'package:gym_moves/NavigationBar.dart';
 
 import 'package:gym_moves/User/SignUp.dart';
 import 'package:gym_moves/User/ForgotPassword.dart';
@@ -98,124 +96,100 @@ class LogInState extends State<LogIn> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    final usernameField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            alignment: Alignment.centerLeft,
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            child: TextField(
-                cursorColor: Colors.black45,
-                obscureText: false,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Username',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    username = value;
-                  });
-                })
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white
-    );
+    final usernameField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0xff787878),
+            obscureText: false,
+            style: TextStyle(
+              color: Color(0x88464e51),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Username',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide:  new BorderSide(color: Color(0xff787878))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide:  new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))),
+            onChanged: (value) {
+              setState(() {
+                username = value;
+              });
+            }));
 
-    final passwordField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            alignment: Alignment.centerLeft,
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            child: TextField(
-                cursorColor: Colors.black45,
-                obscureText: hidePassword,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Password',
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(15.0),
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    password = value;
-                  });
-                })
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white
-    );
+    final passwordField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0xff787878),
+            obscureText: hidePassword,
+            style: TextStyle(
+              color:Color(0xff787878),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Password',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide:  new BorderSide(color: Color(0xff787878))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide:  new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))),
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            }));
 
     return Scaffold(
-      backgroundColor: const Color(0xff513369),
+      backgroundColor: const Color(0xffffffff),
       body: ListView(children: <Widget>[
         Stack(children: <Widget>[
           Transform.translate(
-            offset: Offset(0.0, -0.035 * media.size.height),
-            child: Container(
-              width: media.size.width,
-              height: 0.4 * media.size.height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: const AssetImage('assets/Bicycles.jpg'),
-                  fit: BoxFit.fill,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.82), BlendMode.dstIn
-                  )
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x22000000),
-                    offset: Offset(0, 3),
-                    blurRadius: 6,
-                  )
-                ])
-            )
-          ),
+              offset: Offset(0.0, 0.0),
+              child: Container(
+                  width: media.size.width,
+                  height: 0.4 * media.size.height,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: const AssetImage('assets/LoginPicture.png'),
+                          fit: BoxFit.fill
+                      )))),
           Transform.translate(
-            offset: Offset(0.08 * media.size.width, 0.08 * media.size.height),
+            offset: Offset(0.08 * media.size.width, 0.02 * media.size.height),
             child: Text(
               'Gym Moves',
               style: TextStyle(
-                fontFamily: 'FreestyleScript',
-                fontSize: 0.28 * media.size.width,
-                color: const Color(0xffffffff),
+                fontFamily: 'Lastwaerk',
+                fontSize: 0.15 * media.size.width,
+                color: const Color(0xff3e3e3e),
               ),
               textAlign: TextAlign.left,
-            )
-          )
+            ),
+          ),
         ]),
-        SizedBox(height: 10.0),
+        SizedBox(height: 0.04 * media.size.height),
+        Center(
+          child: Text(
+            "Log In",
+            style:  TextStyle(
+                fontSize: 0.07 * media.size.width,
+                fontFamily: 'Lastwaerk',
+                color: const Color(0xff3e3e3e) ),
+          ),
+        ),
+        SizedBox(height: 0.04 * media.size.height),
         Form(
             key: logInFormKey,
             child: Column(children: <Widget>[
@@ -229,7 +203,7 @@ class LogInState extends State<LogIn> {
                     child: SvgPicture.string(
                       person,
                       width: media.size.width * 0.04,
-                      color: Colors.black45,
+                      color:  Color(0xff787878),
                       allowDrawingOutsideViewBox: true,
                     )
                 )
@@ -251,7 +225,7 @@ class LogInState extends State<LogIn> {
                           hidePassword
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Colors.grey,
+                          color:  Color(0xff787878),
                         ))
                 )
               ])
@@ -274,36 +248,30 @@ class LogInState extends State<LogIn> {
                 child: Text(
                   "Forgot password?",
                   textAlign: TextAlign.right,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color:  Color(0xff7341E6)),
                 )
             )
         ),
+        SizedBox(height: 0.01 * media.size.height),
         Center(
             child: SizedBox(
+                width: 0.4 * media.size.width,
                 child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)
-                  ),
-                  color: const Color(0xffffffff).withOpacity(0.3),
-                  onPressed: () {
-                    verifyUser();
-                  },
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                          fontSize: 0.04 * media.size.width,
-                          fontFamily: 'Roboto'
-                              ''),
-                    )
-                  )
-                )
-            )
-        ),
-        SizedBox(height: 30),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    color: const Color(0xff7341E6),
+                    onPressed: () {
+                      verifyUser();
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text('Submit',
+                            style: TextStyle(
+                                fontSize: 0.04 * media.size.width,
+                                fontFamily: 'Roboto')))))),
+        SizedBox(height: 0.01 * media.size.height),
         Center(
             child: GestureDetector(
                 onTap: () {
@@ -315,19 +283,20 @@ class LogInState extends State<LogIn> {
                 },
                 child: Text.rich(
                   TextSpan(
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 0.04 * media.size.width,
-                        color: const Color(0xffffffff),
-                      ),
                       children: [
                         TextSpan(
                           text: 'Don\'t have an account? ',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 0.04 * media.size.width,
+                            color: const  Color(0xff787878),
+                          ),
                         ),
                         TextSpan(
                           text: 'Sign up!',
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
+                            color: const  Color(0xff7341E6),
                           )
                         )
                       ]),
@@ -378,22 +347,10 @@ class LogInState extends State<LogIn> {
 
       Navigator.pop(context);
 
-      if (res.userType == 0) {
-        Navigator.push(
+      Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MemberPages()),
+          MaterialPageRoute(builder: (context) => NavigationBar(index: 0)),
         );
-      } else if (res.userType == 2) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ManagerPages()),
-        );
-      } else if (res.userType == 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => InstructorPages()),
-        );
-      }
     } else {
       String errMessage = response.body;
 

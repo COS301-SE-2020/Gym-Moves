@@ -38,6 +38,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 
@@ -65,301 +66,332 @@ class ForgotPasswordState extends State<ForgotPassword> {
 
   String url = "https://gymmoveswebapi.azurewebsites.net/api/user/";
 
+
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    final usernameField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            padding: EdgeInsets.all(0.01 * media.size.width),
-            child: TextField(
-                cursorColor: Colors.black45,
-                obscureText: false,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Username',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                onChanged: (value) {
-                  setState(() {
-                    username = value;
-                  });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+    final usernameField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0x88464e51),
+            obscureText: false,
+            style: TextStyle(
+              color: Color(0x88464e51),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Username',
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                contentPadding: const EdgeInsets.all(20.0),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide: new BorderSide(color: Color(0xff787878))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))),
+            onChanged: (value) {
+              setState(() {
+                username = value;
+              });
+            }));
 
-    final passwordField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            padding: EdgeInsets.all(0.01 * media.size.width),
-            child: TextField(
-                cursorColor: Colors.black45,
-                obscureText: hidePassword,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Password',
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(15.0),
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    password = value;
-                  });
-                })
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white
-    );
+    final passwordField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0x88464e51),
+            obscureText: hidePassword,
+            style: TextStyle(
+              color: Color(0x88464e51),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Password',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide: new BorderSide(color: Color(0xff787878))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))),
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            }));
 
-    final codeField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            padding: EdgeInsets.all(0.01 * media.size.width),
-            child: TextField(
-                cursorColor: Colors.black45,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Code',
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(15.0),
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                onChanged: (value) {
-                  setState(() {
-                    code = value;
-                  });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+    final codeField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0x88464e51),
+            obscureText: hidePassword,
+            style: TextStyle(
+              color: Color(0x88464e51),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Code',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide: new BorderSide(color: Color(0xff787878))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))),
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            }));
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
-        body: ListView(children: <Widget>[
-          Stack(children: <Widget>[
-            Transform.translate(
-                offset: Offset(0.0, -0.035 * media.size.height),
-                child: Container(
-                    width: media.size.width,
-                    height: 0.13 * media.size.height,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: const AssetImage('assets/Banner.jpg'),
-                          fit: BoxFit.fill,
-                          colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(0.52), BlendMode.dstIn
-                          ),
+        backgroundColor: const Color(0xffffffff),
+        body: new Swiper.children(
+            autoplay: false,
+            index: 0,
+            pagination: new SwiperPagination(
+                margin: new EdgeInsets.fromLTRB(0, 0, 0, 30),
+                builder: new DotSwiperPaginationBuilder(
+                    color: const Color(0xff787878),
+                    activeColor: const Color(0xff7341E6),
+                    size: 0.025 * media.size.width,
+                    activeSize: 0.035 * media.size.width)),
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  Stack(children: <Widget>[
+                    Transform.translate(
+                        offset: Offset(media.size.width * 0.15, 0.0),
+                        child: Container(
+                            width: media.size.width * 0.7,
+                            height: 0.3 * media.size.height,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: const AssetImage(
+                                        'assets/ForgotPasswordPicture.png'),
+                                    fit: BoxFit.fill)))),
+                    Transform.translate(
+                      offset: Offset(
+                          0.08 * media.size.width, 0.26 * media.size.height),
+                      child: Text(
+                        'Gym Moves',
+                        style: TextStyle(
+                          fontFamily: 'Lastwaerk',
+                          fontSize: 0.15 * media.size.width,
+                          color: const Color(0xff3e3e3e),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x46000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          )
-                        ])
-                )
-            ),
-            Container(
-              width: media.size.width,
-              child: Text(
-                'Gym Moves ',
-                style: TextStyle(
-                  fontFamily: 'FreestyleScript',
-                  fontSize: 0.13 * media.size.width,
-                  color: const Color(0xffffffff),
-                ),
-                textAlign: TextAlign.right,
-              ),
-            ),
-            Transform.translate(
-                offset:
-                    Offset(0.04 * media.size.width, 0.03 * media.size.height),
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SvgPicture.string(backArrow,
-                        allowDrawingOutsideViewBox: true,
-                        width: 0.06 * media.size.width)
-                )
-            )
-          ]),
-          Container(
-            width: media.size.width*0.95,
-            child: Text(
-              'We will send a code to your email, please enter it in order to '
-                  'reset your password.',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 0.045 * media.size.width,
-                color: const Color(0xffffffff),
-                fontWeight: FontWeight.w300,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Form(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 0.1 * media.size.height),
-                Stack(children: <Widget>[
-                  usernameField,
-                  Transform.translate(
-                      offset: Offset(0.7 * 0.85 * media.size.width,
-                          0.08 * 0.3 * media.size.height),
-                      child: SvgPicture.string(
-                        person,
-                        width: media.size.width * 0.04,
-                        color: Colors.black45,
-                        allowDrawingOutsideViewBox: true,
-                      ))
-                ]),
-                SizedBox(height: 0.03 * media.size.height),
-                Center(
-                    child: SizedBox(
-                        width: 0.25 * media.size.width,
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          color: const Color(0xffffffff).withOpacity(0.3),
-                          onPressed: () {
-                            getCode();
-                          },
-                          textColor: Colors.white,
-                          padding: const EdgeInsets.all(0.0),
-                          child: Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Get Code',
-                              style: TextStyle(
-                                  fontSize: 0.04 * media.size.width,
-                                  fontFamily: 'Roboto'),
-                            ),
-                          ),
-                        ))),
-                SizedBox(height: 0.08 * media.size.height),
-                Stack(children: <Widget>[
-                  codeField,
-                  Transform.translate(
-                      offset: Offset(0.7 * 0.85 * media.size.width,
-                          0.08 * 0.3 * media.size.height),
-                      child: SvgPicture.string(
-                        keypad,
-                        width: media.size.width * 0.035,
-                        color: Colors.black45,
-                        allowDrawingOutsideViewBox: true,
-                      ))
-                ]),
-                SizedBox(height: 0.025 * media.size.height),
-                Stack(children: <Widget>[
-                  passwordField,
-                  Transform.translate(
-                      offset: Offset(0.7 * 0.85 * media.size.width,
-                          0.08 * 0.3 * media.size.height
+                        textAlign: TextAlign.left,
                       ),
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              hidePassword = !hidePassword;
-                            });
-                          },
-                          child: Icon(
-                            hidePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.grey,
+                    ),
+                    Transform.translate(
+                        offset: Offset(
+                            0.04 * media.size.width, 0.03 * media.size.height),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: SvgPicture.string(
+                              backArrow,
+                              allowDrawingOutsideViewBox: true,
+                              width: 0.06 * media.size.width,
+                              color: const Color(0xFF6C63FF),
+                            )))
+                  ]),
+                  SizedBox(height: 0.09 * media.size.height),
+                  Center(
+                    child: Text(
+                      "Reset Password",
+                      style: TextStyle(
+                          fontSize: 0.07 * media.size.width,
+                          fontFamily: 'Lastwaerk',
+                          color: const Color(0xff3e3e3e)),
+                    ),
+                  ),
+                  SizedBox(height: 0.05 * media.size.height),
+                  SizedBox(
+                    width: media.size.width * 0.8,
+                    child: Text(
+                      'Please enter your username. We will send a code to your '
+                          'email, please enter it on the next page in order to '
+                          'reset your password.',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 0.045 * media.size.width,
+                        color: const Color(0xff787878),
+                        fontWeight: FontWeight.w300,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Form(
+                      child: Column(children: <Widget>[
+                    SizedBox(height: 0.05 * media.size.height),
+                    Stack(children: <Widget>[
+                      usernameField,
+                      Transform.translate(
+                          offset: Offset(0.7 * 0.85 * media.size.width,
+                              0.08 * 0.3 * media.size.height),
+                          child: SvgPicture.string(
+                            person,
+                            width: media.size.width * 0.04,
+                            color: Color(0xff787878),
+                            allowDrawingOutsideViewBox: true,
                           ))
-                  )
-                ]),
-                SizedBox(height: 0.03 * media.size.height),
-                Center(
-                    child: SizedBox(
-                        width: 0.38 * media.size.width,
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)
-                          ),
-                          color: const Color(0xffffffff).withOpacity(0.3),
-                          onPressed: () {
-                            forgotPassword();
-                          },
-                          textColor: Colors.white,
-                          padding: const EdgeInsets.all(0.0),
+                    ]),
+                    SizedBox(height: 0.03 * media.size.height),
+                    Center(
+                        child: SizedBox(
+                            width: 0.4 * media.size.width,
+                            child: FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                color: const Color(0xff7341E6),
+                                onPressed: () {
+                                  getCode();
+                                },
+                                textColor: Colors.white,
+                                padding: const EdgeInsets.all(0.0),
+                                child: Container(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text('Get Code',
+                                        style: TextStyle(
+                                            fontSize: 0.04 * media.size.width,
+                                            fontFamily: 'Roboto')))))),
+
+                  ]))]),
+              ListView(
+                  children: <Widget>[
+                    Stack(children: <Widget>[
+                      Transform.translate(
+                          offset: Offset(media.size.width * 0.15, 0.0),
                           child: Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Change password',
-                              style: TextStyle(
-                                  fontSize: 0.04 * media.size.width,
-                                  fontFamily: 'Roboto'
-                              ),
-                            ),
+                              width: media.size.width * 0.7,
+                              height: 0.3 * media.size.height,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: const AssetImage(
+                                          'assets/ForgotPasswordPicture.png'),
+                                      fit: BoxFit.fill)))),
+                      Transform.translate(
+                        offset: Offset(
+                            0.08 * media.size.width, 0.26 * media.size.height),
+                        child: Text(
+                          'Gym Moves',
+                          style: TextStyle(
+                            fontFamily: 'Lastwaerk',
+                            fontSize: 0.15 * media.size.width,
+                            color: const Color(0xff3e3e3e),
                           ),
-                        )
-                    )
-                ),
-              ],
-            ),
-          )
-        ])
-    );
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Transform.translate(
+                          offset: Offset(
+                              0.04 * media.size.width, 0.03 * media.size.height),
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: SvgPicture.string(
+                                backArrow,
+                                allowDrawingOutsideViewBox: true,
+                                width: 0.06 * media.size.width,
+                                color: const Color(0xFF6C63FF),
+                              )))
+                    ]),
+                    SizedBox(height: 0.09 * media.size.height),
+                    Center(
+                      child: Text(
+                        "Reset Password",
+                        style: TextStyle(
+                            fontSize: 0.07 * media.size.width,
+                            fontFamily: 'Lastwaerk',
+                            color: const Color(0xff3e3e3e)),
+                      ),
+                    ),
+                    SizedBox(height: 0.05 * media.size.height),
+                    Form(
+                        child: Column(children: <Widget>[
+                          SizedBox(height: 0.06 * media.size.height),
+                          Stack(children: <Widget>[
+                            codeField,
+                            Transform.translate(
+                                offset: Offset(0.7 * 0.85 * media.size.width,
+                                    0.08 * 0.3 * media.size.height),
+                                child: SvgPicture.string(
+                                  keypad,
+                                  width: media.size.width * 0.035,
+                                  color:Color(0xff787878),
+                                  allowDrawingOutsideViewBox: true,
+                                ))
+                          ]),
+                          SizedBox(height: 0.025 * media.size.height),
+                          Stack(children: <Widget>[
+                            passwordField,
+                            Transform.translate(
+                                offset: Offset(0.7 * 0.85 * media.size.width,
+                                    0.08 * 0.3 * media.size.height),
+                                child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        hidePassword = !hidePassword;
+                                      });
+                                    },
+                                    child: Icon(
+                                      hidePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: const Color(0xff787878),
+                                    )))
+                          ]),
+                          SizedBox(height: 0.03 * media.size.height),
+                          Center(
+                              child: SizedBox(
+                                  child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.0)),
+                                      color: const Color(0xff7341E6),
+                                      onPressed: () {
+                                        forgotPassword();
+                                      },
+                                      textColor: Colors.white,
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: Container(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text('Change Password',
+                                              style: TextStyle(
+                                                  fontSize: 0.04 * media.size.width,
+                                                  fontFamily: 'Roboto')))))),
+                          SizedBox(height: 0.06 * media.size.height)
+
+                        ]))]),
+            ]));
   }
 
   getCode() async {
-    final http.Response response = await http.get(url + "getCode?username=" +
-        username);
+    final http.Response response =
+        await http.get(url + "getCode?username=" + username);
 
-    if(response.statusCode != 200){
+    if (response.statusCode != 200) {
       _errorDialogue(response.body);
-    }
-    else{
+    } else {
       _successDialogue("Code sent to your email successfully.");
     }
   }
 
   forgotPassword() async {
-
     var bytes = utf8.encode(password);
     var hashPassword = sha256.convert(bytes);
 
@@ -368,8 +400,11 @@ class ForgotPasswordState extends State<ForgotPassword> {
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
-      body: jsonEncode(
-          {'username': username, 'code': code, 'password': hashPassword.toString()}),
+      body: jsonEncode({
+        'username': username,
+        'code': code,
+        'password': hashPassword.toString()
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -435,7 +470,6 @@ class ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 }
-
 
 const String backArrow =
     '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

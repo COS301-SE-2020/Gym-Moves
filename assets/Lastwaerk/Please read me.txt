@@ -1,0 +1,45 @@
+	Read me V1.0 - 21/9 - 2009
+
+
+	Thank you for downloading Lastwaerk!
+
+If you like Lastwaerk and use it, you are very welcome to leave a donation!
+Making fonts is much work and even a very small amount of money will be highly appreciated, encouraging me to keep making fonts available free of charge.  
+To make a donation, use the link "donate" included in the Lastwaerk folder.
+
+(Note that it is entirely up to you if you want to leave a donation, and not doing so should by no means morally stop you from using Lastwaerk)
+
+
+
+	To install:
+
+Windows:
+Copy the font files to C:\windows\fonts
+
+Mac:
+Put the files into /Library/Fonts (for all users), or into /Users/Your_username/Library/Fonts (for you only).
+
+Linux:
+Copy the font files to fonts:// in the File manager
+
+NOTE: If you only want some of the weights, simply leave out the ones you don't want when copying the files to the font folder.
+
+
+I hope you will enjoy using it.
+
+
+
+	Important copyright information:
+
+Lastwaerk is free for personal/non-commercial use, AND commercial use.
+
+Lastwaerk is licensed under a Creative Commons Attribution-No Derivative Works 3.0 License: http://creativecommons.org/licenses/by-nd/3.0/
+This means, that you can share the font as you like, but not make a new version of the font (e.g. a condensed version) and publish it without my permission. Other than that, you are free to use it as you like in any way (mix it with other fonts/ change letters etc. etc.)
+
+If you still have questions or comments, you can write to my email: aajohan@gmail.com
+You are also very welcome to show me how you've used the font, as part of the joy creating a font lies in seeing it being used.
+
+
+
+		21/9 - 2009
+		Johan Aakerlund

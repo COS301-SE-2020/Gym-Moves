@@ -77,99 +77,77 @@ class ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    final currentPasswordField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            padding: EdgeInsets.all(0.01 * media.size.width),
-            child: TextFormField(
-                obscureText: hideOldPassword,
-                cursorColor: Colors.black45,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.transparent,
-                    labelText: 'Current password',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                onChanged: (value) {
-                  setState(() {
-                    oldPassword = value;
-                  });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+    final currentPasswordField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0xff787878),
+            obscureText: hideOldPassword,
+            style: TextStyle(
+              color: Color(0xff787878),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Current Password',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide: new BorderSide(color: Color(0xff787878))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))),
+            onChanged: (value) {
+              setState(() {
+                oldPassword = value;
+              });
+            }));
 
-    final newPasswordField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            padding: EdgeInsets.all(0.01 * media.size.width),
-            child: TextFormField(
-                obscureText: hideNewPassword,
-                cursorColor: Colors.black45,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'New password',
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(15.0),
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                onChanged: (value) {
-                  setState(() {
-                    newPassword = value;
-                  });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+    final newPasswordField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0xff787878),
+            obscureText: hideNewPassword,
+            style: TextStyle(
+              color: Color(0xff787878),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'New Password',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide: new BorderSide(color: Color(0xff787878))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))),
+            onChanged: (value) {
+              setState(() {
+                newPassword = value;
+              });
+            }));
 
     return Scaffold(
-      backgroundColor: const Color(0xff513369),
+      backgroundColor: const Color(0xffffffff),
       body: ListView(children: <Widget>[
         Stack(children: <Widget>[
           Transform.translate(
-              offset: Offset(0.0, -0.035 * media.size.height),
+              offset: Offset(0.1 * media.size.width, 0.0),
               child: Container(
-                  width: media.size.width,
-                  height: 0.13 * media.size.height,
+                  alignment: Alignment.center,
+                  width: media.size.width * 0.8,
+                  height: 0.4 * media.size.height,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage('assets/Banner.jpg'),
-                        fit: BoxFit.fill,
-                        colorFilter: new ColorFilter.mode(
-                          Colors.black.withOpacity(0.52),
-                          BlendMode.dstIn,
-                        ),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x46000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        )
-                      ]))),
+                    image: const AssetImage('assets/ForgotPasswordPicture.png'),
+                    fit: BoxFit.fill,
+                  )))),
           Transform.translate(
               offset: Offset(0.0, 0.04 * media.size.height),
               child: Transform.translate(
@@ -181,30 +159,19 @@ class ChangePasswordState extends State<ChangePassword> {
                       },
                       child: SvgPicture.string(backArrow,
                           allowDrawingOutsideViewBox: true,
-                          width: 0.06 * media.size.width)))),
-          Container(
-              alignment: Alignment.centerRight,
-              width: media.size.width,
-              height: 0.09 * media.size.height,
-              padding: EdgeInsets.all(0.01 * media.size.width),
-              child: Text(
-                'Change password',
-                style: TextStyle(
-                  fontFamily: 'FreestyleScript',
-                  fontSize: 0.1 * media.size.width,
-                  color: const Color(0xFFFFFFFF),
-                  shadows: [
-                    Shadow(
-                      color: const Color(0xbd000000),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                textAlign: TextAlign.right,
-              ))
+                          width: 0.06 * media.size.width,
+                          color: const Color(0xff7341E6)))))
         ]),
-        SizedBox(height: 0.03 * media.size.height),
+        Container(
+            alignment: Alignment.topCenter,
+            width: media.size.width,
+            child: Text('Change password',
+                style: TextStyle(
+                  fontFamily: 'Lastwaerk',
+                  fontSize: 0.08 * media.size.width,
+                  color: const Color(0xff3e3e3e),
+                ))),
+        SizedBox(height: 0.05 * media.size.height),
         Form(
             key: changeFormKey,
             child: Column(children: <Widget>[
@@ -249,26 +216,22 @@ class ChangePasswordState extends State<ChangePassword> {
             ])),
         Center(
             child: SizedBox(
-                width: 0.25 * media.size.width,
+                width: 0.4 * media.size.width,
                 child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  color: const Color(0xffffffff).withOpacity(0.3),
-                  onPressed: () {
-                    changePassword();
-                  },
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      'Change',
-                      style: TextStyle(
-                          fontSize: 0.04 * media.size.width,
-                          fontFamily: 'Roboto'),
-                    ),
-                  ),
-                ))),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    color: const Color(0xff7341E6),
+                    onPressed: () {
+                      changePassword();
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text('Change',
+                            style: TextStyle(
+                                fontSize: 0.04 * media.size.width,
+                                fontFamily: 'Roboto')))))),
         SizedBox(height: 0.06 * media.size.height),
       ]),
     );
@@ -342,7 +305,7 @@ class ChangePasswordState extends State<ChangePassword> {
             FlatButton(
               child: Text(
                 'Ok',
-                style: TextStyle(color: Color(0xff513369)),
+                style: TextStyle(color: Color(0xff7341E6)),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -366,7 +329,7 @@ class ChangePasswordState extends State<ChangePassword> {
             FlatButton(
               child: Text(
                 'Ok',
-                style: TextStyle(color: Color(0xff513369)),
+                style: TextStyle(color: Color(0xff7341E6)),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
