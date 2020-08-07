@@ -27,9 +27,6 @@ List of Classes:
     - RatingsController
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
@@ -38,7 +35,6 @@ using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Ocsp;
 
 namespace GymMovesWebAPI.Controllers {
     [Route("api/[controller]")]

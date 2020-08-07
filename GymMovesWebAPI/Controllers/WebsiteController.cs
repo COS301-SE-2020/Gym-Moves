@@ -57,5 +57,15 @@ namespace GymMovesWebAPI.Controllers {
         {
             return View();
         }
+
+        [Route("ForgotPassword")]
+        public IActionResult ForgotPassword() {
+            return View();
+        }
+
+        [Route("ResetPassword")]
+        public IActionResult ResetPassword() {
+            return View();
+        }
     }
 }
