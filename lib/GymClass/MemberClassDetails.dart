@@ -39,7 +39,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
-import 'package:gym_moves/Rating/InstructorRating.dart';
 
 /*
 Class Name:
@@ -115,7 +114,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: ListView(children: <Widget>[
           Column(children: <Widget>[
             Stack(children: <Widget>[
@@ -127,18 +126,12 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                     decoration: BoxDecoration(
                         image: DecorationImage(
                           image:
-                              const AssetImage('assets/RightSidePoolHalf.png'),
+                              const AssetImage('assets/ClassDetailsPicture.png'),
                           fit: BoxFit.fill,
                           colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                              Colors.white.withOpacity(0.6), BlendMode.dstIn),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x46000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          ),
-                        ]),
+),
                   )),
               Transform.translate(
                   offset: Offset(0.0, -0.033 * media.size.height),
@@ -153,9 +146,9 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                                   child: AutoSizeText(
                                 className,
                                 style: TextStyle(
-                                    fontFamily: 'FreestyleScript',
-                                    fontSize: 0.15 * media.size.width,
-                                    color: const Color(0xff391f57),
+                                    fontFamily: 'Last',
+                                    fontSize: 0.10 * media.size.width,
+                                    color: const Color(0xff3E3E3E),
                                     shadows: [
                                       Shadow(
                                         color: const Color(0x38000000),
@@ -165,21 +158,10 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                                     ]),
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
-                              )),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(110.5, 108.0)),
-                                  color: const Color(0xffffffff),
-                                  border: Border.all(
-                                      width: 1.0,
-                                      color: const Color(0xff707070)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x8f000000),
-                                      offset: Offset(0, 3),
-                                      blurRadius: 6,
-                                    )
-                                  ]))))),
+                              ))
+
+                                ))
+                                  )),
               Transform.translate(
                   offset:
                       Offset(0.04 * media.size.width, 0.02 * media.size.height),
@@ -197,10 +179,10 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                           width: 0.06 * media.size.width))),
               Transform.translate(
                   offset:
-                      Offset(0.33 * media.size.width, 0.06 * media.size.height),
+                      Offset(0.2 * media.size.width, 0.6* media.size.height),
                   child: SvgPicture.string(dumbbell,
-                      width: 0.55 * media.size.width * 0.7,
-                      height: 0.31 * media.size.height * 0.7,
+                      width: 0.95 * media.size.width * 0.7,
+                      height: 0.6* media.size.height * 0.7,
                       allowDrawingOutsideViewBox: true))
             ]),
             Container(
@@ -210,11 +192,11 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
-                color: const Color(0xffffffff).withOpacity(0.2),
+                color: const Color(0xff7341E6).withOpacity(0.9),
                 onPressed: () {
                   sendValuesToDatabase();
                 },
-                textColor: Colors.white,
+                textColor: Colors.black,
                 padding: const EdgeInsets.all(0.0),
                 child: Container(
                   padding: const EdgeInsets.all(10.0),
@@ -228,55 +210,23 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 ),
               ),
             ),
-            /* Container(
-              padding:
-                  EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
-              child: Text(
-                'Class Rating: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-                padding: EdgeInsets.fromLTRB(
-                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-                child: Row(children: getStarsForClass(media))),*/
+
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.0, 0.0, 0.0),
               child: Text(
                 'Instructor: ',
                 style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontFamily: 'Roboto',
+                    fontSize: 0.045 * media.size.width,
+                    color:  const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => InstructorRating(
-                      instructor: instructorName,
-                    classN: className,
-                    classD: classDay,
-                    classT: classTime,
-                    availableSpots: int.parse(classAvailableSpots),
-                    description: classDescription,
-                    id: classID
-                      )),
-                );
-              },
-              child: Container(
+            Container(
               padding: EdgeInsets.fromLTRB(
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
               child: Text(
@@ -284,40 +234,28 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            )),
-            /*
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Instructor Rating: ',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white70,
+                  color: const Color(0xff3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
-            Container(
-                padding: EdgeInsets.fromLTRB(
-                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-                child: Row(children: getStarsForInstructor(media))),*/
+//            Padding(
+//              padding:EdgeInsets.symmetric(horizontal:10.0),
+//              child:Container(
+//                height:0.6,
+//                width:270.0,
+//                color:Colors.black,),),
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Day: ',
                 style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontFamily: 'Roboto',
+                    fontSize: 0.045 * media.size.width,
+                    color:  const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -331,26 +269,34 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color:  const Color(0xff3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
+//            Padding(
+//              padding:EdgeInsets.symmetric(horizontal:10.0),
+//              child:Container(
+//                height:0.6,
+//                width:270.0,
+//                color:Colors.black,),),
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Time: ',
                 style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontFamily: 'Roboto',
+                    fontSize: 0.045 * media.size.width,
+                    color:  const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
+
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
@@ -359,21 +305,28 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color:  const Color(0xff3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
+//            Padding(
+//              padding:EdgeInsets.symmetric(horizontal:10.0),
+//              child:Container(
+//                height:0.6,
+//                width:270.0,
+//                color:Colors.black,),),
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
               child: Text(
                 'Available Spots: ',
                 style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontFamily: 'Roboto',
+                    fontSize: 0.045 * media.size.width,
+                    color:  const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -387,12 +340,18 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color: const Color(0xff3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
+//            Padding(
+//              padding:EdgeInsets.symmetric(horizontal:10.0),
+//              child:Container(
+//                height:0.6,
+//                width:270.0,
+//                color:Colors.black,),),
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),
@@ -400,13 +359,15 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 'Description: ',
                 style: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  fontSize: 0.045 * media.size.width,
+                  color:  const Color(0xff3E3E3E),
+                  fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
+
             Container(
               padding: EdgeInsets.fromLTRB(0.1 * media.size.width,
                   0.01 * media.size.height, 0.0, 0.05 * media.size.height),
@@ -415,12 +376,18 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color:  const Color(0xff3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
               alignment: Alignment.centerLeft,
             ),
+//            Padding(
+//              padding:EdgeInsets.symmetric(horizontal:10.0),
+//              child:Container(
+//                height:1.0,
+//                width:130.0,
+//                color:Colors.black,),),
             SizedBox(
               height: 0.02 * media.size.height,
             )
