@@ -114,7 +114,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: ListView(children: <Widget>[
           Column(children: <Widget>[
             Stack(children: <Widget>[
@@ -126,21 +126,22 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                     decoration: BoxDecoration(
                         image: DecorationImage(
                           image:
-                              const AssetImage('assets/RightSidePoolHalf.png'),
-                          fit: BoxFit.fill,
+                              const AssetImage('assets/activitytracker.png'),
+                          fit: BoxFit.contain,
                           colorFilter: new ColorFilter.mode(
                               Colors.black.withOpacity(1.0), BlendMode.dstIn),
                         ),
-                        boxShadow: [
+                       /* boxShadow: [
                           BoxShadow(
                             color: const Color(0x46000000),
                             offset: Offset(0, 3),
                             blurRadius: 6,
                           ),
-                        ]),
+                        ]*/
+                    ),
                   )),
               Transform.translate(
-                  offset: Offset(0.0, -0.033 * media.size.height),
+                  offset: Offset(0.0, 0.15 * media.size.height),
                   child: SizedBox(
                       width: media.size.width,
                       height: media.size.height * 0.4,
@@ -152,20 +153,21 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                                   child: AutoSizeText(
                                 className,
                                 style: TextStyle(
-                                    fontFamily: 'FreestyleScript',
-                                    fontSize: 0.15 * media.size.width,
-                                    color: const Color(0xff391f57),
-                                    shadows: [
+                                    fontFamily: 'Lastwaerk',
+                                    fontSize: 0.10 * media.size.width,
+                                    color: Color(0xFF3E3E3E),
+                                    /*shadows: [
                                       Shadow(
                                         color: const Color(0x38000000),
                                         offset: Offset(0, 3),
                                         blurRadius: 6,
                                       )
-                                    ]),
+                                    ]*/
+    ),
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
                               )),
-                              decoration: BoxDecoration(
+                              /*decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(
                                       Radius.elliptical(110.5, 108.0)),
                                   color: const Color(0xffffffff),
@@ -178,10 +180,12 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                                       offset: Offset(0, 3),
                                       blurRadius: 6,
                                     )
-                                  ]))))),
+                                  ])*/
+
+                          )))),
               Transform.translate(
                   offset:
-                      Offset(0.04 * media.size.width, 0.02 * media.size.height),
+                      Offset(0.04 * media.size.width, 0.10 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -204,7 +208,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  color: const Color(0xffffffff).withOpacity(0.2),
+                  color: const Color(0xFF7341E6).withOpacity(0.9),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => EditClass()));
@@ -229,7 +233,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  color: const Color(0xffffffff).withOpacity(0.2),
+                  color: const Color(0xFF7341E6).withOpacity(0.9),
                   onPressed: () {
                     checkIfSureAboutDelete();
                   },
@@ -242,7 +246,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                       style: TextStyle(
                           fontSize: 0.035 * media.size.width,
                           fontFamily: 'Roboto',
-                          color: Colors.white),
+                          color: Color(0xFFFFFFFF)),
                     ),
                   ),
                 ),
@@ -256,10 +260,11 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color:  Color(0xFF3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
+
               alignment: Alignment.centerLeft,
             ),
             Container(
@@ -270,12 +275,17 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color: Color(0xFF3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
+
               alignment: Alignment.centerLeft,
             ),
+
+
+
+
             /* Container(
               padding:
                   EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
@@ -301,8 +311,9 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 'Instructor: ',
                 style: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  fontSize: 0.045 * media.size.width,
+                  color: Color(0xFF3E3E3E),
+                  fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -316,7 +327,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color: Color(0xFF3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -348,8 +359,9 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 'Day: ',
                 style: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontSize: 0.045 * media.size.width,
+                    color: Color(0xFF3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -363,7 +375,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color: Color(0xFF3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -376,8 +388,9 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 'Time: ',
                 style: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontSize: 0.045 * media.size.width,
+                    color: Color(0xFF3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -391,7 +404,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color: Color(0xFF3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -404,8 +417,9 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 'Available Spots: ',
                 style: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontSize: 0.045 * media.size.width,
+                    color: Color(0xFF3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -419,7 +433,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color: Color(0xFF3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -432,8 +446,9 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 'Description: ',
                 style: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                    fontSize: 0.045 * media.size.width,
+                    color: Color(0xFF3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -447,7 +462,7 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 0.04 * media.size.width,
-                  color: Colors.white,
+                  color: Color(0xFF3E3E3E),
                 ),
                 textAlign: TextAlign.left,
               ),
