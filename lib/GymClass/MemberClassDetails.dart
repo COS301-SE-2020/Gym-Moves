@@ -38,6 +38,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
 
 /*
@@ -60,13 +61,13 @@ class MemberClassDetails extends StatefulWidget {
 
   MemberClassDetails(
       {Key key,
-      this.instructor = "",
-      this.classN = "",
-      this.classD = "",
-      this.classT = "",
-      this.availableSpots = 0,
-      this.description = "",
-      this.id = 0})
+        this.instructor = "",
+        this.classN = "",
+        this.classD = "",
+        this.classT = "",
+        this.availableSpots = 0,
+        this.description = "",
+        this.id = 0})
       : super(key: key);
 
   @override
@@ -99,6 +100,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
   String classAvailableSpots = "";
   String classDescription = "";
   int classID;
+  double rating = 0.0;
   String book = "Loading...";
 
   /*
@@ -124,14 +126,14 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                     width: media.size.width,
                     height: media.size.height * 0.4,
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              const AssetImage('assets/ClassDetailsPicture.png'),
-                          fit: BoxFit.fill,
-                          colorFilter: new ColorFilter.mode(
-                              Colors.white.withOpacity(0.6), BlendMode.dstIn),
-                        ),
-),
+                      image: DecorationImage(
+                        image:
+                        const AssetImage('assets/ClassDetailsPicture.png'),
+                        fit: BoxFit.fill,
+                        colorFilter: new ColorFilter.mode(
+                            Colors.white.withOpacity(0.6), BlendMode.dstIn),
+                      ),
+                    ),
                   )),
               Transform.translate(
                   offset: Offset(0.0, -0.033 * media.size.height),
@@ -144,27 +146,27 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                               height: 0.31 * media.size.height,
                               child: Center(
                                   child: AutoSizeText(
-                                className,
-                                style: TextStyle(
-                                    fontFamily: 'Last',
-                                    fontSize: 0.10 * media.size.width,
-                                    color: const Color(0xff3E3E3E),
-                                    shadows: [
-                                      Shadow(
-                                        color: const Color(0x38000000),
-                                        offset: Offset(0, 3),
-                                        blurRadius: 6,
-                                      )
-                                    ]),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                              ))
+                                    className,
+                                    style: TextStyle(
+                                        fontFamily: 'Last',
+                                        fontSize: 0.10 * media.size.width,
+                                        color: const Color(0xff3E3E3E),
+                                        shadows: [
+                                          Shadow(
+                                            color: const Color(0x38000000),
+                                            offset: Offset(0, 3),
+                                            blurRadius: 6,
+                                          )
+                                        ]),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  ))
 
-                                ))
-                                  )),
+                          ))
+                  )),
               Transform.translate(
                   offset:
-                      Offset(0.04 * media.size.width, 0.02 * media.size.height),
+                  Offset(0.04 * media.size.width, 0.02 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -179,7 +181,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                           width: 0.06 * media.size.width))),
               Transform.translate(
                   offset:
-                      Offset(0.2 * media.size.width, 0.6* media.size.height),
+                  Offset(0.2 * media.size.width, 0.6* media.size.height),
                   child: SvgPicture.string(dumbbell,
                       width: 0.95 * media.size.width * 0.7,
                       height: 0.6* media.size.height * 0.7,
@@ -188,7 +190,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
             Container(
               alignment: Alignment.centerRight,
               padding:
-                  EdgeInsets.fromLTRB(0.0, 0.0, 0.02 * media.size.width, 0.0),
+              EdgeInsets.fromLTRB(0.0, 0.0, 0.02 * media.size.width, 0.0),
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
@@ -358,10 +360,10 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               child: Text(
                 'Description: ',
                 style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.045 * media.size.width,
-                  color:  const Color(0xff3E3E3E),
-                  fontWeight: FontWeight.w800
+                    fontFamily: 'Roboto',
+                    fontSize: 0.045 * media.size.width,
+                    color:  const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w800
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -382,12 +384,72 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               ),
               alignment: Alignment.centerLeft,
             ),
-//            Padding(
-//              padding:EdgeInsets.symmetric(horizontal:10.0),
-//              child:Container(
-//                height:1.0,
-//                width:130.0,
-//                color:Colors.black,),),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.0 * media.size.height, 0.0, 0.0),
+              child: Text(
+                'Rate this class: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                    fontSize: 0.045 * media.size.width,
+                    color:  const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w800
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+
+    //Row(children: <Widget>[container, container])
+            Row(children: <Widget>[Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
+              child: SmoothStarRating(
+                rating: rating,
+                allowHalfRating: false,
+                isReadOnly: false,
+                size: 30,
+                filledIconData: Icons.star,
+                halfFilledIconData: Icons.star_half,
+                defaultIconData: Icons.star_border,
+                starCount: 5,
+                color: Colors.amberAccent,
+                borderColor: Colors.amberAccent,
+                spacing: 2.0,
+                onRated: (value) {
+                  rating = value;
+                  //sendRating();
+                  // print("rating value dd -> ${value.truncate()}");
+                },
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              //  alignment: Alignment(0.9, 0.5),
+                padding: EdgeInsets.fromLTRB(
+                   0.18 * media.size.width, 0.00 * media.size.height, 0.0, 0.0),
+                child: SizedBox(
+
+                    width: 0.25 * media.size.width,
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      color: const Color(0xff7341E6).withOpacity(0.9),
+                      onPressed: () {
+                        sendRating();
+                      },
+                      textColor: Colors.white,
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          'Rate',
+                          style: TextStyle(
+                              fontSize: 0.038 * media.size.width,
+                              fontFamily: 'Roboto'),
+                        ),
+                      ),
+                    )))]),
             SizedBox(
               height: 0.02 * media.size.height,
             )
@@ -395,6 +457,39 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
         ]));
   }
 
+
+
+sendRating() async {
+  String url = 'https://gymmoveswebapi.azurewebsites.net/api/ratings/class';
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String username = prefs.get("username");
+
+  int RT = rating.floor();
+  final http.Response response = await http.post(
+    url,
+    headers: <String, String>{'Content-type': 'application/json'},
+    body: jsonEncode({
+      "username": username,
+      "classId": classID,
+      "rating": RT
+    }),
+  );
+
+  int status = response.statusCode;
+
+  if (status == 200) {
+    setState(() {
+      _showAlertDialog(
+          "Thank you for rating this class, your feedback helps us improve your experience.",
+          "Success!");
+    });
+  } else {
+    _showAlertDialog(
+        "There's been a problem on our side. Please try again in a few minutes.",
+        "Unsuccessful!");
+  }
+}
   /*
    Method Name:
     getBookClass
