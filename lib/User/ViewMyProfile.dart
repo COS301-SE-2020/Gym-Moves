@@ -65,7 +65,7 @@ class ViewMyProfileState extends State<ViewMyProfile> {
   ViewMyProfileState({Key key});
 
   /* This will hold the user's name. */
-  String name = "";
+  String name = "test";
 
   Future nameFromLocal;
 
@@ -84,7 +84,7 @@ class ViewMyProfileState extends State<ViewMyProfile> {
    */
   _getName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    name = prefs.get("name");
+    name = "test";// prefs.get("name");
 
   }
 
@@ -107,7 +107,7 @@ class ViewMyProfileState extends State<ViewMyProfile> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
-              backgroundColor: const Color(0xff513369),
+              backgroundColor: const Color(0xffffffff),
               body: Column(children: <Widget>[
                 Stack(children: <Widget>[
                   Container(
@@ -115,19 +115,10 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                       height: 0.4 * media.size.height,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: const AssetImage('assets/RightSidePoolHalf.png'),
+                            image: const AssetImage('assets/MenuPicture.png'),
                             fit: BoxFit.fill,
-                            colorFilter: new ColorFilter.mode(
-                                Colors.black.withOpacity(1.0), BlendMode.dstIn
-                            ),
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x46000000),
-                              offset: Offset(0, 3),
-                              blurRadius: 6,
-                            )
-                          ])
+                          )
                   ),
                   Transform.translate(
                       offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
@@ -148,32 +139,22 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                           child: Container(
                               width: 0.48 * media.size.width,
                               height: 0.4 * 0.65 * media.size.height,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.all(Radius.elliptical(85.5, 81.0)),
-                                color: const Color(0xffffffff),
-                                border: Border.all(
-                                    width: 1.0, color: const Color(0xff707070)
-                                )
-                              ),
-                              child: Center(
+                              child:     Transform.translate(
+                      offset: Offset(-0.25 * 0.82 * media.size.width,
+                          0.08 * 0.55 * media.size.height
+                      ),
+                      child:Center(
                                   child: AutoSizeText(
-                                    name,
+                                    "Profile",
                                     style: TextStyle(
-                                      fontFamily: 'FreestyleScript',
-                                      fontSize: media.size.width * 0.12,
-                                      color: const Color(0xff391f57),
-                                      shadows: [
-                                        Shadow(
-                                          color: const Color(0xbd000000),
-                                          offset: Offset(0, 1),
-                                          blurRadius: 0
-                                        )
-                                      ]),
+                                      fontFamily: 'Lastwaerk',
+                                      fontSize: media.size.width * 0.3,
+                                      color: const Color(0xff3E3E3E),
+                                      ),
                                     maxLines: 1,
-                                    textAlign: TextAlign.center
+                                    textAlign: TextAlign.left
                                   )
-                              )
+                              ))
                           )
                       )
                   )
@@ -269,19 +250,12 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                       height: 0.4 * media.size.height,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: const AssetImage('assets/RightSidePoolHalf.png'),
+                            image: const AssetImage('assets/MenuPicture.png'),
                             fit: BoxFit.fill,
                             colorFilter: new ColorFilter.mode(
                                 Colors.black.withOpacity(1.0), BlendMode.dstIn
                             ),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x46000000),
-                              offset: Offset(0, 3),
-                              blurRadius: 6,
-                            )
-                          ])
+                          ))
                   ),
                   Transform.translate(
                       offset: Offset(0.05 * media.size.width, 0.07 * media.size.width),
@@ -483,7 +457,7 @@ class ViewMyProfileState extends State<ViewMyProfile> {
       style: TextStyle(
         fontFamily: 'Roboto',
         fontSize: 0.05 * media.size.width,
-        color: const Color(0xffffffff),
+        color: const Color(0xff787878),
       ),
       textAlign: TextAlign.left,
     );
@@ -506,16 +480,16 @@ class ViewMyProfileState extends State<ViewMyProfile> {
 }
 
 const String backButton =
-    '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+    '<svg viewBox="28.2 38.0 31.4 27.9" ><path transform="matrix(-1.0, 0.0, 0.0, -1.0, 65.61, 71.93)" d="M 21.68118286132813 6 L 18.91737365722656 8.460894584655762 L 29.85499572753906 18.21720886230469 L 6 18.21720886230469 L 6 21.70783996582031 L 29.85499572753906 21.70783996582031 L 18.91737365722656 31.46415710449219 L 21.68118286132813 33.925048828125 L 37.36236572265625 19.9625244140625 L 21.68118286132813 6 Z" fill="#513369" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 
 const String logout =
-    '<svg viewBox="77.0 578.0 31.0 28.0" ><defs><path transform="translate(77.0, 578.0)" d="M 11.625 0 L 11.625 4 L 27.125 4 L 27.125 24 L 11.625 24 L 11.625 28 L 31 28 L 31 0 L 11.625 0 Z M 7.75 8 L 0 14 L 7.75 20 L 7.75 16 L 23.25 16 L 23.25 12 L 7.75 12 L 7.75 8 Z" fill="#fcfbfc" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" filter="url(#shadow)"/></svg>';
+    '<svg viewBox="77.0 578.0 31.0 28.0" ><defs><path transform="translate(77.0, 578.0)" d="M 11.625 0 L 11.625 4 L 27.125 4 L 27.125 24 L 11.625 24 L 11.625 28 L 31 28 L 31 0 L 11.625 0 Z M 7.75 8 L 0 14 L 7.75 20 L 7.75 16 L 23.25 16 L 23.25 12 L 7.75 12 L 7.75 8 Z" fill="#7341E6" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" filter="url(#shadow)"/></svg>';
 
 const String bell =
-    '<svg viewBox="71.0 389.0 24.0 29.3" ><path transform="translate(65.0, 385.25)" d="M 18 33 C 19.64999961853027 33 21 31.64999961853027 21 30 L 15 30 C 15 31.64999961853027 16.33499908447266 33 18 33 Z M 27 24 L 27 16.5 C 27 11.89500045776367 24.54000091552734 8.039999961853027 20.25 7.020000457763672 L 20.25 6 C 20.25 4.755000114440918 19.2450008392334 3.75 18 3.75 C 16.7549991607666 3.75 15.75 4.755000114440918 15.75 6 L 15.75 7.019999980926514 C 11.44499969482422 8.039999961853027 9 11.88000011444092 9 16.5 L 9 24 L 6 27 L 6 28.5 L 30 28.5 L 30 27 L 27 24 Z" fill="#ffffff" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+    '<svg viewBox="71.0 389.0 24.0 29.3" ><path transform="translate(65.0, 385.25)" d="M 18 33 C 19.64999961853027 33 21 31.64999961853027 21 30 L 15 30 C 15 31.64999961853027 16.33499908447266 33 18 33 Z M 27 24 L 27 16.5 C 27 11.89500045776367 24.54000091552734 8.039999961853027 20.25 7.020000457763672 L 20.25 6 C 20.25 4.755000114440918 19.2450008392334 3.75 18 3.75 C 16.7549991607666 3.75 15.75 4.755000114440918 15.75 6 L 15.75 7.019999980926514 C 11.44499969482422 8.039999961853027 9 11.88000011444092 9 16.5 L 9 24 L 6 27 L 6 28.5 L 30 28.5 L 30 27 L 27 24 Z" fill="#7341E6" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 
 const String pen =
-    '<svg viewBox="73.0 315.0 27.0 27.0" ><path transform="translate(68.5, 310.5)" d="M 4.5 25.875 L 4.5 31.5 L 10.125 31.5 L 26.71500015258789 14.90999984741211 L 21.09000015258789 9.284999847412109 L 4.5 25.875 Z M 31.06500053405762 10.5600004196167 C 31.64999961853027 9.975000381469727 31.64999961853027 9.030000686645508 31.06500053405762 8.445000648498535 L 27.55500030517578 4.935000419616699 C 26.97000122070313 4.350000381469727 26.02499961853027 4.350000381469727 25.44000053405762 4.935000419616699 L 22.69499969482422 7.680000305175781 L 28.31999969482422 13.30500030517578 L 31.06499862670898 10.5600004196167 Z" fill="#ffffff" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+    '<svg viewBox="73.0 315.0 27.0 27.0" ><path transform="translate(68.5, 310.5)" d="M 4.5 25.875 L 4.5 31.5 L 10.125 31.5 L 26.71500015258789 14.90999984741211 L 21.09000015258789 9.284999847412109 L 4.5 25.875 Z M 31.06500053405762 10.5600004196167 C 31.64999961853027 9.975000381469727 31.64999961853027 9.030000686645508 31.06500053405762 8.445000648498535 L 27.55500030517578 4.935000419616699 C 26.97000122070313 4.350000381469727 26.02499961853027 4.350000381469727 25.44000053405762 4.935000419616699 L 22.69499969482422 7.680000305175781 L 28.31999969482422 13.30500030517578 L 31.06499862670898 10.5600004196167 Z" fill="#7341E6" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
 
 const String helpIcon =
-    '<svg viewBox="70.0 402.0 18.0 27.0" ><path transform="translate(61.0, 397.5)" d="M 20.3203125 31.5 L 15.6796875 31.5 L 15.6796875 26.9296875 L 20.3203125 26.9296875 L 20.3203125 31.5 Z M 20.25 24.609375 L 15.75 24.609375 C 15.75 17.5078125 22.5 17.92265701293945 22.5 13.4296875 C 22.5 10.95468711853027 20.47500038146973 8.971875190734863 18 8.971875190734863 C 15.52499961853027 8.971875190734863 13.5 11.109375 13.5 13.5 L 9 13.5 C 9 8.5078125 13.02890586853027 4.5 18 4.5 C 22.97109413146973 4.5 27 8.465624809265137 27 13.4296875 C 27 19.04765701293945 20.25 19.6875 20.25 24.609375 Z" fill="#ffffff" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+    '<svg viewBox="70.0 402.0 18.0 27.0" ><path transform="translate(61.0, 397.5)" d="M 20.3203125 31.5 L 15.6796875 31.5 L 15.6796875 26.9296875 L 20.3203125 26.9296875 L 20.3203125 31.5 Z M 20.25 24.609375 L 15.75 24.609375 C 15.75 17.5078125 22.5 17.92265701293945 22.5 13.4296875 C 22.5 10.95468711853027 20.47500038146973 8.971875190734863 18 8.971875190734863 C 15.52499961853027 8.971875190734863 13.5 11.109375 13.5 13.5 L 9 13.5 C 9 8.5078125 13.02890586853027 4.5 18 4.5 C 22.97109413146973 4.5 27 8.465624809265137 27 13.4296875 C 27 19.04765701293945 20.25 19.6875 20.25 24.609375 Z" fill="#7341E6" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

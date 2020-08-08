@@ -43,6 +43,9 @@ flutter:
     - family: Roboto
       fonts:
         - asset: assets/Roboto.ttf
+    - family: Lastwaerk
+      fonts:
+        - asset: assets/Lastwaerk.ttf
 
   uses-material-design: true
 
@@ -54,3 +57,7 @@ flutter:
     - assets/LeftSidePoolHalf.png
     - assets/RightSidePool.png
     - assets/RightSidePoolHalf.png
+    - assets/profile.png
+    - assets/MenuPicture.png
+    - assets/Mail.png
+    - assets/notifications.png

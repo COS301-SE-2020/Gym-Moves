@@ -2,6 +2,7 @@
     package="com.example.gymmoves">
 
 	<uses-permission android:name="android.permission.NFC" />
+   <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
 	<uses-feature android:name="android.hardware.nfc" android:required="true" />
 
 	<!-- io.flutter.app.FlutterApplication is an android.app.Application that
