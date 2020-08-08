@@ -46,10 +46,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gym_moves/User/MemberPages.dart';
+import 'package:gym_moves/NavigationBar.dart';
 import 'package:gym_moves/User/LogIn.dart';
-import 'package:gym_moves/User/ManagerPages.dart';
-import 'package:gym_moves/User/InstructorPages.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -130,107 +128,88 @@ class SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    final gymIdField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final gymIdField = Container(
             width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
             alignment: Alignment.centerLeft,
             child: TextField(
-                cursorColor: Colors.black45,
+                cursorColor:  Color(0xff787878),
                 obscureText: false,
                 style: TextStyle(
-                  color: Colors.black54,
+                  color:  Color(0xff787878),
                 ),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Member ID',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
+                    contentPadding: const EdgeInsets.all(20.0),
+                    labelStyle: new TextStyle(color: Color(0xff787878)),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide:  new BorderSide(color: Color(0xff787878))),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderSide:  new BorderSide(color: Color(0xff787878)),
+                        borderRadius: BorderRadius.circular(15.0))),
                 onChanged: (value) {
                   setState(() {
                     gymMemberId = value;
                   });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                }));
 
-    final usernameField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final usernameField = Container(
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             alignment: Alignment.centerLeft,
             child: TextField(
-                cursorColor: Colors.black45,
+                cursorColor: Color(0xff787878),
                 obscureText: false,
                 style: TextStyle(
-                  color: Colors.black54,
+                  color: Color(0x88464e51),
                 ),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Username',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
+                    contentPadding: const EdgeInsets.all(20.0),
+                    labelStyle: new TextStyle(color: Color(0xff787878)),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide:  new BorderSide(color: Color(0xff787878))),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderSide:  new BorderSide(color: Color(0xff787878)),
+                        borderRadius: BorderRadius.circular(15.0))),
                 onChanged: (value) {
                   setState(() {
                     username = value;
                   });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                }));
 
-    final passwordField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final passwordField = Container(
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
             alignment: Alignment.centerLeft,
             child: TextField(
-                cursorColor: Colors.black45,
+                cursorColor: Color(0xff787878),
                 obscureText: hidePassword,
                 style: TextStyle(
-                  color: Colors.black54,
+                  color:Color(0xff787878),
                 ),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Password',
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(15.0),
-                    labelStyle: new TextStyle(color: Colors.black54),
+                    contentPadding: const EdgeInsets.all(20.0),
+                    labelStyle: new TextStyle(color: Color(0xff787878)),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide:  new BorderSide(color: Color(0xff787878))),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderSide:  new BorderSide(color: Color(0xff787878)),
+                        borderRadius: BorderRadius.circular(15.0))),
                 onChanged: (value) {
                   setState(() {
                     password = value;
                   });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                }));
 
     searchTextField = AutoCompleteTextField<Gym>(
       style: TextStyle(
@@ -263,60 +242,59 @@ class SignUpState extends State<SignUp> {
       clearOnSubmit: false,
       decoration: InputDecoration(
           labelText: 'Gym',
-          labelStyle: new TextStyle(color: Colors.black54),
-          border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+          labelStyle: new TextStyle(color: Color(0xff787878)),
+          contentPadding: const EdgeInsets.all(20.0),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+              borderSide:  new BorderSide(color: Color(0xff787878))),
+          focusedBorder: OutlineInputBorder(
+              borderSide:  new BorderSide(color: Color(0xff787878)),
+              borderRadius: BorderRadius.circular(15.0))),
     );
 
-    final gymField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            padding: EdgeInsets.all(0.01 * media.size.width),
+    final gymField = Container(
             width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
             alignment: Alignment.centerLeft,
-            child: searchTextField),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+            child: searchTextField);
 
     return Scaffold(
-      backgroundColor: const Color(0xff513369),
+      backgroundColor: const Color(0xffffffff),
       body: ListView(children: <Widget>[
         Stack(children: <Widget>[
           Transform.translate(
-              offset: Offset(0.0, -0.035 * media.size.height),
+              offset: Offset(0.0, 0.03 * media.size.height),
               child: Container(
                   width: media.size.width,
                   height: 0.4 * media.size.height,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage('assets/Bicycles.jpg'),
-                        fit: BoxFit.fill,
-                        colorFilter: new ColorFilter.mode(
-                            Colors.black.withOpacity(0.82), BlendMode.dstIn),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x22000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        )
-                      ]))),
+                        image: const AssetImage('assets/SignupPicture.png'),
+                        fit: BoxFit.fill
+                      )))),
           Transform.translate(
-            offset: Offset(0.08 * media.size.width, 0.08 * media.size.height),
+            offset: Offset(0.08 * media.size.width, 0.04 * media.size.height),
             child: Text(
               'Gym Moves',
               style: TextStyle(
-                fontFamily: 'FreestyleScript',
-                fontSize: 0.28 * media.size.width,
-                color: const Color(0xffffffff),
+                fontFamily: 'Lastwaerk',
+                fontSize: 0.15 * media.size.width,
+                color: const Color(0xff3e3e3e),
               ),
               textAlign: TextAlign.left,
             ),
           ),
         ]),
-        SizedBox(height: 0.04 * media.size.height),
+        SizedBox(height: 0.05 * media.size.height),
+        Center(
+          child: Text(
+            "Sign Up",
+            style:  TextStyle(
+                fontSize: 0.07 * media.size.width,
+                fontFamily: 'Lastwaerk',
+                color: const Color(0xff3e3e3e) ),
+          ),
+        ),
+        SizedBox(height: 0.05 * media.size.height),
         Form(
             key: signUpFormKey,
             child: Column(children: <Widget>[
@@ -324,11 +302,11 @@ class SignUpState extends State<SignUp> {
                 gymIdField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height),
+                        0.08 * 0.4 * media.size.height),
                     child: SvgPicture.string(
                       idCard,
                       width: media.size.width * 0.06,
-                      color: Colors.black45,
+                      color: Color(0xff787878),
                       allowDrawingOutsideViewBox: true,
                     ))
               ]),
@@ -342,7 +320,7 @@ class SignUpState extends State<SignUp> {
                       dumbbell,
                       height: 0.04 * media.size.height,
                       width: 0.04 * media.size.width,
-                      color: Colors.black45,
+                      color: Color(0xff787878),
                       allowDrawingOutsideViewBox: true,
                     ))
               ]),
@@ -351,11 +329,11 @@ class SignUpState extends State<SignUp> {
                 usernameField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.25 * media.size.height),
+                        0.08 * 0.3 * media.size.height),
                     child: SvgPicture.string(
                       person,
                       width: media.size.width * 0.05,
-                      color: Colors.black45,
+                      color: Color(0xff787878),
                       allowDrawingOutsideViewBox: true,
                     ))
               ]),
@@ -375,17 +353,18 @@ class SignUpState extends State<SignUp> {
                           hidePassword
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Colors.grey,
+                          color: Color(0xff787878),
                         )))
               ]),
               SizedBox(height: 0.06 * media.size.height),
             ])),
         Center(
             child: SizedBox(
+              width: 0.4 * media.size.width,
                 child: FlatButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
-                    color: const Color(0xffffffff).withOpacity(0.3),
+                    color: const Color(0xff7341E6),
                     onPressed: () {
                       sendValuesToDatabase();
                     },
@@ -397,7 +376,7 @@ class SignUpState extends State<SignUp> {
                             style: TextStyle(
                                 fontSize: 0.04 * media.size.width,
                                 fontFamily: 'Roboto')))))),
-        SizedBox(height: 0.06 * media.size.height),
+        SizedBox(height: 0.01 * media.size.height),
         Center(
             child: GestureDetector(
           onTap: () {
@@ -407,26 +386,27 @@ class SignUpState extends State<SignUp> {
               MaterialPageRoute(builder: (context) => LogIn()),
             );
           },
-          child: Text.rich(
-            TextSpan(
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: const Color(0xffffffff),
-                ),
-                children: [
+                child: Text.rich(
                   TextSpan(
-                    text: 'Have an account? ',
-                  ),
-                  TextSpan(
-                    text: 'Log in!',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                    ),
-                  )
-                ]),
-            textAlign: TextAlign.center,
-          ),
+                      children: [
+                        TextSpan(
+                          text: 'Have an account? ',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 0.04 * media.size.width,
+                            color: const  Color(0xff787878),
+                          ),
+                        ),
+                        TextSpan(
+                            text: 'Log in!',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: const  Color(0xff7341E6),
+                            )
+                        )
+                      ]),
+                  textAlign: TextAlign.center,
+                )
         )),
         SizedBox(height: 0.05 * media.size.height),
       ]),
@@ -533,22 +513,10 @@ class SignUpState extends State<SignUp> {
 
       Navigator.of(context).pop();
 
-      if (userJson.userType == 0) {
-        Navigator.of(context)
-            .push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new MemberPages();
-        }));
-      } else if (userJson.userType == 1) {
-        Navigator.of(context)
-            .push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new InstructorPages();
-        }));
-      } else if (userJson.userType == 2) {
-        Navigator.of(context)
-            .push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new ManagerPages();
-        }));
-      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => NavigationBar(index: 0)),
+      );
     } else {
       _showAlertDialog(responseBody, "Sign Up Error");
     }

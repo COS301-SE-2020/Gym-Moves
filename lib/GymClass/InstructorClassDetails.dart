@@ -31,6 +31,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:gym_moves/GymClass/InstructorViewClasses.dart';
+import 'package:gym_moves/NavigationBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -106,42 +107,32 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: ListView(
             children: <Widget>[
               Column(
                   children: <Widget>[
                     Stack(
                         children: <Widget>[
-                          Transform.translate(
-                              offset: Offset(0.0, -0.033 * media.size.height),
-                              child: Container(
+                          Container(
                                 width: media.size.width,
                                 height: media.size.height * 0.4,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image:
                                       const AssetImage(
-                                          'assets/RightSidePoolHalf.png'
+                                          'assets/ClassDetailsPicture.png'
                                       ),
                                       fit: BoxFit.fill,
                                       colorFilter: new ColorFilter.mode(
-                                          Colors.black.withOpacity(1.0),
+                                          Colors.black.withOpacity(0.5),
                                           BlendMode.dstIn
                                       ),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0x46000000),
-                                        offset: Offset(0, 3),
-                                        blurRadius: 6,
-                                      )
-                                    ]
+                                    )
                                 )
-                              )
                           ),
                           Transform.translate(
-                              offset: Offset(0.0, -0.033 * media.size.height),
+                              offset: Offset(0.0, 0.0 * media.size.height),
                               child: SizedBox(
                                   width: media.size.width,
                                   height: media.size.height * 0.4,
@@ -153,37 +144,13 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                                               child: AutoSizeText(
                                                 className,
                                                 style: TextStyle(
-                                                    fontFamily: 'FreestyleScript',
-                                                    fontSize: 0.15 * media.size.width,
-                                                    color: const Color(0xff391f57),
-                                                    shadows: [
-                                                      Shadow(
-                                                        color: const Color(0x38000000),
-                                                        offset: Offset(0, 3),
-                                                        blurRadius: 6,
-                                                      )
-                                                    ]
+                                                    fontFamily: 'Lastwaerk',
+                                                    fontSize: 0.12 * media.size.width,
+                                                    color: const Color(0xff3e3e3e),
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 maxLines: 3,
                                               )
-                                          ),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.elliptical(110.5, 108.0)
-                                              ),
-                                              color: const Color(0xffffffff),
-                                              border: Border.all(
-                                                  width: 1.0,
-                                                  color: const Color(0xff707070)
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: const Color(0x8f000000),
-                                                  offset: Offset(0, 3),
-                                                  blurRadius: 6,
-                                                )
-                                              ]
                                           )
                                       )
                                   )
@@ -200,7 +167,7 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => InstructorViewClasses()));
+                                            builder: (context) => NavigationBar(index : 3)));
                                     },
                                   child: SvgPicture.string(backArrow,
                                       allowDrawingOutsideViewBox: true,
@@ -210,15 +177,14 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                           ),
                           Transform.translate(
                               offset:
-                              Offset(0.33 * media.size.width, 0.06 *
+                              Offset(0.2 * media.size.width, 0.55 *
                                   media.size.height),
                               child: SvgPicture.string(
                                   dumbbell,
-                                  width: 0.55 * media.size.width * 0.7,
-                                  height: 0.31 * media.size.height * 0.7,
-                                  allowDrawingOutsideViewBox: true
+                                  allowDrawingOutsideViewBox: true,
+                                  width: 0.6 * media.size.width
                               )
-                          )
+                          ),
                         ]
                     ),
                     Container(
@@ -229,7 +195,7 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)
                         ),
-                        color: const Color(0xffffffff).withOpacity(0.2),
+                        color: const Color(0xff7341E6),
                         onPressed: () {
                           cancelClass();
                         },
@@ -247,26 +213,6 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         ),
                       ),
                     ),
-                    /*Container(
-                      padding:
-                      EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
-                      child: Text(
-                        'Class Rating: ',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 0.04 * media.size.width,
-                          color: Colors.white70,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      alignment: Alignment.centerLeft,
-                    ),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(
-                            0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0
-                        ),
-                        child: Row(children: getStarsForClass(media))
-                    ),*/
                     Container(
                       padding: EdgeInsets.fromLTRB(
                           0.05 * media.size.width, 0.0, 0.0, 0.0),
@@ -274,8 +220,9 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         'Instructor: ',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                            fontSize: 0.045 * media.size.width,
+                            color: const Color(0xff3e3e3e),
+                            fontWeight: FontWeight.w800
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -291,35 +238,12 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                          color: const Color(0xff3e3e3e)
                         ),
                         textAlign: TextAlign.left,
                       ),
                       alignment: Alignment.centerLeft,
                     ),
-                    /*Container(
-                      padding: EdgeInsets.fromLTRB(
-                          0.05 * media.size.width, 0.05 * media.size.height,
-                          0.0, 0.0
-                      ),
-                      child: Text(
-                        'Instructor Rating: ',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 0.04 * media.size.width,
-                          color: Colors.white70,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      alignment: Alignment.centerLeft,
-                    ),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(
-                            0.1 * media.size.width, 0.01 * media.size.height,
-                            0.0, 0.0
-                        ),
-                        child: Row(children: getStarsForInstructor(media))
-                    ),*/
                     Container(
                       padding: EdgeInsets.fromLTRB(
                           0.05 * media.size.width, 0.05 * media.size.height,
@@ -328,8 +252,9 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         'Day: ',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                            fontSize: 0.045 * media.size.width,
+                            color: const Color(0xff3e3e3e),
+                            fontWeight: FontWeight.w800
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -345,7 +270,7 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                          color: const Color(0xff3e3e3e)
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -359,8 +284,9 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         'Time: ',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                            fontSize: 0.045 * media.size.width,
+                            color: const Color(0xff3e3e3e),
+                            fontWeight: FontWeight.w800
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -376,7 +302,7 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                          color:const Color(0xff3e3e3e)
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -390,8 +316,9 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         'Available Spots: ',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                            fontSize: 0.045 * media.size.width,
+                            color: const Color(0xff3e3e3e),
+                            fontWeight: FontWeight.w800
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -406,7 +333,7 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                          color: const Color(0xff3e3e3e)
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -420,8 +347,9 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         'Description: ',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                          fontSize: 0.045 * media.size.width,
+                          color: const Color(0xff3e3e3e),
+                          fontWeight: FontWeight.w800
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -437,12 +365,13 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 0.04 * media.size.width,
-                          color: Colors.white,
+                          color: const Color(0xff3e3e3e)
                         ),
                         textAlign: TextAlign.left,
                       ),
                       alignment: Alignment.centerLeft,
                     ),
+                    SizedBox(height: 30)
                   ]
               )
             ]
@@ -561,96 +490,6 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
     }
   }
 
-  /*
-   Method Name:
-    getStarsForInstructor
-   Purpose:
-    This method will get the rating for the specific instructor for the class
-    and show the correct stars.
-   Extra:
-    Rating is currently hardcoded. This will be changed.
-   */
-  List<Widget> getStarsForInstructor(MediaQueryData media) {
-    List<Widget> stars = [];
-
-    int full = 2;
-    int half = 1;
-    int empty = 2;
-
-    for (int i = full; i > 0; i--) {
-      stars.add(SvgPicture.string(
-        fullStar,
-        height: 0.02 * media.size.height,
-        width: 0.02 * media.size.width,
-        allowDrawingOutsideViewBox: true,
-      ));
-    }
-
-    for (int i = half; i > 0; i--) {
-      stars.add(SvgPicture.string(
-        halfStar,
-        height: 0.02 * media.size.height,
-        width: 0.02 * media.size.width,
-        allowDrawingOutsideViewBox: true,
-      ));
-    }
-
-    for (int i = empty; i > 0; i--) {
-      stars.add(SvgPicture.string(
-        emptyStar,
-        height: 0.02 * media.size.height,
-        width: 0.02 * media.size.width,
-        allowDrawingOutsideViewBox: true,
-      ));
-    }
-
-    return stars;
-  }
-
-  /*
-   Method Name:
-    getStarsForClass
-   Purpose:
-    This method will get the rating for the specific class and show the
-    correct stars.
-   Extra: Rating is currently hardcoded. This will be changed.
-   */
-  List<Widget> getStarsForClass(MediaQueryData media) {
-    List<Widget> stars = [];
-
-    int full = 3;
-    int half = 1;
-    int empty = 1;
-
-    for (int i = full; i > 0; i--) {
-      stars.add(SvgPicture.string(
-        fullStar,
-        height: 0.02 * media.size.height,
-        width: 0.02 * media.size.width,
-        allowDrawingOutsideViewBox: true,
-      ));
-    }
-
-    for (int i = half; i > 0; i--) {
-      stars.add(SvgPicture.string(
-        halfStar,
-        height: 0.02 * media.size.height,
-        width: 0.02 * media.size.width,
-        allowDrawingOutsideViewBox: true,
-      ));
-    }
-
-    for (int i = empty; i > 0; i--) {
-      stars.add(SvgPicture.string(
-        emptyStar,
-        height: 0.02 * media.size.height,
-        width: 0.02 * media.size.width,
-        allowDrawingOutsideViewBox: true,
-      ));
-    }
-
-    return stars;
-  }
 }
 
 const String backArrow =

@@ -90,26 +90,20 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: Column(children: <Widget>[
           Stack(children: <Widget>[
             Container(
               width: media.size.width,
-              height: 0.3 * media.size.height,
+              height: 0.28 * media.size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/RightSidePoolHalf.png'),
+                  image: const AssetImage('assets/Classes.png'),
                   fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(1.0), BlendMode.dstIn),
+                      Colors.white.withOpacity(0.65), BlendMode.dstIn),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x46000000),
-                    offset: Offset(0, 3),
-                    blurRadius: 6,
-                  ),
-                ],
+
               ),
             ),
             Transform.translate(
@@ -135,7 +129,7 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
             ),
             Transform.translate(
                 offset:
-                    Offset(0.5 * media.size.width, 0.23 * media.size.height),
+                    Offset(0.5 * media.size.width, 0.25 * media.size.height),
                 child: Container(
                     child: GestureDetector(
                   onTap: () {
@@ -150,9 +144,9 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
                     child: Text(
                       'View All',
                       style: TextStyle(
-                        fontFamily: 'Roboto',
+                        fontFamily: 'Last',
                         fontSize: 0.05 * media.size.width,
-                        color: const Color(0xffffffff),
+                        color: const Color(0xff3E3E3E),
                         fontWeight: FontWeight.w300,
                       ),
                       textAlign: TextAlign.center,
@@ -173,21 +167,21 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
 //                            fontSize: 0.035 * media.size.width)))),
 
             Transform.translate(
-                offset: Offset(0.0, 0.23 * media.size.height),
+                offset: Offset(0.0, 0.25 * media.size.height),
                 child: Container(
                   child: Text(
                     'View Mine',
                     style: TextStyle(
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Last',
                       fontSize: 0.05 * media.size.width,
-                      color: const Color(0xffffffff),
+                      color: const Color(0xff3E3E3E),
                       fontWeight: FontWeight.w300,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   width: 0.5 * media.size.width,
                   height: 0.075 * media.size.height,
-                  color: Colors.white.withOpacity(0.1),
+                  color: const Color(0xff7341E6).withOpacity(0.2),
                   padding: EdgeInsets.all(10.0),
                 ))
           ]),
@@ -294,7 +288,8 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
 
     if (classesJson.length == 0) {
       return Container(
-          height: 1 / 10 * media.size.height,
+//          offset: Offset(0, 2),
+          height: 2 / 10 * media.size.height,
           width: media.size.width,
           padding: EdgeInsets.all(0.05 * media.size.width),
           child: Text(
@@ -302,7 +297,7 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: media.size.width * 0.05,
-              color: const Color(0xffffffff),
+              color: const Color(0xff3E3E3E),
               shadows: [
                 Shadow(
                   color: const Color(0xbd000000),
@@ -356,8 +351,8 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
                           height: 0.2 * media.size.height,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(19.0),
-                            color: Colors.white.withOpacity(0.9),
-                            border: Border.all(width: 1.0, color: Colors.white),
+                            color: Colors.grey.withOpacity(0.1),
+                            border: Border.all(width: 1.0, color: const Color(0xff7341E6).withOpacity(0.2)),
                           )),
                   /* Transform.translate(
                         offset: Offset(0.33 * 0.8 * media.size.width,
@@ -369,9 +364,9 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
                       height: 0.2 * 0.5 * media.size.height,
                       child: Text(className,
                           style: TextStyle(
-                              color: Colors.black.withOpacity(0.75),
-                              fontSize: 0.09 * media.size.width,
-                              fontFamily: "FreestyleScript"))),
+                              color: const Color(0xff3E3E3E).withOpacity(0.75),
+                              fontSize: 0.06 * media.size.width,
+                              fontFamily: "Last"))),
                 Transform.translate(
                       offset: Offset(
                           0.05 * media.size.width, 0.095 * media.size.height),
