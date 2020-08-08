@@ -82,10 +82,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    final headingField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final headingField =  Container(
             alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
@@ -93,34 +90,26 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 controller: headingHolder,
                 cursorColor: Colors.black45,
                 obscureText: false,
-                key: Key('headingField'),
-                style: TextStyle(
-                    color: Colors.black54, fontSize: 0.04 * media.size.width),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Heading',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
+
+                    contentPadding: const EdgeInsets.all(20.0),
+                    labelStyle: new TextStyle(color: Color(0xff787878)),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide:  new BorderSide(color: Color(0xff787878))),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderSide:  new BorderSide(color: Color(0xff787878)),
+                        borderRadius: BorderRadius.circular(15.0))),
                 onChanged: (value) {
                   setState(() {
                     headingOfAnnouncement = value;
                   });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                }));
 
-    final detailField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final detailField = Container(
             padding: EdgeInsets.all(0.01 * media.size.width),
             alignment: Alignment.topLeft,
             width: 0.7 * media.size.width,
@@ -133,33 +122,31 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 style: TextStyle(
                     color: Colors.black54, fontSize: 0.04 * media.size.width),
                 maxLines: 9,
-                minLines: 1,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
                     labelText: 'Details',
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
+                    contentPadding: const EdgeInsets.all(20.0),
+                    labelStyle: new TextStyle(color: Color(0xff787878)),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide:  new BorderSide(color: Color(0xff787878))),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderSide:  new BorderSide(color: Color(0xff787878)),
+                        borderRadius: BorderRadius.circular(15.0))),
                 onChanged: (value) {
                   setState(() {
                     detailsOfAnnouncement = value;
                   });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                }));
 
-    final dateField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final dateField =  Container(
             width: 0.7 * media.size.width,
             height: 0.085 * media.size.height,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            border: Border.all(color: Color(0xff787878),)
+        ),
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(19.0)),
@@ -202,6 +189,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                                     color: Colors.black54,
                                     fontSize: 0.04 * media.size.width),
                               ),
+
                             ],
                           ),
                         )
@@ -211,35 +199,27 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 ),
               ),
               color: Colors.white,
-            )),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent);
+            ));
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: ListView(children: <Widget>[
           Stack(children: <Widget>[
             Transform.translate(
                 offset: Offset(0.0, -0.035 * media.size.height),
                 child: Container(
-                    width: media.size.width,
-                    height: 0.13 * media.size.height,
+                    width:0.6* media.size.width,
+                    height: 0.19 * media.size.height,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: const AssetImage('assets/Banner.jpg'),
+                          image: const AssetImage('assets/send.png'),
                           fit: BoxFit.fill,
-                          colorFilter: new ColorFilter.mode(
-                            Colors.black.withOpacity(0.52),
-                            BlendMode.dstIn,
-                          ),
+//                          colorFilter: new ColorFilter.mode(
+//                            Colors.black.withOpacity(0.52),
+//                            BlendMode.dstIn,
+//                          ),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x46000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          )
-                        ]))),
+                        ))),
             Transform.translate(
                 offset: Offset(0.0, 0.04 * media.size.height),
                 child: Transform.translate(
@@ -266,16 +246,10 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                 child: Text(
                   'New Announcement',
                   style: TextStyle(
-                    fontFamily: 'FreestyleScript',
-                    fontSize: 0.1 * media.size.width,
-                    color: const Color(0xFFFFFFFF),
-                    shadows: [
-                      Shadow(
-                        color: const Color(0xbd000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
-                      ),
-                    ],
+                    fontFamily: 'Last',
+                    fontSize: 0.05 * media.size.width,
+                    color: const Color(0xFF3E3E3E),
+
                   ),
                   textAlign: TextAlign.right,
                 ))
@@ -297,7 +271,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                   child: FlatButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0)),
-                      color: const Color(0xffffffff).withOpacity(0.3),
+                      color: const Color(0xff7341E6),
                       onPressed: () {
                         sendValuesToNotify();
                       },
