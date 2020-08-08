@@ -51,26 +51,20 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: Column(children: <Widget>[
           Stack(children: <Widget>[
             Container(
                 width: media.size.width,
-                height: 0.13 * media.size.height,
+                height: 0.28 * media.size.height,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: const AssetImage('assets/Banner.jpg'),
+                      image: const AssetImage('assets/Classes.png'),
                       fit: BoxFit.fill,
                       colorFilter: new ColorFilter.mode(
-                          Colors.black.withOpacity(0.52), BlendMode.dstIn),
+                          Colors.white.withOpacity(0.65), BlendMode.dstIn),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x46000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
-                      )
-                    ])),
+            )),
             Transform.translate(
                 offset:
                 Offset(0.04 * media.size.width, 0.05 * media.size.height),
@@ -169,7 +163,7 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: media.size.width * 0.05,
-              color: const Color(0xffffffff),
+              color: const Color(0xff000000),
               shadows: [
                 Shadow(
                   color: const Color(0xbd000000),
@@ -221,8 +215,8 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                     height: 0.2 * media.size.height,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(19.0),
-                      color: Colors.white.withOpacity(0.9),
-                      border: Border.all(width: 1.0, color: Colors.white),
+                      color: const  Color(0xff7341E6).withOpacity(0.03),
+                      border: Border.all(width: 1.0, color: const Color(0xff7341E6).withOpacity(0.2)),
                     )),
                 /* Transform.translate(
                         offset: Offset(0.33 * 0.8 * media.size.width,
@@ -234,9 +228,9 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                     height: 0.2 * 0.5 * media.size.height,
                     child: Text(className,
                         style: TextStyle(
-                            color: Colors.black.withOpacity(0.75),
-                            fontSize: 0.09 * media.size.width,
-                            fontFamily: "FreestyleScript"))),
+                            color:const Color(0xff3E3E3E) ,
+                            fontSize: 0.06 * media.size.width,
+                            fontFamily: "Last"))),
                 Transform.translate(
                     offset: Offset(
                         0.05 * media.size.width, 0.095 * media.size.height),
