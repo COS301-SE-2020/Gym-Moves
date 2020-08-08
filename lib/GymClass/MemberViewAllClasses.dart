@@ -313,7 +313,7 @@ class MemberViewAllClassesState extends State<MemberViewAllClasses> {
                       height: 0.2 * media.size.height,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(19.0),
-                        color: Colors.grey.withOpacity(0.1),
+                        color: const  Color(0xff7341E6).withOpacity(0.03),
                         border: Border.all(width: 1.0, color: const Color(0xff7341E6).withOpacity(0.2)),
                       )),
                   /* Transform.translate(
