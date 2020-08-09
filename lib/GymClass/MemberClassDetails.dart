@@ -101,7 +101,10 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
   String classDescription = "";
   int classID;
   double rating = 0.0;
-  String book = "Loading...";
+  double cRating =4.5;
+  String sRating = "(4.5)";
+  String book = "Loading.."
+      ".";
 
   /*
    Method Name:
@@ -128,7 +131,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image:
-                        const AssetImage('assets/ClassDetailsPicture.png'),
+                        const AssetImage('assets/activitytracker.png'),
                         fit: BoxFit.fill,
                         colorFilter: new ColorFilter.mode(
                             Colors.white.withOpacity(0.6), BlendMode.dstIn),
@@ -150,6 +153,35 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                                     style: TextStyle(
                                         fontFamily: 'Last',
                                         fontSize: 0.10 * media.size.width,
+                                        color: const Color(0xff3E3E3E),
+                                        shadows: [
+                                          Shadow(
+                                            color: const Color(0x38000000),
+                                            offset: Offset(0, 3),
+                                            blurRadius: 6,
+                                          )
+                                        ]),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  ))
+
+                          ))
+                  )),
+              Transform.translate(
+                  offset: Offset(0.0, 0.1 * media.size.height),
+                  child: SizedBox(
+                      width: media.size.width,
+                      height: media.size.height * 0.4,
+                      child: Center(
+                          child: Container(
+                              width: 0.55 * media.size.width,
+                              height: 0.31 * media.size.height,
+                              child: Center(
+                                  child: AutoSizeText(
+                                    "" + cRating.toString() +"☆",
+                                    style: TextStyle(
+                                        fontFamily: 'Last',
+                                        fontSize: 0.05 * media.size.width,
                                         color: const Color(0xff3E3E3E),
                                         shadows: [
                                           Shadow(
@@ -506,6 +538,7 @@ sendRating() async {
     classTime = this.widget.classT;
     classDay = this.widget.classD;
     classID = this.widget.id;
+    sRating = "(" + cRating.toString() + ")";
   }
 
   /*
