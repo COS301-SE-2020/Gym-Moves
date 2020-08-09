@@ -51,27 +51,21 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
     MediaQueryData media = MediaQuery.of(context);
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: Column(children: <Widget>[
           Stack(children: <Widget>[
             Container(
                 width: media.size.width,
-                height: 0.13 * media.size.height,
+                height: 0.22 * media.size.height,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                       image:
-                      const AssetImage('assets/Banner.jpg'),
+                      const AssetImage('assets/Classes.png'),
                       fit: BoxFit.fill,
                       colorFilter: new ColorFilter.mode(
                           Colors.black.withOpacity(0.52), BlendMode.dstIn),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x46000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
-                      )
-                    ])
+                   )
             ),
             Transform.translate(
                 offset:
@@ -93,7 +87,7 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
-              color: const Color(0xffffffff).withOpacity(0.2),
+              color: const Color(0xff7341E6),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.push(context,
@@ -108,7 +102,7 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                   style: TextStyle(
                       fontSize: 0.035 * media.size.width,
                       fontFamily: 'Roboto',
-                      color: Colors.white),
+                      color:const Color(0xffffffff)),
                 )
               )
             )
@@ -246,8 +240,8 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                     height: 0.2 * media.size.height,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(19.0),
-                      color: Colors.white.withOpacity(0.9),
-                      border: Border.all(width: 1.0, color: Colors.white),
+                      color: const  Color(0xff7341E6).withOpacity(0.03),
+                      border: Border.all(width: 1.0, color: const Color(0xff7341E6).withOpacity(0.2)),
                     )),
                 /* Transform.translate(
                         offset: Offset(0.33 * 0.8 * media.size.width,
@@ -260,8 +254,8 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                     child: Text(className,
                         style: TextStyle(
                             color: Colors.black.withOpacity(0.75),
-                            fontSize: 0.09 * media.size.width,
-                            fontFamily: "FreestyleScript"))),
+                            fontSize: 0.06 * media.size.width,
+                            fontFamily: "Last"))),
                 Transform.translate(
                     offset: Offset(
                         0.05 * media.size.width, 0.095 * media.size.height),

@@ -39,6 +39,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
 
 /*
@@ -61,13 +62,13 @@ class MemberClassDetails extends StatefulWidget {
 
   MemberClassDetails(
       {Key key,
-      this.instructor = "",
-      this.classN = "",
-      this.classD = "",
-      this.classT = "",
-      this.availableSpots = 0,
-      this.description = "",
-      this.id = 0})
+        this.instructor = "",
+        this.classN = "",
+        this.classD = "",
+        this.classT = "",
+        this.availableSpots = 0,
+        this.description = "",
+        this.id = 0})
       : super(key: key);
 
   @override
@@ -101,10 +102,14 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
   String classAvailableSpots = "";
   String classDescription = "";
   int classID;
-  String book = "Loading...";
   double iRating = 0;
   Future<String> ratingRes;
   int numStars = 0;
+  double rating = 0.0;
+  double cRating =4.5;
+  String sRating = "(4.5)";
+  String book = "Loading.."
+      ".";
 
   /*
    Method Name:
@@ -231,6 +236,119 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 Container(
                   padding: EdgeInsets.fromLTRB(0.1 * media.size.width,
                       0.01 * media.size.height, 0.0, 0.0),
+          Column(children: <Widget>[
+            Stack(children: <Widget>[
+              Transform.translate(
+                  offset: Offset(0.0, -0.033 * media.size.height),
+                  child: Container(
+                    width: media.size.width,
+                    height: media.size.height * 0.4,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                        const AssetImage('assets/activitytracker.png'),
+                        fit: BoxFit.fill,
+                        colorFilter: new ColorFilter.mode(
+                            Colors.white.withOpacity(0.6), BlendMode.dstIn),
+                      ),
+                    ),
+                  )),
+              Transform.translate(
+                  offset: Offset(0.0, -0.033 * media.size.height),
+                  child: SizedBox(
+                      width: media.size.width,
+                      height: media.size.height * 0.4,
+                      child: Center(
+                          child: Container(
+                              width: 0.55 * media.size.width,
+                              height: 0.31 * media.size.height,
+                              child: Center(
+                                  child: AutoSizeText(
+                                    className,
+                                    style: TextStyle(
+                                        fontFamily: 'Last',
+                                        fontSize: 0.10 * media.size.width,
+                                        color: const Color(0xff3E3E3E),
+                                        shadows: [
+                                          Shadow(
+                                            color: const Color(0x38000000),
+                                            offset: Offset(0, 3),
+                                            blurRadius: 6,
+                                          )
+                                        ]),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  ))
+
+                          ))
+                  )),
+              Transform.translate(
+                  offset: Offset(0.0, 0.1 * media.size.height),
+                  child: SizedBox(
+                      width: media.size.width,
+                      height: media.size.height * 0.4,
+                      child: Center(
+                          child: Container(
+                              width: 0.55 * media.size.width,
+                              height: 0.31 * media.size.height,
+                              child: Center(
+                                  child: AutoSizeText(
+                                    "" + cRating.toString() +"☆",
+                                    style: TextStyle(
+                                        fontFamily: 'Last',
+                                        fontSize: 0.05 * media.size.width,
+                                        color: const Color(0xff3E3E3E),
+                                        shadows: [
+                                          Shadow(
+                                            color: const Color(0x38000000),
+                                            offset: Offset(0, 3),
+                                            blurRadius: 6,
+                                          )
+                                        ]),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  ))
+
+                          ))
+                  )),
+              Transform.translate(
+                  offset:
+                  Offset(0.04 * media.size.width, 0.02 * media.size.height),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MemberViewMyClasses()));
+                      },
+                      child: SvgPicture.string(backArrow,
+                          allowDrawingOutsideViewBox: true,
+                          width: 0.06 * media.size.width))),
+              Transform.translate(
+                  offset:
+                  Offset(0.2 * media.size.width, 0.6* media.size.height),
+                  child: SvgPicture.string(dumbbell,
+                      width: 0.95 * media.size.width * 0.7,
+                      height: 0.6* media.size.height * 0.7,
+                      allowDrawingOutsideViewBox: true))
+            ]),
+            Container(
+              alignment: Alignment.centerRight,
+              padding:
+              EdgeInsets.fromLTRB(0.0, 0.0, 0.02 * media.size.width, 0.0),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                color: const Color(0xff7341E6).withOpacity(0.9),
+                onPressed: () {
+                  sendValuesToDatabase();
+                },
+                textColor: Colors.black,
+                padding: const EdgeInsets.all(0.0),
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
                   child: Text(
                     instructorName,
                     style: TextStyle(
@@ -483,9 +601,114 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               ),
             ],
           )
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.0 * media.size.height, 0.0, 0.0),
+              child: Text(
+                'Rate this class: ',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                    fontSize: 0.045 * media.size.width,
+                    color:  const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w800
+                ),
+                textAlign: TextAlign.left,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+
+    //Row(children: <Widget>[container, container])
+            Row(children: <Widget>[Container(
+              padding: EdgeInsets.fromLTRB(
+                  0.05 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
+              child: SmoothStarRating(
+                rating: rating,
+                allowHalfRating: false,
+                isReadOnly: false,
+                size: 30,
+                filledIconData: Icons.star,
+                halfFilledIconData: Icons.star_half,
+                defaultIconData: Icons.star_border,
+                starCount: 5,
+                color: Colors.amberAccent,
+                borderColor: Colors.amberAccent,
+                spacing: 2.0,
+                onRated: (value) {
+                  rating = value;
+                  //sendRating();
+                  // print("rating value dd -> ${value.truncate()}");
+                },
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+            Container(
+              //  alignment: Alignment(0.9, 0.5),
+                padding: EdgeInsets.fromLTRB(
+                   0.18 * media.size.width, 0.00 * media.size.height, 0.0, 0.0),
+                child: SizedBox(
+
+                    width: 0.25 * media.size.width,
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      color: const Color(0xff7341E6).withOpacity(0.9),
+                      onPressed: () {
+                        sendRating();
+                      },
+                      textColor: Colors.white,
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          'Rate',
+                          style: TextStyle(
+                              fontSize: 0.038 * media.size.width,
+                              fontFamily: 'Roboto'),
+                        ),
+                      ),
+                    )))]),
+            SizedBox(
+              height: 0.02 * media.size.height,
+            )
+          ])
         ]));
   }
 
+
+
+sendRating() async {
+  String url = 'https://gymmoveswebapi.azurewebsites.net/api/ratings/class';
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String username = prefs.get("username");
+
+  int RT = rating.floor();
+  final http.Response response = await http.post(
+    url,
+    headers: <String, String>{'Content-type': 'application/json'},
+    body: jsonEncode({
+      "username": username,
+      "classId": classID,
+      "rating": RT
+    }),
+  );
+
+  int status = response.statusCode;
+
+  if (status == 200) {
+    setState(() {
+      _showAlertDialog(
+          "Thank you for rating this class, your feedback helps us improve your experience.",
+          "Success!");
+    });
+  } else {
+    _showAlertDialog(
+        "There's been a problem on our side. Please try again in a few minutes.",
+        "Unsuccessful!");
+  }
+}
   /*
    Method Name:
     getRating
@@ -556,6 +779,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
     classTime = this.widget.classT;
     classDay = this.widget.classD;
     classID = this.widget.id;
+    sRating = "(" + cRating.toString() + ")";
   }
 
   /*
