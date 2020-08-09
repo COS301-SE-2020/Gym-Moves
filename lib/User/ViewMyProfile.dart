@@ -147,7 +147,7 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                                   child: AutoSizeText(
                                     "Profile",
                                     style: TextStyle(
-                                      fontFamily: 'Lastwaerk',
+                                      fontFamily: 'Last',
                                       fontSize: media.size.width * 0.3,
                                       color: const Color(0xff3E3E3E),
                                       ),

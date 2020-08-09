@@ -27,7 +27,7 @@ Functional Description:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:gym_moves/User/ManagerPages.dart';
+import 'package:gym_moves/User/Welcome.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -252,7 +252,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ManagerPages()),
+                                builder: (context) => Welcome()),
                           );
                         },
                         child: SvgPicture.string(backArrow,
