@@ -12,9 +12,11 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
-07/07/2020      Raeesa         |    Users can book and unbook classes
+07/07/2020    |  Raeesa        |    Users can book and unbook classes
 --------------------------------------------------------------------------------
-12/07/2020      Raeesa         |    added class details
+12/07/2020    |  Raeesa        |    added class details
+--------------------------------------------------------------------------------
+09/08/2020    |  Tia           |    added ratings for intstuctor
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -170,6 +172,35 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                                   textAlign: TextAlign.center,
                                   maxLines: 3,
                                 )))))),
+                                Transform.translate(
+                  offset: Offset(0.0, 0.1 * media.size.height),
+                  child: SizedBox(
+                      width: media.size.width,
+                      height: media.size.height * 0.4,
+                      child: Center(
+                          child: Container(
+                              width: 0.55 * media.size.width,
+                              height: 0.31 * media.size.height,
+                              child: Center(
+                                  child: AutoSizeText(
+                                    "" + cRating.toString() +"☆",
+                                    style: TextStyle(
+                                        fontFamily: 'Last',
+                                        fontSize: 0.05 * media.size.width,
+                                        color: const Color(0xff3E3E3E),
+                                        shadows: [
+                                          Shadow(
+                                            color: const Color(0x38000000),
+                                            offset: Offset(0, 3),
+                                            blurRadius: 6,
+                                          )
+                                        ]),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  ))
+
+                          ))
+                  )),
                 Transform.translate(
                     offset: Offset(
                         0.04 * media.size.width, 0.02 * media.size.height),
@@ -193,8 +224,8 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                         height: 0.6 * media.size.height * 0.7,
                         allowDrawingOutsideViewBox: true))
               ]),
-            
-              Row(  
+                
+             Row(  
                 children: [ Container(
                 padding:
                     EdgeInsets.fromLTRB(0.05 * media.size.width, 0.0, 0.0, 0.0),
@@ -232,135 +263,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                     ),
                   ),
                 ))]),
-              Row(children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0.1 * media.size.width,
-                      0.01 * media.size.height, 0.0, 0.0),
-          Column(children: <Widget>[
-            Stack(children: <Widget>[
-              Transform.translate(
-                  offset: Offset(0.0, -0.033 * media.size.height),
-                  child: Container(
-                    width: media.size.width,
-                    height: media.size.height * 0.4,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image:
-                        const AssetImage('assets/activitytracker.png'),
-                        fit: BoxFit.fill,
-                        colorFilter: new ColorFilter.mode(
-                            Colors.white.withOpacity(0.6), BlendMode.dstIn),
-                      ),
-                    ),
-                  )),
-              Transform.translate(
-                  offset: Offset(0.0, -0.033 * media.size.height),
-                  child: SizedBox(
-                      width: media.size.width,
-                      height: media.size.height * 0.4,
-                      child: Center(
-                          child: Container(
-                              width: 0.55 * media.size.width,
-                              height: 0.31 * media.size.height,
-                              child: Center(
-                                  child: AutoSizeText(
-                                    className,
-                                    style: TextStyle(
-                                        fontFamily: 'Last',
-                                        fontSize: 0.10 * media.size.width,
-                                        color: const Color(0xff3E3E3E),
-                                        shadows: [
-                                          Shadow(
-                                            color: const Color(0x38000000),
-                                            offset: Offset(0, 3),
-                                            blurRadius: 6,
-                                          )
-                                        ]),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 3,
-                                  ))
 
-                          ))
-                  )),
-              Transform.translate(
-                  offset: Offset(0.0, 0.1 * media.size.height),
-                  child: SizedBox(
-                      width: media.size.width,
-                      height: media.size.height * 0.4,
-                      child: Center(
-                          child: Container(
-                              width: 0.55 * media.size.width,
-                              height: 0.31 * media.size.height,
-                              child: Center(
-                                  child: AutoSizeText(
-                                    "" + cRating.toString() +"☆",
-                                    style: TextStyle(
-                                        fontFamily: 'Last',
-                                        fontSize: 0.05 * media.size.width,
-                                        color: const Color(0xff3E3E3E),
-                                        shadows: [
-                                          Shadow(
-                                            color: const Color(0x38000000),
-                                            offset: Offset(0, 3),
-                                            blurRadius: 6,
-                                          )
-                                        ]),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 3,
-                                  ))
-
-                          ))
-                  )),
-              Transform.translate(
-                  offset:
-                  Offset(0.04 * media.size.width, 0.02 * media.size.height),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MemberViewMyClasses()));
-                      },
-                      child: SvgPicture.string(backArrow,
-                          allowDrawingOutsideViewBox: true,
-                          width: 0.06 * media.size.width))),
-              Transform.translate(
-                  offset:
-                  Offset(0.2 * media.size.width, 0.6* media.size.height),
-                  child: SvgPicture.string(dumbbell,
-                      width: 0.95 * media.size.width * 0.7,
-                      height: 0.6* media.size.height * 0.7,
-                      allowDrawingOutsideViewBox: true))
-            ]),
-            Container(
-              alignment: Alignment.centerRight,
-              padding:
-              EdgeInsets.fromLTRB(0.0, 0.0, 0.02 * media.size.width, 0.0),
-              child: FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                color: const Color(0xff7341E6).withOpacity(0.9),
-                onPressed: () {
-                  sendValuesToDatabase();
-                },
-                textColor: Colors.black,
-                padding: const EdgeInsets.all(0.0),
-                child: Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    instructorName,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 0.04 * media.size.width,
-                      color: const Color(0xff3E3E3E),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  alignment: Alignment.centerLeft,
-                ),
-              ]),
               FutureBuilder<String>(
                   future: ratingRes,
                   builder: (context, snapshot) {
@@ -392,12 +295,6 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                     ));
                   },
                 ),
-//            Padding(
-//              padding:EdgeInsets.symmetric(horizontal:10.0),
-//              child:Container(
-//                height:0.6,
-//                width:270.0,
-//                color:Colors.black,),),
               Container(
                 padding: EdgeInsets.fromLTRB(0.05 * media.size.width,
                     0.0 * media.size.height, 0.0, 0.0),
@@ -426,12 +323,6 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 ),
                 alignment: Alignment.centerLeft,
               ),
-//            Padding(
-//              padding:EdgeInsets.symmetric(horizontal:10.0),
-//              child:Container(
-//                height:0.6,
-//                width:270.0,
-//                color:Colors.black,),),
               Container(
                 padding: EdgeInsets.fromLTRB(0.05 * media.size.width,
                     0.05 * media.size.height, 0.0, 0.0),
@@ -461,12 +352,6 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 ),
                 alignment: Alignment.centerLeft,
               ),
-//            Padding(
-//              padding:EdgeInsets.symmetric(horizontal:10.0),
-//              child:Container(
-//                height:0.6,
-//                width:270.0,
-//                color:Colors.black,),),
               Container(
                 padding: EdgeInsets.fromLTRB(0.05 * media.size.width,
                     0.05 * media.size.height, 0.0, 0.0),
@@ -495,12 +380,6 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 ),
                 alignment: Alignment.centerLeft,
               ),
-//            Padding(
-//              padding:EdgeInsets.symmetric(horizontal:10.0),
-//              child:Container(
-//                height:0.6,
-//                width:270.0,
-//                color:Colors.black,),),
               Container(
                 padding: EdgeInsets.fromLTRB(0.05 * media.size.width,
                     0.05 * media.size.height, 0.0, 0.0),
@@ -517,7 +396,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               ),
               Container(
                 padding: EdgeInsets.fromLTRB(
-                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
+                    0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.03 * media.size.height),
                 child: Text(
                   classDescription,
                   style: TextStyle(
@@ -529,80 +408,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 ),
                 alignment: Alignment.centerLeft,
               ),
-//            Padding(
-//              padding:EdgeInsets.symmetric(horizontal:10.0),
-//              child:Container(
-//                height:1.0,
-//                width:130.0,
-//                color:Colors.black,),),
-              /*Container(
-                padding: EdgeInsets.fromLTRB(0.05 * media.size.width,
-                    0.05 * media.size.height, 0.0, 0.0),
-                child: Text(
-                  'Rate Instructor: ',
-                  style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 0.045 * media.size.width,
-                      color: const Color(0xff3E3E3E),
-                      fontWeight: FontWeight.w800),
-                  textAlign: TextAlign.left,
-                ),
-                alignment: Alignment.centerLeft,
-              ),*/
-              Row(children: [
-                /*Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: EdgeInsets.fromLTRB(
-                        0.0, 0.0, 0.02 * media.size.width, 0.0),
-                    child: SmoothStarRating(
-                      rating: 0,
-                      isReadOnly: false,
-                      size: 50,
-                      filledIconData: Icons.star,
-                      halfFilledIconData: Icons.star_half,
-                      defaultIconData: Icons.star_border,
-                      starCount: 5,
-                      color: Colors.amberAccent,
-                      borderColor: Colors.amberAccent,
-                      allowHalfRating: false,
-                      spacing: 2.0,
-                      onRated: (value) {
-                        numStars = value.truncate();
-                        print("rating value -> $value");
-                      },
-                    )),*/
-                
-              ]),
-              Container(
-                alignment: Alignment.bottomCenter,
-                padding:
-                    EdgeInsets.fromLTRB(0.02 * media.size.width, 0.05 * media.size.width, 0.02 * media.size.width, 0.0),
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  color: const Color(0xff7341E6).withOpacity(0.9),
-                  onPressed: () {
-                    sendValuesToDatabase();
-                  },
-                  textColor: Colors.black,
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    height: 0.06*media.size.height,
-                    child: Text(
-                      book,
-                      style: TextStyle(
-                          fontSize: 0.045 * media.size.width,
-                          fontFamily: 'Roboto',
-                          color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-              alignment: Alignment.centerLeft,
-            ),
+              
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.0 * media.size.height, 0.0, 0.0),
@@ -619,7 +425,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               alignment: Alignment.centerLeft,
             ),
 
-    //Row(children: <Widget>[container, container])
+            //Row(children: <Widget>[container, container])
             Row(children: <Widget>[Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
@@ -669,11 +475,36 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                         ),
                       ),
                     )))]),
+            Container(
+                alignment: Alignment.bottomCenter,
+                padding:
+                    EdgeInsets.fromLTRB(0.02 * media.size.width, 0.05 * media.size.width, 0.02 * media.size.width, 0.0),
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  color: const Color(0xff7341E6).withOpacity(0.9),
+                  onPressed: () {
+                    sendValuesToDatabase();
+                  },
+                  textColor: Colors.black,
+                  padding: const EdgeInsets.all(0.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(10.0),
+                    height: 0.06*media.size.height,
+                    child: Text(
+                      book,
+                      style: TextStyle(
+                          fontSize: 0.045 * media.size.width,
+                          fontFamily: 'Roboto',
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
             SizedBox(
               height: 0.02 * media.size.height,
             )
-          ])
-        ]));
+        ])]));
   }
 
 
@@ -729,37 +560,6 @@ sendRating() async {
       return response.body;
     } else {
       throw Exception('Failed to retrieve user data. Please try again later');
-    }
-  }
-
-  /*
-   Method Name:
-    sendRating
-
-   Purpose:
-    This method will send the request to the api to rate the instructor.
-
-   */
-  void sendRating() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.get("username");
-
-    int rating = numStars;
-
-    final http.Response response = await http.post(
-      'https://gymmoveswebapi.azurewebsites.net/api/ratings/instructor',
-      headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<String, Object>{
-        'username': username,
-        'instructor': instructorName,
-        'rating': rating
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      _showAlertDialog('Success!', 'Instructor Rated Successfully!');
-    } else {
-      _showAlertDialog('Error', 'Please try again later.');
     }
   }
 
