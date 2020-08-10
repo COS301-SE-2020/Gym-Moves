@@ -33,6 +33,7 @@ using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 
 namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
 {
@@ -43,13 +44,13 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
         public DbSet<Gym> Gyms { get; set; }
         public DbSet<GymClasses> Classes { get; set; }
         public DbSet<InstructorRating> InstructorRatings { get; set; }
-        public DbSet<LicenseKeys> Licenses { get; set; }
         public DbSet<Notifications> Notifications { get; set; }
         public DbSet<NotificationSettings> NotificationSettings { get; set; }
         public DbSet<SupportUsers> SupportStaff { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<GymMember> GymMembers { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
+        public DbSet<GymApplications> GymApplications { get; set; }
 
         private readonly IConfiguration config = null;
 
@@ -71,6 +72,9 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
         {
             modelBuilder.Entity<GymMember>()
                 .HasKey(p => new { p.MembershipId, p.GymId });
+
+            modelBuilder.Entity<GymApplications>()
+                .HasKey(p => new { p.GymName, p.BranchName});
 
             modelBuilder.Entity<Gym>()
                 .HasIndex(p => p.GymName)
@@ -195,14 +199,6 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         Email = "membertestemail@gmail.com",
                         PhoneNumber = "0629058357",
                         UserType = UserTypes.Member
-                    }
-                );
-
-            modelBuilder.Entity<LicenseKeys>()
-                .HasData(
-                    new {
-                        LicenseKey = "testkey",
-                        Email = "testmail@gmail.com"
                     }
                 );
         }

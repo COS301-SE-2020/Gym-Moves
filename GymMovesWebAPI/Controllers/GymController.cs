@@ -50,14 +50,13 @@ namespace GymMovesWebAPI.Controllers
         private readonly IGymMemberRepository gymMemberRepository;
         private readonly IUserRepository userGymMovesRepository;
         private readonly INotificationSettingsRepository notificationSettingRepository;
-        private readonly ILicenseKeysRepository license;
-        public GymController(IGymRepository gr, IGymMemberRepository gm, IUserRepository user, INotificationSettingsRepository n, ILicenseKeysRepository l)
+
+        public GymController(IGymRepository gr, IGymMemberRepository gm, IUserRepository user, INotificationSettingsRepository n)
         {
             gymRepository = gr;
             gymMemberRepository = gm;
             userGymMovesRepository = user;
             notificationSettingRepository = n;
-            license = l;
         }
 
         /*
@@ -79,7 +78,7 @@ namespace GymMovesWebAPI.Controllers
              This method will verify that the gym is a valid gym and that the licence code is correct.
              It will then register the gym is everything matches.
         */
-        [HttpPost("register")]
+        /*[HttpPost("register")]
         public async Task<ActionResult<GymModel>> registerGym(GymSignUpRequestModel newGym)
         {
             Gym newgym = new Gym();
@@ -202,7 +201,7 @@ namespace GymMovesWebAPI.Controllers
 
                
             }
-        }
+        }*/
 
         /*
        Method Name:
