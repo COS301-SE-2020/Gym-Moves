@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GymMovesWebAPI.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace GymMovesWebAPI.Data.Models.DatabaseModels {
     public class GymApplications {
@@ -17,5 +18,6 @@ namespace GymMovesWebAPI.Data.Models.DatabaseModels {
         [Required]
         public string Address { get; set; }
         public string Extra { get; set; }
+        public ApplicationStatus Status { get; set; }
     }
 }

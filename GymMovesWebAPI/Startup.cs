@@ -1,4 +1,5 @@
 using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Repositories.Implementations;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.MailerProgram;
@@ -33,6 +34,7 @@ namespace GymMovesWebAPI {
             services.AddScoped<IClassRatingRepository, ClassRatingRepository>();
             services.AddScoped<IInstructorRatingRepository, InstructorRatingRepository>();
             services.AddScoped<IGymApplicationRepository, GymApplicationRepository>();
+            services.AddScoped<ISupportStaffRepository, SupportStaffRepository>();
 
             services.AddScoped<IMailer, Mailer>();
 

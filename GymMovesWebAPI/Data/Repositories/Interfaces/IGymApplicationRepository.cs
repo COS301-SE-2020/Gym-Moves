@@ -31,6 +31,7 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
     public interface IGymApplicationRepository {
         public Task<bool> addApplication(GymApplications application);
         public Task<bool> removeApplication(GymApplications application);
-        public Task<GymApplications> getApplication(string gymName, string gymBranch);
+        public Task<GymApplications[]> getApplication(string gymName, string gymBranch = "");
+        public Task<GymApplications[]> getAllApplications();
     }
 }

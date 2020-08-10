@@ -1,4 +1,29 @@
-﻿using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
+﻿/*
+File Name:
+    GymApplicationRepository.cs
+
+Author:
+    Longji
+
+Date Created:
+    10/08/2020
+
+Update History:
+--------------------------------------------------------------------------------
+Date          |    Author      |     Changes
+--------------------------------------------------------------------------------
+10/08/2020    |  Longji        | Created the interface
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+    
+
+List of Classes:
+    - GymApplicationRepository
+*/
+
+using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +43,19 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return (await context.SaveChangesAsync()) > 0;
         }
 
-        public async Task<GymApplications> getApplication(string gymName, string gymBranch) {
-            IQueryable<GymApplications> query = context.GymApplications;
-            query = query.Where(p => p.GymName == gymName)
-                .Where(p => p.BranchName == gymBranch);
+        public async Task<GymApplications[]> getAllApplications() {
+            return await context.GymApplications.ToArrayAsync();
+        }
 
-            return await query.FirstOrDefaultAsync();
+        public async Task<GymApplications[]> getApplication(string gymName, string gymBranch = "") {
+            IQueryable<GymApplications> query = context.GymApplications;
+            query = query.Where(p => p.GymName == gymName);
+
+            if (gymBranch != "" && gymBranch != null) {
+                query = query.Where(p => p.BranchName == gymBranch);
+            }
+
+            return await query.ToArrayAsync();
         }
 
         public async Task<bool> removeApplication(GymApplications application) {
