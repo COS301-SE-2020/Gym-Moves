@@ -54,13 +54,11 @@ namespace GymMovesWebAPI.Controllers {
                 return StatusCode(StatusCodes.Status400BadRequest, $"Gym with name {application.GymName} and branch {application.BranchName} is already taken!");
             }
 
-            GymApplications existingApplication = (await applicationRepository.getApplication(application.GymName, application.BranchName))[0];
-
-            if (existingApplication != null) {
+            if ((await applicationRepository.getApplication(application.GymName, application.BranchName)).Length != 0) {
                 return StatusCode(StatusCodes.Status400BadRequest, "An application for this gym is already in progress!");
             }
 
-            existingApplication = new GymApplications();
+            GymApplications existingApplication = new GymApplications();
 
             existingApplication.Name = application.Name;
             existingApplication.Surname = application.Surname;
