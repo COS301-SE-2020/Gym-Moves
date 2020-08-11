@@ -26,171 +26,163 @@ Functional Description:
 -->
 
 <!DOCTYPE html>
-  <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-      <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
 
-      <title>Register My Gym</title>
+    <title>Register My Gym</title>
 
-      <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-      <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
-      <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
-      <link rel="stylesheet" href="assets/styles.css">
-    </head>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
 
-    <body>
-      <section> 
-      <nav class="navbar navbar-expand navbar-dark barColour">         
-        <img style = "vertical-align: top; height: 90px;" src="assets/images/dumbbell-128x128-1.png" alt="" title="" >               
-        <div style="width: 40%;">
-          <p id="heading">Gym Moves</p>
-        </div>
-        <div style="width: 50%;">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="GymMovesIndex.html">About us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymMembers.html">Gym Members</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymInstructors.html">Gym Instructors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="GymManagers.html">Gym Managers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="HowToRegisterMyGym.html">Register My Gym</a>
-                </li>
+<body>
+    <section>
+        <nav class="navbar navbar-expand navbar-dark barColour">
+            <img style="vertical-align: top; height: 90px;" src="assets/images/dumbbell-128x128-1.png" alt="" title="">
+            <div style="width: 40%;">
+                <p id="heading">Gym Moves</p>
+            </div>
+            <div style="width: 50%;">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="GymMovesIndex.html">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GymMembers.html">Gym Members</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GymInstructors.html">Gym Instructors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GymManagers.html">Gym Managers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="HowToRegisterMyGym.html">Register My Gym</a>
+                    </li>
 
-            </ul>
-        </div>
-    </nav>
+                </ul>
+            </div>
+        </nav>
 
-      </section>
+    </section>
 
     <br>
 
     <section>
-      <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
-        <div class="col-lg-6 col-md-8 mx-auto">
-            <div class="card-body">
-              <form role="form" autocomplete="off" id="register" method="post" novalidate="">
-                
-                <h4>Manager's Details:</h4>
-                <br>
+        <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <div class="card-body">
+                    <form role="form" autocomplete="off" id="register" method="post" novalidate="">
 
-                <div class="form-group">
-                  <label for="name">Name</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="name" id="name" required="">
-                </div> 
-                
-                <div class="form-group">
-                  <label for="surname">Surname</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="surname" id="surname" required="">
-                </div> 
-                                    
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="username" id="username" required="">
-                </div>
-                                    
-                <div class="form-group">
-                  <label for="number">Cellphone Number</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="number" id="number" required="">
-                </div>  
-                
-                <div class="form-group">
-                  <label for="email">Email Address</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="email" id="email" required="">
-                </div>  
-                
-                <div class="form-group">
-                  <label for="memberid">Gym Membership ID</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="memberid" id="memberid" required="">
-                </div>
-                
-                <div class="form-group">
-                  <label for="password">Your Password</label>
-                  <input type="password" class="form-control form-control-lg rounded-0" name="password" id="password" required="">
-                </div>    
+                        <h4>Manager's Details:</h4>
+                        <br>
 
-                <br>
-                <h4>Gym's Details:</h4>
-                <br>
-                
-                <div class="form-group">
-                  <label for="gymName">Gym Name</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="gymName" id="gymName" required="">
-                </div>  
-                
-                <div class="form-group">
-                  <label for="gymBranch">Gym Branch</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="gymBranch" id="gymBranch" required="">
-                </div>  
-                
-                <div class="form-group">
-                  <label for="code">Registration Code</label>
-                  <input type="text" class="form-control form-control-lg rounded-0" name="code" id="code" required="">
-                </div>                             
-                
-                <br>
-                
-                <div align="center" class="form-group">
-                  <button type="button" class="btn button-colour"">Register Gym</button>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="name" id="Name" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="surname">Surname</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="surname" id="Surname" required="">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="number">Cellphone Number</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="number" id="PhoneNumber" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="email" id="Email" required="">
+                        </div>
+
+
+
+                        <br>
+                        <h4>Gym's Details:</h4>
+                        <br>
+
+                        <div class="form-group">
+                            <label for="gymName">Gym Name</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="gymName" id="GymName" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gymBranch">Gym Branch</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="gymBranch" id="BranchName" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Address">Address of gym</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="Address" id="Address" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Extra">Any extra information you'd like to add?</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="Extra" id="Extra" required="">
+                        </div>
+
+                        <br>
+
+                        <div align="center" class="form-group">
+                            <button type="button" class="btn button-colour" onclick="register()">Register</button>
+                        </div>
+
+                    </form>
                 </div>
-                
-              </form>          
             </div>
-          </div>
         </div>
     </section>
 
-      <section once="footers" class="footer barColour">
+    <section once="footers" class="footer barColour">
         <div class="container">
-          
-          © Copyright 2020 Gym Moves - All Rights Reserved
+
+            © Copyright 2020 Gym Moves - All Rights Reserved
 
         </div>
     </section>
-    
 
-  </body>
 
-    <script>
-      $(document).ready(function () {
-          $("#register").click(function (e) {
-              var name = JSON.stringify($("#name").serializeJSON());
-              var surname = JSON.stringify($("#surname").serializeJSON());
-              var username = JSON.stringify($("#username").serializeJSON());
-              var number = JSON.stringify($("#number").serializeJSON());
-              var email = JSON.stringify($("#email").serializeJSON());
-              var memberid = JSON.stringify($("#memberid").serializeJSON());
-              var gymName = JSON.stringify($("#gymName").serializeJSON());
-              var gymBranch = JSON.stringify($("#gymBranch").serializeJSON());
-              var code = JSON.stringify($("#code").serializeJSON());
-              var password = JSON.stringify($("#password").serializeJSON());
-             
-              $.ajax({
-                  url: "http://gymmoves/api/Gym/register",
-                  type: "POST",
-                  data: name,
-                  surname,
-                  username,
-                  number,
-                  email,
-                  memberid,
-                  gymName,
-                  gymBranch,
-                  code,
-                  password,
-  
-              });
-              e.preventDefault(); 
-  
-          });
-      });
-  </script>
-    
-  </html>
+</body>
+
+<script>
+    async function register() {
+
+
+        var user =
+        {
+            'Name': document.getElementById("Name").value,
+            'Surname': document.getElementById("Surname").value,
+            'PhoneNumber': document.getElementById("PhoneNumber").value,
+            'Email': document.getElementById("Email").value,
+            'GymName': document.getElementById("GymName").value,
+            'BranchName': document.getElementById("BranchName").value,
+            'Address': document.getElementById("Address").value,
+            'Extra': document.getElementById("Extra").value
+
+        };
+
+        jQuery.ajax({
+            url: "@Url.Content("~/api/GymApplication/add")",
+            type: "POST",
+            data: JSON.stringify(user),
+            contentType: "application/json",
+            success: function (result) {
+                window.location.href = "@Url.Content("~/MainPageForDashboard")";
+
+            }
+            ,
+            error: function (result) {
+                window.alert(result.responseText);
+            }
+         });
+     }
+</script>
+     
+</html>
