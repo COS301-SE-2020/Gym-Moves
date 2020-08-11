@@ -18,6 +18,8 @@ Update History:
 --------------------------------------------------------------------------------
 02/08/2020   |    Danel     |  Fixed css
 --------------------------------------------------------------------------------
+ 11/08/2020  | Raeesa       |  Fixed API
+--------------------------------------------------------------------------------
 
 Functional Description:
   This file contains the HTML and some css code for the gym registration page. This page allows a gym manager
@@ -82,38 +84,26 @@ Functional Description:
 
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="name" id="name" required="">
+                            <input type="text" class="form-control form-control-lg rounded-0" name="name" id="Name" required="">
                         </div>
 
                         <div class="form-group">
                             <label for="surname">Surname</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="surname" id="surname" required="">
+                            <input type="text" class="form-control form-control-lg rounded-0" name="surname" id="Surname" required="">
                         </div>
 
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="username" id="username" required="">
-                        </div>
 
                         <div class="form-group">
                             <label for="number">Cellphone Number</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="number" id="number" required="">
+                            <input type="text" class="form-control form-control-lg rounded-0" name="number" id="PhoneNumber" required="">
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="email" id="email" required="">
+                            <input type="text" class="form-control form-control-lg rounded-0" name="email" id="Email" required="">
                         </div>
 
-                        <div class="form-group">
-                            <label for="memberid">Gym Membership ID</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="memberid" id="memberid" required="">
-                        </div>
 
-                        <div class="form-group">
-                            <label for="password">Your Password</label>
-                            <input type="password" class="form-control form-control-lg rounded-0" name="password" id="password" required="">
-                        </div>
 
                         <br>
                         <h4>Gym's Details:</h4>
@@ -121,23 +111,28 @@ Functional Description:
 
                         <div class="form-group">
                             <label for="gymName">Gym Name</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="gymName" id="gymName" required="">
+                            <input type="text" class="form-control form-control-lg rounded-0" name="gymName" id="GymName" required="">
                         </div>
 
                         <div class="form-group">
                             <label for="gymBranch">Gym Branch</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="gymBranch" id="gymBranch" required="">
+                            <input type="text" class="form-control form-control-lg rounded-0" name="gymBranch" id="BranchName" required="">
                         </div>
 
                         <div class="form-group">
-                            <label for="code">Registration Code</label>
-                            <input type="text" class="form-control form-control-lg rounded-0" name="code" id="code" required="">
+                            <label for="Address">Address of gym</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="Address" id="Address" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Extra">Any extra information you'd like to add?</label>
+                            <input type="text" class="form-control form-control-lg rounded-0" name="Extra" id="Extra" required="">
                         </div>
 
                         <br>
 
                         <div align="center" class="form-group">
-                            <button type="button" class="btn button-colour" ">Register Gym</button>
+                            <button type="button" class="btn button-colour" onclick="register()">Register</button>
                         </div>
 
                     </form>
@@ -154,49 +149,41 @@ Functional Description:
         </div>
     </section>
 
+    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
     <script>
 
+        async function register() {
 
-        $(document).ready(function () {
-            $("#register").click(function (e) {
 
-                const msgBuffer = new TextEncoder('utf-8').encode(document.getElementById("password").value);
+        var user =
+        {
+            'Name': document.getElementById("Name").value,
+            'Surname': document.getElementById("Surname").value,
+            'PhoneNumber': document.getElementById("PhoneNumber").value,
+            'Email': document.getElementById("Email").value,
+            'GymName': document.getElementById("GymName").value,
+            'BranchName': document.getElementById("BranchName").value,
+            'Address': document.getElementById("Address").value,
+            'Extra': document.getElementById("Extra").value
 
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        };
 
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
+        jQuery.ajax({
+            url: "@Url.Content("~/api/GymApplication/add")",
+            type: "POST",
+            data: JSON.stringify(user),
+            contentType: "application/json",
+            success: function (result) {
+                window.alert("Your registration has been submitted");
+                window.location.href = "@Url.Content("~/HowToRegisterMyGym")";
 
-                const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+            }
+            ,
+            error: function (result) {
+                window.alert(result.responseText);
+            }
+         });
+     }
 
-                var name = JSON.stringify($("#name").serializeJSON());
-                var surname = JSON.stringify($("#surname").serializeJSON());
-                var username = JSON.stringify($("#username").serializeJSON());
-                var number = JSON.stringify($("#number").serializeJSON());
-                var email = JSON.stringify($("#email").serializeJSON());
-                var memberid = JSON.stringify($("#memberid").serializeJSON());
-                var gymName = JSON.stringify($("#gymName").serializeJSON());
-                var gymBranch = JSON.stringify($("#gymBranch").serializeJSON());
-                var code = JSON.stringify($("#code").serializeJSON());
-                var password = JSON.stringify(hashHex.serializeJSON());
-
-                $.ajax({
-                    url: "http://gymmoves/api/Gym/register",
-                    type: "POST",
-                    data: name,
-                    surname,
-                    username,
-                    number,
-                    email,
-                    memberid,
-                    gymName,
-                    gymBranch,
-                    code,
-                    password,
-
-                });
-                e.preventDefault();
-
-            });
-        });
     </script>
 </body>
