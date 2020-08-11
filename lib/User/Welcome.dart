@@ -9,6 +9,9 @@ Update History:
 --------------------------------------------------------------------------------
 | Name               | Date              | Changes                             |
 --------------------------------------------------------------------------------
+Raeesa                 08/08/2020          Added number of people in gym in real
+                                            time, using firebase
+ --------------------------------------------------------------------------------
 Functional Description:
 
 Classes in the File:
@@ -18,6 +21,7 @@ Classes in the File:
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 
@@ -37,6 +41,10 @@ class Welcome extends StatefulWidget {
   WelcomeState createState() => WelcomeState();
 }
 
+
+/* This creates a database reference.*/
+FirebaseDatabase database = new FirebaseDatabase();
+DatabaseReference _userRef=database.reference().child('users');
 /*
 Class Name:
   ManagerPagesState
@@ -64,6 +72,23 @@ class WelcomeState extends State<Welcome> {
 
   Future local;
 
+  /*
+   Method Name: numUsers
+   Purpose:
+    This method fetches the number of people from the firebase database in real time
+   */
+  void numUsers(){
+
+     _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
+        .onValue.listen((event) {
+       var snapshot = event.snapshot;
+      setState(() {
+        numberOfPeople = snapshot.value.toString();
+      });
+    });
+  }
+
+
   @override
   void initState() {
     local = _getDetails();
@@ -86,7 +111,7 @@ class WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-
+    numUsers();
     return new FutureBuilder(
         future: local,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -133,9 +158,9 @@ class WelcomeState extends State<Welcome> {
                             child: Text(
                               numberOfPeople,
                               style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: media.size.width * 0.05,
-                                color: const Color(0xff3e3e3e),
+                                fontFamily: 'Digital',
+                                fontSize: media.size.width * 0.2,
+                                color: const Color(0xff7341E6),
                               ),
                               textAlign: TextAlign.center,
                             ))
