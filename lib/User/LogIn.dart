@@ -114,9 +114,9 @@ class LogInState extends State<LogIn> {
                 labelStyle: new TextStyle(color: Color(0xff787878)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                    borderSide:  new BorderSide(color: Color(0xff787878))),
+                    borderSide: new BorderSide(color: Color(0xff787878))),
                 focusedBorder: OutlineInputBorder(
-                    borderSide:  new BorderSide(color: Color(0xff787878)),
+                    borderSide: new BorderSide(color: Color(0xff787878)),
                     borderRadius: BorderRadius.circular(15.0))),
             onChanged: (value) {
               setState(() {
@@ -132,7 +132,7 @@ class LogInState extends State<LogIn> {
             cursorColor: Color(0xff787878),
             obscureText: hidePassword,
             style: TextStyle(
-              color:Color(0xff787878),
+              color: Color(0xff787878),
             ),
             decoration: InputDecoration(
                 filled: true,
@@ -142,9 +142,9 @@ class LogInState extends State<LogIn> {
                 labelStyle: new TextStyle(color: Color(0xff787878)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                    borderSide:  new BorderSide(color: Color(0xff787878))),
+                    borderSide: new BorderSide(color: Color(0xff787878))),
                 focusedBorder: OutlineInputBorder(
-                    borderSide:  new BorderSide(color: Color(0xff787878)),
+                    borderSide: new BorderSide(color: Color(0xff787878)),
                     borderRadius: BorderRadius.circular(15.0))),
             onChanged: (value) {
               setState(() {
@@ -164,8 +164,7 @@ class LogInState extends State<LogIn> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: const AssetImage('assets/LoginPicture.png'),
-                          fit: BoxFit.fill
-                      )))),
+                          fit: BoxFit.fill)))),
           Transform.translate(
             offset: Offset(0.08 * media.size.width, 0.02 * media.size.height),
             child: Text(
@@ -183,10 +182,10 @@ class LogInState extends State<LogIn> {
         Center(
           child: Text(
             "Log In",
-            style:  TextStyle(
+            style: TextStyle(
                 fontSize: 0.07 * media.size.width,
                 fontFamily: 'Lastwaerk',
-                color: const Color(0xff3e3e3e) ),
+                color: const Color(0xff3e3e3e)),
           ),
         ),
         SizedBox(height: 0.04 * media.size.height),
@@ -198,23 +197,20 @@ class LogInState extends State<LogIn> {
                 usernameField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.25 * media.size.height
-                    ),
+                        0.08 * 0.25 * media.size.height),
                     child: SvgPicture.string(
                       person,
                       width: media.size.width * 0.04,
-                      color:  Color(0xff787878),
+                      color: Color(0xff787878),
                       allowDrawingOutsideViewBox: true,
-                    )
-                )
+                    ))
               ]),
               SizedBox(height: 0.05 * media.size.height),
               Stack(children: <Widget>[
                 passwordField,
                 Transform.translate(
                     offset: Offset(0.7 * 0.85 * media.size.width,
-                        0.08 * 0.3 * media.size.height
-                    ),
+                        0.08 * 0.3 * media.size.height),
                     child: GestureDetector(
                         onTap: () {
                           setState(() {
@@ -225,12 +221,10 @@ class LogInState extends State<LogIn> {
                           hidePassword
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color:  Color(0xff787878),
-                        ))
-                )
+                          color: Color(0xff787878),
+                        )))
               ])
-            ])
-        ),
+            ])),
         Container(
             padding: EdgeInsets.fromLTRB(
                 0.05 * media.size.height,
@@ -248,10 +242,8 @@ class LogInState extends State<LogIn> {
                 child: Text(
                   "Forgot password?",
                   textAlign: TextAlign.right,
-                  style: TextStyle(color:  Color(0xff7341E6)),
-                )
-            )
-        ),
+                  style: TextStyle(color: Color(0xff7341E6)),
+                ))),
         SizedBox(height: 0.01 * media.size.height),
         Center(
             child: SizedBox(
@@ -282,28 +274,24 @@ class LogInState extends State<LogIn> {
                   );
                 },
                 child: Text.rich(
-                  TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Don\'t have an account? ',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 0.04 * media.size.width,
-                            color: const  Color(0xff787878),
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Sign up!',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: const  Color(0xff7341E6),
-                          )
-                        )
-                      ]),
+                  TextSpan(children: [
+                    TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 0.04 * media.size.width,
+                        color: const Color(0xff787878),
+                      ),
+                    ),
+                    TextSpan(
+                        text: 'Sign up!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xff7341E6),
+                        ))
+                  ]),
                   textAlign: TextAlign.center,
-                )
-            )
-        ),
+                ))),
         SizedBox(height: 30),
       ]),
     );
@@ -318,18 +306,16 @@ class LogInState extends State<LogIn> {
      that the user does exist and what type of user they are.
 */
   verifyUser() async {
-
     var bytes = utf8.encode(password);
     var hashPassword = sha256.convert(bytes);
 
     final http.Response response = await http.post(
       'https://gymmoveswebapi.azurewebsites.net/api/user/login',
       headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(
-          <String, String>{
-            'username': username,
-            'password': hashPassword.toString()
-          }),
+      body: jsonEncode(<String, String>{
+        'username': username,
+        'password': hashPassword.toString()
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -348,15 +334,15 @@ class LogInState extends State<LogIn> {
       Navigator.pop(context);
 
       Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => NavigationBar(index: 0)),
-        );
+        context,
+        MaterialPageRoute(builder: (context) => NavigationBar(index: 0)),
+      );
     } else {
       String errMessage = response.body;
 
       Widget okButton = FlatButton(
-          child: Text("OK"), onPressed: () => Navigator.pop(context)
-      );
+          child: Text("OK", style: TextStyle(color: Color(0xff7341E6))),
+          onPressed: () => Navigator.pop(context));
 
       AlertDialog alert = AlertDialog(
         title: Text("Login Error"),
@@ -393,10 +379,7 @@ class LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-        userType: json['userType'],
-        name: json['name'],
-        gymID: json['gymID']
-    );
+        userType: json['userType'], name: json['name'], gymID: json['gymID']);
   }
 }
 

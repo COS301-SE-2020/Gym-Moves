@@ -26,6 +26,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_moves/GymClass/MemberViewAllClasses.dart';
 import 'dart:convert';
 import 'package:gym_moves/GymClass/MemberClassDetails.dart';
+import 'package:gym_moves/NavigationBar.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -94,96 +95,70 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
         body: Column(children: <Widget>[
           Stack(children: <Widget>[
             Container(
+                width: 0.8 * media.size.width,
+                height: 0.3 * media.size.height,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: const AssetImage('assets/Classes.png'),
+                        fit: BoxFit.fill))),
+            Container(
+              padding: EdgeInsets.all(0.01 * media.size.width),
               width: media.size.width,
-              height: 0.28 * media.size.height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: const AssetImage('assets/Classes.png'),
-                  fit: BoxFit.fill,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.white.withOpacity(0.65), BlendMode.dstIn),
+              height: 0.3 * media.size.height,
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Classes',
+                style: TextStyle(
+                  fontFamily: 'Lastwaerk',
+                  fontSize: 0.1 * media.size.width,
+                  color: const Color(0xFF3E3E3E),
                 ),
-
+                textAlign: TextAlign.right,
               ),
             ),
-            Transform.translate(
-                offset:
-                    Offset(0.04 * media.size.width, 0.04 * media.size.height),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SvgPicture.string(
-                    backArrow,
-                    width: 0.06 * media.size.width,
-                    allowDrawingOutsideViewBox: true,
+          ]),
+          Row(children: [
+            Container(
+              child: Text(
+                'View Mine',
+                style: TextStyle(
+                  fontFamily: 'Lastwaerk',
+                  fontSize: 0.05 * media.size.width,
+                  color: const Color(0xff3E3E3E),
+                  fontWeight: FontWeight.w300,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              width: 0.5 * media.size.width,
+              height: 0.075 * media.size.height,
+              color: const Color(0xff7341E6).withOpacity(0.2),
+              padding: EdgeInsets.all(10.0),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NavigationBar(index: 2, previous: "Mine")),
+                );
+              },
+              child: Container(
+                child: Text(
+                  'View All',
+                  style: TextStyle(
+                    fontFamily: 'Lastwaerk',
+                    fontSize: 0.05 * media.size.width,
+                    color: const Color(0xff3E3E3E),
+                    fontWeight: FontWeight.w300,
                   ),
-                )),
-            Transform.translate(
-              offset: Offset(0.0, 0.3 * media.size.height),
-              child: SvgPicture.string(
-                underline,
-                width: media.size.width * 0.5,
-                allowDrawingOutsideViewBox: true,
+                  textAlign: TextAlign.center,
+                ),
+                width: 0.5 * media.size.width,
+                height: 0.075 * media.size.height,
+                padding: EdgeInsets.all(10.0),
               ),
             ),
-            Transform.translate(
-                offset:
-                    Offset(0.5 * media.size.width, 0.25 * media.size.height),
-                child: Container(
-                    child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MemberViewAllClasses()),
-                    );
-                  },
-                  child: Container(
-                    child: Text(
-                      'View All',
-                      style: TextStyle(
-                        fontFamily: 'Last',
-                        fontSize: 0.05 * media.size.width,
-                        color: const Color(0xff3E3E3E),
-                        fontWeight: FontWeight.w300,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    width: 0.5 * media.size.width,
-                    height: 0.1 * media.size.height,
-                    padding: EdgeInsets.all(10.0),
-                  ),
-                ))),
-//            Transform.translate(
-//                offset: Offset(
-//                  0.8* media.size.width, 0.5 * media.size.height),
-//                child: SizedBox(
-//                    width: 0.7 * media.size.width,
-//                    child: Text("No booked classes",
-//                        style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 0.035 * media.size.width)))),
-
-            Transform.translate(
-                offset: Offset(0.0, 0.25 * media.size.height),
-                child: Container(
-                  child: Text(
-                    'View Mine',
-                    style: TextStyle(
-                      fontFamily: 'Last',
-                      fontSize: 0.05 * media.size.width,
-                      color: const Color(0xff3E3E3E),
-                      fontWeight: FontWeight.w300,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  width: 0.5 * media.size.width,
-                  height: 0.075 * media.size.height,
-                  color: const Color(0xff7341E6).withOpacity(0.2),
-                  padding: EdgeInsets.all(10.0),
-                ))
           ]),
           Expanded(
             child: FutureBuilder<String>(
@@ -288,23 +263,15 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
 
     if (classesJson.length == 0) {
       return Container(
-//          offset: Offset(0, 2),
-          height: 2 / 10 * media.size.height,
+          padding: EdgeInsets.fromLTRB(0, 0.05 * media.size.height, 0, 0),
+          height: 1 / 10 * media.size.height,
           width: media.size.width,
-          padding: EdgeInsets.all(0.05 * media.size.width),
           child: Text(
-            'You are currently not signed up to any classes.',
+            'You are currently not signed up for any classes at the gym.',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: media.size.width * 0.05,
               color: const Color(0xff3E3E3E),
-              shadows: [
-                Shadow(
-                  color: const Color(0xbd000000),
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                ),
-              ],
             ),
             textAlign: TextAlign.center,
           ));
@@ -317,97 +284,93 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
       classes.add(SizedBox(height: 20));
 
       for (int i = 0; i < amountOfClasses; i++) {
-
         instructorName = allClasses[i].instructor;
         className = allClasses[i].name;
         classDay = allClasses[i].day;
         classTime = allClasses[i].startTime;
-        classAvailableSpots = allClasses[i].maxCapacity - allClasses[i].currentStudents;
+        classAvailableSpots =
+            allClasses[i].maxCapacity - allClasses[i].currentStudents;
         classDescription = allClasses[i].description;
 
         if (!allClasses[i].cancelled) {
-
           classes.add(GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => MemberClassDetails(
-                    instructor: allClasses[i].instructor,
-                    classN: allClasses[i].name,
-                    classD: allClasses[i].day,
-                    classT: allClasses[i].startTime,
-                    availableSpots: allClasses[i].maxCapacity - allClasses[i].currentStudents,
-                    description: allClasses[i].description.toString(),
-                    id: allClasses[i].classId )),
+                          instructor: allClasses[i].instructor,
+                          className: allClasses[i].name,
+                          classDay: allClasses[i].day,
+                          classTime: allClasses[i].startTime,
+                          availableSpots: allClasses[i].maxCapacity -
+                              allClasses[i].currentStudents,
+                          description: allClasses[i].description.toString(),
+                          classId: allClasses[i].classId)),
                 );
               },
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: <
-                      Widget>[
-                Stack(children: <Widget>[
-                       Container(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Stack(children: <Widget>[
+                      Container(
                           width: 0.74 * media.size.width,
                           height: 0.2 * media.size.height,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(19.0),
-                           color: const  Color(0xff7341E6).withOpacity(0.03),
-                            border: Border.all(width: 1.0, color: const Color(0xff7341E6).withOpacity(0.2)),
+                            color: const Color(0xff7341E6).withOpacity(0.03),
+                            border: Border.all(
+                                width: 1.0,
+                                color: const Color(0xff7341E6).withOpacity(0.15)),
                           )),
-                  /* Transform.translate(
-                        offset: Offset(0.33 * 0.8 * media.size.width,
-                            0.65 * 0.25 * media.size.height),
-                        child: Row(children: getStarsForClass(media))),*/
-                  Container(
-                      alignment: Alignment.center,
-                      width: 0.74 * media.size.width,
-                      height: 0.2 * 0.5 * media.size.height,
-                      child: Text(className,
-                          style: TextStyle(
-                              color: const Color(0xff3E3E3E).withOpacity(0.75),
-                              fontSize: 0.06 * media.size.width,
-                              fontFamily: "Last"))),
-                Transform.translate(
-                      offset: Offset(
-                          0.05 * media.size.width, 0.095 * media.size.height),
-                      child:
-                        Container(
-                            child: Icon(Icons.today, color: Colors.black54))),
-                  Transform.translate(
-                      offset: Offset(
-                          0.12 * media.size.width, 0.1 * media.size.height),
-                      child:
                       Container(
-                          child:  Text("   " + classDay,
+                          alignment: Alignment.center,
+                          width: 0.74 * media.size.width,
+                          height: 0.2 * 0.5 * media.size.height,
+                          child: Text(className,
                               style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 0.038 * media.size.width)))),
-                  Transform.translate(
-                      offset: Offset(
-                          0.05 * media.size.width, 0.135 * media.size.height),
-                      child:
-                      Container(
-                          child: Icon(Icons.access_time, color: Colors.black54))),
-                  Transform.translate(
-                      offset: Offset(
-                          0.12 * media.size.width, 0.14 * media.size.height),
-                      child:
-                      Container(
-                          child:  Text("   " + classTime,
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 0.038 * media.size.width)))),
-                  Transform.translate(
-                      offset: Offset(
-                          0.74 * 0.7 * media.size.width, 0.2 * 0.4 * media.size.height),
-                      child:
-                      SvgPicture.string(dumbbell,
-                        width: 0.2 * media.size.width * 0.7,
-                        allowDrawingOutsideViewBox: true,
-                        color: Colors.black,
-                      ))
-                ])
-              ])));
+                                  color: const Color(0xff3E3E3E),
+                                  fontSize: 0.06 * media.size.width,
+                                  fontFamily: "Lastwaerk"))),
+                      Transform.translate(
+                          offset: Offset(
+                              0.05 * media.size.width, 0.095 * media.size.height),
+                          child: Container(
+                              child:
+                              Icon(Icons.today, color: Color(0xff3E3E3E)))),
+                      Transform.translate(
+                          offset: Offset(
+                              0.12 * media.size.width, 0.1 * media.size.height),
+                          child: Container(
+                              child: Text("   " + classDay,
+                                  style: TextStyle(
+                                      color: const Color(0xff3E3E3E),
+                                      fontSize: 0.038 * media.size.width)))),
+                      Transform.translate(
+                          offset: Offset(
+                              0.05 * media.size.width, 0.135 * media.size.height),
+                          child: Container(
+                              child: Icon(Icons.access_time,
+                                  color: Color(0xff3E3E3E)))),
+                      Transform.translate(
+                          offset: Offset(
+                              0.12 * media.size.width, 0.14 * media.size.height),
+                          child: Container(
+                              child: Text("   " + classTime,
+                                  style: TextStyle(
+                                      color: const Color(0xff3E3E3E),
+                                      fontSize: 0.038 * media.size.width)))),
+                      Transform.translate(
+                          offset: Offset(0.74 * 0.7 * media.size.width,
+                              0.2 * 0.4 * media.size.height),
+                          child: SvgPicture.string(
+                            dumbbell,
+                            width: 0.2 * media.size.width * 0.7,
+                            allowDrawingOutsideViewBox: true,
+                            color: Colors.black,
+                          ))
+                    ])
+                  ])));
 
           classes.add(SizedBox(height: 20));
         }
@@ -415,53 +378,6 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
       return ListView(padding: const EdgeInsets.all(15), children: classes);
     }
   }
-}
-
-/*
-   Method Name:
-    getStarsForClass
-   Purpose:
-    This method will get the rating for the specific class and show the
-    correct stars.
-   Extra:
-    Rating is currently hardcoded. This will be changed.
-   */
-
-List<Widget> getStarsForClass(MediaQueryData media) {
-  List<Widget> stars = [];
-
-  int full = 3;
-  int half = 1;
-  int empty = 1;
-
-  for (int i = full; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      fullStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  for (int i = half; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      halfStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  for (int i = empty; i > 0; i--) {
-    stars.add(SvgPicture.string(
-      emptyStar,
-      height: 0.02 * media.size.height,
-      width: 0.02 * media.size.width,
-      allowDrawingOutsideViewBox: true,
-    ));
-  }
-
-  return stars;
 }
 
 /*

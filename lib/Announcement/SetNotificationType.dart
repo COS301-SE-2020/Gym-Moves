@@ -12,6 +12,8 @@ Update History:
 --------------------------------------------------------------------------------
 Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
+05/08/2020    |    Tia         |     Fixed UI
+--------------------------------------------------------------------------------
 
 Functional Description:
   This file implements the screen that will allow members to decide how they
@@ -24,7 +26,6 @@ List of Classes:
  */
 
 import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -64,7 +65,7 @@ class SetNotificationTypeState extends State<SetNotificationType> {
   bool emailNotificationsChanged = false;
 
   String url = "https://gymmoveswebapi.azurewebsites.net/api/notifications/";
-  String username = "";
+  String username;
   Future loadSettingsFuture;
 
   @override
@@ -98,12 +99,12 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                                 width: media.size.width,
                                 height: media.size.height * 0.4,
                                 decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: const AssetImage(
-                                          'assets/notifications.png'),
-                                      fit: BoxFit.fill,
+                                  image: DecorationImage(
+                                    image: const AssetImage(
+                                        'assets/SetNotificationsPicture.png'
                                     ),
-                                    
+                                    fit: BoxFit.fill,
+                                  ),
                                 )
                             ),
                             Transform.translate(
@@ -114,40 +115,42 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                                 child: GestureDetector(
                                     onTap: () {
                                       Navigator.pop(context);
-                                      },
+                                    },
                                     child: SvgPicture.string(
-                                        backArrow,
-                                        allowDrawingOutsideViewBox: true,
-                                        width: 0.06 * media.size.width
+                                      backArrow,
+                                      allowDrawingOutsideViewBox: true,
+                                      width: 0.06 * media.size.width,
+                                      color: Color(0xff7341E6),
                                     )
                                 )
                             ),
                             Container(
-                      width: media.size.width,
-                      height: 0.4 * media.size.height,
-                      child: Center(
-                          child: Container(
-                              width: 0.48 * media.size.width,
-                              height: 0.4 * 0.65 * media.size.height,
-                              child:     Transform.translate(
-                      offset: Offset(0.3 * 0.82 * media.size.width,
-                          0.08 * 0.55 * media.size.height
-                      ),
-                      child:Center(
-                                  child: AutoSizeText(
-                                    "Notification \n Settings",
-                                    style: TextStyle(
-                                      fontFamily: 'Last',
-                                      fontSize: media.size.width * 0.5,
-                                      color: const Color(0xff3E3E3E),
-                                      ),
-                                    maxLines: 2,
-                                    textAlign: TextAlign.left
-                                  )
-                              ))
-                          )
-                      )
-                  )
+                                width: media.size.width,
+                                height: 0.4 * media.size.height,
+                                child: Center(
+                                    child: Container(
+                                        width: 0.48 * media.size.width,
+                                        height: 0.4 * 0.65 * media.size.height,
+                                        child:     Transform.translate(
+                                            offset: Offset(0.3 * 0.82 * media.size.width,
+                                                0.08 * 0.55 * media.size.height
+                                            ),
+                                            child:Center(
+                                                child: AutoSizeText(
+                                                    "Notification \n Settings",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Lastwaerk',
+                                                      fontSize: media.size.width * 0.5,
+                                                      color: const Color(0xff3E3E3E),
+                                                    ),
+                                                    maxLines: 2,
+                                                    textAlign: TextAlign.left
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                           ]
                       ),
                       SizedBox(
@@ -164,27 +167,27 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                       Container(
                           padding: EdgeInsets.all(0.02 * media.size.width),
                           child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            ),
-                            color: const Color(0xff7341E6),
-                            onPressed: () {
-                              changeSettings();
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
+                              ),
+                              color: const Color(0xff7341E6),
+                              onPressed: () {
+                                changeSettings();
                               },
-                            textColor: Colors.white,
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              width : 0.4 * media.size.width,
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(
-                                    fontSize: 0.04 * media.size.width,
-                                    fontFamily: 'Roboto',
-                                ),
-                                textAlign: TextAlign.center ,
+                              textColor: Colors.white,
+                              padding: const EdgeInsets.all(0.0),
+                              child: Container(
+                                  width : 0.4 * media.size.width,
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                      fontSize: 0.04 * media.size.width,
+                                      fontFamily: 'Roboto',
+                                    ),
+                                    textAlign: TextAlign.center ,
+                                  )
                               )
-                            )
                           )
                       )
                     ]
@@ -193,7 +196,7 @@ class SetNotificationTypeState extends State<SetNotificationType> {
           }
           else {
             return Scaffold(
-                backgroundColor: const Color(0xff513369),
+                backgroundColor: const Color(0xffffffff),
                 body: Column(
                     children: <Widget>[
                       Stack(
@@ -202,21 +205,21 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                               width: media.size.width,
                               height: media.size.height * 0.4,
                               decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: const AssetImage(
-                                        'assets/notifications.png'
-                                    ),
-                                    fit: BoxFit.fill,
+                                image: DecorationImage(
+                                  image: const AssetImage(
+                                      'assets/SetNotificationsPicture.png'
                                   ),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
                             Container(
-                                alignment: Alignment.center,
+                                alignment: Alignment.bottomCenter,
                                 width: media.size.width,
-                                height: media.size.height * 0.4,
+                                height: media.size.height * 0.45,
                                 child:Text('Loading your settings..',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 0.05 *
+                                        color: const Color(0xff3E3E3E), fontSize: 0.06 *
                                         media.size.width
                                     )
                                 )
@@ -227,17 +230,18 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                                     media.size.height
                                 ),
                                 child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
+                                    onTap: () {
+                                      Navigator.pop(context);
                                     },
-                                  child: SvgPicture.string(
+                                    child: SvgPicture.string(
                                       backArrow,
                                       allowDrawingOutsideViewBox: true,
-                                      width: 0.06 * media.size.width
-                                  )
+                                      width: 0.06 * media.size.width,
+                                      color: const Color(0xff7341E6),
+                                    )
                                 )
                             ),
-                            
+
                           ]
                       ),
                       SizedBox(
@@ -254,32 +258,32 @@ class SetNotificationTypeState extends State<SetNotificationType> {
                       Container(
                           padding: EdgeInsets.all(0.02 * media.size.width),
                           child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                            ),
-                            color: const Color(0xff7341E6),
-                            onPressed: () {
-                              changeSettings();
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
+                              ),
+                              color: const Color(0xff7341E6),
+                              onPressed: () {
+                                changeSettings();
                               },
-                            textColor: const Color(0xff787878),
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(
-                                    fontSize: 0.04 * media.size.width,
-                                    fontFamily: 'Roboto'
-                                )
+                              textColor: const Color(0xffffffff),
+                              padding: const EdgeInsets.all(0.0),
+                              child: Container(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                      'Submit',
+                                      style: TextStyle(
+                                          fontSize: 0.04 * media.size.width,
+                                          fontFamily: 'Roboto'
+                                      )
+                                  )
                               )
-                            )
                           )
                       )
                     ]
                 )
             );
           }}
-        );
+    );
   }
 
   Widget getPush(MediaQueryData media) {
@@ -387,13 +391,13 @@ class SetNotificationTypeState extends State<SetNotificationType> {
     username = prefs.get("username");
 
     final http.Response response = await http.get(
-      url + "getNotificationSettings?username="  + username);
+        url + "getNotificationSettings?username="  + username);
 
     if (response.statusCode != 200) {
       _showDialogue("Oh no!", response.body);
     } else {
       Notifications notifications =
-          Notifications.fromJson(json.decode(response.body));
+      Notifications.fromJson(json.decode(response.body));
 
       pushNotifications = notifications.push;
       emailNotifications = notifications.email;
@@ -419,7 +423,7 @@ class SetNotificationTypeState extends State<SetNotificationType> {
             FlatButton(
               child: Text(
                 'Ok',
-                style: TextStyle(color: Color(0xff513369)),
+                style: TextStyle(color: Color(0xff7341E6)),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -448,8 +452,8 @@ class Notifications {
 
   factory Notifications.fromJson(Map<String, dynamic> json) {
     return Notifications(
-      push: json['push'],
-      email: json['email']
+        push: json['push'],
+        email: json['email']
     );
   }
 }

@@ -16,6 +16,8 @@ Danel               | 05/07/2020        | Added autocomplete day and time picker
 --------------------------------------------------------------------------------
 Danel               | 15/07/2020        | Added autocomplete instructor
 --------------------------------------------------------------------------------
+Danel               | 05/08/2020        | AFixed UI
+--------------------------------------------------------------------------------
 
 Functional Description:
   This file contains the AddAClass class that calls the class that creates the
@@ -36,7 +38,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:gym_moves/GymClass/ManagerViewClasses.dart';
+import 'package:gym_moves/NavigationBar.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -62,15 +64,8 @@ Purpose:
   This class will build the page, and send information to the database.
  */
 class AddAClassState extends State<AddAClass> {
-  String className = "";
-  String instructorUsername = "";
-  String instructorName = "";
-  String day = "";
-  String description = "";
-  String max = "0";
-  String current = "0";
-  String startTime; //DateFormat('kk:mm:ss \n EEE d MMM').format(time);
-  String endTime; // DateFormat('kk:mm:ss \n EEE d MMM').format(time);
+  String className, instructorUsername, instructorName, day, description;
+  String max, current, startTime, endTime;
 
   String startHour = DateTime.now().hour.toString();
   String startMinute = DateTime.now().minute.toString();
@@ -140,55 +135,44 @@ class AddAClassState extends State<AddAClass> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    final classNameField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            alignment: Alignment.centerLeft,
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            child: TextFormField(
-                controller: nameHolder,
-                cursorColor: Colors.black45,
-                style: TextStyle(
-                  color: Colors.black54,
+    final classNameField = Container(
+        width: 0.7 * media.size.width,
+        alignment: Alignment.centerLeft,
+        child: TextField(
+            cursorColor: Color(0xff787878),
+            obscureText: false,
+            style: TextStyle(
+              color: Color(0xff787878),
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Class Name',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(color: Color(0xff787878)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide:  new BorderSide(color: Color(0xff787878))
                 ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Class Name',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
-                onChanged: (value) {
-                  setState(() {
-                    className = value;
-                  });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                focusedBorder: OutlineInputBorder(
+                    borderSide:  new BorderSide(color: Color(0xff787878)),
+                    borderRadius: BorderRadius.circular(15.0))
+            ),
+            onChanged: (value) {
+              setState(() {
+                className = value;
+              });
+            })
+    );
 
-    final instructorNameField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            padding: EdgeInsets.all(0.01 * media.size.width),
+    final instructorNameField = Container(
             alignment: Alignment.topLeft,
             width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            child: searchTextField),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+            child: searchTextField);
 
     searchTextField = AutoCompleteTextField<Instructor>(
       style: TextStyle(
-        color: Colors.black54,
+        color: Color(0xff787878),
       ),
       itemBuilder: (context, item) {
         return Row(
@@ -218,24 +202,28 @@ class AddAClassState extends State<AddAClass> {
       clearOnSubmit: false,
       controller: instructorHolder,
       decoration: InputDecoration(
-          labelText: 'Instructor',
-          labelStyle: new TextStyle(color: Colors.black54),
-          border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+          labelText: 'Instructor Name',
+          labelStyle: new TextStyle(color: Color(0xff787878)),
+          contentPadding: const EdgeInsets.all(20.0),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+              borderSide:  new BorderSide(color: Color(0xff787878))
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderSide:  new BorderSide(color: Color(0xff787878)),
+              borderRadius: BorderRadius.circular(15.0)
+          )
+      ),
     );
 
-    final dayField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final dayField = Container(
             padding: EdgeInsets.all(0.01 * media.size.width),
             alignment: Alignment.topLeft,
             width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
             child: SimpleAutoCompleteTextField(
               controller: dayHolder,
               style: TextStyle(
-                color: Colors.black54,
+                color: Color(0xff787878),
               ),
               suggestions: [
                 "Monday",
@@ -251,22 +239,36 @@ class AddAClassState extends State<AddAClass> {
                 day = text;
               }),
               decoration: InputDecoration(
-                  labelText: "Day of class",
-                  labelStyle: new TextStyle(color: Colors.black54),
-                  border: InputBorder.none,
-                  enabledBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none)),
-            )),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelText: 'Day',
+                  contentPadding: const EdgeInsets.all(20.0),
+                  labelStyle: new TextStyle(
+                      color: Color(0xff787878)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(15.0)),
+                      borderSide:  new BorderSide(
+                          color: Color(0xff787878))
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:  new BorderSide(color: Color(0xff787878)),
+                      borderRadius: BorderRadius.circular(15.0)
+                  )
+              ),
+            )
+    );
 
-    final startTimeField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final startTimeField = Container(
             alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
+            height: 0.14 * media.size.width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all
+                  (Radius.circular(15.0)),
+              border: Border.all(
+                color: Color(0xff787878),)
+            ),
             child: FlatButton(
               onPressed: () {
                 DatePicker.showTimePicker(context,
@@ -293,7 +295,6 @@ class AddAClassState extends State<AddAClass> {
               child: Container(
                 alignment: Alignment.center,
                 width: 0.63 * media.size.width,
-                height: 0.075 * media.size.height,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -308,7 +309,7 @@ class AddAClassState extends State<AddAClass> {
                                     ":" +
                                     startMinute,
                                 style: TextStyle(
-                                    color: Colors.black54,
+                                    color: Color(0xff787878),
                                     fontSize: 0.04 * media.size.width),
                               ),
                             ],
@@ -320,44 +321,48 @@ class AddAClassState extends State<AddAClass> {
                 ),
               ),
               color: Colors.transparent,
-            )),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+            ));
 
-    final endTimeField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final endTimeField = Container(
             alignment: Alignment.centerLeft,
             width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
+            height: 0.14 * media.size.width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(15.0)
+                ),
+                border: Border.all(
+                  color: Color(0xff787878)
+                )
+            ),
             child: FlatButton(
               onPressed: () {
-                DatePicker.showTimePicker(context,
+                DatePicker.showTimePicker(
+                    context,
                     showTitleActions: true,
                     currentTime: DateTime.now(), onConfirm: (value) {
-                  endHour = value.hour.toString();
-                  endMinute = value.minute.toString();
+                      endHour = value.hour.toString();
+                      endMinute = value.minute.toString();
 
-                  if (endHour.length == 1) {
-                    endHour = '0' + endHour;
-                  }
+                      if (endHour.length == 1) {
+                        endHour = '0' + endHour;
+                      }
 
-                  if (endMinute.length == 1) {
-                    endMinute = '0' + endMinute;
-                  }
+                      if (endMinute.length == 1) {
+                        endMinute = '0' + endMinute;
+                      }
 
-                  endSecond = "00";
+                      endSecond = "00";
 
-                  setState(() {
-                    endTime = endHour + ":" + endMinute;
-                  });
-                });
-              },
+                      setState(() {
+                        endTime = endHour + ":" + endMinute;
+                      });
+                    });
+                },
               child: Container(
                 alignment: Alignment.center,
                 width: 0.63 * media.size.width,
-                height: 0.075 * media.size.height,
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -369,8 +374,9 @@ class AddAClassState extends State<AddAClass> {
                               Text(
                                 " End time:    " + endHour + ":" + endMinute,
                                 style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 0.04 * media.size.width),
+                                    color: Color(0xff787878),
+                                    fontSize: 0.04 * media.size.width
+                                ),
                               ),
                             ],
                           ),
@@ -381,60 +387,58 @@ class AddAClassState extends State<AddAClass> {
                 ),
               ),
               color: Colors.transparent,
-            )),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+            ));
 
-    final descriptionField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final descriptionField = Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(0.01 * media.size.width),
-            height: 0.3 * media.size.height,
             width: 0.7 * media.size.width,
             child: TextFormField(
                 controller: descriptionHolder,
-                cursorColor: Colors.black45,
+                cursorColor: Color(0xff787878),
                 style: TextStyle(
-                  color: Colors.black54,
+                  color: Color(0xff787878),
                 ),
                 maxLines: 9,
-                minLines: 1,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Description of class',
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(15.0),
-                    labelStyle: new TextStyle(color: Colors.black54),
+                    labelText: 'Description',
+                    contentPadding: const EdgeInsets.all(20.0),
+                    labelStyle: new TextStyle(
+                        color: Color(0xff787878)
+                    ),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(15.0)
+                        ),
+                        borderSide:  new BorderSide(
+                            color: Color(0xff787878)
+                        )
+                    ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderSide:  new BorderSide(
+                            color: Color(0xff787878)
+                        ),
+                        borderRadius: BorderRadius.circular(15.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     description = value;
                   });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                })
+    );
 
-    final maxField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
+    final maxField = Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(0.01 * media.size.width),
-            height: 0.085 * media.size.height,
             width: 0.7 * media.size.width,
             child: TextFormField(
                 controller: maxHolder,
-                cursorColor: Colors.black45,
+                cursorColor: Color(0xff787878),
                 style: TextStyle(
-                  color: Colors.black54,
+                  color: Color(0xff787878),
                 ),
                 maxLines: 1,
                 minLines: 1,
@@ -442,88 +446,84 @@ class AddAClassState extends State<AddAClass> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: 'Maximum students',
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(15.0),
-                    labelStyle: new TextStyle(color: Colors.black54),
+                    labelText: 'Class Capacity',
+                    contentPadding: const EdgeInsets.all(20.0),
+                    labelStyle: new TextStyle(color: Color(0xff787878)),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide:  new BorderSide(color: Color(0xff787878))
+                    ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0))),
+                        borderSide:  new BorderSide(color: Color(0xff787878)),
+                        borderRadius: BorderRadius.circular(15.0)
+                    )
+                ),
                 onChanged: (value) {
                   setState(() {
                     max = value;
                   });
-                })),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white);
+                })
+    );
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
-        body: ListView(children: <Widget>[
-          Stack(children: <Widget>[
-            Transform.translate(
-                offset: Offset(0.0, -0.035 * media.size.height),
-                child: Container(
-                    width: media.size.width,
-                    height: 0.13 * media.size.height,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: const AssetImage('assets/Banner.jpg'),
-                          fit: BoxFit.fill,
-                          colorFilter: new ColorFilter.mode(
-                            Colors.black.withOpacity(0.52),
-                            BlendMode.dstIn,
-                          ),
+        backgroundColor: const Color(0xffffffff),
+        body: ListView(
+            children: <Widget>[
+              Stack(children: <Widget>[
+                Transform.translate(
+                    offset: Offset(0.05 * media.size.width, 0.0),
+                    child: Container(
+                        width: 0.9 * media.size.width,
+                        height: 0.3 * media.size.height,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: const AssetImage('assets/AddClassPicture.png'),
+                                fit: BoxFit.fill
+                            )
+                        )
+                    )
+                ),
+                Transform.translate(
+                    offset: Offset(0.0, 0.04 * media.size.height),
+                    child: Transform.translate(
+                        offset: Offset(
+                            0.05 * media.size.width, -0.02 * media.size.height
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x46000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          )
-                        ]))),
-            Transform.translate(
-                offset: Offset(0.0, 0.04 * media.size.height),
-                child: Transform.translate(
-                    offset: Offset(
-                        0.05 * media.size.width, -0.02 * media.size.height),
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ManagerViewClasses()));
+                                  builder: (context) => NavigationBar(index: 3)
+                              )
+                          );
                         },
-                        child: SvgPicture.string(backArrow,
+                        child: SvgPicture.string(
+                            backArrow,
                             allowDrawingOutsideViewBox: true,
-                            width: 0.06 * media.size.width)))),
+                            width: 0.06 * media.size.width,
+                          color: const Color(0xff7341E6)
+                        )
+                    )
+                )
+            ),
             Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.bottomCenter,
                 width: media.size.width,
-                height: 0.09 * media.size.height,
+                height: 0.33 * media.size.height,
                 padding: EdgeInsets.all(0.01 * media.size.width),
                 child: Text(
                   'Add a New Class',
                   style: TextStyle(
-                    fontFamily: 'FreestyleScript',
-                    fontSize: 0.1 * media.size.width,
-                    color: const Color(0xFFFFFFFF),
-                    shadows: [
-                      Shadow(
-                        color: const Color(0xbd000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
-                      ),
-                    ],
-                  ),
-                  textAlign: TextAlign.right,
-                ))
+                    fontFamily: 'Lastwaerk',
+                    fontSize: 0.08 * media.size.width,
+                    color: const Color(0xff3e3e3e),
+                  )
+                )
+            )
           ]),
-          SizedBox(height: 0.03 * media.size.height),
+          SizedBox(height: 0.05 * media.size.height),
           FutureBuilder(
             future: gettingInstructors,
             builder: (context, snapshot) {
@@ -534,7 +534,6 @@ class AddAClassState extends State<AddAClass> {
                         key: editFormKey,
                         child: Column(children: <Widget>[
                           classNameField,
-
                           SizedBox(height: 0.04 * media.size.height),
                           dayField,
                           SizedBox(height: 0.04 * media.size.height),
@@ -551,11 +550,12 @@ class AddAClassState extends State<AddAClass> {
                         ])),
                     Center(
                         child: SizedBox(
-                            width: 0.25 * media.size.width,
+                            width: 0.4 * media.size.width,
                             child: FlatButton(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                color: const Color(0xffffffff).withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(10.0)
+                                ),
+                                color: const Color(0xff7341E6),
                                 onPressed: () {
                                   sendValuesToDatabase();
                                 },
@@ -566,7 +566,13 @@ class AddAClassState extends State<AddAClass> {
                                     child: Text('Submit',
                                         style: TextStyle(
                                             fontSize: 0.04 * media.size.width,
-                                            fontFamily: 'Roboto')))))),
+                                            fontFamily: 'Roboto'
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
                   ],
                 );
               }
@@ -578,7 +584,8 @@ class AddAClassState extends State<AddAClass> {
             },
           ),
           SizedBox(height: 0.06 * media.size.height)
-        ]));
+        ])
+    );
   }
 
   /*
@@ -591,7 +598,7 @@ class AddAClassState extends State<AddAClass> {
   void _showAlertDialog(String heading, String body) {
     // set up the button
     Widget okButton = FlatButton(
-      child: Text("Ok", style: TextStyle(color: Color(0xff513369))),
+      child: Text("Ok", style: TextStyle(color: Color(0xff7341E6))),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -694,6 +701,12 @@ class AddAClassState extends State<AddAClass> {
   }
 }
 
+/*
+Class Name:
+  NewClass
+Purpose:
+  This class is the structure of a class.
+ */
 class NewClass {
   final int gymId;
   final String instructor;

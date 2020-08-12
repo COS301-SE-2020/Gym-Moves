@@ -25,20 +25,24 @@ Classes in the File:
  */
 
 import 'package:flutter/material.dart';
+import 'package:gym_moves/GymClass/MemberViewAllClasses.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gym_moves/Announcement/Announcements.dart';
 import 'package:gym_moves/GymClass/ManagerViewClasses.dart';
 import 'package:gym_moves/GymClass/MemberViewMyClasses.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gym_moves/User/ViewMyProfile.dart';
 import 'package:gym_moves/User/Welcome.dart';
-import 'package:gym_moves/Announcement/SendAnnouncement.dart';
 import 'package:gym_moves/GymClass/InstructorViewClasses.dart';
 
 class NavigationBar extends StatefulWidget {
   final int index;
-  NavigationBar({Key key, this.index}) : super(key: key);
+  final String previous;
+
+  NavigationBar({Key key, this.index, this.previous = "Mine"}) : super(key: key);
 
   @override
-  NavigationBarState createState() => NavigationBarState(selectedIndex: this.index);
+  NavigationBarState createState() =>
+      NavigationBarState(selectedIndex: this.index);
 }
 
 class NavigationBarState extends State<NavigationBar> {
@@ -61,19 +65,20 @@ class NavigationBarState extends State<NavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<Widget> _widgetOptions = <Widget>[
-      Welcome(),
-      ViewMyProfile(),
-      SendAnnouncement(),
-      (type == 0) ? MemberViewMyClasses() : ((type == 1) ? InstructorViewClasses()
-          : ManagerViewClasses())
-    ];
-
     return new FutureBuilder(
       future: local,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      if (snapshot.connectionState == ConnectionState.done) {
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          List<Widget> _widgetOptions = <Widget>[
+            Welcome(),
+            Announcements(),
+            (type == 1) ? InstructorViewClasses() :
+            (type == 2) ? ManagerViewClasses() :
+            (this.widget.previous == "Mine") ? MemberViewAllClasses() :
+            MemberViewMyClasses(),
+            ViewMyProfile()
+          ];
+
           return Scaffold(
             backgroundColor: Colors.white,
             bottomNavigationBar: new BottomNavigationBar(
@@ -82,49 +87,27 @@ class NavigationBarState extends State<NavigationBar> {
               showUnselectedLabels: false,
               items: [
                 BottomNavigationBarItem(
-                  icon: Icon(
-                      Icons.home,
-                      color: const Color(0xff787878)
-                  ),
+                  icon: Icon(Icons.home, color: const Color(0xff787878)),
                   title: Text('HOME'),
-                  activeIcon: Icon(
-                      Icons.home,
-                      color: const Color(0xff7341E6)
-                  ),
+                  activeIcon: Icon(Icons.home, color: const Color(0xff7341E6)),
                 ),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                        Icons.account_circle,
-                        color: const Color(0xff787878)
-                    ),
-                    title: Text('PROFILE'),
-                    activeIcon: Icon(
-                        Icons.account_circle,
-                        color: const Color(0xff7341E6)
-                    )
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                        Icons.announcement,
-                        color: const Color(0xff787878)
-                    ),
+                    icon: Icon(Icons.announcement,
+                        color: const Color(0xff787878)),
                     title: Text('ANNOUNCEMENTS'),
-                    activeIcon: Icon(
-                        Icons.announcement,
-                        color: const Color(0xff7341E6)
-                    )
-                ),
+                    activeIcon: Icon(Icons.announcement,
+                        color: const Color(0xff7341E6))),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                        Icons.school,
-                        color: const Color(0xff787878)
-                    ),
+                    icon: Icon(Icons.school, color: const Color(0xff787878)),
                     title: Text('CLASSES'),
-                    activeIcon: Icon(
-                        Icons.school,
-                        color: const Color(0xff7341E6)
-                    )
-                )
+                    activeIcon:
+                        Icon(Icons.school, color: const Color(0xff7341E6))),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.account_circle,
+                        color: const Color(0xff787878)),
+                    title: Text('PROFILE'),
+                    activeIcon: Icon(Icons.account_circle,
+                        color: const Color(0xff7341E6))),
               ],
               onTap: (index) {
                 setState(() {
@@ -140,12 +123,9 @@ class NavigationBarState extends State<NavigationBar> {
         // By default, show a loading spinner.
         return Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.white,
-            ));
+          backgroundColor: Colors.white,
+        ));
       },
     );
-
-
   }
-
 }
