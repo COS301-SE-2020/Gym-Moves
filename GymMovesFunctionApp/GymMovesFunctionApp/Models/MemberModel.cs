@@ -8,5 +8,7 @@ namespace GymMovesFunctionApp.Models {
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
+        public bool EmailEnabled { get; set; }
+        public bool PushEnabled { get; set; }
     }
 }
