@@ -37,49 +37,7 @@ Functional Description:
     <script src="@Url.Content("~/assets/jquery.min.js")"></script>
     <script type="text/javascript">
 
-
-
-        //Some of the lines of code are probably wrong at the moment because I was trying different things. Soon as I figure out why the json is
-        //is empty everything will work together.
-    var xmlHttp = null;
-    var httpholder =null;
-    var classinfo;
-    var classratings;
-    var currentid;
-        var currentidStr;
-
-        function getReqRatings(id)
-        {
-            currentid = id;
-            currentidStr = currentid.toString();
-            var xmlhttp = new XMLHttpRequest();
-
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-                    if (xmlhttp.status == 200)
-                    {
-                        let classratingsjson = JSON.parse(xmlhttp.responseText);
-                        if (classratingsjson == null) { window.alert("There are currently no classes at the gym."); }
-                        else
-                        {
-                            GenerateTable();
-                        }
-                    }
-                    else if (xmlhttp.status == 400) {
-                        alert('400');
-                    }
-                    else {
-                        alert('There are currently no classes at the gym.');
-                    }
-                }
-            };
-
-           xmlhttp.open("GET", "@Url.Content("~/api/ratings/classes?classid=currentidStr")", true);
-           xmlhttp.send();
-        }
-
-
-         function getReqInfo()
+        function getGymClasses()
         {
             var xmlhttp = new XMLHttpRequest();
 
@@ -87,14 +45,12 @@ Functional Description:
                 if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
                     if (xmlhttp.status == 200)
                     {
-                        let classinfojson = JSON.parse(xmlhttp.responseText);
-                        if (classinfojson == null) { console.log("IM NULL)"); }
+                        var classesjson = JSON.parse(xmlhttp.responseText);
+                        if (classesjson.length == 0) { }
                         else {
 
-                            var x = classinfo.jsonData.length;
-                            for (var y = 0; y < x; y++) {
-                                //getReqRatings(y); commented out for now
-                                console.log()
+                            for (var y = 0; y < classesjson.length; y++) {
+                                getClassRatings(y+1);
                             }
                         }
                     }
@@ -112,49 +68,58 @@ Functional Description:
         }
 
 
+        function getClassRatings(id)
+        {
 
-     async function getReqInfoo() {
-            jQuery.ajax({
-                url: "@Url.Content("~/api/classes/gymlist?gymid=1")",
-                type: "GET",
-                contentType: "application/json",
-                dataType: 'json',
-                success: function (result) {
+          var xmlhttp = new XMLHttpRequest();
 
-                        classinfojson = JSON.parse(result.responseText);
-                        //var x = classinfo.jsonData.length;
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
 
-                        console.log(classinfojson);
+                        var classRatingsJson = JSON.parse(xmlhttp.responseText);
+                        if (classRatingsJson.length == 0) { window.alert("There are currently no classes at the gym."); }
+                        else {
+                            GenerateTable(classRatingsJson);
+                        }
                     }
-
-                ,
-                error: function (result) {
-                    window.alert(result.responseText);
-                    window.alert("There are no classes.");
+                    else if (xmlhttp.status == 400) {
+                        alert('400');
+                    }
+                    else {
+                        alert(xmlhttp.status);
+                    }
                 }
-            });
+            };
+
+            var url = '@Url.Content("~/api/ratings/class?classid=")'+id;
+
+
+            xmlhttp.open("GET",url);
+           xmlhttp.send();
         }
+
 
 
     function Generate()
     {
-       getReqInfo();
+        getGymClasses();
     }
 
 
-    function GenerateTable()
+    function GenerateTable(classRatingsJson)
     {
 
         var Results = new Array();
         Results.push(["Class Id", "Class", "Instructor", "Day", "Time", "Available Spots", "Description", "Cancelled", "Rating"]);
 
 
-        for(var d=0; d<classinfo.jsonData.length; d++)
+        for (var d = 0; d < classRatingsJson.length; d++)
             {
-                var rating = (classratings.jsonData[d].ratingSum) /(classratingsjson.jsonData[d].ratingCount);
+            var rating = (classRatingsJson[d].ratingSum) / (classRatingsJson[d].ratingCount);
 
-            var students = (classinfojson.jsonData[d].maxCapacity) - (classinfojson.jsonData[d].currentStudents);
-            Results.push([classinfojson.jsonData[d].classId, classinfojson.jsonData[d].name, classinfojson.jsonData[d].instructor, classinfojson.jsonData[d].day, classinfo.jsonData[d].startTime,students , classinfo.jsonData[d].cancelled, rating]);
+            var students = (classRatingsJson[d].maxCapacity) - (classRatingsJson[d].currentStudents);
+            Results.push([classRatingsJson[d].classId, classRatingsJson[d].name, classRatingsJson[d].instructor, classRatingsJson[d].day, classRatingsJson[d].startTime, classRatingsJson[d].cancelled, rating]);
             }
 
         //Create a HTML Table element.

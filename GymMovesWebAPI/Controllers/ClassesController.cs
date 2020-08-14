@@ -312,7 +312,7 @@ namespace GymMovesWebAPI.Controllers
 
             if (oldWay) {
 
-                returnMessage = "This class has been uncancelled.";
+                returnMessage = "This class has been resumed.";
             }
             else {
                 content = "We are sad to say, a class you signed up for has been cancelled!\n" +

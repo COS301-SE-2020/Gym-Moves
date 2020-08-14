@@ -47,7 +47,7 @@ Functional Description:
         </script>
 
         <nav class="navbar navbar-expand navbar-dark barColour">
-            <img style="vertical-align: top; height: 90px;" src="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" alt="" title="">
+            <img style="vertical-align: top; height: 80px;" src="@Url.Content("~/assets/images/logo.png")" alt="" title="">
             <div style="width: 40%;">
                 <p id="heading">Gym Moves</p>
             </div>
@@ -134,7 +134,7 @@ Functional Description:
             var user =
             {
                 'username': document.getElementById("username").value,
-                'password': hashHex
+                'password': document.getElementById("password").value
             };
 
             jQuery.ajax({
@@ -154,6 +154,7 @@ Functional Description:
                 },
                 error: function (result) {
                     window.alert(result.responseText);
+                    console.log(result.responseText)
                 }
             });
         }
