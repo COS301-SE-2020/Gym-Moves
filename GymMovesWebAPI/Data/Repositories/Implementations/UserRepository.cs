@@ -90,9 +90,9 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
        Purpose:
            This gets all instructors from a specific gym.
        */
-        public async Task<Users[]> getAllInstructors(int gymID) {
+        public async Task<Users[]> getAllInstructors(int gymId) {
             IQueryable<Users> query = context.Users;
-            query = query.Where(p => p.GymIdForeignKey == gymID);
+            query = query.Where(p => p.GymIdForeignKey == gymId);
 
             if (query != null)
             {
@@ -100,8 +100,13 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             }
 
             return await query.ToArrayAsync();
-
         }
 
+        public async Task<Users[]> getAllUsers(int gymId) {
+            IQueryable<Users> query = context.Users;
+            query = query.Where(p => p.GymIdForeignKey == gymId);
+
+            return await query.ToArrayAsync();
+        }
     }
 }

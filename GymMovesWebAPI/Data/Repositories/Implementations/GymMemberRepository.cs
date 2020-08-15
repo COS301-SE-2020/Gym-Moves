@@ -38,5 +38,11 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return (await context.SaveChangesAsync()) > 0;
         }
 
+        public async Task<GymMember[]> GetGymMembers(int gymId) {
+            IQueryable<GymMember> query = context.GymMembers;
+            query = query.Where(p => p.GymId == gymId);
+
+            return await query.ToArrayAsync();
+        }
     }
 }
