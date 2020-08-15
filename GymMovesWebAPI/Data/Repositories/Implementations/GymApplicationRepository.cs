@@ -62,5 +62,10 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             context.Remove(application);
             return (await context.SaveChangesAsync()) > 0;
         }
+
+        public async Task<bool> updateApplication(GymApplications application) {
+            context.Update(application);
+            return (await context.SaveChangesAsync()) > 0;
+        }
     }
 }
