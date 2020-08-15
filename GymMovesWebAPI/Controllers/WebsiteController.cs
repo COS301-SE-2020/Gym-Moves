@@ -64,5 +64,11 @@ namespace GymMovesWebAPI.Controllers {
         public IActionResult ResetPassword() {
             return View();
         }
+
+        [Route("ManagerRatings")]
+        public IActionResult GymManagerRating()
+        {
+            return View();
+        }
     }
 }

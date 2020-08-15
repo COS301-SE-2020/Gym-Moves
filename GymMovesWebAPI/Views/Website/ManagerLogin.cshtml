@@ -18,151 +18,212 @@ Update History:
 --------------------------------------------------------------------------------
 02/08/2020   |    Danel     |   Fixed css
 --------------------------------------------------------------------------------
+02/08/2020   |    Danel     |   Fixed css
+--------------------------------------------------------------------------------
+15/08/2020   |    Danel     |   Added more cookies
+--------------------------------------------------------------------------------
 
 Functional Description:
   This file contains the HTML and some css code for the login page for gym managers.
 
 -->
 
+<html>
 
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon">
 
-    <title>Login for Manager</title>
+        <title>Login for Manager</title>
 
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-reboot.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/styles.css")">
-</head>
+        <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
+        <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
+        <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-reboot.min.css")">
+        <link rel="stylesheet" href="@Url.Content("~/assets/styles.css")">
+        
+        <meta charset="utf-8">
+            
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+            
+        <style>
+           
+            @@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
 
-<body>
-    <section>
-
-        <script>
-            if (document.cookie != "") {
-                window.location.href = "@Url.Content("~/GymManagers")";
+            @@font-face {
+                font-family: 'Lastwaerk';
+                src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
             }
-        </script>
 
-        <nav class="navbar navbar-expand navbar-dark barColour">
-            <img style="vertical-align: top; height: 90px;" src="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" alt="" title="">
-            <div style="width: 40%;">
-                <p id="heading">Gym Moves</p>
-            </div>
-            <div style="width: 50%;">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Content("~/GymMoves")">About us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Content("~/GymMembers")">Gym Members</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Content("~/GymInstructors")">Gym Instructors</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Content("~/GymManagers")">Gym Managers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Content("~/HowToRegisterMyGym")">Register My Gym</a>
-                    </li>
+            .navbar_background {
+                background-color: #7341E6;
+                color: white;
+            }
 
-                </ul>
-            </div>
-        </nav>
+            .button-colour {
+                background-color: #7341E6;
+                color: white;
+            }
+  
 
-    </section>
+        </style>
 
-    <br>
-    <br>
+    </head>
 
-    <section>
-        <div class="col-md-12 d-flex flex-column justify-content-center">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <div class="card-body">
-                    <form role="form" autocomplete="off" id="register" method="post" novalidate="">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control form-control-lg" name="username" id="username" required="">
-                        </div>
+    <body style="font-family: Roboto;">
+        <div class="bs-example">
+            <nav class="navbar navbar-expand-md navbar-light navbar_background">
+                <a href="#" class="navbar-brand">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="28" alt="dumbbell">  
+                    <span id="heading" style="font-family: 'Lastwaerk'; font-size: 1.5em">Gym Moves</span>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" style="background-color: white;">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control form-control-lg" name="password" id="password" required="">
-                        </div>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto">
+                        <a href="@Url.Content("~/GymMoves")" class="nav-item nav-link" style="color: white; opacity: 0.7;">About us</a>
+                        <a href="@Url.Content("~/GymMembers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Members</a>
+                        <a href="@Url.Content("~/GymInstructors")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Instructors</a>
+                        <a href="@Url.Content("~/GymManagers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Managers</a>
+                        <a href="@Url.Content("~/HowToRegisterMyGym")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Register My Gym</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
 
-                        <div id="forgotPassword" align="right">
-                            <a class="nav-link" href="@Url.Content("~/ForgotPassword")">Forgot password?</a>
-                        </div>
+        <br>
+        <br>
 
-                        <br>
+        <section>
+            <div class="col-md-12 d-flex flex-column justify-content-center">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <div class="card-body">
+                        <form role="form" autocomplete="off" id="register" method="post" novalidate="">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control form-control-lg" name="username" id="username" required="">
+                                <div id="errorUsername" style="color: red; visibility: hidden;"> Username is needed! </div>
+                            </div>
 
-                        <div align="center" class="form-group">
-                            <button type="button" class="btn button-colour" onclick="login()">Login</button>
-                        </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control form-control-lg" name="password" id="password" required="">
+                                <div id="errorPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
+                            </div>
 
-                    </form>
+                            <div id="forgotPassword" align="right">
+                                <a class="nav-link" href="@Url.Content("~/ForgotPassword")">Forgot password?</a>
+                            </div>
+
+                            <br>
+
+                            <div align="center" class="form-group">
+                                <button type="button" class="btn button-colour" onclick="login()">Login</button>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+         </section>
 
-    <section once="footers" class="footer barColour">
-        <div class="container">
+        <section once="footers" class="footer barColour">
+            <div class="container">
 
-            © Copyright 2020 Gym Moves - All Rights Reserved
+                © Copyright 2020 Gym Moves - All Rights Reserved
 
-        </div>
-    </section>
+            </div>
+        </section>
 
-    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
+        <script src="@Url.Content("~/assets/jquery.min.js")"></script>
 
-    <script>
+        <script>
 
-        async function login() {
+            async function login() {
 
-            const msgBuffer = new TextEncoder('utf-8').encode(document.getElementById("password").value);
+                if (document.getElementById("password").value == "" && document.getElementById("username").value == "") {
 
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                    document.getElementById("errorUsername").style.visibility = "visible";
+                    document.getElementById("username").style.boxShadow = "0 0 5px red";
 
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    document.getElementById("errorPassword").style.visibility = "visible";
+                    document.getElementById("password").style.boxShadow = "0 0 5px red";
 
-            const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
-
-            var user =
-            {
-                'username': document.getElementById("username").value,
-                'password': hashHex
-            };
-
-            jQuery.ajax({
-                url: "@Url.Content("~/api/user/login")",
-                type: "POST",
-                data: JSON.stringify(user),
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.userType != 2) {
-                        window.alert("This person is not a gym manager!");
-                    }
-                    else {
-                        document.cookie = "username=" + document.getElementById("username").value + ", path=/";
-                        window.location.href = "@Url.Content("~/MainPageForDashboard")";
-                    }
-
-                },
-                error: function (result) {
-                    window.alert(result.responseText);
+                    return;
                 }
-            });
-        }
+                else if (document.getElementById("password").value == "") {
 
-    </script>
+                    document.getElementById("errorPassword").style.visibility = "visible";
+                    document.getElementById("password").style.boxShadow = "0 0 5px red";
 
+                    document.getElementById("errorUsername").style.visibility = "hidden";
+                    document.getElementById("username").style.boxShadow = "0 0 5px #7341E6";
 
+                    return;
 
-</body>
+                }
+                else if (document.getElementById("username").value == "") {
 
+                     document.getElementById("errorUsername").style.visibility = "visible";
+                     document.getElementById("username").style.boxShadow = "0 0 5px red";
+
+                     document.getElementById("errorPassword").style.visibility = "hidden";
+                     document.getElementById("password").style.boxShadow = "0 0 5px #7341E6";
+
+                     return;
+
+                }
+                else {
+                    document.getElementById("errorPassword").style.visibility = "hidden";
+                    document.getElementById("password").style.boxShadow = "0 0 5px #7341E6";
+
+                     document.getElementById("errorUsername").style.visibility = "hidden";
+                     document.getElementById("username").style.boxShadow = "0 0 5px 7341E6";
+                }
+
+                const msgBuffer = new TextEncoder('utf-8').encode(document.getElementById("password").value);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+                const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+
+                var user =
+                {
+                    'username': document.getElementById("username").value,
+                    'password': document.getElementById("password").value
+                };
+
+                jQuery.ajax({
+                     url: "@Url.Content("~/api/user/login")",
+                     type: "POST",
+                     data: JSON.stringify(user),
+                     contentType: "application/json",
+                    success: function (result) {
+                        if (result.userType != 2) {
+                             window.alert("This person is not a gym manager!");
+                        }
+                         else {
+                            document.cookie = "username=" + document.getElementById("username").value + ", path=/";
+                            document.cookie = "gymId=" + result.gymID + ", path=/";
+                            window.location.href = "@Url.Content("~/MainPageForDashboard")";
+                        }
+                                                },
+                        error: function (result) {
+                            window.alert(result.responseText);
+                        }
+                    });
+                }
+
+         </script>
+
+    </body>
+
+</html>
 
 
