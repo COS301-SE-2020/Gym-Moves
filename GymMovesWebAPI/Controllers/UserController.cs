@@ -100,20 +100,22 @@ namespace GymMovesWebAPI.Controllers {
             newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(user.gymName.Trim(), user.gymBranch.Trim());
             newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
 
-            GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId, 
+            GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId,
                 newUserAccount.GymIdForeignKey);
 
+            if (member == null)
+            {
+               Users checkIfUserHasAccount = await userGymMovesRepository.getUserByMemberID(newUserAccount.MembershipId,
+               newUserAccount.GymIdForeignKey);
 
-            if (member == null) {
+                if (checkIfUserHasAccount != null)
+                {
+                    return BadRequest("There is already an account for this gym member.");
+                }
+
                 return Unauthorized("This gym member ID does not exist.");
             }
 
-            Users checkIfUserHasAccount = await userGymMovesRepository.getUserByMemberID(member.MembershipId, 
-                member.GymId);
-
-            if(checkIfUserHasAccount != null) { 
-                return BadRequest("There is already an account for this gym member.");
-            }
 
             newUserAccount.Name = member.Name;
             newUserAccount.Surname = member.Surname;
@@ -151,6 +153,8 @@ namespace GymMovesWebAPI.Controllers {
                 response.name = newUserAccount.Name;
                 response.gymMemberID = newUserAccount.MembershipId;
                 response.gymID = newUserAccount.GymIdForeignKey;
+
+                await gymMembersRepository.deleteMember(member);
 
                 return Ok(response);
             }

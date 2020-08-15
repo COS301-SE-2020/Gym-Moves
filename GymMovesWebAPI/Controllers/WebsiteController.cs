@@ -13,11 +13,6 @@ namespace GymMovesWebAPI.Controllers {
             return View();
         }
 
-        [Route("MainPageForDashboard")]
-        public IActionResult MainPageForDashboard()
-        {
-            return View();
-        }
 
         [Route("GymManagers")]
         public IActionResult GymManagers()
@@ -65,10 +60,5 @@ namespace GymMovesWebAPI.Controllers {
             return View();
         }
 
-        [Route("ManagerRatings")]
-        public IActionResult GymManagerRating()
-        {
-            return View();
-        }
     }
 }

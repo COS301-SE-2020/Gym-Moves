@@ -6,7 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers {
     public class DashboardController : Controller {
-        public IActionResult Index() {
+        
+        [Route("[controller]/MainPageForDashboard")]
+        public IActionResult MainPageForDashboard()
+        {
+            return View();
+        }
+
+        [Route("[controller]/ManagerRatings")]
+        public IActionResult GymManagerRating()
+        {
             return View();
         }
     }
