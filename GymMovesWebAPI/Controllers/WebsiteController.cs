@@ -43,14 +43,11 @@ namespace GymMovesWebAPI.Controllers {
             return View();
         }
 
-
         [Route("HowToRegisterMyGym")]
         public IActionResult HowToRegisterMyGym()
         {
             return View();
         }
-
-
 
         [Route("RegisterMyGym")]
         public IActionResult RegisterMyGym()
