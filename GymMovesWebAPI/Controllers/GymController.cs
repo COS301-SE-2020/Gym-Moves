@@ -74,7 +74,7 @@ namespace GymMovesWebAPI.Controllers
         }
 
         [HttpPost("registeredMembers")]
-        public async Task<ActionResult<getMembersResponse[]>> getRegisteredMembers(getMembersRequest request) {
+        public async Task<ActionResult<GetMembersResponse[]>> getRegisteredMembers(GetMembersRequest request) {
             Users user = await userGymMovesRepository.getUser(request.Username);
 
             if (user == null) {
@@ -85,13 +85,43 @@ namespace GymMovesWebAPI.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized, "User is not a manager!");
             }
 
+            if (user.GymIdForeignKey != request.GymId) {
+                return StatusCode(StatusCodes.Status401Unauthorized, "Managers can only see the registered users of their own gym!");
+            }
+
             Users[] registeredUsers = await userGymMovesRepository.getAllUsers(request.GymId);
 
             if (registeredUsers.Length > 0) {
-                getMembersResponse[] responses = UserMappers.UserToMemberResponse(registeredUsers);
+                GetMembersResponse[] responses = UserMappers.UserToMemberResponse(registeredUsers);
                 return Ok(responses);
             } else {
                 return Ok(registeredUsers);
+            }
+        }
+
+        [HttpPost("unregisteredMembers")]
+        public async Task<ActionResult<GetMembersResponse>> getUnregisteredMembers(GetMembersRequest request) {
+            Users user = await userGymMovesRepository.getUser(request.Username);
+
+            if (user == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "User does not exist!");
+            }
+
+            if (user.UserType != UserTypes.Manager) {
+                return StatusCode(StatusCodes.Status401Unauthorized, "User is not a manager!");
+            }
+
+            if (user.GymIdForeignKey != request.GymId) {
+                return StatusCode(StatusCodes.Status401Unauthorized, "Managers can only see the unregistered users of their own gym!");
+            }
+
+            GymMember[] unregisteredUsers = await gymMemberRepository.getGymMembers(request.GymId);
+
+            if (unregisteredUsers.Length > 0) {
+                GetMembersResponse[] responses = UserMappers.MemberToMemberResponse(unregisteredUsers);
+                return Ok(responses);
+            } else {
+                return Ok(unregisteredUsers);
             }
         }
 

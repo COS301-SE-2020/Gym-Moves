@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace GymMovesWebAPI.Data.Models.ResponseModels {
-    public class getMembersResponse {
+    public class GetMembersResponse {
         public string Username { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
