@@ -6,22 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers {
     public class DashboardController : Controller {
-        [Route("[controller]")]
-
-        [Route("MainPageForDashboard")]
+        
+        [Route("[controller]/MainPageForDashboard")]
         public IActionResult MainPageForDashboard()
         {
             return View();
         }
 
-        [Route("ManagerRatings")]
-        public IActionResult GymManagerRating() 
+        [Route("[controller]/ManagerRatings")]
+        public IActionResult GymManagerRating()
         {
             return View();
         }
 
-        [Route("AddMember")]
-        public IActionResult AddMember() {
+        [Route("[controller]/ClassAttendance")]
+        public IActionResult ClassAttendance()
+        {
             return View();
         }
     }

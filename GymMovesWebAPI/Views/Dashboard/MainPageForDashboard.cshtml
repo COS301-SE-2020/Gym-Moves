@@ -1,14 +1,22 @@
-﻿<head>
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
 
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <title>SB Admin 2 - Dashboard</title>
 
-    <link href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
-    <link href="@Url.Content("~/assets/simple-sidebar.css")" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
 
     <style>
         .navbar_background {
@@ -25,56 +33,124 @@
 
 </head>
 
-<body>
+<body id="page-top">
 
-    <script>
-        if (document.cookie == "") {
-            window.location.href = "@Url.Content("~/ManagerLogin")";
-        }
-    </script>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-        <div class="border-right navbar_background" id="sidebar-wrapper">
-            <span class="sidebar-heading navbar_background" style="font-family: Lastwaerk; font-size: 1.5em; margin: 0px 20px 20px 0px;">
-                Gym Moves 
-                <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-            </span>
-            <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Home</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Gym Traffic</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Ratings</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Classes</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Upload Database</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Profile</a>
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                <div class="sidebar-brand-icon">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
+                </div>
+                <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item active">
+                <a class="nav-link" href="@Url.Content("~/dashboard/MainPageForDashboard")">
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <span>Dashboard</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="login.html">Gym Attendance</a>
+                        <a class="collapse-item" href="register.html">Gym Ratings</a>
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <span>Profile</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-        </div>
-       
-        <div id="page-content-wrapper">
 
-            <nav class="navbar navbar-expand-lg navbar-light navbar_background border-bottom ">
-                <button class="btn btn-primary" style=" background-color: white; color: #7341e6;" id="menu-toggle">Toggle Menu</button>
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-            </nav>
+            <!-- Main Content -->
+            <div id="content">
 
-            <div class="container-fluid">
-                <h1 class="mt-4">Simple Sidebar</h1>
-                <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
-            </div>
-        </div>
-        
-    </div>
-    
-    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
-    <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
-    <script>
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    </script>
+                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                        Home
+                    </div>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+                <!-- Bootstrap core JavaScript-->
+                <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+                <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+
+                <!-- Core plugin JavaScript-->
+                <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+
+                <!-- Custom scripts for all pages-->
+                <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+
+                <!-- Page level plugins -->
+                <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+
+                <!-- Page level custom scripts -->
+                <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
+                <script src="@Url.Content("~/assets/js/demo/chart-pie-demo.js")"></script>
+                <!-- End of Topbar -->
+
 
 </body>
+</html>
