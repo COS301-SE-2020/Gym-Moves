@@ -18,24 +18,21 @@
     padding-left: 10px;
 }
 
-nav{
-    height: 90px;
-}
 
 /*Buttons*/
-.button-colour{
-    background-color: #691b74;
+.button-colour {
+    background-color: #7341E6;
     color: white;
 }
 
-.button-colour:hover {
-    background-color: #55175e;
-    color: white;
-}
+    .button-colour:hover {
+        background-color: #7341E6;
+        color: white;
+    }
 
 /*Form*/
-input[type=text]:focus, input[type=password]:focus{
-    box-shadow: 0 0 5px #691b74;
+input[type=text]:focus, input[type=password]:focus {
+    box-shadow: 0 0 5px #7341E6;
     padding: 3px 0px 3px 3px;
     margin: 5px 1px 3px 0px;
     border: none;
@@ -45,13 +42,13 @@ label{
     color: grey;
 }
 
-h4, a{
-    color: #691b74;
+h4, a {
+    color: #7341E6;
 }
 
-a:hover{
-    color: #691b74;
-}
+    a:hover {
+        color: #7341E6;
+    }
 
 /*Footer sticky*/
 .footer{
