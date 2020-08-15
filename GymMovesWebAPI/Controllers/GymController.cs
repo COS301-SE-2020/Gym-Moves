@@ -34,6 +34,7 @@ using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Data.Repositories.Implementations;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using GymMovesWebAPI.Models.DatabaseModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Cryptography;
@@ -71,6 +72,29 @@ namespace GymMovesWebAPI.Controllers
             GymModel[] results = GymMapper.mapToGymModel(await gymRepository.getAllGyms());
             return Ok(results);
         }
+
+        [HttpPost("registeredMembers")]
+        public async Task<ActionResult<getMembersResponse[]>> getRegisteredMembers(getMembersRequest request) {
+            Users user = await userGymMovesRepository.getUser(request.Username);
+
+            if (user == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "User does not exist!");
+            }
+
+            if (user.UserType != UserTypes.Manager) {
+                return StatusCode(StatusCodes.Status401Unauthorized, "User is not a manager!");
+            }
+
+            Users[] registeredUsers = await userGymMovesRepository.getAllUsers(request.GymId);
+
+            if (registeredUsers.Length > 0) {
+                getMembersResponse[] responses = UserMappers.UserToMemberResponse(registeredUsers);
+                return Ok(responses);
+            } else {
+                return Ok(registeredUsers);
+            }
+        }
+
         /*
          Method Name:
             registerGym
