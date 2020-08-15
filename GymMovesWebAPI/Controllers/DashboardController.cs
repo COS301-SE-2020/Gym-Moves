@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers {
     public class DashboardController : Controller {
-        public IActionResult Index() {
+        [Route("dashboard")]
+        [Route("AddMembers")]
+        public IActionResult AddMembers() {
             return View();
         }
     }
