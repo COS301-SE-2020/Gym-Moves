@@ -51,6 +51,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
         public DbSet<GymMember> GymMembers { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
         public DbSet<GymApplications> GymApplications { get; set; }
+        public DbSet<ClassAttendance> ClassAttendance { get; set; }
 
         private readonly IConfiguration config = null;
 
@@ -138,6 +139,12 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
             modelBuilder.Entity<PasswordReset>()
                 .HasIndex(p => p.Code)
                 .IsUnique();
+
+            modelBuilder.Entity<ClassAttendance>()
+                .HasKey(p => new {p.ClassId, p.Date});
+
+            modelBuilder.Entity<ClassAttendance>()
+                .HasOne(p => p.Class);
 
             /* Default data for gym */
             modelBuilder.Entity<Gym>()
