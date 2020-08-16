@@ -27,6 +27,14 @@ namespace GymMovesWebAPI.Controllers {
 
         [Route("[controller]/GymTraffic")]
         public IActionResult GymTraffic()
+       [ Route("Admin")]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
+        [Route("Home")]
+        public IActionResult Home()
         {
             return View();
         }

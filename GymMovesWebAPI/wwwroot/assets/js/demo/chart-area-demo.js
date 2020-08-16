@@ -2,9 +2,9 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
-function createChart(labelsForGraph, values, name) {
+function createChart(canvasId, labelsForGraph, values, name) {
 
-    var ctx = document.getElementById("attendanceChart");
+    var ctx = document.getElementById(canvasId);
     var myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
