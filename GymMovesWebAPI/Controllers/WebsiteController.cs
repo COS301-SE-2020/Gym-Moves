@@ -60,5 +60,16 @@ namespace GymMovesWebAPI.Controllers {
             return View();
         }
 
+        [Route("MainPageForDashboard")]
+        public IActionResult MainPageForDashboard()
+        {
+            return View();
+        }
+
+        [Route("GymTraffic")]
+        public IActionResult GymTraffic()
+        {
+            return View();
+        }
     }
 }

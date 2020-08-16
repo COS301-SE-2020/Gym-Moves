@@ -21,6 +21,15 @@
             src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
         }
 
+        .pred{
+           width: 25%;
+           back
+        }
+
+        .dow{
+            font-size: 1.5rem;
+        }
+
     </style>
 
 </head>
@@ -37,19 +46,19 @@
 
         <div class="border-right navbar_background" id="sidebar-wrapper">
             <span class="sidebar-heading navbar_background" style="font-family: Lastwaerk; font-size: 1.5em; margin: 0px 20px 20px 0px;">
-                Gym Moves 
+                Gym Moves
                 <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
             </span>
             <div class="list-group list-group-flush">
                 <a href="#" class="list-group-item list-group-item-action navbar_background">Home</a>
-                <a href="@Url.Content("~/GymTraffic")" class="list-group-item list-group-item-action navbar_background">Gym Traffic</a>
+                <a href="#" class="list-group-item list-group-item-action navbar_background">Gym Traffic</a>
                 <a href="#" class="list-group-item list-group-item-action navbar_background">Ratings</a>
                 <a href="#" class="list-group-item list-group-item-action navbar_background">Classes</a>
                 <a href="#" class="list-group-item list-group-item-action navbar_background">Upload Database</a>
                 <a href="#" class="list-group-item list-group-item-action navbar_background">Profile</a>
             </div>
         </div>
-       
+
         <div id="page-content-wrapper">
 
             <nav class="navbar navbar-expand-lg navbar-light navbar_background border-bottom ">
@@ -58,16 +67,52 @@
             </nav>
 
             <div class="container-fluid">
-                <h1 class="mt-4">Simple Sidebar</h1>
-                <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
+                <h1 class="mt-5">Gym Statistics</h1>
+                <div>
+                    Number of people at Gym:
+                </div>
+                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                    <div>
+                        <h1>Gym predictions</h1>
+                        <div class="row">
+                            <span class= "pred">
+                                <p class="dow">Monday</p>
+                                <p>Peak Time:</p>
+                            </span>
+                            <span class= "pred">
+                                <p class="dow">Tuesday:</p>
+                                <p>Peak Time:</p>
+                            </span>
+                            <span class= "pred">
+                                <p class="dow">Wednesday:</p>
+                                <p>Peak Time:</p>
+                            </span>
+                        </div>
+                        <div class="row">
+                        <span class= "pred">
+                            <p class="dow">Thursday:</p>
+                            <p>Peak Time:</p>
+                        </span>
+                        <span class= "pred">
+                            <p class="dow">Friday:</p>
+                            <p>Peak Time:</p>
+                        </span>
+                        <span class= "pred">
+                            <p class="dow">Saturday:</p>
+                            <p>Peak Time:</p>
+                        </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
     </div>
-    
+
     <script src="@Url.Content("~/assets/jquery.min.js")"></script>
     <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/assets/bootstrap/js/GymTraffic.js")"></script>
+    <script src="@Url.Content("https://canvasjs.com/assets/script/canvasjs.min.js")"></script>
 
 
     <script>

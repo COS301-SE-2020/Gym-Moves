@@ -58,7 +58,7 @@ Functional Description:
                 color: white;
             }
 
-   
+
         @@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
 
         /* Navbar */
@@ -161,6 +161,35 @@ Functional Description:
             font-size: 1.9em;
             color: grey;
         }
+
+        .icon {
+            display: none;
+        }
+
+        @@media screen and (max-width: 600px) {
+            .navbar-nav .ml-auto a:not(:first-child) {display: none;}
+            .navbar-nav .ml-auto a.icon {
+                float: right;
+                display: block;
+            }
+
+            .navbar-nav .ml-auto.responsive {
+                position: relative;
+            }
+
+            .navbar-nav .ml-auto .responsive a.icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+
+            .navbar-nav .ml-auto .responsive a {
+                float: right;
+                display: block;
+                text-align: left;
+            }
+        }
+
     </style>
 </head>
 
@@ -177,12 +206,13 @@ Functional Description:
             </button>
 
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
+                <div class="navbar-nav ml-auto" id="myTopnav">
                     <a href="@Url.Content("~/GymMoves")" class="nav-item nav-link active" style="color: white; font-weight: bold;">About us</a>
                     <a href="@Url.Content("~/GymMembers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Members</a>
                     <a href="@Url.Content("~/GymInstructors")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Instructors</a>
                     <a href="@Url.Content("~/GymManagers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Managers</a>
                     <a href="@Url.Content("~/HowToRegisterMyGym")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Register My Gym</a>
+                   
                 </div>
             </div>
         </nav>
@@ -286,6 +316,15 @@ Functional Description:
 
         </div>
     </section>
-
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "navbar-nav ml-auto") {
+                x.className += " responsive";
+            } else {
+                x.className = "navbar-nav ml-auto";
+            }
+        }
+    </script>
 </body>
 </html>
