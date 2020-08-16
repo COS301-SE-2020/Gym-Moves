@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>Class Attendance Statistics</title>
 
     <!-- Custom fonts for this template-->
     <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
@@ -17,6 +17,10 @@
 
     <!-- Custom styles for this template-->
     <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+
+    
+    <!-- Custom styles for this page -->
+    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
     <style>
         .navbar_background {
@@ -34,6 +38,12 @@
 </head>
 
 <body id="page-top" onload="getAllClasses()">
+
+    <script>
+        if (document.cookie == "") {
+            window.location.href = "@Url.Content("~/ManagerLogin")";
+        }
+    </script>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -116,8 +126,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -134,9 +143,9 @@
                 </nav>
 
                 <!-- Content Row -->
-                <div class="row" style="padding-left:100px; padding-right:50px">
+                <div class="row" style="padding-left:50px;">
 
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4" id="cardOne">
                         <div class="card border-left-primary shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
@@ -145,14 +154,14 @@
                                         <div id="firstClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
                                     </div>
                                     <div class="col-auto">
-                                        <div id="firstClassValue" style="font-size: 0.8em;"></div>
+                                        <div id="firstClassValue" style="font-size: 0.8em; width: 80px;"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4" id="cardTwo">
                         <div class="card border-left-success shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
@@ -160,18 +169,24 @@
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Second Most Attended Class</div>
                                         <div id="secondClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
                                     </div>
+                                    <div class="col-auto">
+                                        <div id="secondClassValue" style="font-size: 0.8em; width: 80px;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4" id="cardThree">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Third Most Attended Class</div>
                                         <div id="thirdClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div id="thirdClassValue" style="font-size: 0.8em; width: 80px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -180,24 +195,65 @@
 
                 </div>
 
-                <!-- Bootstrap core JavaScript-->
-                <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-                <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+                <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Class Name</th>
+                                        <th>Class Instructor</th>
+                                        <th>Class Day</th>
+                                        <th>Class Time</th>
+                                        <th>Attendance Average</th>
+                                        <th>See statistics</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendanceData">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Core plugin JavaScript-->
-                <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+            </div>
 
-                <!-- Custom scripts for all pages-->
-                <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+            <div align="center" id="lineGraph" style="display: none;">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                        <a onclick="allClasses()" style="cursor: pointer;">
+                            <i class="text-gray-400" style="text-decoration: underline;"> Back to all classes</i>
+                        </a>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Page level plugins
-    <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+            <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
 
-                <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
-                <script src="@Url.Content("~/assets/js/demo/chart-pie-demo.js")"></script>-->
-                <!-- End of Topbar -->
+            <!-- Core plugin JavaScript-->
+            <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
 
-                <script>
+            <!-- Custom scripts for all pages-->
+            <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+
+            <!-- Page level plugins-->
+            <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+
+            <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
+            <!-- <script src="@Url.Content("~/assets/js/demo/chart-pie-demo.js")"></script>
+    End of Topbar -->
+
+            <script>
 
                     var username = getCookie("username").split(",")[0];
                     var gymId = getCookie("gymId").split(",")[0];
@@ -214,7 +270,6 @@
 
                         var classesInIdOrder = [];
 
-                        console.log(classes);
 
                         for (var i = 0; i < classes.length; i++) {
                             await jQuery.ajax({
@@ -229,7 +284,7 @@
                             });
                         }
 
-                      
+
                         var classesAttendanceIdOrder = [];
 
                         var sum;
@@ -243,14 +298,61 @@
                             classesAttendanceIdOrder.push(sum / classesInIdOrder[ids].length);
                         }
 
-                        var indexOfMax = classesAttendanceIdOrder.indexOf(Math.max(...classesAttendanceIdOrder));
 
-                        var classId = classesInIdOrder[indexOfMax][0].classId;
+                        let len = classesAttendanceIdOrder.length;
+                        for (let i = 0; i < len; i++) {
+                            for (let j = 0; j < len; j++) {
+                                if (classesAttendanceIdOrder[j] > classesAttendanceIdOrder[j + 1]) {
+                                    let tmp = classesAttendanceIdOrder[j];
+                                    let tmpOther = classesInIdOrder[j];
+                                    classesAttendanceIdOrder[j] = classesAttendanceIdOrder[j + 1];
+                                    classesInIdOrder[j] = classesInIdOrder[j + 1];
+                                    classesAttendanceIdOrder[j + 1] = tmp;
+                                    classesInIdOrder[j + 1] = tmpOther;
+                                }
+                            }
+                        }
 
-                        for (var i = 0; i < classes.length; i++) {
-                            if (classes[i].classId == classId) {
-                                document.getElementById("firstClass").innerHTML = classes[i].name;
-                                document.getElementById("firstClassValue").innerHTML = (classesAttendanceIdOrder[indexOfMax] * 100).toString() + "% average attendance";
+                        if (classes.length > 0) {
+                            var classId = classesInIdOrder[classesInIdOrder.length - 1][0].classId;
+
+                            for (var i = 0; i < classes.length; i++) {
+                                if (classes[i].classId == classId) {
+                                    document.getElementById("firstClass").innerHTML = classes[i].name;
+                                    document.getElementById("firstClassValue").innerHTML =
+                                        (classesAttendanceIdOrder[classesAttendanceIdOrder.length - 1] * 100).toFixed(2).toString() + "% average attendance";
+                                }
+                            }
+
+                            if (classes.length > 1) {
+                                var classId = classesInIdOrder[classesInIdOrder.length - 2][0].classId;
+
+                                for (var i = 0; i < classes.length; i++) {
+                                    if (classes[i].classId == classId) {
+                                        document.getElementById("secondClass").innerHTML = classes[i].name;
+                                        document.getElementById("secondClassValue").innerHTML =
+                                            (classesAttendanceIdOrder[classesAttendanceIdOrder.length - 2] * 100).toFixed(2).toString() + "% average attendance";
+                                    }
+                                }
+
+                                if (classes.length > 3) {
+                                    var classId = classesInIdOrder[classesInIdOrder.length - 3][0].classId;
+
+                                    for (var i = 0; i < classes.length; i++) {
+                                        if (classes[i].classId == classId) {
+                                            document.getElementById("thirdClass").innerHTML = classes[i].name;
+                                            document.getElementById("thirdClassValue").innerHTML =
+                                                (classesAttendanceIdOrder[classesAttendanceIdOrder.length - 3] * 100).toFixed(2).toString() + "% average attendance";
+                                        }
+                                    }
+                                } else {
+                                    document.getElementById("cardThree").style.display = "none";
+                                }
+
+
+                            } else {
+                                document.getElementById("cardTwo").style.display = "none";
+                                document.getElementById("cardThree").style.display = "none";
                             }
                         }
 
@@ -266,6 +368,7 @@
                                 if (result.length > 0) {
                                     classes = result;
                                     getTopThreeClasses();
+                                    getTableOfClasses();
                                 }
                                 else {
 
@@ -279,6 +382,100 @@
 
                     }
 
+                    async function getTableOfClasses() {
+                        var tableBody = document.getElementById("attendanceData");
+
+                        var classesInIdOrder = [];
+
+                        for (var i = 0; i < classes.length; i++) {
+                            await jQuery.ajax({
+                                url: "@Url.Content("~/api/classes/getAttendanceForClass?classId=")" + classes[i].classId,
+                                type: "GET",
+                                success: function (result) {
+                                    classesInIdOrder.push(result);
+                                },
+                                error: function (result) {
+                                   window.alert(result.responseText);
+                                }
+                            });
+                        }
+
+                        var sum;
+
+                        tableBody.innerHTML = "";
+
+                        for (var ids = 0; ids < classesInIdOrder.length; ids++) {
+                            sum = 0;
+
+                            for (var classInside = 0; classInside < classesInIdOrder[ids].length; classInside++) {
+                                sum += classesInIdOrder[ids][classInside].numberOfStudents / classesInIdOrder[ids][classInside].capacity;
+                            }
+
+                            var index;
+
+                            for (var x = 0; x < classes.length; x++) {
+                                if (classesInIdOrder[ids][0].classId == classes[x].classId) {
+                                    index = x;
+                                    break;
+                                }
+                            }
+
+                            tableBody.innerHTML += "<tr> <td> " + classes[index].name + "</td> <td>" +
+                                classes[index].instructor + "</td> <td>" + classes[index].day + "</td> <td>" +
+                                classes[index].startTime + "</td> <td>" + (sum / classesInIdOrder[ids].length * 100).toFixed(2) +
+                                "%</td> <td> <a href=# onclick='showDetails(" + ids + ")'> View details </a> </td> </tr>";
+                        }
+
+
+                    }
+
+                    function allClasses() {
+                        var table = document.getElementById("classTable");
+                        table.style.display = "block";
+
+                        document.getElementById("lineGraph").style.display = "none";
+                    }
+
+                    async function showDetails(rowToGet) {
+                        var row = document.getElementById("attendanceData").childNodes[rowToGet];
+
+                        var table = document.getElementById("classTable");
+                        table.style.display = "none";
+
+                        document.getElementById("lineGraph").style.display = "block";
+
+                        var name = row.childNodes[1].innerHTML;
+
+                        var classesInIdOrder = [];
+
+                        for (var i = 0; i < classes.length; i++) {
+                            await jQuery.ajax({
+                                url: "@Url.Content("~/api/classes/getAttendanceForClass?classId=")" + classes[i].classId,
+                                type: "GET",
+                                success: function (result) {
+                                    classesInIdOrder.push(result);
+                                },
+                                error: function (result) {
+                                   window.alert(result.responseText);
+                                }
+                            });
+                        }
+
+                        var labelsForGraph = [];
+                        var values = [];
+
+
+                        for (var i = 0; i < classesInIdOrder.length; i++) {
+
+                            for (var classInside = 0; classInside < classesInIdOrder[i].length; classInside++) {
+                                values.push(classesInIdOrder[i][classInside].numberOfStudents / classesInIdOrder[i][classInside].capacity).toFixed(2);
+                                labelsForGraph.push(classesInIdOrder[i][classInside].date);
+                            }
+                        }
+
+                         createChart(labelsForGraph, values, name);
+
+                     }
 
                     function getCookie(cname) {
                         var name = cname + "=";
@@ -297,8 +494,7 @@
                     }
 
 
-
-                </script>
+            </script>
 
 
 </body>
