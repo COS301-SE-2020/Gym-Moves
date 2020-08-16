@@ -1,0 +1,227 @@
+<!--
+File Name
+  GymManagerRating.html
+
+Author:
+  Ayanda
+
+Date Created
+  26/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Date       | Author       | Changes
+--------------------------------------------------------------------------------
+08/11/2020   |    Ayanda     |  Added content
+--------------------------------------------------------------------------------
+
+Functional Description:
+  
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
+
+    <title>Gym Instructors on Gym Moves</title>
+
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="assets/styles.css">
+
+    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
+    <script type="text/javascript">
+
+        function getGymClasses()
+        {
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200)
+                    {
+                        var classesjson = JSON.parse(xmlhttp.responseText);
+                        if (classesjson.length == 0) { }
+                        else {
+
+                            for (var y = 0; y < classesjson.length; y++) {
+                                getClassRatings(y+1);
+                            }
+                        }
+                    }
+                    else if (xmlhttp.status == 400) {
+                        alert('400');
+                    }
+                    else {
+                        alert('There are currently no classes at the gym.');
+                    }
+                }
+            };
+
+           xmlhttp.open("GET", "@Url.Content("~/api/classes/gymlist?gymid=1")", true);
+            xmlhttp.send();
+        }
+
+
+        function getClassRatings(id)
+        {
+
+          var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
+
+                        var classRatingsJson = JSON.parse(xmlhttp.responseText);
+                        if (classRatingsJson.length == 0) { window.alert("There are currently no classes at the gym."); }
+                        else {
+                            GenerateTable(classRatingsJson);
+                        }
+                    }
+                    else if (xmlhttp.status == 400) {
+                        alert('400');
+                    }
+                    else {
+                        alert(xmlhttp.status);
+                    }
+                }
+            };
+
+            var url = '@Url.Content("~/api/ratings/class?classid=")'+id;
+
+
+            xmlhttp.open("GET",url);
+           xmlhttp.send();
+        }
+
+
+
+    function Generate()
+    {
+        getGymClasses();
+    }
+
+
+    function GenerateTable(classRatingsJson)
+    {
+
+        var Results = new Array();
+        Results.push(["Class Id", "Class", "Instructor", "Day", "Time", "Available Spots", "Description", "Cancelled", "Rating"]);
+
+
+        for (var d = 0; d < classRatingsJson.length; d++)
+            {
+            var rating = (classRatingsJson[d].ratingSum) / (classRatingsJson[d].ratingCount);
+
+            var students = (classRatingsJson[d].maxCapacity) - (classRatingsJson[d].currentStudents);
+            Results.push([classRatingsJson[d].classId, classRatingsJson[d].name, classRatingsJson[d].instructor, classRatingsJson[d].day, classRatingsJson[d].startTime, classRatingsJson[d].cancelled, rating]);
+            }
+
+        //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "1";
+
+        //Get the count of columns.
+        var columnCount = Results[0].length;
+
+        //Add the header row.
+        var row = table.insertRow(-1);
+        for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = Results[0][i];
+            row.appendChild(headerCell);
+        }
+
+        //Add the data rows.
+        for (var i = 1; i < Results.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+                var cell = row.insertCell(-1);
+                cell.innerHTML = Results[i][j];
+            }
+        }
+
+        var myTable = document.getElementById("myTable");
+        myTable.innerHTML = "";
+        myTable.appendChild(table);
+    }
+    </script>
+</head>
+
+<body onclick="Generate()">
+
+    <section>
+        <nav class="navbar navbar-expand navbar-dark barColour">
+            <img style="vertical-align: top; height: 90px;" src="assets/images/dumbbell-128x128-1.png" alt="" title="">
+            <div style="width: 40%;">
+                <p id="heading">Gym Moves</p>
+            </div>
+            <div style="width: 50%;">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="GymMovesIndex.html">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GymMembers.html">Gym Members</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="GymInstructors.html">Gym Instructors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GymManagers.html">Gym Managers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="HowToRegisterMyGym.html">Register My Gym</a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+    </section>
+
+    <br><br><br>
+
+    <br>
+
+
+    <section>
+
+        <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
+
+            <button onclick="Generate()"> View Classes </button>
+            </div>
+        </section>
+            <section>
+
+                <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
+                    <div class="media-container-row">
+                        <div class="col-12">
+                            <div class="media-container-row">
+                                <div class="col-12 col-md-12">
+                                    <table name="myTable"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <br><br><br>
+
+            <section once="footers" class="footer barColour">
+                <div class="container">
+
+                    © Copyright 2020 Gym Moves - All Rights Reserved
+
+                </div>
+            </section>
+
+</body>
+</html>

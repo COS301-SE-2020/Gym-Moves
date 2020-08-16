@@ -33,5 +33,6 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
         public Task<bool> removeApplication(GymApplications application);
         public Task<GymApplications[]> getApplication(string gymName, string gymBranch = "");
         public Task<GymApplications[]> getAllApplications();
+        public Task<bool> updateApplication(GymApplications application);
     }
 }

@@ -18,5 +18,11 @@ namespace GymMovesWebAPI.Controllers {
         {
             return View();
         }
+
+        [Route("[controller]/ClassAttendance")]
+        public IActionResult ClassAttendance()
+        {
+            return View();
+        }
     }
 }

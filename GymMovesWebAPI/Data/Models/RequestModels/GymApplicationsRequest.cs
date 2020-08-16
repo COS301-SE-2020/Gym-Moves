@@ -24,4 +24,12 @@ namespace GymMovesWebAPI.Data.Models.RequestModels {
         public string GymName { get; set; }
         public string BranchName { get; set; }
     }
+
+    public class SetApplicationState
+    {
+        public string status { get; set; }
+
+        public string GymName { get; set; }
+        public string BranchName { get; set; }
+    }
 }
