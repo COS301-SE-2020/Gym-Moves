@@ -66,10 +66,6 @@ Functional Description:
             background-color: #691b74;
         }
 
-        @@font-face {
-            font-family: 'FreestyleScript';
-            src: url('assets/freescript.ttf') format('truetype');
-        }
 
         #heading {
             font-family: FreestyleScript;
@@ -133,11 +129,7 @@ Functional Description:
         }
 
         /* On smaller screens, decrease text size */
-        @@media only screen and (max-width: 300px) {
-            .text {
-                font-size: 11px
-            }
-        }
+        
 
 
         .halfPG {
@@ -166,27 +158,30 @@ Functional Description:
             display: none;
         }
 
-        @@media screen and (max-width: 600px) {
-            .navbar-nav .ml-auto a:not(:first-child) {display: none;}
-            .navbar-nav .ml-auto a.icon {
-                float: right;
-                display: block;
+        .makeSmaller {
+            width: 70%;
+            text-align: justify;
+            margin-left: 15%;
+        }
+
+        @@media only screen and (max-width: 600px) {
+            .text {
+                font-size: 11px
             }
 
-            .navbar-nav .ml-auto.responsive {
-                position: relative;
+            .halfPG {
+                width: 100%;
+                padding-left: 5em;
+                margin: 0;
             }
 
-            .navbar-nav .ml-auto .responsive a.icon {
-                position: absolute;
-                right: 0;
-                top: 0;
+            .halfPG2 {
+                width: 100%;
+                margin: 0;
             }
 
-            .navbar-nav .ml-auto .responsive a {
-                float: right;
-                display: block;
-                text-align: left;
+            .makeSmaller{
+                margin-left: 5%;
             }
         }
 
@@ -273,7 +268,7 @@ Functional Description:
 
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-    <div style="width: 70%; text-align: justify; margin-left: 15%; color: grey;">
+    <div class="makeSmaller" style="color: grey;">
         <p>
             Gym managers can send out announcements that everyone who belongs to the gym can see. This ensures
             everyone will know what is happening at their gym. This improves communication greatly, as anything
