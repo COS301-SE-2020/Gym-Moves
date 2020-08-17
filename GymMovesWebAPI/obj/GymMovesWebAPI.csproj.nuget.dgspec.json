@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj": {}
+    "C:\\Users\\Tia_2\\Documents\\GitHub\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj": {}
   },
   "projects": {
-    "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj": {
+    "C:\\Users\\Tia_2\\Documents\\GitHub\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Tia_2\\Documents\\GitHub\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
         "projectName": "GymMovesWebAPI",
-        "projectPath": "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
-        "packagesPath": "C:\\Users\\Longji\\.nuget\\packages\\",
-        "outputPath": "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI\\obj\\",
+        "projectPath": "C:\\Users\\Tia_2\\Documents\\GitHub\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj",
+        "packagesPath": "C:\\Users\\Tia_2\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Tia_2\\Documents\\GitHub\\Gym-Moves\\GymMovesWebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Longji\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Tia_2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -26,7 +26,8 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.devexpress.com/rkjcq8KoqsjuJXXcSDuLQCkrQzVC57qfIZdpwVjqfTPNEbewSN/api": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
@@ -103,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
