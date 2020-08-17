@@ -1,729 +1,353 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
+    <head>
 
-    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
+        <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gym Moves Dashboard</title>
 
-    <!-- Custom fonts for this template-->
-    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
-    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
-    <title>Gym Moves</title>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Helvetica,Arial, sans-serif;
-            background-color: white;
-            border-radius: 15px;
-            color: aliceblue;
-        }
-        /* Dropdown Button */
-        .dropbtn {
-            background-color: blueviolet;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-
-            /* Dropdown button on hover & focus */
-            .dropbtn:hover, .dropbtn:focus {
-                background-color: #7C31B9;
-            }
-
-        /* The search field */
-        #myInput {
-            box-sizing: border-box;
-            background-image: url('searchicon.png');
-            background-position: 14px 12px;
-            background-repeat: no-repeat;
-            font-size: 16px;
-            padding: 14px 20px 12px 45px;
-            border: none;
-            border-bottom: 1px solid #ddd;
-        }
-
-            /* The search field when it gets focus/clicked on */
-            #myInput:focus {
-                outline: 3px solid #ddd;
-            }
-
-        /* The container <div> - needed to position the dropdown content */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-            margin-left: 500px;
-            margin-top: 100px
-           
-        }
-
-        /* Dropdown Content (Hidden by Default) */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f6f6f6;
-            min-width: 230px;
-            border: 1px solid #ddd;
-            z-index: 1;
-        }
-
-            /* Links inside the dropdown */
-            .dropdown-content a {
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-            }
-
-                /* Change color of dropdown links on hover */
-                .dropdown-content a:hover {
-                    background-color: #f1f1f1
-                }
-
-        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-        .show {
-            display: block;
-        }
-
-        
-        table {
-            border-collapse: collapse;
-            font-family: Arial, sans-serif;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #EEEBEA;
-            text-align: center;
-            padding: 8px;
-        }
-
-        table.greyGridTable tr:nth-child(even) {
-            background: #EEEBEA;
-        }
-
-        article {
-            padding: 10px;
-            display: inline-block;
-            width: 28%;
-            height: 2150px;
-            text-align: center;
-            background-color: black;
-            margin-left: 71%;
-            margin-top: 160px;
-            position: absolute;
-            border-radius: 15px;
-        }
-
-    
+        <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+        <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+              rel="stylesheet">
+        <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
 
+        <style>
 
-        .searchTerm:focus {
-            color: rgb(247, 29, 228);
-        }
-
-        .search {
-            position: absolute;
-            width: 60%;
-        }
-
-
-        .look {
-            float: left;
-            width: 109%;
-            border-radius: 100px;
-            outline: none;
-            border: 3px solid #7341E6;
-            padding: 5px;
-            height: 32px;
-            color: rgb(143, 9, 123);
-        }
-
-
-        #select1 {
-            margin-top: 100px;
-            margin-left: 500px;
-        }
-        .wrapping {
-            width: 20%;
-            top: 15.6%;
-            right: 5%;
-            transform: translate(-51%, -51%);
-            position: absolute;
-        }
-
-
-
-        .filter {
-            display: none;
-            position: absolute;
-            background-color: #7341E6;
-            width: 88px;
-            z-index: 1;
-            text-align: center;
-            border-radius: 10px;
-        }
-
-        #filbut {
-            left: 30%
-        }
-
-        .filter a:hover {
-            color: white;
-            border-radius: 15px;
-            text-decoration-style: wavy;
-            text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-            text-decoration-line: underline;
-        }
-
-        .filbut:hover .filter {
-            display: inline-block;
-            border-radius: 15px;
-        }
-
-        .filbut:hover .drop {
-            background-color: #7341E6 text-decoration: beige;
-            text-decoration-style: wavy;
-            text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-            text-decoration-line: underline;
-        }
-
-        .filter a {
-            color: white;
-            padding: 10px 12px;
-            text-decoration: none;
-            display: block;
-            border-radius: 15px;
-        }
-
-
-      
-
-        .head {
-            float: right;
-        }
-
-
-        .deco {
-            color: aqua;
-        }
-
-        .heading {
-            text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-            text-align: left;
-            margin-left: 2%;
-            color: white;
-            border: 3px;
-            border-top-style: ridge;
-            border-color: blueviolet;
-            border-radius: 12px;
-            border-spacing: 20px;
-            margin-top: 0%;
-            padding: 2%;
-        }
-
-     
-
-
-        .look {
-            animation-duration: 1s;
-            animation-name: slidein;
-            border-radius: 16px;
-        }
-
-        @@keyframes slidein {
-            from {
-                margin-left: 100%;
-            }
-
-            to {
-                margin-left: 0%;
-            }
-        }
-
-        .container {
-            position: relative;
-            width: 50%;
-        }
-
-        .image {
-            margin-left: 50%;
-            display: block;
-            width: 100%;
-            opacity: 10;
-            border-radius: 16px;
-        }
-
-        .overlay {
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transition: .5s ease;
-            background-image: url(../img/bg2.gif);
-            opacity: 0.3;
-            margin-left: 50%;
-            border-radius: 16px;
-        }
-
-        .container:hover .overlay {
-            color: white;
-            cursor: pointer;
-            opacity: 0;
-        }
-
-        .text {
-            color: white;
-            font-size: 30px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .deco2 {
-            text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-            border: 3px;
-            border-top-style: ridge;
-            border-color: blueviolet;
-            border-radius: 12px;
-            border-spacing: 20px;
-            text-align: center;
-            padding: 15px;
-            color: white;
-        }
-
-        #con {
-            margin-left: 2%;
-        }
-
-     
-
-
-        #black {
-            color: black;
-        }
-
- 
             .navbar_background {
-            background-color: #7341e6;
-            color: white;
-        }
+                background-color: #7341e6;
+                color: white;
+            }
 
-        @@font-face {
-            font-family: 'Lastwaerk';
-            src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
-        }
+            @@font-face {
+                font-family: 'Lastwaerk';
+                src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
+            }
 
-    </style>
-</head>
-<body id="page-top">
+            tbody tr:nth-child(odd) {
+                background-color: #eeebea;
+            }
 
+            table {
+                border-collapse: collapse;
+            }
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-        <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+            table, th, td {
+                border: 2px solid #878787 !important;
+            }
+        </style>
+    </head>
+    <body id="page-top">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                <div class="sidebar-brand-icon">
-                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                </div>
-                <div class="sidebar-brand-text mx-3">Gym Moves</div>
-            </a>
+        <script>
+            if (document.cookie == "") {
+                window.location.href = "@Url.Content("~/ManagerLogin")";
+            }
+        </script>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+        <div id="wrapper">
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/MainPageForDashboard")">
-                    <span>Home</span>
-                </a>
-            </li>
+            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <span>Dashboard</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="login.html">Gym Attendance</a>
-                        <a class="collapse-item" href="register.html">Gym Ratings</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                    <div class="sidebar-brand-icon">
+                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                     </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <span>Profile</span>
+                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
                 </a>
-            </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+                <hr class="sidebar-divider my-0">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+                <li class="nav-item active">
+                    <a class="nav-link" href=#>
+                        <span>Home</span>
+                    </a>
+                </li>
 
-        </ul>
-        <!-- End of Sidebar -->
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                        Home
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                        <span>Dashboard</span>
+                    </a>
+                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Attendance</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/ManagerRatings")">Gym Ratings</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                        </div>
                     </div>
+                </li>
 
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="tables.html">
+                        <span>Profile</span>
+                    </a>
+                </li>
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
+                <hr class="sidebar-divider d-none d-md-block">
 
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+            </ul>
+
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <div id="content">
+
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                            Home
+                        </div>
+
+                        <ul class="navbar-nav ml-auto">
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
                                 </a>
+
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="row" style="padding-left:50px;">
+                        
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                View
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#" id="All" >All</a>
+                                <a class="dropdown-item" href="#" id="r">Registered</a>
+                                <a class="dropdown-item" href="#" id="nr">Not Registered</a>
                             </div>
-                        </li>
+                        </div>
 
-                    </ul>
-
-                </nav>
-
-                <select name="select01" id="select1" onchange="handleSelect()">
-                    <option value="All" id="All">All</option>
-                    <option value="Registered" id="r">Registered</option>
-                    <option value="Not" id="nr">Not Registered</option>
-                </select>
-
-                <div class="wrapping">
-                    <div class="search">
+                        <div class="wrapping">
+                            <div class="search">
 
 
-                        <input type="text" id="search" class="look" onkeyup='searchTable()' placeholder="Type to search">
+                                <input type="text" id="search" class="look" onkeyup='searchTable()' placeholder="Type to search">
 
+
+                            </div>
+                        </div>
 
                     </div>
-                </div>
 
-                <div id=black>
-                    <section>
-                        <div class="container">
+                    <div class="row" style="padding-left:50px;">
 
-                            <br><br>
-
-                            <br><br><br>
-
-                            <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                                <div class=" card-body">
-                                    <div class="table-responsive">
-
-                                        <table id="rankings-table" class="greyGridTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Surname</th>
-                                                    <th>Email</th>
-                                                </tr>
-                                            </thead>
-                                            <tfoot>
-                                                <tr>
-                                                </tr>
-                                            </tfoot>
-                                            <tbody id="tbody">
-                                                <tr>
-                                                    <td>cell1_1</td>
-                                                    <td>cell2_1</td>
-                                                    <td>cell3_1</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_2</td>
-                                                    <td>cell2_2</td>
-                                                    <td>cell3_2</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_3</td>
-                                                    <td>cell2_3</td>
-                                                    <td>cell3_3</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_4</td>
-                                                    <td>cell2_4</td>
-                                                    <td>cell3_4</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_5</td>
-                                                    <td>cell2_5</td>
-                                                    <td>cell3_5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_6</td>
-                                                    <td>cell2_6</td>
-                                                    <td>cell3_6</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_7</td>
-                                                    <td>cell2_7</td>
-                                                    <td>cell3_7</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_8</td>
-                                                    <td>cell2_8</td>
-                                                    <td>cell3_8</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_9</td>
-                                                    <td>cell2_9</td>
-                                                    <td>cell3_9</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_10</td>
-                                                    <td>cell2_10</td>
-                                                    <td>cell3_10</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_11</td>
-                                                    <td>cell2_11</td>
-                                                    <td>cell3_11</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>cell1_12</td>
-                                                    <td>cell2_12</td>
-                                                    <td>cell3_12</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                        <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="rankings-table dataTable" class="greyGridTable table" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                    </section>
-
-                    <br><br>
-
-                    <hr width="90%" color="#691b74">
-
-                    <br><br>
-
-                    <br><br><br>
-
+                        </div>
+                    </div>
                 </div>
-
-                <script>
-
-
-                    document.getElementById("select1").onchange = function () {
-
-                        if (this.value == 'All') {
-                            var optionID = document.getElementById('All');
-                            loadAll();
-
-                        }
-
-
-                        if (this.value == 'Registered') {
-                            var optionID = document.getElementById('r');
-                            loadrankings();
-
-                        }
-                        if (this.value == 'Not') {
-                            var optionID = document.getElementById('nr');
-                            loadnotregistered();
-
-                        }
-                    }
-
-
-
-
-
-        function searchTable() {
-            var input, filter, found, table, tr, td, i, j;
-            input = document.getElementById("search");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("tbody");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td");
-                for (j = 0; j < td.length; j++) {
-                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    tr[i].style.display = "";
-                    found = false;
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-
-
-
-
-
-        //loads table
-         const rankingsbody = document.querySelector("#rankings-table > tbody");
-
-        function loadrankings() {
-
-
-            var xhr = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/Gym/registeredMembers")";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                    console.log(xhr.responseText);
-                    populateRankings(json);
-                }
-            };
-            var username = getCookie("username").split(",")[0];
-            var gymid = getCookie("gymId").split(",")[0];
-            var gym = parseInt(gymid);
-            var data = JSON.stringify({ "Username": username, "GymId": gym });
-            xhr.send(data);
-
-        }
+            </div>
+        </div>
        
-
-                    function getCookie(cname) {
-                        var name = cname + "=";
-                        var decodedCookie = decodeURIComponent(document.cookie);
-                        var ca = decodedCookie.split(';');
-                        for (var i = 0; i < ca.length; i++) {
-                            var c = ca[i];
-                            while (c.charAt(0) == ' ') {
-                                c = c.substring(1);
-                            }
-                            if (c.indexOf(name) == 0) {
-                                return c.substring(name.length, c.length);
-                            }
-                        }
-                        return "";
-                    }
-
-           function loadAll() {
-
-               document.cookie = "username=esdgsrsa, path=/";
-               document.cookie = "gymId=15, path=/";
-
-            var xhr = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/Gym/AllMembers")";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                 //   console.log(xhr.responseText);
-                    populateRankings(json);
-                }
-            };
-               var username = getCookie("username").split(",")[0];
-               var gymid = getCookie("gymId").split(",")[0];
-               var gym = parseInt(gymid);
-               var data = JSON.stringify({ "Username": username, "GymId": gym });
-            xhr.send(data);
-
-        }
-      
-           function loadnotregistered() {
+        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+        <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
 
 
-            var xhr = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/Gym/unregisteredMembers")";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                 //   console.log(xhr.responseText);
-                    populateRankings(json);
-                }
-            };
-               var username = getCookie("username").split(",")[0];
-               var gymid = getCookie("gymId").split(",")[0];
-               var gym = parseInt(gymid);
-               var data = JSON.stringify({ "Username":username, "GymId": gym });
-            xhr.send(data);
-
-        }
-       
+        <script>
 
 
-
-        function populateRankings(name) {
-            while (rankingsbody.firstChild) {
-                rankingsbody.removeChild(rankingsbody.firstChild)
+            document.getElementById("All").onclick = function () {
+                loadAll();
             }
 
-            Object.keys(name).forEach( (row) => {
-                var userDetails = [];
-                userDetails.push(name[row].name);
-                userDetails.push(name[row].surname);
-                userDetails.push(name[row].email);
-                const tr = document.createElement("tr");
-             //   Object.keys(row).forEach((cell) => {
+            document.getElementById("nr").onclick = function () {
+                loadnotregistered(); 
+            }
 
-                for (var cell = 0; cell < 3; cell++) {
-                    const td = document.createElement("td");
-                    td.textContent = userDetails[cell];
-                    tr.appendChild(td);
-              //      console.log(userDetails[row]);
+            document.getElementById("r").onclick = function () {
+                loadregistered();
+            }
+
+
+            function searchTable() {
+                var input, filter, found, table, tr, td, i, j;
+                input = document.getElementById("search");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("tbody");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td");
+                    for (j = 0; j < td.length; j++) {
+                        if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tr[i].style.display = "";
+                        found = false;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
-         //       });
-           //      console.log(userDetails);
-                rankingsbody.appendChild(tr);
-            });
+            }
 
-        }
+            const rankingsbody = document.getElementById("tbody");
+
+            function loadregistered() {
+
+                var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/Gym/registeredMembers")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        console.log(xhr.responseText);
+                        populateRankings(json);
+                    }
+                };
+                var username = getCookie("username").split(",")[0];
+                var gymid = getCookie("gymId").split(",")[0];
+
+                var data = JSON.stringify({ "Username": username, "GymId": parseInt(gymid) });
+                xhr.send(data);
+            }
 
 
-        document.addEventListener("DOMContentLoaded", () => { loadAll() })
+            function getCookie(cname) {
+
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+
+                return "";
+            }
+
+            function loadAll() {
 
 
- </script>
+                var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/Gym/AllMembers")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                     //   console.log(xhr.responseText);
+                        populateRankings(json);
+                    }
+                };
 
-</body>
+                var username = getCookie("username").split(",")[0];
+                var gymid = getCookie("gymId").split(",")[0];
+
+                var data = JSON.stringify({ "Username": username, "GymId": parseInt(gymid) });
+                xhr.send(data);
+
+            }
+
+            function loadnotregistered() {
+
+
+                var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/Gym/unregisteredMembers")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                     //   console.log(xhr.responseText);
+                        populateRankings(json);
+                    }
+                };
+                   var username = getCookie("username").split(",")[0];
+                   var gymid = getCookie("gymId").split(",")[0];
+                   var gym = parseInt(gymid);
+                   var data = JSON.stringify({ "Username":username, "GymId": gym });
+                xhr.send(data);
+
+            }
+
+
+
+
+            function populateRankings(name) {
+                while (rankingsbody.firstChild) {
+                    rankingsbody.removeChild(rankingsbody.firstChild)
+                }
+
+                Object.keys(name).forEach( (row) => {
+                    var userDetails = [];
+                    userDetails.push(name[row].name);
+                    userDetails.push(name[row].surname);
+                    userDetails.push(name[row].email);
+                    const tr = document.createElement("tr");
+
+                    for (var cell = 0; cell < 3; cell++) {
+                        const td = document.createElement("td");
+                        td.textContent = userDetails[cell];
+                        tr.appendChild(td);
+
+                    }
+
+                    rankingsbody.appendChild(tr);
+                });
+
+            }
+
+
+            document.addEventListener("DOMContentLoaded", () => { loadAll() })
+
+
+        </script>
+
+    </body>
 </html>

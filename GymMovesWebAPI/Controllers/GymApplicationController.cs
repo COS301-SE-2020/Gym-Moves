@@ -14,8 +14,7 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 10/08/2020    |  Longji        | Created the controller
 --------------------------------------------------------------------------------
-15/08/20      | Raeesa         | Added accept applications controller
---------------------------------------------------------------------------------
+
 
 Functional Description:
     
@@ -76,34 +75,6 @@ namespace GymMovesWebAPI.Controllers {
             } else {
                 return StatusCode(StatusCodes.Status500InternalServerError, "We were unable to add your application to the database!");
             }
-        }
-
-        [HttpPost("AcceptApplications")]
-        public async Task<ActionResult<GymApplications[]>> AcceptApplications(SetApplicationState request)
-        {
-            GymApplications[] application = await applicationRepository.getApplication(request.GymName, request.BranchName);
-            if (request.status == "Approve")
-            {
-                //GymApplications[] application = await applicationRepository.getApplication(request.GymName, request.BranchName);
-                application[0].Status = ApplicationStatus.Approved;
-                Gym newgym = new Gym();
-                newgym.GymName = request.GymName.Trim();
-                newgym.GymBranch = request.BranchName.Trim();
-                bool creategym = await gymRepository.addGym(newgym);
-                bool updateStatus = await applicationRepository.updateApplication(application[0]);
-
-            }
-
-
-            if (request.status == "Reject")
-            {
-               // GymApplications[] application = await applicationRepository.getApplication(request.GymName, request.BranchName);
-                application[0].Status = ApplicationStatus.Rejected;
-                bool updateStatus = await applicationRepository.updateApplication(application[0]);
-            }
-
-            return Ok(application);
-
         }
 
         [HttpPost("GetAllApplications")]

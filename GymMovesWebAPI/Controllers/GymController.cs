@@ -74,53 +74,67 @@ namespace GymMovesWebAPI.Controllers
         }
 
         [HttpPost("registeredMembers")]
-        public async Task<ActionResult<GetMembersResponse[]>> getRegisteredMembers(GetMembersRequest request) {
+        public async Task<ActionResult<GetMembersResponse[]>> getRegisteredMembers(GetMembersRequest request)
+        {
             Users user = await userGymMovesRepository.getUser(request.Username);
 
-            if (user == null) {
+            if (user == null)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "User does not exist!");
             }
 
-            if (user.UserType != UserTypes.Manager) {
+            if (user.UserType != UserTypes.Manager)
+            {
                 return StatusCode(StatusCodes.Status401Unauthorized, "User is not a manager!");
             }
 
-            if (user.GymIdForeignKey != request.GymId) {
+            if (user.GymIdForeignKey != request.GymId)
+            {
                 return StatusCode(StatusCodes.Status401Unauthorized, "Managers can only see the registered users of their own gym!");
             }
 
             Users[] registeredUsers = await userGymMovesRepository.getAllUsers(request.GymId);
 
-            if (registeredUsers.Length > 0) {
+            if (registeredUsers.Length > 0)
+            {
                 GetMembersResponse[] responses = UserMappers.UserToMemberResponse(registeredUsers);
                 return Ok(responses);
-            } else {
+            }
+            else
+            {
                 return Ok(registeredUsers);
             }
         }
 
         [HttpPost("unregisteredMembers")]
-        public async Task<ActionResult<GetMembersResponse>> getUnregisteredMembers(GetMembersRequest request) {
+        public async Task<ActionResult<GetMembersResponse>> getUnregisteredMembers(GetMembersRequest request)
+        {
             Users user = await userGymMovesRepository.getUser(request.Username);
 
-            if (user == null) {
+            if (user == null)
+            {
                 return StatusCode(StatusCodes.Status404NotFound, "User does not exist!");
             }
 
-            if (user.UserType != UserTypes.Manager) {
+            if (user.UserType != UserTypes.Manager)
+            {
                 return StatusCode(StatusCodes.Status401Unauthorized, "User is not a manager!");
             }
 
-            if (user.GymIdForeignKey != request.GymId) {
+            if (user.GymIdForeignKey != request.GymId)
+            {
                 return StatusCode(StatusCodes.Status401Unauthorized, "Managers can only see the unregistered users of their own gym!");
             }
 
             GymMember[] unregisteredUsers = await gymMemberRepository.getGymMembers(request.GymId);
 
-            if (unregisteredUsers.Length > 0) {
+            if (unregisteredUsers.Length > 0)
+            {
                 GetMembersResponse[] responses = UserMappers.MemberToMemberResponse(unregisteredUsers);
                 return Ok(responses);
-            } else {
+            }
+            else
+            {
                 return Ok(unregisteredUsers);
             }
         }
@@ -149,7 +163,7 @@ namespace GymMovesWebAPI.Controllers
 
             GymMember[] unregisteredUsers = await gymMemberRepository.getGymMembers(request.GymId);
             Users[] registeredUsers = await userGymMovesRepository.getAllUsers(request.GymId);
-           
+
             if (unregisteredUsers.Length > 0 || registeredUsers.Length > 0)
             {
                 GetMembersResponse[] responses = UserMappers.MemberToMemberResponse(unregisteredUsers);
@@ -165,212 +179,6 @@ namespace GymMovesWebAPI.Controllers
                 return Ok(unregisteredUsers);
             }
         }
-        /*
-         Method Name:
-            registerGym
-         Purpose:
-             This method will verify that the gym is a valid gym and that the licence code is correct.
-             It will then register the gym is everything matches.
-        */
-        /*[HttpPost("register")]
-        public async Task<ActionResult<GymModel>> registerGym(GymSignUpRequestModel newGym)
-        {
-            Gym newgym = new Gym();
-            newgym.GymName = newGym.gymName.Trim();
-            newgym.GymBranch = newGym.gymBranch.Trim();
 
-            //validate code 
-            LicenseKeys licenseKeys = await license.getKey(newGym.code);
-            if (licenseKeys == null)
-            {
-                return Unauthorized("This code is invalid.");
-            }
-
-            Gym checkifgymexists = await gymRepository.getGymByNameAndBranch(newgym.GymName, newgym.GymBranch);
-            if (checkifgymexists != null)
-            {
-                return Unauthorized("This gym is already registered.");
-            }
-
-            Users checkIfUsernameExists = await userGymMovesRepository.getUser(newGym.username);
-
-            if (checkIfUsernameExists != null)
-            {
-                return Unauthorized("This username is already in use.");
-            }
-
-
-            if (licenseKeys.LicenseKey != newGym.code.Trim() || licenseKeys.Email != newGym.email.Trim())
-            {
-                return Unauthorized("This is not the code registered to your email.");
-            }
-
-            else
-            {
-                bool creategym = await gymRepository.addGym(newgym);
-                Gym gymsid = await gymRepository.getGymByNameAndBranch(newgym.GymName.Trim(), newgym.GymBranch.Trim());
-
-
-                    GymMember checkifmemberexists = await gymMemberRepository.getMember(newGym.memberid, gymsid.GymId);
-                    if (checkifmemberexists != null)
-                    {
-                        return Unauthorized("This gym member is already registered.");
-                    }
-
-                    GymMember newmember = new GymMember();
-                    newmember.MembershipId = newGym.memberid.Trim();
-                    newmember.Name = newGym.name.Trim();
-                    newmember.Surname = newGym.surname.Trim();
-                    newmember.Email = newGym.email.Trim();
-                    newmember.PhoneNumber = newGym.number.Trim();
-                    newmember.UserType = UserTypes.Manager;
-                    newmember.GymId = gymsid.GymId;
-                  
-                    bool member = await gymMemberRepository.addMember(newmember);
-
-                    Users newUserAccount = new Users();
-                    newUserAccount.MembershipId = newGym.memberid.Trim();
-                    newUserAccount.Username = newGym.username.Trim();
-                    newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(newGym.gymName.Trim(), newGym.gymBranch.Trim());
-                    newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
-
-                    GymMember Member = await gymMemberRepository.getMember(newmember.MembershipId,
-                        newUserAccount.GymIdForeignKey);
-
-
-                    if (Member == null)
-                    {
-                        return Unauthorized("This gym member ID does not exist.");
-                    }
-
-                    Users checkIfUserHasAccount = await userGymMovesRepository.getUserByMemberID(Member.MembershipId,
-                        Member.GymId);
-
-                    if (checkIfUserHasAccount != null)
-                    {
-                        return BadRequest("There is already an account for this gym member.");
-                    }
-
-                    newUserAccount.Name = Member.Name;
-                    newUserAccount.Surname = Member.Surname;
-                    newUserAccount.PhoneNumber = Member.PhoneNumber;
-                    newUserAccount.Email = Member.Email;
-
-                    newUserAccount.UserType = Member.UserType;
-
-                   
-
-                    Random random = new Random();
-                    newUserAccount.Salt = getRandomString(random.Next(5, 10));
-                    string hash = getHash(SHA256.Create(), newGym.password + newUserAccount.Salt);
-                    newUserAccount.Password = hash;
-
-                    bool added = await userGymMovesRepository.addUser(newUserAccount);
-
-                    if (added)
-                    {
-
-                        NotificationSettings newUserNotifs = new NotificationSettings();
-
-                        newUserNotifs.Email = true;
-                        newUserNotifs.PushNotifications = false;
-                        newUserNotifs.UsernameForeignKey = newUserAccount.Username;
-                        newUserNotifs.User = newUserAccount;
-
-                        added = await notificationSettingRepository.addUser(newUserNotifs);
-
-                        UserResponseModel response = new UserResponseModel();
-                        response.userType = newUserAccount.UserType;
-                        response.name = newUserAccount.Name;
-                        response.gymMemberID = newUserAccount.MembershipId;
-                        response.gymID = newUserAccount.GymIdForeignKey;
-
-                        return Ok(response);
-                    }
-                    else
-                    {
-                        return StatusCode(500, "Unable to create this account right now.");
-
-                    }
-
-               
-            }
-        }*/
-
-        /*
-       Method Name:
-           getRandomString
-       Purpose:
-           This method generates the salt.
-      */
-        public static string getRandomString(int length)
-        {
-
-            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder salt = new StringBuilder();
-
-            RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
-
-            while (length > 0)
-            {
-                salt.Append(valid[getInt(random, valid.Length)]);
-                length--;
-            }
-
-            return salt.ToString();
-        }
-
-        /*
-        Method Name:
-            getInt
-        Purpose:
-            This method gets the int of a byte.
-       */
-        public static int getInt(RNGCryptoServiceProvider random, int max)
-        {
-            byte[] byteChar = new byte[4];
-            int value;
-
-            do
-            {
-                random.GetBytes(byteChar);
-                value = BitConverter.ToInt32(byteChar, 0) & Int32.MaxValue;
-            }
-            while (value >= max * (Int32.MaxValue / max));
-
-            return value % max;
-        }
-
-        /*
-        Method Name:
-            getHash
-        Purpose:
-            This method will get the hash of the password and the salt.
-       */
-        private static string getHash(HashAlgorithm hashAlgorithm, string input)
-        {
-
-            byte[] data = hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
-            var passwordStored = new StringBuilder();
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                passwordStored.Append(data[i].ToString("x2"));
-            }
-
-            return passwordStored.ToString();
-        }
-
-        /*
-        Method Name:
-            verifyHash
-        Purpose:
-            This method will verify that the hash matches the hash stored in the database.
-       */
-        private static bool verifyHash(HashAlgorithm hashAlgorithm, string input, string hash)
-        {
-            var hashOfPassword = getHash(hashAlgorithm, input);
-            return hashOfPassword.Equals(hash);
-        }
     }
 }
