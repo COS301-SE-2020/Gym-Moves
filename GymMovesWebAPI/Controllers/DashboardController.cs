@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GymMovesWebAPI.Controllers {
+namespace GymMovesWebAPI.Controllers
+{
     [Route("[controller]")]
-    public class DashboardController : Controller {
-       
+    public class DashboardController : Controller
+    {
+
 
         [Route("ManagerRatings")]
         public IActionResult GymManagerRating()
@@ -34,12 +36,14 @@ namespace GymMovesWebAPI.Controllers {
         }
 
         [Route("Home")]
-        public IActionResult Home() {
+        public IActionResult Home()
+        {
             return View();
         }
 
         [Route("AddMembers")]
-        public IActionResult AddMembers() {
+        public IActionResult AddMembers()
+        {
             return View();
         }
     }

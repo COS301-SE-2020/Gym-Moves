@@ -132,7 +132,7 @@ Functional Description:
             </div>
          </section>
 
-        <section once="footers" class="footer barColour">
+        <section once="footers" class="footer .navbar_background">
             <div class="container">
 
                 © Copyright 2020 Gym Moves - All Rights Reserved
@@ -196,7 +196,7 @@ Functional Description:
                 var user =
                 {
                     'username': document.getElementById("username").value,
-                    'password': document.getElementById("password").value
+                    'password': hashHex
                 };
 
                 jQuery.ajax({
@@ -211,7 +211,7 @@ Functional Description:
                          else {
                             document.cookie = "username=" + document.getElementById("username").value + ", path=/";
                             document.cookie = "gymId=" + result.gymID + ", path=/";
-                            window.location.href = "@Url.Content("~/dashboard/")";
+                            window.location.href = "@Url.Content("~/dashboard/home")";
                         }
                                                 },
                         error: function (result) {

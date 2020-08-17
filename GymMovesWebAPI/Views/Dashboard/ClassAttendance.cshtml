@@ -69,7 +69,7 @@
                 <hr class="sidebar-divider my-0">
 
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Content("~/dashboard/MainPageForDashboard")">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/home")">
                         <span>Home</span>
                     </a>
                 </li>
@@ -80,11 +80,17 @@
                     </a>
                     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymAttendance")">Gym Attendance</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymAttendance")">Gym Traffic</a>
                             <a class="collapse-item" href="@Url.Content("~/dashboard/ManagerRatings")">Gym Ratings</a>
-                            <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                            <a class="collapse-item" href=#>Class Attendance</a>
                         </div>
                     </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                        <span>Upload database</span>
+                    </a>
                 </li>
 
                 <li class="nav-item">
