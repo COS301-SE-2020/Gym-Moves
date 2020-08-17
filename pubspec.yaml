@@ -11,6 +11,7 @@ environment:
 dependencies:
   adobe_xd:
   flutter:
+
     sdk: flutter
   cupertino_icons: ^0.1.3
   flutter_svg: ^0.17.4
@@ -24,6 +25,13 @@ dependencies:
   qr_flutter: ^3.1.0
   flutter_spinkit: ^4.1.2
   nfc_in_flutter: 2.0.2
+  flutter_swiper: 1.1.6
+  firebase_core: ^0.4.0+9
+  firebase_analytics: ^5.0.2
+  firebase_auth: ^0.14.0+5
+  firebase_database: ^3.1.1
+  cloud_firestore: ^0.12.9+5
+  smooth_star_rating: 1.1.1
   path_provider:
 
 
@@ -41,6 +49,15 @@ flutter:
     - family: Roboto
       fonts:
         - asset: assets/Roboto.ttf
+    - family: Lastwaerk
+      fonts:
+       - asset: assets/Lastwaerk.ttf
+    - family: Digit
+      fonts:
+       - asset: assets/DIGITALDREAM.ttf
+    - family: Digital
+      fonts:
+        - asset: assets/DIGITALDREAMFATNARROW.ttf
 
   uses-material-design: true
 
@@ -48,8 +65,17 @@ flutter:
     - assets/Banner.jpg
     - assets/Bicycles.jpg
     - assets/Boxing.jpg
+    - assets/MenuPicture.png
+    - assets/Classes.png
+    - assets/nfc.png
+    - assets/WelcomeBackground.png
+    - assets/profile.png
+    - assets/notifications.png
+    - assets/Mail.png
+    - assets/ForgotPasswordPicture.png
+    - assets/send.png
+    - assets/ClassDetailsPicture.png
     - assets/LeftSidePool.png
     - assets/LeftSidePoolHalf.png
     - assets/RightSidePool.png
     - assets/RightSidePoolHalf.png
-
