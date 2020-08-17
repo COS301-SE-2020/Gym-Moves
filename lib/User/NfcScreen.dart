@@ -225,7 +225,7 @@ void check() async {
       });
     }
     else{
-      _showAlertDialog("You haven't entereed the gym", "Can't exit");
+      _showAlertDialog("You haven't entered the gym", "Can't exit");
     }
   }
 
