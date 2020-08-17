@@ -28,7 +28,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EllipticCurve.Utils;
 using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
@@ -37,7 +36,6 @@ using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Asn1;
 
 namespace GymMovesWebAPI.Controllers {
     [Route("api/[controller]")]
