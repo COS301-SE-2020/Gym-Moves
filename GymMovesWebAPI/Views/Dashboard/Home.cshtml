@@ -21,6 +21,16 @@
 
         <style>
 
+            .look {
+                width: 50%;
+                border-radius: 15px;
+                border: 1px #7341e6 solid;
+            }
+
+            #searching{
+                left: 30%;
+                
+            }
             .navbar_background {
                 background-color: #7341e6;
                 color: white;
@@ -133,26 +143,22 @@
                     </nav>
 
                     <div class="row" style="padding-left:50px;">
-                        
-                        <div class="dropdown col-xl-3 col-md-6 mb-4">
+
+                        <div class="dropdown">
                             <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                View
+                                All
                             </a>
 
                             <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#" id="All" >All</a>
+                                <a class="dropdown-item" href="#" id="All">All</a>
                                 <a class="dropdown-item" href="#" id="r">Registered</a>
                                 <a class="dropdown-item" href="#" id="nr">Not Registered</a>
                             </div>
                         </div>
 
-                        <div class="wrapping">
+                        <div id="searching" class="wrapping col-xl-3 col-md-6 mb-4">
                             <div class="search">
-
-
                                 <input type="text" id="search" class="look" onkeyup='searchTable()' placeholder="Type to search">
-
-
                             </div>
                         </div>
 
@@ -165,40 +171,42 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                                <th>Surname</th>
-                                                <th>Email</th>
-                                            </tr>
+                                            <th>Surname</th>
+                                            <th>Email</th>
+                                        </tr>
                                     </thead>
-                                     <tbody id="tbody">
-                                     </tbody>
+                                    <tbody id="tbody">
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-       
-        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
-        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
-        <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
+
+            <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+            <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+            <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+            <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+            <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+            <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
 
 
-        <script>
+            <script>
 
 
-            document.getElementById("All").onclick = function () {
+                document.getElementById("All").onclick = function () {
+                    document.getElementById("dropdownMenuLink").innerHTML="All";
                 loadAll();
             }
 
-            document.getElementById("nr").onclick = function () {
-                loadnotregistered(); 
+                document.getElementById("nr").onclick = function () {
+                    document.getElementById("dropdownMenuLink").innerHTML= "Not Registered";
+                loadnotregistered();
             }
 
-            document.getElementById("r").onclick = function () {
+                document.getElementById("r").onclick = function () {
+                    document.getElementById("dropdownMenuLink").innerHTML="Registered";
                 loadregistered();
             }
 
@@ -344,7 +352,7 @@
             document.addEventListener("DOMContentLoaded", () => { loadAll() })
 
 
-        </script>
+            </script>
 
-    </body>
+</body>
 </html>
