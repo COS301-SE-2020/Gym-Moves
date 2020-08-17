@@ -1,119 +1,110 @@
-﻿<html>
-
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon">
-
-    <title>Gym Instructors on Gym Moves</title>
-
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-reboot.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/styles.css")">
+﻿<head>
 
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Dashboard - Add Members</title>
+
+    <link href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/assets/simple-sidebar.css")" rel="stylesheet">
 
     <style>
+        .navbar_background {
+            background-color: #7341e6;
+            color: white;
+        }
 
-            @@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
-
-            @@font-face {
-                font-family: 'Lastwaerk';
-                src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
-            }
-
-            .navbar_background {
-                background-color: #7341E6;
-                color: white;
-            }
+        @@font-face {
+            font-family: 'Lastwaerk';
+            src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
+        }
 
     </style>
 
 </head>
 
-<body style="font-family: Roboto;">
+<body>
 
-    <div class="bs-example">
-        <nav class="navbar navbar-expand-md navbar-light navbar_background">
-            <a href="#" class="navbar-brand">
-                <img src="@Url.Content("~/assets/images/logo.png")" height="28" alt="dumbbell">
-                <span id="heading" style="font-family: 'Lastwaerk'; font-size: 1.5em">Gym Moves</span>
-            </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" style="background-color: white;">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <script>
+        if (document.cookie == "") {
+            window.location.href = "@Url.Content("~/ManagerLogin")";
+        }
+    </script>
 
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
-                    <a href="@Url.Content("~/GymMoves")" class="nav-item nav-link" style="color: white; opacity: 0.7;">About us</a>
-                    <a href="@Url.Content("~/GymMembers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Members</a>
-                    <a href="@Url.Content("~/GymInstructors")" class="nav-item nav-link active" style="color: white; font-weight: bold;">Gym Instructors</a>
-                    <a href="@Url.Content("~/GymManagers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Managers</a>
-                    <a href="@Url.Content("~/HowToRegisterMyGym")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Register My Gym</a>
-                </div>
+    <div class="d-flex" id="wrapper">
+
+        <div class="border-right navbar_background" id="sidebar-wrapper">
+            <span class="sidebar-heading navbar_background" style="font-family: Lastwaerk; font-size: 1.5em; margin: 0px 20px 20px 0px;">
+                Gym Moves
+                <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
+            </span>
+            <div class="list-group list-group-flush">
+                <a href="@Url.Action("~/dashboard/")" class="list-group-item list-group-item-action navbar_background">Home</a>
+                <a href="#" class="list-group-item list-group-item-action navbar_background">Gym Traffic</a>
+                <a href="#" class="list-group-item list-group-item-action navbar_background">Ratings</a>
+                <a href="#" class="list-group-item list-group-item-action navbar_background">Classes</a>
+                <a href="#" class="list-group-item list-group-item-action navbar_background">Upload Database</a>
+                <a href="#" class="list-group-item list-group-item-action navbar_background">Profile</a>
             </div>
-        </nav>
+        </div>
+
+        <div id="page-content-wrapper">
+
+            <nav class="navbar navbar-expand-lg navbar-light navbar_background border-bottom ">
+                <button class="btn btn-primary" style=" background-color: white; color: #7341e6;" id="menu-toggle">Toggle Menu</button>
+
+            </nav>
+
+            <div class="container-fluid">
+                <h2 class="mt-4">Required format...</h2>
+                The required format is the following: <br />
+                <pre>   Membership ID, Name, Surname, Email, PhoneNumber, User Type</pre> <br />
+                <pre>   User Types:</pre>
+                <pre>       0: Member</pre>
+                <pre>       1: Instructor</pre>
+                <pre>       2: Manager</pre>
+           
+                <h2 class="mt-4">Copy and Paste your CSV contents here!</h2">
+                    <form id="text_form">
+                        <textarea rows="25" cols="100" style="font-size:12px;" id="textarea"></textarea>
+                    </form>
+                    <button onclick="submitCsv();">Submit</button>
+</div>
+        </div>
+
     </div>
 
-    <br><br><br>
-
-    <section class="text" style="text-align: justify;">
-        <div class="container">
-            <div class="media-container-row">
-                <div class="col-12 col-md-12">
-                    <p>
-                        As an instructor of a gym, you want to be able to let everyone know you are unable to teach
-                        one of your classes. You want to be able to edit the classes you teach. You also want to be
-                        able to see everything announced at the gym. This application will help you with this all.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <br>
-
-    <section>
-
-        <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
-            <div class="media-container-row">
-                <div class="col-12">
-                    <ul type="circle">
-                        <li>
-                            <strong>Cancel a class</strong> - If you can't teach your class, let everyone
-                            who booked a spot know that it won't be happening anymore by cancelling it. You do this
-                            on the class details page.
-                        </li>
-                        <li>
-                            <strong>Edit a class</strong> - If you're unhappy with any of the details of the classes you teach,
-                            you can edit them. This is also done through the class details page.
-                        </li>
-                        <li>
-                            <strong>Be informed</strong> - You can also see all announcements made by the managers on the
-                            announcements page.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
 
 
-    <br><br><br>
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 
-    <section once="footers" class="footer barColour">
-        <div class="container">
+    <script>
+        async function submitCsv() {
+            var text = document.getElementById("textarea").value;
 
-            © Copyright 2020 Gym Moves - All Rights Reserved
+            var data = {
+                Username: "SunnyManager",
+                Records: text
+            };
 
-        </div>
-    </section>
-
+            $.ajax({
+                url: "@Url.Content("~/api/membership/addmember")",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+    </script>
 </body>
-</html>

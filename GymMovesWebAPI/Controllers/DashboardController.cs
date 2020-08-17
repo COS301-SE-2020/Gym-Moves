@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers {
+    [Route("[controller]")]
     public class DashboardController : Controller {
-        [Route("[controller]")]
-
-        [Route("MainPageForDashboard")]
         public IActionResult MainPageForDashboard()
         {
             return View();
@@ -20,8 +18,8 @@ namespace GymMovesWebAPI.Controllers {
             return View();
         }
 
-        [Route("AddMember")]
-        public IActionResult AddMember() {
+        [Route("AddMembers")]
+        public IActionResult AddMembers() {
             return View();
         }
     }
