@@ -5,19 +5,36 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers {
-    [Route("[controller]")]
     public class DashboardController : Controller {
-        public IActionResult MainPageForDashboard()
+       
+
+        [Route("[controller]/ManagerRatings")]
+        public IActionResult GymManagerRating()
         {
             return View();
         }
 
-        [Route("ManagerRatings")]
-        public IActionResult GymManagerRating() 
+        [Route("[controller]/ClassAttendance")]
+        public IActionResult ClassAttendance()
         {
             return View();
         }
 
+        [Route("[controller]/GymTraffic")]
+        public IActionResult GymTraffic()
+        {
+            return View();
+        }
+
+        [Route("Admin")]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
+        [Route("[controller]/Home")]
+        public IActionResult Home()
+        {
         [Route("AddMembers")]
         public IActionResult AddMembers() {
             return View();

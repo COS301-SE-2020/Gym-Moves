@@ -60,6 +60,19 @@ Functional Description:
                 color: white;
             }
 
+            .makeSmaller {
+                width: 70%;
+                text-align: justify;
+                margin-left: 15%;
+            }
+
+            @@media only screen and (max-width: 600px) {
+                
+                .makeSmaller {
+                    margin: 0;
+                }
+            }
+
         </style>
     </head>
 
@@ -108,7 +121,7 @@ Functional Description:
 
     <section>
 
-        <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
+        <div class="container" style="font-size: 0.95em;">
             <div class="media-container-row">
                 <div class="col-12">
                     <ul type="circle">
