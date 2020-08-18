@@ -163,6 +163,16 @@ Functional Description:
 
 
         }
+      
+      function addToArray(classRatingsJson, d)
+        {
+
+
+          var rating = (classRatingsJson[0].ratingSum) / (classRatingsJson[0].ratingCount);
+
+            var students = (classesjson[d].maxCapacity) - (classesjson[d].currentStudents);
+            Results.push([classesjson[d].classId, classesjson[d].name, classesjson[d].description, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, students, classesjson[d].cancelled, rating]);
+        }
 
         function clearTable(table) {
             var rows = table.rows;
