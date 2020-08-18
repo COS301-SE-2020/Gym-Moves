@@ -258,11 +258,13 @@
                         url: "@Url.Content("~/api/classes/getAttendanceForClass?classId=")" + classes[i].classId,
                         type: "GET",
                         success: function (result) {
-                            classesInIdOrder.push(result);
+                            if (result!=null)
+                                classesInIdOrder.push(result);
                         },
-                        error: function (result) {
-                            
-                        }
+                        error: function (xhr, ajaxOptions, thrownError) {
+
+                        },
+
                     });
                 }
 
@@ -351,15 +353,15 @@
                 }
 
                 await jQuery.ajax({
-                url: "@Url.Content("~/api/user/allInstructors?gymId=")" + gymId,
-                type: "GET",
-                success: function (result) {
-                    instructors = result;
-                },
-                error: function (result) {
-                    window.alert(result.responseText);
-                }
-            });
+                    url: "@Url.Content("~/api/user/allInstructors?gymId=")" + gymId,
+                    type: "GET",
+                    success: function (result) {
+                        instructors = result;
+                    },
+                    error: function (result) {
+                        window.alert(result.responseText);
+                    }
+                });
 
                 getTableOfClasses();
             }
