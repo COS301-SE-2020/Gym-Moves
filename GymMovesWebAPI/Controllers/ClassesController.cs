@@ -589,7 +589,7 @@ namespace GymMovesWebAPI.Controllers
 
             if(classAttendance == null)
             {
-                return Ok("This class has no attendance history.");
+                return NotFound("This class has no attendance history.");
             }
             else
             {
