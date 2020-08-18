@@ -13,7 +13,11 @@ namespace GymMovesWebAPI.Controllers {
         public IActionResult ManagerLogin() {
             return View();
         }
-
+        
+        [Route("ManagerDetails")]
+        public IActionResult ManagerDetails() {
+            return View();
+        }
 
         [Route("GymManagers")]
         public IActionResult GymManagers()
