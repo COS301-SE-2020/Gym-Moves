@@ -199,7 +199,7 @@ class AnnouncementsState extends State<Announcements> {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(0.02 * media.size.height),
-                          width: 0.7 * media.size.width,
+                          width: 0.8 * media.size.width,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(19.0),
                             color: const Color(0xff7341E6).withOpacity(0.03),

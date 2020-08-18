@@ -190,7 +190,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               cancelled
                   ? Transform.translate(
                   offset: Offset(
-                      0.01 * media.size.width, 0.43 * media.size.height),
+                      0.4 * media.size.width, 0.4 * media.size.height),
                   child: Container(
                       width: 0.5 * media.size.width,
                       height: 0.2 * media.size.width,
