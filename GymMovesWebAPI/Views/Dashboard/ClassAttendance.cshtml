@@ -252,7 +252,6 @@
             var instructors;
 
             async function getTopThreeClasses() {
-
                 for (var i = 0; i < classes.length; i++) {
                     await jQuery.ajax({
                         url: "@Url.Content("~/api/classes/getAttendanceForClass?classId=")" + classes[i].classId,
@@ -261,11 +260,11 @@
                             classesInIdOrder.push(result);
                         },
                         error: function (result) {
-                            
+                            flag = false;
                         }
                     });
                 }
-
+                
                 var classesAttendanceIdOrder = [];
                 var sum;
 

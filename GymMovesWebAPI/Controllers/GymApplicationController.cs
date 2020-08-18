@@ -24,11 +24,15 @@ List of Classes:
     - GymApplicationController
 */
 
+using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
+using GymMovesWebAPI.MailerProgram;
 using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,11 +44,15 @@ namespace GymMovesWebAPI.Controllers {
         private readonly IGymApplicationRepository applicationRepository;
         private readonly IGymRepository gymRepository;
         private readonly ISupportStaffRepository staffRepository;
+        private readonly IApplicationCodeRepository codeRepository;
+        private readonly IMailer mailer;
 
-        public GymApplicationController(IGymApplicationRepository gar, IGymRepository gr, ISupportStaffRepository ssr) {
+        public GymApplicationController(IGymApplicationRepository gar, IGymRepository gr, ISupportStaffRepository ssr, IApplicationCodeRepository acr, IMailer mail) {
             applicationRepository = gar;
             gymRepository = gr;
             staffRepository = ssr;
+            codeRepository = acr;
+            mailer = mail;
         }
 
         [HttpPost("add")]
@@ -92,6 +100,28 @@ namespace GymMovesWebAPI.Controllers {
                 bool creategym = await gymRepository.addGym(newgym);
                 bool updateStatus = await applicationRepository.updateApplication(application[0]);
 
+                /* Generate Code For Sign Up */
+                string generated = getRandomString(10);
+
+                GymApplicationCodes code = await codeRepository.getByCode(generated);
+
+                while (code != null) {
+                    generated = getRandomString(10);
+                    code = await codeRepository.getByCode(generated);
+                }
+
+                code = new GymApplicationCodes();
+
+                code.BranchName = newgym.GymBranch;
+                code.GymName = newgym.GymName;
+                code.Code = generated;
+
+                if (!await codeRepository.add(code)) {
+                    /* Remove gym from database and do not change application status */
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Unable to store generated code!");
+                }
+
+                await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Gym Application Approval", $"Congratulations! Your gym approval has been approved! Use the following code {generated}\nAt ", "kanglongjidev@gmail.com");
             }
 
 
@@ -146,5 +176,32 @@ namespace GymMovesWebAPI.Controllers {
 
         /* TODO: Create API function to update the state of each application */
         /* Find way to minimize  */
+        public static string getRandomString(int length) {
+
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder salt = new StringBuilder();
+
+            RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
+
+            while (length > 0) {
+                salt.Append(valid[getInt(random, valid.Length)]);
+                length--;
+            }
+
+            return salt.ToString();
+        }
+
+        public static int getInt(RNGCryptoServiceProvider random, int max) {
+            byte[] byteChar = new byte[4];
+            int value;
+
+            do {
+                random.GetBytes(byteChar);
+                value = BitConverter.ToInt32(byteChar, 0) & Int32.MaxValue;
+            }
+            while (value >= max * (Int32.MaxValue / max));
+
+            return value % max;
+        }
     }
 }
