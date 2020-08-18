@@ -41,7 +41,6 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:gym_moves/GymClass/EditClass.dart';
-import 'package:gym_moves/GymClass/ManagerViewClasses.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 /*
@@ -122,81 +121,78 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
         backgroundColor: const Color(0xffffffff),
         body: ListView(children: <Widget>[
           Column(children: <Widget>[
-            Stack(
-                children: <Widget>[
-                  Container(
+            Stack(children: <Widget>[
+              Transform.translate(
+                  offset: Offset(0.0, -0.033 * media.size.height),
+                  child: Container(
                       width: media.size.width,
                       height: media.size.height * 0.4,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                            image:
-                            const AssetImage(
-                                'assets/ClassDetailsPicture.png'
-                            ),
-                            fit: BoxFit.fill,
-                            colorFilter: new ColorFilter.mode(
-                                Colors.black.withOpacity(0.5),
-                                BlendMode.dstIn
-                            ),
-                          )
-                      )
-                  ),
-                  Transform.translate(
-                      offset: Offset(0.0, 0.0 * media.size.height),
-                      child: SizedBox(
-                          width: media.size.width,
-                          height: media.size.height * 0.4,
-                          child: Center(
-                              child: Container(
-                                  width: 0.55 * media.size.width,
-                                  height: 0.31 * media.size.height,
-                                  child: Center(
-                                      child: AutoSizeText(
-                                        className,
-                                        style: TextStyle(
-                                          fontFamily: 'Lastwaerk',
-                                          fontSize: 0.12 * media.size.width,
-                                          color: const Color(0xff3e3e3e),
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 3,
-                                      )
-                                  )
-                              )
-                          )
-                      )
-                  ),
-                  Transform.translate(
-                      offset:
-                      Offset(0.05 * media.size.width, 0.02 *
-                          media.size.height),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NavigationBar(index : 3)));
-                          },
-                          child: SvgPicture.string(
-                            backArrow,
-                            allowDrawingOutsideViewBox: true,
-                            width: 0.06 * media.size.width,
-                            color: const Color(0xff7341E6),
-                          )
-                      )
-                  ),
-                  Transform.translate(
-                      offset:
-                      Offset(0.2 * media.size.width, 0.55 *
-                          media.size.height),
+                        image:
+                            const AssetImage('assets/ClassDetailsPicture.png'),
+                        fit: BoxFit.fill,
+                        colorFilter: new ColorFilter.mode(
+                            Colors.black.withOpacity(0.5), BlendMode.dstIn),
+                      )))),
+              Transform.translate(
+                  offset: Offset(0.0, 0.0),
+                  child: SizedBox(
+                      width: media.size.width,
+                      height: media.size.height * 0.4,
+                      child: Center(
+                          child: Container(
+                              width: 0.55 * media.size.width,
+                              height: 0.31 * media.size.height,
+                              child: Center(
+                                  child: AutoSizeText(
+                                className,
+                                style: TextStyle(
+                                  fontFamily: 'Lastwaerk',
+                                  fontSize: 0.12 * media.size.width,
+                                  color: const Color(0xff3e3e3e),
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                              )))))),
+              Transform.translate(
+                  offset:
+                      Offset(0.05 * media.size.width, 0.02 * media.size.height),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NavigationBar(index: 2)));
+                      },
                       child: SvgPicture.string(
-                        dumbbell,
+                        backArrow,
                         allowDrawingOutsideViewBox: true,
-                        width: 0.6 * media.size.width,
-                      )
-                  ),
+                        width: 0.06 * media.size.width,
+                        color: const Color(0xff7341E6),
+                      ))),
+              Transform.translate(
+                  offset:
+                  Offset(0.2 * media.size.width, 0.6 * media.size.height),
+                  child: SvgPicture.string(dumbbell,
+                      width: 0.95 * media.size.width * 0.7,
+                      height: 0.6 * media.size.height * 0.7,
+                      allowDrawingOutsideViewBox: true)),
+              cancel
+                  ? Transform.translate(
+                      offset: Offset(
+                          0.01 * media.size.width, 0.43 * media.size.height),
+                      child: Container(
+                          width: 0.5 * media.size.width,
+                          height: 0.2 * media.size.width,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      const AssetImage('assets/Cancelled.png'),
+                                  fit: BoxFit.fill))))
+                  : SizedBox(),
               Container(
                   alignment: Alignment.bottomCenter,
                   width: media.size.width,
@@ -207,27 +203,27 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                         if (snapshot.hasData) {
                           return Container(
                               child: SmoothStarRating(
-                                rating: classRating.roundToDouble(),
-                                isReadOnly: true,
-                                size: 30,
-                                color: Colors.amberAccent,
-                                borderColor: Colors.amberAccent,
-                                filledIconData: Icons.star,
-                                halfFilledIconData: Icons.star_half,
-                                defaultIconData: Icons.star_border,
-                                starCount: 5,
-                                allowHalfRating: true,
-                                spacing: 2.0,
-                                onRated: (value) {},
-                              ));
+                            rating: classRating.roundToDouble(),
+                            isReadOnly: true,
+                            size: 30,
+                            color: Colors.amberAccent,
+                            borderColor: Colors.amberAccent,
+                            filledIconData: Icons.star,
+                            halfFilledIconData: Icons.star_half,
+                            defaultIconData: Icons.star_border,
+                            starCount: 5,
+                            allowHalfRating: true,
+                            spacing: 2.0,
+                            onRated: (value) {},
+                          ));
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
                         }
                         // By default, show a loading spinner.
                         return Center(
                             child: CircularProgressIndicator(
-                              backgroundColor: Colors.white,
-                            ));
+                          backgroundColor: Colors.white,
+                        ));
                       })),
             ]),
             SizedBox(height: 0.05 * media.size.height),
@@ -293,34 +289,6 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
                 ),
               )
             ]),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.05 * media.size.width, 0.02 * media.size.height, 0.0, 0.0),
-              child: Text(
-                'Status: ',
-                style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 0.045 * media.size.width,
-                    color: Color(0xFF3E3E3E),
-                    fontWeight: FontWeight.w800),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  0.1 * media.size.width, 0.01 * media.size.height, 0.0, 0.0),
-              child: Text(
-                cancel ? "Cancelled" : "Not Cancelled",
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 0.04 * media.size.width,
-                  color: Color(0xFF3E3E3E),
-                ),
-                textAlign: TextAlign.left,
-              ),
-              alignment: Alignment.centerLeft,
-            ),
             Container(
               padding: EdgeInsets.fromLTRB(
                   0.05 * media.size.width, 0.05 * media.size.height, 0.0, 0.0),

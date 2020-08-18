@@ -13,8 +13,8 @@ class InstructorViewClasses extends StatefulWidget {
 }
 
 class InstructorViewClassesState extends State<InstructorViewClasses> {
-
   InstructorViewClassesState({Key key});
+
   List<GymClass> allClasses = [];
 
   String className, classDay, classStart, classEnd, instructorName;
@@ -46,59 +46,48 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
 
     return Scaffold(
         backgroundColor: const Color(0xffffffff),
-        body: Column(
-            children: <Widget>[
-              Stack(
-                  children: <Widget>[
-                    Container(
-                        width: 0.8 * media.size.width,
-                        height: 0.3 * media.size.height,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: const AssetImage('assets/Classes.png'),
-                                fit: BoxFit.fill
-                            )
-                        )
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(0.01 * media.size.width),
-                      width: media.size.width,
-                      height: 0.3 * media.size.height,
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'Classes',
-                        style: TextStyle(
-                          fontFamily: 'Lastwaerk',
-                          fontSize: 0.1 * media.size.width,
-                          color: const Color(0xFF3E3E3E),
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                  ]
+        body: Column(children: <Widget>[
+          Stack(children: <Widget>[
+            Container(
+                width: 0.8 * media.size.width,
+                height: 0.3 * media.size.height,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: const AssetImage('assets/Classes.png'),
+                        fit: BoxFit.fill))),
+            Container(
+              padding: EdgeInsets.all(0.01 * media.size.width),
+              width: media.size.width,
+              height: 0.3 * media.size.height,
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Classes',
+                style: TextStyle(
+                  fontFamily: 'Lastwaerk',
+                  fontSize: 0.1 * media.size.width,
+                  color: const Color(0xFF3E3E3E),
+                ),
+                textAlign: TextAlign.right,
               ),
-              Expanded(
-                child: FutureBuilder<String>(
-                  future: response,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return getClasses(media);
-                    } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
-                    }
-                    // By default, show a loading spinner.
-                    return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white
-                        )
-                    );
-                    }),
-              )
-            ]
-        )
-    );
+            ),
+          ]),
+          Expanded(
+            child: FutureBuilder<String>(
+                future: response,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return getClasses(media);
+                  } else if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+                  // By default, show a loading spinner.
+                  return Center(
+                      child: CircularProgressIndicator(
+                          backgroundColor: Colors.white));
+                }),
+          )
+        ]));
   }
-
 
 /*
   Method Name:
@@ -202,27 +191,49 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => InstructorClassDetails(
-                        instructorName: instructors[j].name +
-                            " " +
-                            instructors[j].surname,
-                        className: allClasses[i].name,
-                        classDay: allClasses[i].day,
-                        classStart: allClasses[i].startTime,
-                        availableSpots: allClasses[i].maxCapacity -
-                            allClasses[i].currentStudents,
-                        description: allClasses[i].description.toString(),
-                        classId: allClasses[i].classId,
-                        cancel: allClasses[i].cancelled,
-                        max: allClasses[i].maxCapacity,
-                        instructorUsername:
-                        allClasses[i].instructorUsername,
-                        classEnd: allClasses[i].endTime,
-                      )));
+                            instructorName: instructors[j].name +
+                                " " +
+                                instructors[j].surname,
+                            className: allClasses[i].name,
+                            classDay: allClasses[i].day,
+                            classStart: allClasses[i].startTime,
+                            availableSpots: allClasses[i].maxCapacity -
+                                allClasses[i].currentStudents,
+                            description: allClasses[i].description.toString(),
+                            classId: allClasses[i].classId,
+                            cancel: allClasses[i].cancelled,
+                            max: allClasses[i].maxCapacity,
+                            instructorUsername:
+                                allClasses[i].instructorUsername,
+                            classEnd: allClasses[i].endTime,
+                          )));
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Stack(children: <Widget>[
+                    allClasses[i].cancelled
+                        ? Transform.translate(
+                        offset: Offset(0.74 * 0.4 * media.size.width,
+                            0.2 * 0.35 * media.size.height),
+                        child: Container(
+                            width: 0.7 * media.size.width * 0.7,
+                            height: 0.3 * media.size.width * 0.7,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: const AssetImage(
+                                        'assets/Cancelled.png'),
+                                    fit: BoxFit.fill))))
+                        : Transform.translate(
+                        offset: Offset(0.74 * 0.7 * media.size.width,
+                            0.2 * 0.4 * media.size.height),
+                        child: SvgPicture.string(
+                          dumbbell,
+                          width: 0.2 * media.size.width * 0.7,
+                          allowDrawingOutsideViewBox: true,
+                          color: Colors.black,
+                        )),
+
                     Container(
                         width: 0.74 * media.size.width,
                         height: 0.2 * media.size.height,
@@ -247,7 +258,7 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                             0.05 * media.size.width, 0.095 * media.size.height),
                         child: Container(
                             child:
-                            Icon(Icons.today, color: Color(0xff3E3E3E)))),
+                                Icon(Icons.today, color: Color(0xff3E3E3E)))),
                     Transform.translate(
                         offset: Offset(
                             0.12 * media.size.width, 0.1 * media.size.height),
@@ -270,15 +281,6 @@ class InstructorViewClassesState extends State<InstructorViewClasses> {
                                 style: TextStyle(
                                     color: const Color(0xff3E3E3E),
                                     fontSize: 0.038 * media.size.width)))),
-                    Transform.translate(
-                        offset: Offset(0.74 * 0.7 * media.size.width,
-                            0.2 * 0.4 * media.size.height),
-                        child: SvgPicture.string(
-                          dumbbell,
-                          width: 0.2 * media.size.width * 0.7,
-                          allowDrawingOutsideViewBox: true,
-                          color: Colors.black,
-                        ))
                   ])
                 ])));
 
@@ -328,16 +330,16 @@ class GymClass {
 
   GymClass(
       {this.classId,
-        this.gymId,
-        this.instructorUsername,
-        this.name,
-        this.description,
-        this.day,
-        this.startTime,
-        this.endTime,
-        this.maxCapacity,
-        this.currentStudents,
-        this.cancelled});
+      this.gymId,
+      this.instructorUsername,
+      this.name,
+      this.description,
+      this.day,
+      this.startTime,
+      this.endTime,
+      this.maxCapacity,
+      this.currentStudents,
+      this.cancelled});
 
   factory GymClass.fromJson(Map<String, dynamic> json) {
     return GymClass(

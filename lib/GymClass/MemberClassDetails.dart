@@ -55,18 +55,21 @@ Purpose:
 
  */
 class MemberClassDetails extends StatefulWidget {
-  final String instructor, className, classDay, classTime, description;
+  final String instructorName, className, classDay, classTime, description;
+  final String instructorUsername;
   final int availableSpots, classId;
+  final bool cancelled;
 
   MemberClassDetails(
       {Key key,
-      this.instructor,
+      this.instructorName,
       this.className,
       this.classDay,
       this.classTime,
       this.availableSpots,
       this.description,
-      this.classId})
+      this.classId,
+      this.cancelled, this.instructorUsername})
       : super(key: key);
 
   @override
@@ -95,7 +98,8 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
   }
 
   String instructorName, className, classDay, classTime, classAvailableSpots;
-  String classDescription;
+  String classDescription, instructorUsername;
+  bool cancelled;
   int classID;
 
   Future<String> classRatingResponse;
@@ -128,20 +132,18 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
               Transform.translate(
                   offset: Offset(0.0, -0.033 * media.size.height),
                   child: Container(
-                    width: media.size.width,
-                    height: media.size.height * 0.4,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image:
+                      width: media.size.width,
+                      height: media.size.height * 0.4,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image:
                             const AssetImage('assets/ClassDetailsPicture.png'),
-                        fit: BoxFit.fill,
-                        colorFilter: new ColorFilter.mode(
-                            Colors.white.withOpacity(0.6), BlendMode.dstIn),
-                      ),
-                    ),
-                  )),
+                            fit: BoxFit.fill,
+                            colorFilter: new ColorFilter.mode(
+                                Colors.black.withOpacity(0.5), BlendMode.dstIn),
+                          )))),
               Transform.translate(
-                  offset: Offset(0.0, -0.033 * media.size.height),
+                  offset: Offset(0.0, 0.0),
                   child: SizedBox(
                       width: media.size.width,
                       height: media.size.height * 0.4,
@@ -151,24 +153,18 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                               height: 0.31 * media.size.height,
                               child: Center(
                                   child: AutoSizeText(
-                                className,
-                                style: TextStyle(
-                                    fontFamily: 'Lastwaerk',
-                                    fontSize: 0.10 * media.size.width,
-                                    color: const Color(0xff3E3E3E),
-                                    shadows: [
-                                      Shadow(
-                                        color: const Color(0x38000000),
-                                        offset: Offset(0, 3),
-                                        blurRadius: 6,
-                                      )
-                                    ]),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                              )))))),
+                                    className,
+                                    style: TextStyle(
+                                      fontFamily: 'Lastwaerk',
+                                      fontSize: 0.12 * media.size.width,
+                                      color: const Color(0xff3e3e3e),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  )))))),
               Transform.translate(
                   offset:
-                      Offset(0.04 * media.size.width, 0.02 * media.size.height),
+                  Offset(0.05 * media.size.width, 0.02 * media.size.height),
                   child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -176,18 +172,34 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => NavigationBar(index : 2)));
+                                builder: (context) => NavigationBar(index: 2)));
                       },
-                      child: SvgPicture.string(backArrow,
-                          allowDrawingOutsideViewBox: true,
-                          width: 0.06 * media.size.width))),
+                      child: SvgPicture.string(
+                        backArrow,
+                        allowDrawingOutsideViewBox: true,
+                        width: 0.06 * media.size.width,
+                        color: const Color(0xff7341E6),
+                      ))),
               Transform.translate(
                   offset:
-                      Offset(0.2 * media.size.width, 0.6 * media.size.height),
+                  Offset(0.2 * media.size.width, 0.6 * media.size.height),
                   child: SvgPicture.string(dumbbell,
                       width: 0.95 * media.size.width * 0.7,
                       height: 0.6 * media.size.height * 0.7,
                       allowDrawingOutsideViewBox: true)),
+              cancelled
+                  ? Transform.translate(
+                  offset: Offset(
+                      0.01 * media.size.width, 0.43 * media.size.height),
+                  child: Container(
+                      width: 0.5 * media.size.width,
+                      height: 0.2 * media.size.width,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image:
+                              const AssetImage('assets/Cancelled.png'),
+                              fit: BoxFit.fill))))
+                  : SizedBox(),
               Container(
                   alignment: Alignment.bottomCenter,
                   width: media.size.width,
@@ -222,76 +234,91 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                       })),
             ]),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Container(
-                  padding: EdgeInsets.fromLTRB(0.02 * media.size.width,
-                      0.05 * media.size.width, 0.02 * media.size.width, 0.0),
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    color: const Color(0xff7341E6).withOpacity(0.9),
-                    onPressed: () {
-                      showInstructorRatingDialog();
-                    },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Rate Instructor',
-                        style: TextStyle(
-                            fontSize: 0.035 * media.size.width,
-                            fontFamily: 'Roboto',
-                            color: Colors.white),
+              !cancelled
+                  ? Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.02 * media.size.width,
+                          0.05 * media.size.width,
+                          0.02 * media.size.width,
+                          0.0),
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        color: const Color(0xff7341E6).withOpacity(0.9),
+                        onPressed: () {
+                          showInstructorRatingDialog();
+                        },
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(0.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Rate Instructor',
+                            style: TextStyle(
+                                fontSize: 0.035 * media.size.width,
+                                fontFamily: 'Roboto',
+                                color: Colors.white),
+                          ),
+                        ),
+                      ))
+                  : SizedBox(),
+              !cancelled
+                  ? Container(
+                      padding: EdgeInsets.fromLTRB(
+                          0.02 * media.size.width,
+                          0.05 * media.size.width,
+                          0.02 * media.size.width,
+                          0.0),
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        color: const Color(0xff7341E6).withOpacity(0.9),
+                        onPressed: () {
+                          showClassRatingDialog();
+                        },
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(0.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Rate Class',
+                            style: TextStyle(
+                                fontSize: 0.035 * media.size.width,
+                                fontFamily: 'Roboto',
+                                color: Colors.white),
+                          ),
+                        ),
+                      ))
+                  : SizedBox(),
+              !cancelled
+                  ? Container(
+                      alignment: Alignment.bottomCenter,
+                      padding: EdgeInsets.fromLTRB(
+                          0.02 * media.size.width,
+                          0.05 * media.size.width,
+                          0.02 * media.size.width,
+                          0.0),
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        color: const Color(0xff7341E6).withOpacity(0.9),
+                        onPressed: () {
+                          bookClass();
+                        },
+                        padding: const EdgeInsets.all(0.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            book,
+                            style: TextStyle(
+                                fontSize: 0.035 * media.size.width,
+                                fontFamily: 'Roboto',
+                                color: Colors.white),
+                          ),
+                        ),
                       ),
-                    ),
-                  )),
-              Container(
-                  padding: EdgeInsets.fromLTRB(0.02 * media.size.width,
-                      0.05 * media.size.width, 0.02 * media.size.width, 0.0),
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    color: const Color(0xff7341E6).withOpacity(0.9),
-                    onPressed: () {
-                      showClassRatingDialog();
-                    },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Rate Class',
-                        style: TextStyle(
-                            fontSize: 0.035 * media.size.width,
-                            fontFamily: 'Roboto',
-                            color: Colors.white),
-                      ),
-                    ),
-                  )),
-              Container(
-                alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.fromLTRB(0.02 * media.size.width,
-                    0.05 * media.size.width, 0.02 * media.size.width, 0.0),
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  color: const Color(0xff7341E6).withOpacity(0.9),
-                  onPressed: () {
-                    bookClass();
-                  },
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      book,
-                      style: TextStyle(
-                          fontSize: 0.035 * media.size.width,
-                          fontFamily: 'Roboto',
-                          color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
+                    )
+                  : SizedBox(),
             ]),
             SizedBox(height: 0.05 * media.size.height),
             Container(
@@ -496,14 +523,13 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 "feedback helps us improve your experience.");
       });
     } else {
-      _showAlertDialog(
-          "Unsuccessful!",
-          response.body);
+      _showAlertDialog("Unsuccessful!", response.body);
     }
   }
 
   sendInstructorRating() async {
-    String url = 'https://gymmoveswebapi.azurewebsites.net/api/ratings/instructor';
+    String url =
+        'https://gymmoveswebapi.azurewebsites.net/api/ratings/instructor';
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.get("username");
@@ -530,8 +556,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
                 "feedback helps us improve your experience.");
       });
     } else {
-      _showAlertDialog(
-          "Unsuccessful!", response.body);
+      _showAlertDialog("Unsuccessful!", response.body);
     }
   }
 
@@ -545,7 +570,7 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
    */
   Future<String> getInstructorRating() async {
     String url =
-        'https://gymmoveswebapi.azurewebsites.net/api/ratings/instructor?instructor=$instructorName';
+        'https://gymmoveswebapi.azurewebsites.net/api/ratings/instructor?instructor=$instructorUsername';
     Response response = await get(url);
 
     if (response.statusCode == 200) {
@@ -592,11 +617,13 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
   void getBookClass() {
     className = this.widget.className;
     classAvailableSpots = this.widget.availableSpots.toString();
-    instructorName = this.widget.instructor;
+    instructorName = this.widget.instructorName;
+    instructorUsername = this.widget.instructorUsername;
     classDescription = this.widget.description;
     classTime = this.widget.classTime;
     classDay = this.widget.classDay;
     classID = this.widget.classId;
+    cancelled = this.widget.cancelled;
   }
 
   bookClass() async {

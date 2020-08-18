@@ -66,6 +66,8 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
   String username = "";
   int type = 0;
 
+  List<Instructor> instructors = [];
+
   Future usernameFromLocal;
   Future typeFromLocal;
 
@@ -209,6 +211,9 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
      This method is used to make a get request and fetch the all the classes available at a specific gym.
 */
   Future<String> _makeGetRequest() async {
+
+    await _getInstructors();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     username = prefs.get("username");
 
@@ -259,6 +264,7 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
     via a pop-up dialog.
    */
   Widget getClasses(MediaQueryData media) {
+
     List<Widget> classes = new List();
 
     if (classesJson.length == 0) {
@@ -292,27 +298,58 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
             allClasses[i].maxCapacity - allClasses[i].currentStudents;
         classDescription = allClasses[i].description;
 
-        if (!allClasses[i].cancelled) {
+        int j = 0;
+
+        for (; j < instructors.length; j++) {
+          if (instructors[j].username == allClasses[i].instructor) {
+            break;
+          }
+        }
+
+
           classes.add(GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => MemberClassDetails(
-                          instructor: allClasses[i].instructor,
+                          instructorUsername: allClasses[i].instructor,
+                          instructorName: instructors[j].name + " " +
+                          instructors[j].surname,
                           className: allClasses[i].name,
                           classDay: allClasses[i].day,
                           classTime: allClasses[i].startTime,
                           availableSpots: allClasses[i].maxCapacity -
                               allClasses[i].currentStudents,
                           description: allClasses[i].description.toString(),
-                          classId: allClasses[i].classId)),
+                          classId: allClasses[i].classId, cancelled: allClasses[i].cancelled)),
                 );
               },
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Stack(children: <Widget>[
+                      allClasses[i].cancelled
+                          ? Transform.translate(
+                          offset: Offset(0.74 * 0.4 * media.size.width,
+                              0.2 * 0.35 * media.size.height),
+                          child: Container(
+                              width: 0.7 * media.size.width * 0.7,
+                              height: 0.3 * media.size.width * 0.7,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: const AssetImage(
+                                          'assets/Cancelled.png'),
+                                      fit: BoxFit.fill))))
+                          : Transform.translate(
+                          offset: Offset(0.74 * 0.7 * media.size.width,
+                              0.2 * 0.4 * media.size.height),
+                          child: SvgPicture.string(
+                            dumbbell,
+                            width: 0.2 * media.size.width * 0.7,
+                            allowDrawingOutsideViewBox: true,
+                            color: Colors.black,
+                          )),
                       Container(
                           width: 0.74 * media.size.width,
                           height: 0.2 * media.size.height,
@@ -359,16 +396,7 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
                               child: Text("   " + classTime,
                                   style: TextStyle(
                                       color: const Color(0xff3E3E3E),
-                                      fontSize: 0.038 * media.size.width)))),
-                      Transform.translate(
-                          offset: Offset(0.74 * 0.7 * media.size.width,
-                              0.2 * 0.4 * media.size.height),
-                          child: SvgPicture.string(
-                            dumbbell,
-                            width: 0.2 * media.size.width * 0.7,
-                            allowDrawingOutsideViewBox: true,
-                            color: Colors.black,
-                          ))
+                                      fontSize: 0.038 * media.size.width))))
                     ])
                   ])));
 
@@ -376,6 +404,32 @@ class MemberViewMyClassesState extends State<MemberViewMyClasses> {
         }
       }
       return ListView(padding: const EdgeInsets.all(15), children: classes);
+
+  }
+
+  /*
+  Method Name:
+    _getInstructors
+
+  Purpose:
+     This method is used to make a get request and fetch the instructors
+     of a gym.
+*/
+  _getInstructors() async {
+    final prefs = await SharedPreferences.getInstance();
+    int gymId = prefs.get("gymId");
+
+    print(gymId);
+
+    String url =
+        'https://gymmoveswebapi.azurewebsites.net/api/user/allInstructors?gymID=' +
+            gymId.toString();
+    Response response = await get(url);
+
+    List<dynamic> instructorsJSON = json.decode(response.body);
+
+    for (int i = 0; i < instructorsJSON.length; i++) {
+      instructors.add(Instructor.fromJson(instructorsJSON[i]));
     }
   }
 }

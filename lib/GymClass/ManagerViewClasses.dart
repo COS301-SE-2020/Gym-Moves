@@ -214,9 +214,9 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ManagerClassDetails(
-                            instructorName: instructors[j].name +
-                                " " +
-                                instructors[j].surname,
+                        instructorUsername: allClasses[i].instructorUsername,
+                        instructorName: instructors[j].name + " " +
+                            instructors[j].surname,
                             className: allClasses[i].name,
                             classDay: allClasses[i].day,
                             classStart: allClasses[i].startTime,
@@ -226,8 +226,6 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                             classId: allClasses[i].classId,
                             cancel: allClasses[i].cancelled,
                             max: allClasses[i].maxCapacity,
-                            instructorUsername:
-                                allClasses[i].instructorUsername,
                             classEnd: allClasses[i].endTime,
                           )));
             },
@@ -235,6 +233,27 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Stack(children: <Widget>[
+                    allClasses[i].cancelled
+                        ? Transform.translate(
+                        offset: Offset(0.74 * 0.4 * media.size.width,
+                            0.2 * 0.35 * media.size.height),
+                        child: Container(
+                            width: 0.7 * media.size.width * 0.7,
+                            height: 0.3 * media.size.width * 0.7,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: const AssetImage(
+                                        'assets/Cancelled.png'),
+                                    fit: BoxFit.fill))))
+                        : Transform.translate(
+                        offset: Offset(0.74 * 0.7 * media.size.width,
+                            0.2 * 0.4 * media.size.height),
+                        child: SvgPicture.string(
+                          dumbbell,
+                          width: 0.2 * media.size.width * 0.7,
+                          allowDrawingOutsideViewBox: true,
+                          color: Colors.black,
+                        )),
                     Container(
                         width: 0.74 * media.size.width,
                         height: 0.2 * media.size.height,
@@ -281,16 +300,7 @@ class ManagerViewClassesState extends State<ManagerViewClasses> {
                             child: Text("   " + classStart,
                                 style: TextStyle(
                                     color: const Color(0xff3E3E3E),
-                                    fontSize: 0.038 * media.size.width)))),
-                    Transform.translate(
-                        offset: Offset(0.74 * 0.7 * media.size.width,
-                            0.2 * 0.4 * media.size.height),
-                        child: SvgPicture.string(
-                          dumbbell,
-                          width: 0.2 * media.size.width * 0.7,
-                          allowDrawingOutsideViewBox: true,
-                          color: Colors.black,
-                        ))
+                                    fontSize: 0.038 * media.size.width))))
                   ])
                 ])));
 

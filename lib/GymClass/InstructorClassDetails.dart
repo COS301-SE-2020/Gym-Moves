@@ -109,25 +109,21 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                   children: <Widget>[
                     Stack(
                         children: <Widget>[
-                          Container(
-                                width: media.size.width,
-                                height: media.size.height * 0.4,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image:
-                                      const AssetImage(
-                                          'assets/ClassDetailsPicture.png'
-                                      ),
-                                      fit: BoxFit.fill,
-                                      colorFilter: new ColorFilter.mode(
-                                          Colors.black.withOpacity(0.5),
-                                          BlendMode.dstIn
-                                      ),
-                                    )
-                                )
-                          ),
                           Transform.translate(
-                              offset: Offset(0.0, 0.0 * media.size.height),
+                              offset: Offset(0.0, -0.033 * media.size.height),
+                              child: Container(
+                                  width: media.size.width,
+                                  height: media.size.height * 0.4,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image:
+                                        const AssetImage('assets/ClassDetailsPicture.png'),
+                                        fit: BoxFit.fill,
+                                        colorFilter: new ColorFilter.mode(
+                                            Colors.black.withOpacity(0.5), BlendMode.dstIn),
+                                      )))),
+                          Transform.translate(
+                              offset: Offset(0.0, 0.0),
                               child: SizedBox(
                                   width: media.size.width,
                                   height: media.size.height * 0.4,
@@ -139,22 +135,16 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                                               child: AutoSizeText(
                                                 className,
                                                 style: TextStyle(
-                                                    fontFamily: 'Lastwaerk',
-                                                    fontSize: 0.12 * media.size.width,
-                                                    color: const Color(0xff3e3e3e),
+                                                  fontFamily: 'Lastwaerk',
+                                                  fontSize: 0.12 * media.size.width,
+                                                  color: const Color(0xff3e3e3e),
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 maxLines: 3,
-                                              )
-                                          )
-                                      )
-                                  )
-                              )
-                          ),
+                                              )))))),
                           Transform.translate(
                               offset:
-                              Offset(0.05 * media.size.width, 0.02 *
-                                  media.size.height),
+                              Offset(0.05 * media.size.width, 0.02 * media.size.height),
                               child: GestureDetector(
                                   onTap: () {
                                     Navigator.pop(context);
@@ -162,26 +152,34 @@ class InstructorClassDetailsState extends State<InstructorClassDetails> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => NavigationBar(index : 3)));
-                                    },
+                                            builder: (context) => NavigationBar(index: 2)));
+                                  },
                                   child: SvgPicture.string(
                                     backArrow,
                                     allowDrawingOutsideViewBox: true,
                                     width: 0.06 * media.size.width,
                                     color: const Color(0xff7341E6),
-                                  )
-                              )
-                          ),
+                                  ))),
                           Transform.translate(
                               offset:
-                              Offset(0.2 * media.size.width, 0.55 *
-                                  media.size.height),
-                              child: SvgPicture.string(
-                                  dumbbell,
-                                  allowDrawingOutsideViewBox: true,
-                                  width: 0.6 * media.size.width,
-                              )
-                          ),
+                              Offset(0.2 * media.size.width, 0.6 * media.size.height),
+                              child: SvgPicture.string(dumbbell,
+                                  width: 0.95 * media.size.width * 0.7,
+                                  height: 0.6 * media.size.height * 0.7,
+                                  allowDrawingOutsideViewBox: true)),
+                          cancel
+                              ? Transform.translate(
+                              offset: Offset(
+                                  0.0, 0.43 * media.size.height),
+                              child: Container(
+                                  width: 0.5 * media.size.width,
+                                  height: 0.2 * media.size.width,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                          const AssetImage('assets/Cancelled.png'),
+                                          fit: BoxFit.fill))))
+                              : SizedBox(),
                           Container(
                               alignment: Alignment.bottomCenter,
                               width: media.size.width,
