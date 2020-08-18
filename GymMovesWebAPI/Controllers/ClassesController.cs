@@ -587,7 +587,7 @@ namespace GymMovesWebAPI.Controllers
         {
             ClassAttendance[] classAttendance = await classAttendanceRepository.getClassAttendance(classId);
 
-            if(classAttendance == null)
+            if(classAttendance.Length == 0)
             {
                 return NotFound("This class has no attendance history.");
             }
