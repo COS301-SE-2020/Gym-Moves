@@ -67,6 +67,10 @@ Functional Description:
                 background-color: #7341E6;
                 color: white;
             }
+
+            a {
+                color: #7341E6;
+            }
   
 
         </style>
@@ -132,7 +136,7 @@ Functional Description:
             </div>
          </section>
 
-        <section once="footers" class="footer .navbar_background">
+        <section once="footers" class="footer navbar_background">
             <div class="container">
 
                 © Copyright 2020 Gym Moves - All Rights Reserved
@@ -148,20 +152,20 @@ Functional Description:
 
                 if (document.getElementById("password").value == "" && document.getElementById("username").value == "") {
 
-                    document.getElementById("errorUsername").style.visibility = "visible";
+                    document.getElementById("errorUsername").style.display = "block";
                     document.getElementById("username").style.boxShadow = "0 0 5px red";
 
-                    document.getElementById("errorPassword").style.visibility = "visible";
+                    document.getElementById("errorPassword").style.display = "block";
                     document.getElementById("password").style.boxShadow = "0 0 5px red";
 
                     return;
                 }
                 else if (document.getElementById("password").value == "") {
 
-                    document.getElementById("errorPassword").style.visibility = "visible";
+                    document.getElementById("errorPassword").style.display = "block";
                     document.getElementById("password").style.boxShadow = "0 0 5px red";
 
-                    document.getElementById("errorUsername").style.visibility = "hidden";
+                    document.getElementById("errorUsername").style.display = "none";
                     document.getElementById("username").style.boxShadow = "0 0 5px #7341E6";
 
                     return;
@@ -169,20 +173,20 @@ Functional Description:
                 }
                 else if (document.getElementById("username").value == "") {
 
-                     document.getElementById("errorUsername").style.visibility = "visible";
+                    document.getElementById("errorUsername").style.display = "block";
                      document.getElementById("username").style.boxShadow = "0 0 5px red";
 
-                     document.getElementById("errorPassword").style.visibility = "hidden";
+                    document.getElementById("errorPassword").style.display = "none";
                      document.getElementById("password").style.boxShadow = "0 0 5px #7341E6";
 
                      return;
 
                 }
                 else {
-                    document.getElementById("errorPassword").style.visibility = "hidden";
+                    document.getElementById("errorPassword").style.display = "none";
                     document.getElementById("password").style.boxShadow = "0 0 5px #7341E6";
 
-                     document.getElementById("errorUsername").style.visibility = "hidden";
+                    document.getElementById("errorUsername").style.display = "none";
                      document.getElementById("username").style.boxShadow = "0 0 5px 7341E6";
                 }
 
