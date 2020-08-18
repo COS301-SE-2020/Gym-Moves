@@ -128,41 +128,7 @@ Functional Description:
 
         
 
-        function getClassRatings(id, d)
-        {
-
-          var xmlhttp = new XMLHttpRequest();
-
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-                    if (xmlhttp.status == 200) {
-
-                         classRatingsJson = JSON.parse(xmlhttp.responseText);
-                        if (classRatingsJson.length == 0) { }
-                        else
-                        {
-                            var rating = (classRatingsJson.ratingSum) / (classRatingsJson.ratingCount);
-                            rating = rating.toFixed(2);
-                           var students = (classesjson[d].maxCapacity) - (classesjson[d].currentStudents);
-                           Results.push([d, classesjson[d].classId, classesjson[d].name, classesjson[d].description, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, students, classesjson[d].cancelled, rating]);
-                        }
-                    }
-                    else if (xmlhttp.status == 400) {
-                        alert('400');
-                    }
-                    else {
-                        alert(xmlhttp.status);
-                    }
-                }
-            };
-            var url = '@Url.Content("~/api/ratings/class?classid=")'+id;
-
-
-            xmlhttp.open("GET",url);
-            xmlhttp.send();
-
-
-        }
+       
       
       function addToArray(classRatingsJson, d)
         {
