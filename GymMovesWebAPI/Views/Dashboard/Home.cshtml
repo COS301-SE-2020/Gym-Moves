@@ -1,4 +1,26 @@
-﻿<!DOCTYPE html>
+﻿<!--
+File Name
+  Home.html
+
+Author:
+  Raeesa
+
+Date Created
+  10/08/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Date       | Author       | Changes
+--------------------------------------------------------------------------------
+
+
+
+Functional Description:
+  This file contains the code for the Home page of dashboard.
+
+-->
+
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -88,16 +110,10 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Attendance</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/ManagerRatings")">Gym Ratings</a>
                         <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
                     </div>
                 </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
-                    <span>Upload database</span>
-                </a>
             </li>
 
             <li class="nav-item">
@@ -356,13 +372,6 @@
 
 
             document.addEventListener("DOMContentLoaded", () => { loadAll() })
-
-            function logout() {
-
-                document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
-                document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
-                window.location.href = "@Url.Content("~/ManagerLogin")";
-            }
 
 
         </script>
