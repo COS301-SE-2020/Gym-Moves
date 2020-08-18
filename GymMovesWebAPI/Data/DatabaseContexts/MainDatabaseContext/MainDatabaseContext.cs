@@ -147,7 +147,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                 .HasOne(p => p.Class);
 
             /* Default data for gym */
-            modelBuilder.Entity<Gym>()
+            /*modelBuilder.Entity<Gym>()
                 .HasData(
                     new
                     {
@@ -164,10 +164,10 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         GymName = "AnotherGym",
                         GymBranch = "TreeBranch"
                     }
-                );
+                );*/
 
             /* Default data for verification table */
-            modelBuilder.Entity<GymMember>()
+            /*modelBuilder.Entity<GymMember>()
                 .HasData(
                     new
                     {
@@ -218,7 +218,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         Email = "testmail@gmail.com",
                         Password = "testpass",
                     }
-                );
+                );*/
         }
     }
 }
