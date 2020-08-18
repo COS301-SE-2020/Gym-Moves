@@ -1,167 +1,254 @@
-﻿<head>
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
 
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
-    <link href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
-    <link href="@Url.Content("~/assets/simple-sidebar.css")" rel="stylesheet">
+    <title>Gym Traffic Statistics</title>
+
+    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+          rel="stylesheet">
+    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
     <style>
-        .navbar_background {
-            background-color: #7341e6;
-            color: white;
-        }
 
-        @@font-face {
-            font-family: 'Lastwaerk';
-            src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
-        }
+            .navbar_background {
+                background-color: #7341e6;
+                color: white;
+            }
 
-        .pred{
-           width: 25%;
-           back
-        }
+            @@font-face {
+                font-family: 'Lastwaerk';
+                src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
+            }
 
-        .dow{
-            font-size: 1.5rem;
-        }
+            tbody tr:nth-child(odd){
+                background-color : #eeebea;
+            }
+
+            table {
+                border-collapse: collapse;
+            }
+
+            table, th, td {
+                border: 2px solid #878787 !important;
+            }
+
+            .pred {
+                width: 25%;
+                back
+            }
+
+            .dow {
+                font-size: 1.5rem;
+            }
 
     </style>
 
 </head>
 
-<body>
+<body id="page-top" onload="getAllClasses()">
 
     <script>
-        if (document.cookie == "") {
-            window.location.href = "@Url.Content("~/ManagerLogin")";
-        }
+            if (document.cookie == "") {
+                window.location.href = "@Url.Content("~/ManagerLogin")";
+            }
     </script>
 
-    <div class="d-flex" id="wrapper">
+    <div id="wrapper">
 
-        <div class="border-right navbar_background" id="sidebar-wrapper">
-            <span class="sidebar-heading navbar_background" style="font-family: Lastwaerk; font-size: 1.5em; margin: 0px 20px 20px 0px;">
-                Gym Moves
-                <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-            </span>
-            <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Home</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Gym Traffic</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Ratings</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Classes</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Upload Database</a>
-                <a href="#" class="list-group-item list-group-item-action navbar_background">Profile</a>
-            </div>
-        </div>
+        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-        <div id="page-content-wrapper">
-
-            <nav class="navbar navbar-expand-lg navbar-light navbar_background border-bottom ">
-                <button class="btn btn-primary" style=" background-color: white; color: #7341e6;" id="menu-toggle">Toggle Menu</button>
-
-            </nav>
-
-            <div class="container-fluid">
-                <h1 class="mt-5">Gym Statistics</h1>
-                <div>
-                    Number of people at Gym:
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                <div class="sidebar-brand-icon">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                 </div>
-                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-                    <div>
-                        <h1>Gym predictions</h1>
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Monday</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/home")">
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <span>Dashboard</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href=#>Gym Traffic</a>
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/ManagerRatings")">Gym Ratings</a>
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/GymAttendance")">Class Attendance</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                    <span>Upload database</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <span>Profile</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                        Class Attendance Statistics
+                    </div>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
                             </div>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tuesday</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Wednesday</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="row" style="padding-left:50px;">
+
+                    <div class="container-fluid">
+                        <h1 class="mt-5">Gym Statistics</h1>
+                        <div>
+                            Number of people at Gym:
                         </div>
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thursday</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                        <div>
+                            <h1>Gym predictions</h1>
+                            <div class="row">
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Monday</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
                                             </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tuesday</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Wednesday</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Friday</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <div class="row">
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thursday</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Saturday</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Friday</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
                                             </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Saturday</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +260,6 @@
             </div>
         </div>
 
-    </div>
 
     <script src="@Url.Content("~/assets/jquery.min.js")"></script>
     <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
@@ -186,6 +272,18 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
+
+        function logout() {
+
+                document.cookie = "";
+                window.location.href = "@Url.Content("~/ManagerLogin")";
+        }
+
     </script>
 
+
+
 </body>
+</html>
+
+

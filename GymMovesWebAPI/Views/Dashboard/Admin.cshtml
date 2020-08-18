@@ -74,40 +74,6 @@
                 <div class="sidebar-brand-text mx-3">Gym Moves</div>
             </a>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/MainPageForDashboard")">
-                    <span>Home</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <span>Dashboard</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="login.html">Gym Attendance</a>
-                        <a class="collapse-item" href="register.html">Gym Ratings</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <span>Profile</span>
-                </a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -347,23 +313,32 @@
 
             function accept(stats, gym, branch) {
 
-               var xhr = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/GymApplication/AcceptApplications")";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                    console.log(xhr.responseText);
-                  //  populateRankings(json);
-                }
-            };
-                var data = JSON.stringify({ "status": stats, "GymName": gym, "BranchName": branch});
-            xhr.send(data);
+                var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/GymApplication/AcceptApplications")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        console.log(xhr.responseText);
+                      //  populateRankings(json);
+                    }
+                };
+
+                var data = JSON.stringify({ "status": stats, "GymName": gym, "BranchName": branch });
+                xhr.send(data);
             }
 
-        document.addEventListener("DOMContentLoaded", () => { loadrankings() })
-                    </script>
+
+                document.addEventListener("DOMContentLoaded", () => { loadrankings() })
+
+             function logout() {
+
+                document.cookie = "";
+                window.location.href = "@Url.Content("~/ManagerLogin")";
+        }
+
+        </script>
 
 
 </body>
