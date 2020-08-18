@@ -126,15 +126,7 @@ Functional Description:
             xmlhttp.send();
         }
 
-        function addToArray(classRatingsJson, d)
-        {
-
-
-          //  var rating = (classRatingsJson[0].ratingSum) / (classRatingsJson[0].ratingCount);
-
-           // var students = (classesjson[d].maxCapacity) - (classesjson[d].currentStudents);
-            //Results.push([classesjson[d].classId, classesjson[d].name, classesjson[d].description, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, students, classesjson[d].cancelled, rating]);
-        }
+        
 
         function getClassRatings(id, d)
         {
@@ -190,7 +182,7 @@ Functional Description:
     }
 
 
-    function GenerateTable()
+    function GenerateTable() // dynamically creates the table
     {
 
         var e = document.getElementById("myclasses");
