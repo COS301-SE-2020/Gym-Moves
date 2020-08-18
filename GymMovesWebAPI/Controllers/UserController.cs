@@ -43,6 +43,9 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Http;
+using GymMovesWebAPI.Data.Repositories.Implementations;
+using GymMovesWebAPI.Data.Enums;
 
 namespace GymMovesWebAPI.Controllers {
 
@@ -63,6 +66,8 @@ namespace GymMovesWebAPI.Controllers {
         private readonly IGymRepository gymRepository;
         private readonly INotificationSettingsRepository notificationSettingRepository;
         private readonly IPasswordResetRepository resetPasswordRepository;
+        private readonly IGymApplicationRepository applicationRepository;
+        private readonly IApplicationCodeRepository codeRepository;
         private readonly IMailer mailer;
 
         string emailReceiver = "u18008659@tuks.co.za";
@@ -74,7 +79,8 @@ namespace GymMovesWebAPI.Controllers {
             This method instantiates the repositories that will be used.
         */
         public UserController(IUserRepository repoOne, IGymMemberRepository repoTwo, IGymRepository repoThree,
-            INotificationSettingsRepository repoFour, IPasswordResetRepository repoFive, IMailer repoSix) {
+            INotificationSettingsRepository repoFour, IPasswordResetRepository repoFive, IMailer repoSix,
+            IGymApplicationRepository repoSeven, IApplicationCodeRepository repoEight) {
 
             userGymMovesRepository = repoOne;
             gymMembersRepository = repoTwo;
@@ -82,6 +88,8 @@ namespace GymMovesWebAPI.Controllers {
             notificationSettingRepository = repoFour;
             resetPasswordRepository = repoFive;
             mailer = repoSix;
+            applicationRepository = repoSeven;
+            codeRepository = repoEight;
         }
 
         /*
@@ -165,6 +173,62 @@ namespace GymMovesWebAPI.Controllers {
 
         }
 
+        [HttpPost("firstmanager")]
+        public async Task<ActionResult<UserResponseModel>> firstManager(FirstManagerModel user) {
+            GymApplicationCodes code = await codeRepository.getByCode(user.Code);
+
+            if (code == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "Invalid code!");
+            }
+
+            Users existingUser = await userGymMovesRepository.getUser(user.Username);
+
+            if (existingUser != null) {
+                return StatusCode(StatusCodes.Status400BadRequest, "A user with that username already exists!");
+            }
+
+            GymApplications[] applications = await applicationRepository.getApplication(code.GymName, code.BranchName);
+
+            if (applications.Length == 0) {
+                return StatusCode(StatusCodes.Status404NotFound, "Application for gym not found!");
+            }
+
+            GymApplications application = applications[0];
+            Gym gym = await gymRepository.getGymByNameAndBranch(code.GymName, code.BranchName);
+
+            existingUser = new Users();
+
+            existingUser.GymIdForeignKey = gym.GymId;
+            existingUser.Username = user.Username;
+            existingUser.MembershipId = $"{code.GymName}{code.BranchName}defaultmanager";
+            existingUser.Name = application.Name;
+            existingUser.Surname = application.Surname;
+            existingUser.PhoneNumber = application.PhoneNumber;
+            existingUser.Email = application.Email;
+            existingUser.UserType = UserTypes.Manager;
+
+            Random random = new Random();
+            existingUser.Salt = getRandomString(random.Next(5, 10));
+            string hash = getHash(SHA256.Create(), user.Password + existingUser.Salt);
+            existingUser.Password = hash;
+
+            if (await userGymMovesRepository.addUser(existingUser)) {
+                await applicationRepository.removeApplication(application);
+                await codeRepository.remove(code);
+
+                UserResponseModel response = new UserResponseModel();
+
+                response.gymID = existingUser.GymIdForeignKey;
+                response.gymMemberID = existingUser.MembershipId;
+                response.name = existingUser.Name;
+                response.userType = existingUser.UserType;
+
+                return Ok(response);
+            } else {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An internal server error occured while adding the manager account!");
+            }
+        }
+        
         /*
         Method Name:
             logIn
