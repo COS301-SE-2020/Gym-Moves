@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 File Name
   GymManagerRating.html
 
@@ -6,7 +6,7 @@ Author:
   Ayanda
 
 Date Created
-  26/06/2020
+  26/07/2020
 
 Update History:
 --------------------------------------------------------------------------------
@@ -20,82 +20,213 @@ Functional Description:
 
 -->
 
+
 <!DOCTYPE html>
+<html lang="en">
 
-<html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="assets/images/dumbbell-128x128-1.png" type="image/x-icon">
-
-    <title>Gym Instructors on Gym Moves</title>
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-reboot.min.css")">
-    <link rel="stylesheet" href="@Url.Content("~/assets/styles.css")">
 
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
+
+    <title>Class Rating Statistics</title>
+
+    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+          rel="stylesheet">
+    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
     <style>
-            @@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
+
+            .navbar_background {
+                background-color: #7341e6;
+                color: white;
+            }
+
             @@font-face {
                 font-family: 'Lastwaerk';
                 src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
             }
-            .navbar_background {
-                background-color: #7341E6;
-                color: white;
-            }
-            .makeSmaller {
-                width: 70%;
-                text-align: justify;
-                margin-left: 15%;
-            }
-            @@media only screen and (max-width: 600px) {
-                .makeSmaller {
-                    margin: 0;
-                }
-            }
-    </style>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #EEEBEA;
-            text-align: center;
-            padding: 8px;
-        }
 
         tr:nth-child(even) {
             background-color: #EEEBEA;
+        } 
+
+            table {
+                border-collapse: collapse;
+            }
+
+            table, th, td {
+                border: 2px solid #878787 !important;
+            }
+
+        .button-colour {
+            background-color: #7341E6;
+            color: white;
         }
+
     </style>
 
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" href="assets/styles.css">
+</head>
 
-    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
+<body id="page-top" onload="Generate()">
+
+    <script>
+            if (document.cookie == "") {
+                window.location.href = "@Url.Content("~/ManagerLogin")";
+            }
+    </script>
+
+    <div id="wrapper">
+
+        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                <div class="sidebar-brand-icon">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
+                </div>
+                <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/home")">
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <span>Dashboard</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/GymAttendance")">Gym Traffic</a>
+                        <a class="collapse-item" href=#>Gym Ratings</a>
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                    <span>Upload database</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <span>Profile</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                        Class Rating Statistics
+                    </div>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="row" style="padding-left:50px;">
+                    <select id="order" name="myclasses">
+                        <option value="1">Top Rated First</option>
+                        <option value="2">Bottom Rated First</option>]
+                    </select>
+                    <button id="topbtn=" button" type="button" class="btn button-colour" onclick="GenerateTable()" style="margin-left:10%;"> View </button>
+
+                </div>
 
 
 
 
-    <script type="text/javascript">
+                <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Position</th>
+                                        <th>Class</th>
+                                        <th>Instructor</th>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ratingeData">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+           
+        </div>
+    
+
+
+    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
+
+
+    <script>
 
         var classesjson;
         var Results = new Array();
 
-        function getGymClasses()
-        {
+        var gymId = getCookie("gymId").split(",")[0];
+
+
+        function getGymClasses() {
+
             var xmlhttp = new XMLHttpRequest();
 
             xmlhttp.onreadystatechange = function () {
@@ -122,12 +253,14 @@ Functional Description:
                 }
             };
 
-           xmlhttp.open("GET", '@Url.Content("~/api/classes/gymlist?gymid=1")', true);
+             var url = '@Url.Content("~/api/classes/gymlist?gymid=")'+gymId;
+
+           xmlhttp.open("GET", url, true);
             xmlhttp.send();
         }
 
-        
- function getClassRatings(id, d)
+
+        function getClassRatings(id, d)
         {
 
           var xmlhttp = new XMLHttpRequest();
@@ -142,8 +275,7 @@ Functional Description:
                         {
                             var rating = (classRatingsJson.ratingSum) / (classRatingsJson.ratingCount);
                             rating = rating.toFixed(2);
-                           var students = (classesjson[d].maxCapacity) - (classesjson[d].currentStudents);
-                           Results.push([d, classesjson[d].classId, classesjson[d].name, classesjson[d].description, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, students, classesjson[d].cancelled, rating]);
+                            Results.push([d, classesjson[d].name, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, rating]);
                         }
                     }
                     else if (xmlhttp.status == 400) {
@@ -162,48 +294,27 @@ Functional Description:
 
 
         }
-       
-      
-      function addToArray(classRatingsJson, d)
-        {
 
-
-          var rating = (classRatingsJson[0].ratingSum) / (classRatingsJson[0].ratingCount);
-
-            var students = (classesjson[d].maxCapacity) - (classesjson[d].currentStudents);
-            Results.push([classesjson[d].classId, classesjson[d].name, classesjson[d].description, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, students, classesjson[d].cancelled, rating]);
-        }
-
-        function clearTable(table) {
-            var rows = table.rows;
-            var i = rows.length;
-            while (--i) {
-                rows[i].parentNode.removeChild(rows[i]);
-                // or
-                // table.deleteRow(i);
-            }
-        }
 
     function Generate()
     {
 
-        //showTop();
         getGymClasses();
     }
 
 
-    function GenerateTable() // dynamically creates the table
+    function GenerateTable()
     {
 
-        var e = document.getElementById("myclasses");
+        var e = document.getElementById("order");
         var option = e.options[e.selectedIndex].value;
-        
-        Results.sort((a, b) => a[9] - b[9]);
-        
+
+        Results.sort((a, b) => a[5] - b[5]);
+
         if (option == 1) {
             Results.reverse();
             //Create a HTML Table element.
-            var xtable = document.getElementById("myTable");
+            var xtable = document.getElementById("dataTable");
 
             var rows = xtable.rows;
             var i = rows.length;
@@ -211,10 +322,8 @@ Functional Description:
                 rows[i].parentNode.removeChild(rows[i]);
             }
 
-
-
             //Get the count of columns.
-            var columnCount = 10;
+            var columnCount = 6;
 
             for (var i = 0; i < Results.length; i++) {
                 Results[i][0] = i + 1;
@@ -240,9 +349,9 @@ Functional Description:
             }
         }
         else if (option == 2)
-        { 
+        {
             //Create a HTML Table element.
-            var xtable = document.getElementById("myTable");
+            var xtable = document.getElementById("dataTable");
 
 
             var rows = xtable.rows;
@@ -254,7 +363,7 @@ Functional Description:
             //while (xtable.childNodes.length > 3) { xtable.removeChild(xtable.lastChild); }
 
             //Get the count of columns.
-            var columnCount = 10;
+            var columnCount = 6;
 
 
             for (var i = 0; i < Results.length; i++) {
@@ -267,117 +376,42 @@ Functional Description:
                     var cell = row.insertCell(-1);
                     cell.innerHTML = Results[i][j];
 
-                    
+
                 }
             }
         }
-     
-    }
+
+        }
+
+        function getCookie(cname) {
+
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+
+            for (var i = 0; i < ca.length; i++) {
+
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+
+                    c = c.substring(1);
+                }
+
+                if (c.indexOf(name) == 0) {
+
+                    return c.substring(name.length, c.length);
+                }
+            }
+
+            return "";
+        }
+            function logout() {
+
+                document.cookie = "";
+                window.location.href = "@Url.Content("~/ManagerLogin")";
+            }
+
     </script>
-</head>
-
-<body style="font-family: Roboto;" onload="Generate()">
-
-    <div class="bs-example">
-        <nav class="navbar navbar-expand-md navbar-light navbar_background">
-            <a href="#" class="navbar-brand">
-                <img src="@Url.Content("~/assets/images/logo.png")" height="28" alt="dumbbell">
-                <span id="heading" style="font-family: 'Lastwaerk'; font-size: 1.5em">Gym Moves</span>
-            </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" style="background-color: white;">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
-                    <a href="@Url.Content("~/GymMoves")" class="nav-item nav-link" style="color: white; opacity: 0.7;">About us</a>
-                    <a href="@Url.Content("~/GymMembers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Members</a>
-                    <a href="@Url.Content("~/GymInstructors")" class="nav-item nav-link active" style="color: white; font-weight: bold;">Gym Instructors</a>
-                    <a href="@Url.Content("~/GymManagers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Managers</a>
-                    <a href="@Url.Content("~/HowToRegisterMyGym")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Register My Gym</a>
-                </div>
-            </div>
-        </nav>
-    </div>
-
-    <br><br><br>
-    <br>
-
-
-    <section>
-
-        <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
-            <h3 style="text-align: center; color: grey;">VIEW BOTTOM AND TOP CLASSES AT THE GYM</h3>
-            <br />
-            <br />
-
-        </div>
-        <div align="center">
-                <label for="myclasses">Choose a view:</label>
-                <select id="myclasses" name="myclasses">
-                    <option value="1">View Top Rated Classes</option>
-                    <option value="2">View Bottom Rated Classes</option>]
-                </select>
-                <button id="topbtn=" button" type="button" class="btn button-colour" onclick="GenerateTable()" style="left:20%;"> View </button>
-              </div>
-    </section>
-
-    <br />
-    <br />
-
-    <section>
-
-        <div class="container" style="text-align: justify; width: 70%; margin-left: 15%; font-size: 0.95em;">
-            <div class="media-container-row">
-                <div class="col-12">
-                    <div class="media-container-row">
-                        <div class="col-12 col-md-12">
-
-                            <table id="myTable" name="myTable">
-                                <colgroup>
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                    <col span="1" style="width: 10%;">
-                                </colgroup>
-                                <tr>
-                                    <th>Position</th>
-                                    <th>Class ID</th>
-                                    <th>Class</th>
-                                    <th>Description</th>
-                                    <th>Instructor</th>
-                                    <th>Day</th>
-                                    <th>Time</th>
-                                    <th>Current Students</th>
-                                    <th>Cancelled?</th>
-                                    <th>Rating</th>
-
-                                </tr>
-                               
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <br><br><br>
-
-    <section once="footers" class="footer barColour">
-        <div class="container">
-
-            © Copyright 2020 Gym Moves - All Rights Reserved
-
-        </div>
-    </section>
 
 </body>
 </html>
