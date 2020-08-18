@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymMovesWebAPI.Controllers {
+
     public class WebsiteController : Controller {
 
        
@@ -60,12 +61,10 @@ namespace GymMovesWebAPI.Controllers {
             return View();
         }
 
-        [Route("MainPageForDashboard")]
-        public IActionResult MainPageForDashboard()
-        {
-            return View();
-        }
 
-       
+
+
+
+
     }
 }

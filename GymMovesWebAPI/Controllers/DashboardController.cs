@@ -10,13 +10,6 @@ namespace GymMovesWebAPI.Controllers
     public class DashboardController : Controller
     {
 
-
-        [Route("ManagerRatings")]
-        public IActionResult GymManagerRating()
-        {
-            return View();
-        }
-
         [Route("ClassAttendance")]
         public IActionResult ClassAttendance()
         {
@@ -37,6 +30,13 @@ namespace GymMovesWebAPI.Controllers
 
         [Route("Home")]
         public IActionResult Home()
+        {
+            return View();
+        }
+
+
+        [Route("Ratings")]
+        public IActionResult GymManagerRating()
         {
             return View();
         }
