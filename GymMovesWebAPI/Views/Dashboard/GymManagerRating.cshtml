@@ -274,8 +274,10 @@ Functional Description:
                         else
                         {
                             var rating = (classRatingsJson.ratingSum) / (classRatingsJson.ratingCount);
-                            rating = rating.toFixed(2);
-                            Results.push([d, classesjson[d].name, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, rating]);
+                            if (classRatingsJson.ratingCount == 0) {
+                                rating = 0;
+                            }
+                            Results.push([d, classesjson[d].name, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, (rating * 5).toFixed(2)]);
                         }
                     }
                     else if (xmlhttp.status == 400) {
@@ -311,8 +313,12 @@ Functional Description:
 
         Results.sort((a, b) => a[5] - b[5]);
 
+      
+
         if (option == 1) {
+
             Results.reverse();
+            
             //Create a HTML Table element.
             var xtable = document.getElementById("dataTable");
 
@@ -329,7 +335,7 @@ Functional Description:
                 Results[i][0] = i + 1;
             }
             //Add the data rows.
-            for (var i = 1; i < Results.length; i++) {
+            for (var i = 1; i < Results.length+1; i++) {
                 row = xtable.insertRow(-1);
                 for (var j = 0; j < columnCount; j++) {
                     var cell = row.insertCell(-1);
@@ -349,7 +355,9 @@ Functional Description:
             }
         }
         else if (option == 2)
-        {
+          {
+
+
             //Create a HTML Table element.
             var xtable = document.getElementById("dataTable");
 
@@ -367,16 +375,15 @@ Functional Description:
 
 
             for (var i = 0; i < Results.length; i++) {
-                Results[i][0] = Results.length - i;
+                Results[i][0] = (Results.length - i).toString();
             }
             //Add the data rows.
-            for (var i = 1; i < Results.length; i++) {
+            for (var i =0; i < Results.length; i++) {
                 row = xtable.insertRow(-1);
                 for (var j = 0; j < columnCount; j++) {
                     var cell = row.insertCell(-1);
                     cell.innerHTML = Results[i][j];
-
-
+                   
                 }
             }
         }
