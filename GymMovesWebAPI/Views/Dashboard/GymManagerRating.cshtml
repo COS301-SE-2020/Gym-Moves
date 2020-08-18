@@ -237,10 +237,10 @@ Functional Description:
                         if (classesjson.length == 0) { window.alert("There are no classes at the gym.");}
                         else {
 
+                            console.log(xmlhttp.responseText);
 
                             for (var y = 0; y < classesjson.length; y++) {
                                 getClassRatings(classesjson[y].classId, y);
-
                             }
                         }
                     }
