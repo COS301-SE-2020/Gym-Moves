@@ -80,7 +80,7 @@
                     </a>
                     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymAttendance")">Gym Traffic</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
                             <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
                             <a class="collapse-item" href=#>Class Attendance</a>
                         </div>
@@ -536,7 +536,8 @@
 
             function logout() {
 
-                document.cookie = "";
+                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
 
