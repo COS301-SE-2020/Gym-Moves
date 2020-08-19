@@ -19,6 +19,25 @@ namespace GymMovesWebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.ClassAttendance", b =>
+                {
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfStudents")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClassId", "Date");
+
+                    b.ToTable("ClassAttendance");
+                });
+
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.ClassRating", b =>
                 {
                     b.Property<int>("ClassIdForeignKey")
@@ -74,20 +93,61 @@ namespace GymMovesWebAPI.Migrations
                         .HasFilter("[GymName] IS NOT NULL");
 
                     b.ToTable("Gyms");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            GymId = 1,
-                            GymBranch = "TestBranch",
-                            GymName = "TestName"
-                        },
-                        new
-                        {
-                            GymId = 2,
-                            GymBranch = "TreeBranch",
-                            GymName = "AnotherGym"
-                        });
+            modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymApplicationCodes", b =>
+                {
+                    b.Property<string>("GymName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BranchName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("GymName", "BranchName", "Code");
+
+                    b.ToTable("ApplicationCodes");
+                });
+
+            modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymApplications", b =>
+                {
+                    b.Property<string>("GymName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BranchName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Extra")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GymName", "BranchName");
+
+                    b.ToTable("GymApplications");
                 });
 
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymClasses", b =>
@@ -112,14 +172,14 @@ namespace GymMovesWebAPI.Migrations
                     b.Property<string>("EndTime")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GymId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GymIdForeignKey")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GymIdGymIdForeignKey")
-                        .HasColumnType("int");
-
                     b.Property<string>("InstructorUsername")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaxCapacity")
                         .HasColumnType("int");
@@ -132,9 +192,7 @@ namespace GymMovesWebAPI.Migrations
 
                     b.HasKey("ClassId");
 
-                    b.HasIndex("GymIdGymIdForeignKey");
-
-                    b.HasIndex("InstructorUsername");
+                    b.HasIndex("GymId");
 
                     b.ToTable("Classes");
                 });
@@ -290,51 +348,6 @@ namespace GymMovesWebAPI.Migrations
                     b.HasKey("MembershipId", "GymId");
 
                     b.ToTable("GymMembers");
-
-                    b.HasData(
-                        new
-                        {
-                            MembershipId = "testmanagermembershipid",
-                            GymId = 1,
-                            Email = "managertestemail@gmail.com",
-                            Name = "Test",
-                            PhoneNumber = "0629058357",
-                            Surname = "Manager",
-                            UserType = 2
-                        },
-                        new
-                        {
-                            MembershipId = "testinstructormembershipid",
-                            GymId = 1,
-                            Email = "instructortestemail@gmail.com",
-                            Name = "Test",
-                            PhoneNumber = "0629058357",
-                            Surname = "Instructor",
-                            UserType = 1
-                        },
-                        new
-                        {
-                            MembershipId = "testmembermembershipid",
-                            GymId = 1,
-                            Email = "membertestemail@gmail.com",
-                            Name = "Test",
-                            PhoneNumber = "0629058357",
-                            Surname = "Member",
-                            UserType = 0
-                        });
-                });
-
-            modelBuilder.Entity("GymMovesWebAPI.Models.DatabaseModels.LicenseKeys", b =>
-                {
-                    b.Property<string>("LicenseKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LicenseKey");
-
-                    b.ToTable("Licenses");
                 });
 
             modelBuilder.Entity("GymMovesWebAPI.Models.DatabaseModels.SupportUsers", b =>
@@ -357,6 +370,15 @@ namespace GymMovesWebAPI.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("SupportStaff");
+                });
+
+            modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.ClassAttendance", b =>
+                {
+                    b.HasOne("GymMovesWebAPI.Data.Models.DatabaseModels.GymClasses", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.ClassRating", b =>
@@ -385,13 +407,9 @@ namespace GymMovesWebAPI.Migrations
 
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymClasses", b =>
                 {
-                    b.HasOne("GymMovesWebAPI.Data.Models.DatabaseModels.Gym", "Gym")
+                    b.HasOne("GymMovesWebAPI.Data.Models.DatabaseModels.Gym", null)
                         .WithMany("Classes")
-                        .HasForeignKey("GymIdGymIdForeignKey");
-
-                    b.HasOne("GymMovesWebAPI.Data.Models.DatabaseModels.Users", "Instructor")
-                        .WithMany()
-                        .HasForeignKey("InstructorUsername");
+                        .HasForeignKey("GymId");
                 });
 
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.InstructorRating", b =>

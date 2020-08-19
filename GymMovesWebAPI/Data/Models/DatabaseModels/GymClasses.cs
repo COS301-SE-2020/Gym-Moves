@@ -32,12 +32,8 @@ namespace GymMovesWebAPI.Data.Models.DatabaseModels {
         public int ClassId { get; set; }
 
         public int GymIdForeignKey { get; set; }
-        [ForeignKey("GymIdGymIdForeignKey")]
-        public Gym Gym { get; set; }
         
         public string InstructorUsername { get; set; }
-        [ForeignKey("InstructorUsername")]
-        public Users Instructor { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }

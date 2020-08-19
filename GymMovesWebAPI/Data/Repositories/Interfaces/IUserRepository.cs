@@ -33,6 +33,7 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces {
         public Task<Users> getUser(string username);
         public Task<Users> getUserByMemberID(string memberID, int gymID);
         public Task<bool> changePassword(string username, string password);
-        public Task<Users[]> getAllInstructors(int gymID);
+        public Task<Users[]> getAllInstructors(int gymId);
+        public Task<Users[]> getAllUsers(int gymId);
     }
 }

@@ -33,6 +33,7 @@ using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.Models.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 
 namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
 {
@@ -43,13 +44,15 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
         public DbSet<Gym> Gyms { get; set; }
         public DbSet<GymClasses> Classes { get; set; }
         public DbSet<InstructorRating> InstructorRatings { get; set; }
-        public DbSet<LicenseKeys> Licenses { get; set; }
         public DbSet<Notifications> Notifications { get; set; }
         public DbSet<NotificationSettings> NotificationSettings { get; set; }
         public DbSet<SupportUsers> SupportStaff { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<GymMember> GymMembers { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
+        public DbSet<GymApplications> GymApplications { get; set; }
+        public DbSet<ClassAttendance> ClassAttendance { get; set; }
+        public DbSet<GymApplicationCodes> ApplicationCodes { get; set; }
 
         private readonly IConfiguration config = null;
 
@@ -72,6 +75,9 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
             modelBuilder.Entity<GymMember>()
                 .HasKey(p => new { p.MembershipId, p.GymId });
 
+            modelBuilder.Entity<GymApplications>()
+                .HasKey(p => new { p.GymName, p.BranchName});
+
             modelBuilder.Entity<Gym>()
                 .HasIndex(p => p.GymName)
                 .IsUnique();
@@ -81,23 +87,12 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                 .IsUnique();
 
             modelBuilder.Entity<Gym>()
-                .HasMany(p => p.Classes)
-                .WithOne(p => p.Gym);
-
-            modelBuilder.Entity<Gym>()
                 .HasMany(p => p.Notifications)
                 .WithOne(p => p.Gym);
 
             modelBuilder.Entity<Gym>()
                 .HasMany(p => p.Users)
                 .WithOne(p => p.Gym);
-
-            modelBuilder.Entity<GymClasses>()
-                .HasOne(p => p.Gym)
-                .WithMany(p => p.Classes);
-
-            modelBuilder.Entity<GymClasses>()
-               .HasOne(p => p.Instructor);
 
             modelBuilder.Entity<GymClasses>()
                .HasOne(p => p.ClassRating)
@@ -146,8 +141,17 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                 .HasIndex(p => p.Code)
                 .IsUnique();
 
+            modelBuilder.Entity<ClassAttendance>()
+                .HasKey(p => new {p.ClassId, p.Date});
+
+            modelBuilder.Entity<ClassAttendance>()
+                .HasOne(p => p.Class);
+
+            modelBuilder.Entity<GymApplicationCodes>()
+                .HasKey(p => new {p.GymName, p.BranchName, p.Code });
+
             /* Default data for gym */
-            modelBuilder.Entity<Gym>()
+            /*modelBuilder.Entity<Gym>()
                 .HasData(
                     new
                     {
@@ -164,10 +168,10 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         GymName = "AnotherGym",
                         GymBranch = "TreeBranch"
                     }
-                );
+                );*/
 
             /* Default data for verification table */
-            modelBuilder.Entity<GymMember>()
+            /*modelBuilder.Entity<GymMember>()
                 .HasData(
                     new
                     {
@@ -208,6 +212,17 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         UserType = UserTypes.Member
                     }
                 );
+
+            modelBuilder.Entity<SupportUsers>()
+                .HasData(
+                    new {
+                        Username = "test",
+                        Name = "Support",
+                        Surname = "Test",
+                        Email = "testmail@gmail.com",
+                        Password = "testpass",
+                    }
+                );*/
         }
     }
 }

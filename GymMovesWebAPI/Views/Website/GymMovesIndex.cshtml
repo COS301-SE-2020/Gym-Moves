@@ -1,0 +1,313 @@
+﻿<!--
+File Name
+  GymInstructors.html
+
+Author:
+  Danel
+
+Date Created
+  26/06/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Date       | Author       | Changes
+--------------------------------------------------------------------------------
+27/07/2020   |    Danel     |  Added content
+--------------------------------------------------------------------------------
+01/08/2020   |    Tia       |  Added logo
+--------------------------------------------------------------------------------
+02/08/2020   |    Danel     |  Fixed CSS
+--------------------------------------------------------------------------------
+
+Functional Description:
+  This file contains the HTML and some css code for the gym instructors page. This page explains the features
+  for a gym intstructor.
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon">
+
+    <title>Gym Moves</title>
+
+    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-reboot.min.css")">
+
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <style>
+        @@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
+
+            @@font-face {
+                font-family: 'Lastwaerk';
+                src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
+            }
+
+            .navbar_background {
+                background-color: #7341E6;
+                color: white;
+            }
+
+   
+        
+        /* Navbar */
+        .barColour {
+            background-color: #7341E6;
+        }
+
+
+        #heading {
+            font-family: FreestyleScript;
+            font-size: 4em;
+            color: white;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+
+       
+
+        /*Buttons*/
+        .button-colour {
+            background-color: #7341E6;
+            color: white;
+        }
+        
+        .button-colour:hover {
+            background-color: #7341E6;
+            color: white;
+        }
+
+
+        h4, a {
+            color: #7341E6;
+        }
+
+            a:hover {
+                color: #7341E6;
+            }
+
+        /*Footer sticky*/
+        .footer {
+            height: 80px;
+            color: white;
+            text-align: center;
+            padding: 2em;
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .mySlides {
+            display: none;
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* On smaller screens, decrease text size */
+        
+
+
+        .halfPG {
+            width: 28%;
+            float: right;
+            margin-right: 20%;
+        }
+
+        .halfPG2 {
+            width: 32%;
+            float: left;
+            margin-left: 20%;
+        }
+
+        .alHR {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+
+        .intro {
+            font-size: 1.9em;
+            color: grey;
+        }
+
+        .icon {
+            display: none;
+        }
+
+        .makeSmaller {
+            width: 70%;
+            text-align: justify;
+            margin-left: 15%;
+        }
+
+        @@media only screen and (max-width: 600px) {
+        .text {
+            font-size: 11px
+         }
+
+            .halfPG {
+                width: 100%;
+                padding-left: 5em;
+                margin: 0;
+            }
+
+            .halfPG2 {
+                width: 100%;
+                margin: 0;
+            }
+
+            .makeSmaller{
+                margin-left: 5%;
+            }
+        }
+
+    </style>
+</head>
+
+<body style="font-family: Roboto; color: grey;">
+
+    <div class="bs-example">
+        <nav class="navbar navbar-expand-md navbar-light navbar_background">
+            <a href="#" class="navbar-brand">
+                <img src="@Url.Content("~/assets/images/logo.png")" height="28" alt="dumbbell">
+                <span id="heading" style="font-family: 'Lastwaerk'; font-size: 1.5em">Gym Moves</span>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" style="background-color: white;">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ml-auto">
+                    <a href="@Url.Content("~/GymMoves")" class="nav-item nav-link active" style="color: white; font-weight: bold;">About us</a>
+                    <a href="@Url.Content("~/GymMembers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Members</a>
+                    <a href="@Url.Content("~/GymInstructors")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Instructors</a>
+                    <a href="@Url.Content("~/GymManagers")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Gym Managers</a>
+                    <a href="@Url.Content("~/HowToRegisterMyGym")" class="nav-item nav-link" style="color: white; opacity: 0.7;">Register My Gym</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <br><br><br>
+
+    <div class="slideshow-container halfPG">
+
+        <div class="mySlides">
+            <img src="@Url.Content("~/assets/images/LoginScreen.jpg")" style="height:350px; width: 200px;">
+        </div>
+
+        <div class="mySlides">
+            <img src="@Url.Content("~/assets/images/announcements.JPG")" style="height:350px">
+        </div>
+
+        <div class="mySlides">
+            <img src="@Url.Content("~/assets/images/classDetails.JPG")" style="height:350px">
+        </div>
+
+    </div>
+
+    <section class="halfPG2">
+        <div class="container">
+            <div class="media-container-row">
+                <div class="col-12 col-md-12" align="justify">
+
+                    <p class="intro">
+                        Easy to use, Convenient and Secure.
+                    </p>
+                    <p>
+                        Gym Moves is here to make gym life better for everyone. It improves the communication
+                        between the staff and the gym members and it reduces the aggravation and annoyance of the members.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 4000); 
+        }
+    </script>
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <div class="makeSmaller" style="color: grey;">
+        <p>
+            Gym managers can send out announcements that everyone who belongs to the gym can see. This ensures
+            everyone will know what is happening at their gym. This improves communication greatly, as anything
+            a mangers needs the members to know can be sent out to everyone at the push of a button.
+        </p>
+
+        <p>
+            Have you ever arrived at gym and the class you came for is full or cancelled? That is something that is
+            so aggravating, and can be avoided using this application. Classes work on a booking system with this application.
+            Therefore as long as you book, you know you have secured a spot in that class. And if a class is cancelled, all
+            the gym members who have booked a spot in that class are informed that it is cancelled.
+        </p>
+
+        <p>
+            This application also lets all the gym members see how many people are currently at the gym. Meaning this
+            can be used to make an informed decision on whether to go to gym or not. This can lead to a reduction of
+            overcrowding at the gym, which in turn reduces the amount of wait time of machine equipment. Imagine how
+            much happier this will make every gym member.
+        </p>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="media-container-row align-left">
+        <div class="col-12">
+            <p class="mbr-text mb-0 mbr-fonts-style display-7" style="font-size:1.2em">
+                Need to contact us? Email us at <a href="https://accounts.google.com/b/1/AddMailService">lockdown.squad.301@gmail.com </a>
+            </p>
+        </div>
+    </div>
+
+    <br>
+
+
+    <section once="footers" class="footer barColour">
+        <div class="container">
+
+            © Copyright 2020 Gym Moves - All Rights Reserved
+
+        </div>
+    </section>
+
+</body>
+</html>

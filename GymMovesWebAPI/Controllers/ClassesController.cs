@@ -45,6 +45,8 @@ List of Classes:
     - ClassesController
 */
 
+using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GymMovesWebAPI.Data.Enums;
@@ -68,17 +70,19 @@ namespace GymMovesWebAPI.Controllers
         private readonly IClassRepository classRepository;
         private readonly IClassRegisterRepository registerRepository;
         private readonly IGymRepository gymRepository;
+        private readonly IClassAttendanceRepository classAttendanceRepository;
         private readonly IMailer mailer;
 
         string emailReceiver = "u18008659@tuks.co.za";
 
         public ClassesController(IUserRepository uR, IClassRepository cR, IClassRegisterRepository cRR,
-            IGymRepository gR, IMailer mail)
+            IGymRepository gR, IClassAttendanceRepository cAR, IMailer mail)
         {
             userRepository = uR;
             classRepository = cR;
             registerRepository = cRR;
             gymRepository = gR;
+            classAttendanceRepository = cAR;
             mailer = mail;
         }
 
@@ -96,36 +100,33 @@ namespace GymMovesWebAPI.Controllers
             at the same time.
          */
         [HttpPost("add")]
-        public async Task<ActionResult<bool>> addClass(GymClassRequest newClass)
-        {
+        public async Task<ActionResult<bool>> addClass(GymClassRequest newClass) {
+            
             Users personAdding = await userRepository.getUser(newClass.Username);
 
-            if (personAdding == null)
-            {
+            if (personAdding == null) {
+                
                 return StatusCode(StatusCodes.Status404NotFound, "The user requesting for " +
                     "the class to be added could not be found!");
             }
 
-            if (personAdding.UserType == UserTypes.Manager)
-            {
+            if (personAdding.UserType == UserTypes.Manager) {
 
-                if (personAdding.GymIdForeignKey == newClass.NewClass.GymId)
-                {
+                if (personAdding.GymIdForeignKey == newClass.NewClass.GymId) {
 
                     GymClasses newClassModel = ClassMappers.reducedClassToClassModel(newClass.NewClass);
 
                     if (await classRepository.getInstructorClassAtSpecificDateTime(newClassModel.InstructorUsername,
-                        newClassModel.Day, newClassModel.StartTime) == null)
-                    {
+                        newClassModel.Day, newClassModel.StartTime) == null) {
 
-                        if (await classRepository.addClass(newClassModel))
-                        {
+                        if (await classRepository.addClass(newClassModel)) { 
+
                             return Ok(true);
                         }
                         else
                         {
                             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred attempting " +
-                                "to the new class to the database!");
+                                "to add the new class to the database!");
                         }
                     }
                     else
@@ -273,6 +274,66 @@ namespace GymMovesWebAPI.Controllers
                 {
                     if (await registerRepository.addRegister(RegisterMapper.registerUserForClassToClassRegister(register)))
                     {
+                       
+                        DayOfWeek today = DateTime.Today.DayOfWeek;
+
+                        DateTime date;
+
+                        if(today.ToString().ToLower() == targetClass.Day.ToLower())
+                        {
+                            date = DateTime.Today.Date;
+                        }
+                        else
+                        {
+                            DayOfWeek dayOfClass;
+
+                            switch (targetClass.Day.ToLower())
+                            {
+                                case "monday":
+                                    dayOfClass = DayOfWeek.Monday;
+                                    break;
+                                case "tuesday":
+                                    dayOfClass = DayOfWeek.Tuesday;
+                                    break;
+                                case "wednesday":
+                                    dayOfClass = DayOfWeek.Wednesday;
+                                    break;
+                                case "thursday":
+                                    dayOfClass = DayOfWeek.Thursday;
+                                    break;
+                                case "friday":
+                                    dayOfClass = DayOfWeek.Friday;
+                                    break;
+                                case "saturday":
+                                    dayOfClass = DayOfWeek.Saturday;
+                                    break;
+                                default:
+                                    dayOfClass = DayOfWeek.Sunday;
+                                    break;
+                            }
+
+                            int difference = days[(int)today, (int)dayOfClass];
+
+                            date = DateTime.Today.AddDays(difference).Date;
+                        }
+
+                        ClassAttendance classToChange = await classAttendanceRepository.getClassInstance(register.ClassId, date);
+
+                        if(classToChange == null) {
+                             ClassAttendance newClass = new ClassAttendance();
+                            newClass.Date = date;
+                            newClass.ClassId = targetClass.ClassId;
+                            newClass.Capacity = targetClass.MaxCapacity;
+                            newClass.Class = targetClass;
+                            newClass.NumberOfStudents = targetClass.CurrentStudents;
+
+                            await classAttendanceRepository.addNewClassInstance(newClass);
+                        }
+                        else {
+                            await classAttendanceRepository.editClassAttendance(classToChange.ClassId, classToChange.Date, 1);
+                        }
+                       
+
                         return Ok(true);
                     }
                     else
@@ -312,7 +373,7 @@ namespace GymMovesWebAPI.Controllers
 
             if (oldWay) {
 
-                returnMessage = "This class has been uncancelled.";
+                returnMessage = "This class has been resumed.";
             }
             else {
                 content = "We are sad to say, a class you signed up for has been cancelled!\n" +
@@ -362,6 +423,68 @@ namespace GymMovesWebAPI.Controllers
             }
 
             if (await registerRepository.removeRegister(existingRegister)) {
+
+                DayOfWeek today = DateTime.Today.DayOfWeek;
+                DateTime date;
+                GymClasses targetClass = await classRepository.getClassById(register.ClassId);
+
+                if (today.ToString().ToLower() == targetClass.Day.ToLower()) {
+                   
+                    date = DateTime.Today.Date;
+                }
+                else {
+                   
+                    DayOfWeek dayOfClass;
+
+                    switch (targetClass.Day.ToLower()) {
+                       
+                        case "monday":
+                            dayOfClass = DayOfWeek.Monday;
+                            break;
+                        case "tuesday":
+                            dayOfClass = DayOfWeek.Tuesday;
+                            break;
+                        case "wednesday":
+                            dayOfClass = DayOfWeek.Wednesday;
+                            break;
+                        case "thursday":
+                            dayOfClass = DayOfWeek.Thursday;
+                            break;
+                        case "friday":
+                            dayOfClass = DayOfWeek.Friday;
+                            break;
+                        case "saturday":
+                            dayOfClass = DayOfWeek.Saturday;
+                            break;
+                        default:
+                            dayOfClass = DayOfWeek.Sunday;
+                            break;
+                    }
+
+                    int difference = days[(int)today, (int)dayOfClass];
+
+                    date = DateTime.Today.AddDays(difference).Date;
+                }
+
+                ClassAttendance classToChange = await classAttendanceRepository.getClassInstance(register.ClassId, date);
+
+                if (classToChange == null)
+                {
+                    ClassAttendance newClass = new ClassAttendance();
+                    newClass.Date = date;
+                    newClass.ClassId = targetClass.ClassId;
+                    newClass.Capacity = targetClass.MaxCapacity;
+                    newClass.Class = targetClass;
+                    newClass.NumberOfStudents = targetClass.CurrentStudents;
+
+                    await classAttendanceRepository.addNewClassInstance(newClass);
+                }
+                else
+                {
+                    await classAttendanceRepository.editClassAttendance(classToChange.ClassId, classToChange.Date, -1);
+                }
+
+
                 return Ok(true);
             } else {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while attempting to remove the register from the database!");
@@ -388,6 +511,8 @@ namespace GymMovesWebAPI.Controllers
 
                 /* Multithread remove and notifying users */
 
+                await classAttendanceRepository.removeClass(targetClass.ClassId);
+                
                 if (await classRepository.removeClass(targetClass) == true) {
                     return Ok(true);
                 } else {
@@ -436,8 +561,8 @@ namespace GymMovesWebAPI.Controllers
                 return StatusCode(StatusCodes.Status404NotFound, "User making the edit to the class was not found!");
             }
 
-            if (user.UserType != UserTypes.Manager) {
-                return StatusCode(StatusCodes.Status401Unauthorized, "User making the edit is not a manager!");
+            if (user.UserType != UserTypes.Manager && user.UserType != UserTypes.Instructor) {
+                return StatusCode(StatusCodes.Status401Unauthorized, "User making the edit is not a manager or instructor!");
             }
 
             GymClasses target = await classRepository.getClassById(edit.ClassId);
@@ -456,5 +581,31 @@ namespace GymMovesWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong trying to update the class!");
             }
         }
+
+        [HttpGet("getAttendanceForClass")]
+        public async Task<ActionResult<ClassAttendance[]>> getAttendanceForClass(int classId)
+        {
+            ClassAttendance[] classAttendance = await classAttendanceRepository.getClassAttendance(classId);
+
+            if(classAttendance.Length == 0)
+            {
+                return Ok(null);
+            }
+            else
+            {
+                return Ok(classAttendance);
+            }
+        }
+
+        /*Days and their differences for the other days*/
+        int[,] days = new int[,] { 
+            { 0, 1, 2, 3, 4, 5, 6 }, 
+            { 6, 0, 1, 2, 3, 4, 5 }, 
+            { 5, 6, 0, 1, 2, 3, 4 },
+            { 4, 5, 6, 0, 1, 2, 3 },
+            { 3, 4, 5, 6, 0, 1, 2 },
+            { 2, 3, 4, 5, 6, 0, 1 },
+            { 1, 2, 3, 4, 5, 6, 0 },
+        };
     }
 }

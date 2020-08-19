@@ -1,0 +1,111 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
+
+/* Navbar */
+.barColour{
+    background-color  : #7341E6;
+}
+
+@font-face {
+    font-family: 'FreestyleScript';
+    src: url('freescript.ttf') format('truetype');
+}
+
+#heading{
+    font-family:FreestyleScript; 
+    font-size: 4em; 
+    color: white;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+
+/*Buttons*/
+.button-colour {
+    background-color: #7341E6;
+    color: white;
+}
+
+    .button-colour:hover {
+        background-color: #7341E6;
+        color: white;
+    }
+
+/*Form*/
+input[type=text]:focus, input[type=password]:focus {
+    box-shadow: 0 0 5px #7341E6;
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: none;
+}
+
+label{
+    color: grey;
+}
+
+h4, a {
+    color: #7341E6;
+}
+
+    a:hover {
+        color: #7341E6;
+    }
+
+/*Footer sticky*/
+.footer{
+    height: 80px;
+    color: white;
+    text-align: center;
+    padding: 2em;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+body{
+    font-family: Roboto;
+    display: flex;
+    flex-direction: column;
+}
+
+html, body {
+    height: 100%;
+}
+
+* {box-sizing: border-box;}
+
+.mySlides {display: none;}
+img {vertical-align: middle;}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
+}
+
+
+.halfPG{
+    width: 30%;
+    float: right;
+    margin-right: 20%;
+}
+
+.halfPG2{
+    width: 30%;
+    float:left;
+    margin-left: 20%;
+}
+
+.alHR{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.intro{
+    font-size: 1.9em;
+    color: black;
+}
