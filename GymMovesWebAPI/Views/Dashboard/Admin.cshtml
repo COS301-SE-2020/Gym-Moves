@@ -97,33 +97,33 @@ Functional Description:
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/MainPageForDashboard")">
-                    <span>Home</span>
-                </a>
-            </li>
+            <!-- Nav Item - Charts
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Content("~/dashboard/MainPageForDashboard")">
+            <span>Home</span>
+        </a>
+    </li>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <span>Dashboard</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="login.html">Gym Attendance</a>
-                        <a class="collapse-item" href="register.html">Gym Ratings</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
-                    </div>
-                </div>
-            </li>
 
-            <!-- Nav Item - Tables -->
+    <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <span>Dashboard</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="login.html">Gym Attendance</a>
+                <a class="collapse-item" href="register.html">Gym Ratings</a>
+                <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+            </div>
+        </div>
+    </li>
+
+
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
                     <span>Profile</span>
                 </a>
-            </li>
+            </li>-->
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -256,7 +256,7 @@ Functional Description:
 
         function loadrankings() {
 
-            document.cookie = "username=test, path=/";
+           // document.cookie = "username=test, path=/";
             var xhr = new XMLHttpRequest();
             var url = "@Url.Content("~/api/GymApplication/GetAllApplications")";
             xhr.open("POST", url, true);
@@ -268,7 +268,7 @@ Functional Description:
                     populateRankings(json);
                 }
             };
-            var username = getCookie("username").split(",")[0];
+            var username ="test";
             var data = JSON.stringify({ "Username": username});
             xhr.send(data);
 

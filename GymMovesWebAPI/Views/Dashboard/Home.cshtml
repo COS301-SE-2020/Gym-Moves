@@ -117,7 +117,13 @@ Functional Description:
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                    <span>Upload Database</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href=#>
                     <span>Profile</span>
                 </a>
             </li>
@@ -215,12 +221,6 @@ Functional Description:
 
 
         <script>
-          
-          function logout() {
-                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
-                document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
-                window.location.href = "@Url.Content("~/ManagerLogin")";
-            }
 
 
                 document.getElementById("All").onclick = function () {
@@ -377,9 +377,14 @@ Functional Description:
             }
 
 
-            document.addEventListener("DOMContentLoaded", () => { loadAll() })
-          
-          
+            document.addEventListener("DOMContentLoaded", () => { loadAll() });
+
+            function logout() {
+
+                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                window.location.href = "@Url.Content("~/ManagerLogin")";
+            }
 
 
         </script>
