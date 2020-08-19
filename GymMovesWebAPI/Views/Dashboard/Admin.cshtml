@@ -347,7 +347,9 @@ Functional Description:
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var json = JSON.parse(xhr.responseText);
                     console.log(xhr.responseText);
-                  //  populateRankings(json);
+                    //  populateRankings(json);
+                } else {
+                    console.log(xhr.responseText);
                 }
             };
                 var data = JSON.stringify({ "status": stats, "GymName": gym, "BranchName": branch});
