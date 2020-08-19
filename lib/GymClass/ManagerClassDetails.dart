@@ -598,8 +598,13 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
 
     if (response.statusCode == 200) {
       GetResponse res = GetResponse.fromJson(json.decode(response.body));
-      int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
-      instructorRating = (temp) / 10;
+      if(res.ratingCount == 0){
+        instructorRating = 0;
+      }
+      else{
+        int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
+        instructorRating = (temp) / 10;
+      }
       return response.body;
     } else {
       throw Exception('Failed to retrieve user data. Please try again later');
@@ -621,8 +626,13 @@ class ManagerClassDetailsState extends State<ManagerClassDetails> {
 
     if (response.statusCode == 200) {
       GetResponse res = GetResponse.fromJson(json.decode(response.body));
-      int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
-      classRating = (temp) / 10;
+      if(res.ratingCount == 0){
+        classRating = 0;
+      }
+      else{
+        int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
+        classRating = (temp) / 10;
+      }
       return response.body;
     } else {
       throw Exception('Failed to retrieve user data. Please try again later');

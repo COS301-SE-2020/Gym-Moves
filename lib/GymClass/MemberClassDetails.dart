@@ -538,13 +538,12 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
       url,
       headers: <String, String>{'Content-type': 'application/json'},
       body: jsonEncode({
-        "instructor": instructorName,
+        "instructor": instructorUsername,
         "username": username,
         "rating": instructorStars
       }),
     );
 
-    print(instructorName);
 
     int status = response.statusCode;
 
@@ -575,8 +574,15 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
 
     if (response.statusCode == 200) {
       GetResponse res = GetResponse.fromJson(json.decode(response.body));
-      int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
-      instructorRating = (temp) / 10;
+      print("what is happenig" + response.body);
+      if(res.ratingCount == 0){
+        instructorRating = 0;
+      }
+      else{
+        int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
+        instructorRating = (temp) / 10;
+      }
+
       return response.body;
     } else {
       throw Exception('Failed to retrieve user data. Please try again later');
@@ -598,8 +604,13 @@ class MemberClassDetailsState extends State<MemberClassDetails> {
 
     if (response.statusCode == 200) {
       GetResponse res = GetResponse.fromJson(json.decode(response.body));
-      int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
-      classRating = (temp) / 10;
+      if(res.ratingCount == 0){
+        classRating = 0;
+      }
+      else{
+        int temp = ((res.ratingSum / res.ratingCount) * 10).truncate();
+        classRating = (temp) / 10;
+      }
       return response.body;
     } else {
       throw Exception('Failed to retrieve user data. Please try again later');
