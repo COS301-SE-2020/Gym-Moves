@@ -18,6 +18,8 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 01/07/2020    |    Tia         |    Added request to send announcement
 --------------------------------------------------------------------------------
+05/08/2020    |    Raeesa      |    Fixed UI
+--------------------------------------------------------------------------------
 
 Functional Description:
   This file implements the the UI for managers to be able to send announcements.
@@ -27,7 +29,7 @@ Functional Description:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:gym_moves/User/ManagerPages.dart';
+import 'package:gym_moves/NavigationBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,8 +59,7 @@ Purpose:
    and also handles what happens with the information that gets inputted.
  */
 class SendAnnouncementState extends State<SendAnnouncement> {
-  String _headingOfAnnouncement = "";
-  String _detailsOfAnnouncement = "";
+  String headingOfAnnouncement, detailsOfAnnouncement;
 
   final announcementFormKey = GlobalKey<FormState>();
 
@@ -81,189 +82,170 @@ class SendAnnouncementState extends State<SendAnnouncement> {
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
 
-    final headingField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            alignment: Alignment.centerLeft,
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            child: TextField(
-              controller: headingHolder,
-                cursorColor: Colors.black45,
-                obscureText: false,
-                style: TextStyle(
-                    color: Colors.black54, fontSize: 0.04 * media.size.width
+    final headingField = Container(
+        alignment: Alignment.centerLeft,
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        child: TextField(
+            controller: headingHolder,
+            cursorColor: Color(0xff787878),
+            obscureText: false,
+            style: TextStyle(
+                color: Color(0xff787878),
+                fontSize: 0.04 * media.size.width
+            ),
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Heading',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(
+                    color: Color(0xff787878)
                 ),
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Heading',
-                    contentPadding: const EdgeInsets.all(15.0),
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(15.0)
                     ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
+                    borderSide: new BorderSide(
+                        color: Color(0xff787878)
                     )
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    _headingOfAnnouncement = value;
-                  });
-                })
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(
+                        color: Color(0xff787878)
+                    ),
+                    borderRadius: BorderRadius.circular(15.0)
+                )
+            ),
+            onChanged: (value) {
+              setState(() {
+                headingOfAnnouncement = value;
+              });
+            })
     );
 
-    final detailField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            padding: EdgeInsets.all(0.01 * media.size.width),
-            alignment: Alignment.topLeft,
-            width: 0.7 * media.size.width,
-            height: 0.3 * media.size.height,
-            child: TextField(
-              controller:detailsHolder,
-                cursorColor: Colors.black45,
-                obscureText: false,
-                style: TextStyle(
-                    color: Colors.black54, fontSize: 0.04 * media.size.width
+    final detailField = Container(
+        padding: EdgeInsets.all(0.01 * media.size.width),
+        alignment: Alignment.topLeft,
+        width: 0.7 * media.size.width,
+        height: 0.3 * media.size.height,
+        child: TextField(
+            controller: detailsHolder,
+            cursorColor: Color(0xff787878),
+            obscureText: false,
+            key: Key('detailsField'),
+            style: TextStyle(
+                color: Color(0xff787878),
+                fontSize: 0.04 * media.size.width
+            ),
+            minLines: 1,
+            maxLines: 9,
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                labelText: 'Details',
+                contentPadding: const EdgeInsets.all(20.0),
+                labelStyle: new TextStyle(
+                    color: Color(0xff787878)
                 ),
-                maxLines: 9,
-                minLines: 1,
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Details',
-                    border: InputBorder.none,
-                    labelStyle: new TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-                        borderSide: BorderSide.none
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderSide: new BorderSide(color: Color(0xff787878))
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: new BorderSide(
+                        color: Color(0xff787878)
                     ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(19.0)
-                    )
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _detailsOfAnnouncement = value;
-                  });
-                })
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.white
+                    borderRadius: BorderRadius.circular(15.0)
+                )
+            ),
+            onChanged: (value) {
+              setState(() {
+                detailsOfAnnouncement = value;
+              });
+            })
     );
 
-    final dateField = Material(
-        shadowColor: Colors.black,
-        elevation: 15,
-        child: Container(
-            width: 0.7 * media.size.width,
-            height: 0.085 * media.size.height,
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(19.0)
-              ),
-              onPressed: () {
-                DatePicker.showDatePicker(
-                    context,
-                    theme: DatePickerTheme(
-                      containerHeight: media.size.height * 0.35,
-                    ),
-                    showTitleActions: true,
-                    minTime: DateTime(
-                        new DateTime.now().year,
-                        new DateTime.now().month,
-                        new DateTime.now().day
-                    ),
-                    maxTime: DateTime(
-                        new DateTime.now().year + 1,
-                        new DateTime.now().month,
-                        new DateTime.now().day
-                    ),
-                    onConfirm: (date) {
-                      year = date.year.toString();
-                      month = date.month.toString();
-                      day = date.day.toString();
-                      setState(() {});
-                      },
-                    currentTime: DateTime.now());
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: 0.63 * media.size.width,
-                height: 0.075 * media.size.height,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final dateField = Container(
+        width: 0.7 * media.size.width,
+        height: 0.085 * media.size.height,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            border: Border.all(color: Color(0xff787878))
+        ),
+        child: FlatButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(19.0)),
+          onPressed: () {
+            DatePicker.showDatePicker(context,
+                theme: DatePickerTheme(
+                  containerHeight: media.size.height * 0.35,
+                ),
+                showTitleActions: true,
+                minTime: DateTime(new DateTime.now().year,
+                    new DateTime.now().month, new DateTime.now().day
+                ),
+                maxTime: DateTime(
+                    new DateTime.now().year + 1,
+                    new DateTime.now().month,
+                    new DateTime.now().day), onConfirm: (date) {
+              year = date.year.toString();
+              month = date.month.toString();
+              day = date.day.toString();
+              setState(() {});
+            }, currentTime: DateTime.now());
+          },
+          child: Container(
+            alignment: Alignment.center,
+            width: 0.63 * media.size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                  Icons.date_range,
-                                  size: 0.04 * media.size.width,
-                                  color: Colors.black54
-                              ),
-                              Text(
-                                "     Send Date:   $day - $month - $year ",
-                                style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 0.04 * media.size.width
-                                ),
-                              ),
-                            ],
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                              Icons.date_range,
+                              size: 0.04 * media.size.width,
+                              color: Color(0xff787878)
                           ),
-                        )
-                      ],
+                          Text(
+                            "     Send Date:   $day - $month - $year ",
+                            style: TextStyle(
+                                color: Color(0xff787878),
+                                fontSize: 0.04 * media.size.width
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   ],
-                ),
-              ),
-              color: Colors.white,
-            )
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(19.0)),
-        color: Colors.transparent
+                )
+              ],
+            ),
+          ),
+          color: Colors.white,
+        )
     );
 
     return Scaffold(
-        backgroundColor: const Color(0xff513369),
+        backgroundColor: const Color(0xffffffff),
         body: ListView(
             children: <Widget>[
               Stack(
                   children: <Widget>[
                     Transform.translate(
-                        offset: Offset(0.0, -0.035 * media.size.height),
+                        offset: Offset(0.05 * media.size.width, 0.0),
                         child: Container(
-                            width: media.size.width,
-                            height: 0.13 * media.size.height,
+                            width: 0.6 * media.size.width,
+                            height: 0.19 * media.size.height,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: const AssetImage('assets/Banner.jpg'),
-                                  fit: BoxFit.fill,
-                                  colorFilter: new ColorFilter.mode(
-                                    Colors.black.withOpacity(0.52),
-                                    BlendMode.dstIn,
-                                  ),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0x46000000),
-                                    offset: Offset(0, 3),
-                                    blurRadius: 6,
-                                  )
-                                ]
+                                    image: const AssetImage('assets/SendAnnouncementPicture.png'),
+                                    fit: BoxFit.fill
+                                )
                             )
                         )
                     ),
@@ -271,91 +253,81 @@ class SendAnnouncementState extends State<SendAnnouncement> {
                         offset: Offset(0.0, 0.04 * media.size.height),
                         child: Transform.translate(
                             offset: Offset(
-                                0.05 * media.size.width, -0.02 * media.size.height
-                            ),
+                                0.05 * media.size.width, -0.02 * media.size.height),
                             child: GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => ManagerPages()),
-                                  );
-                                  },
+                                    MaterialPageRoute(builder: (context) => NavigationBar(index: 1)),
+                                  );},
                                 child: SvgPicture.string(backArrow,
                                     allowDrawingOutsideViewBox: true,
-                                    width: 0.06 * media.size.width
+                                    width: 0.06 * media.size.width,
+                                    color: Color(0xff7341E6)
                                 )
                             )
                         )
                     ),
                     Container(
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.bottomRight,
                         width: media.size.width,
-                        height: 0.09 * media.size.height,
-                        padding: EdgeInsets.all(0.01 * media.size.width),
+                        height: 0.25 * media.size.height,
+                        padding: EdgeInsets.all(0.05 * media.size.width),
                         child: Text(
                           'New Announcement',
                           style: TextStyle(
-                            fontFamily: 'FreestyleScript',
-                            fontSize: 0.1 * media.size.width,
-                            color: const Color(0xFFFFFFFF),
-                            shadows: [
-                              Shadow(
-                                color: const Color(0xbd000000),
-                                offset: Offset(0, 3),
-                        blurRadius: 6,
-                              ),
-                            ],
+                            fontFamily: 'Lastwaerk',
+                            fontSize: 0.07 * media.size.width,
+                            color: const Color(0xFF3E3E3E),
                           ),
                           textAlign: TextAlign.right,
                         )
                     )
                   ]
               ),
-              SizedBox(height: 0.04 * media.size.height),
-              Center(child: dateField),
-              SizedBox(height: 0.05 * media.size.height),
-              Form(
-                  key: announcementFormKey,
-                  child: Column(
-                      children: <Widget>[
-                        headingField,
-                        SizedBox(height: 0.05 * media.size.height),
-                        detailField
-                      ]
-                  )
-              ),
-              SizedBox(height: 0.05 * media.size.height),
-              Center(
-                  child: SizedBox(
-                      width: 0.2 * media.size.width,
-                      child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)
-                          ),
-                          color: const Color(0xffffffff).withOpacity(0.3),
-                          onPressed: () {
-                            sendValuesToNotify();
-                            },
-                          textColor: Colors.white,
-                          padding: const EdgeInsets.all(0.0),
-                          child: Container(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                'Send',
-                                style: TextStyle(
-                                    fontSize: 0.05 * media.size.width,
-                                    fontFamily: 'Roboto'
-                                ),
-                              )
+          SizedBox(height: 0.06 * media.size.height),
+          Center(child: dateField),
+          SizedBox(height: 0.05 * media.size.height),
+          Form(
+              key: announcementFormKey,
+              child: Column(
+                  children: <Widget>[
+                    headingField,
+                    SizedBox(height: 0.05 * media.size.height),
+                    detailField
+                  ]
+              )
+          ),
+          SizedBox(height: 0.05 * media.size.height),
+          Center(
+              child: SizedBox(
+                  width: 0.4 * media.size.width,
+                  child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
+                      ),
+                      color: const Color(0xff7341E6),
+                      onPressed: () {
+                        sendValuesToNotify();
+                      },
+                      textColor: Colors.white,
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Send',
+                            style: TextStyle(
+                                fontSize: 0.05 * media.size.width,
+                                fontFamily: 'Roboto'),
                           )
                       )
                   )
-              ),
-              SizedBox(height: 0.05 * media.size.height)
-            ]
-        )
+              )
+          ),
+          SizedBox(height: 0.05 * media.size.height)
+        ])
     );
   }
 
@@ -377,8 +349,8 @@ class SendAnnouncementState extends State<SendAnnouncement> {
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode({
         'gymId': gymId,
-        'heading': _headingOfAnnouncement,
-        'body': _detailsOfAnnouncement,
+        'heading': headingOfAnnouncement,
+        'body': detailsOfAnnouncement,
         'announcementDay': day,
         'announcementMonth': month,
         'announcementYear': year
@@ -402,8 +374,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
     Widget okButton = FlatButton(
         child: Text(
           "Ok",
-          style: TextStyle(color: Color(0xff513369)
-          ),
+          style: TextStyle(color: Color(0xff7341E6)),
         ),
         onPressed: () => Navigator.pop(context)
     );
@@ -438,9 +409,7 @@ class Message {
   Message({this.message});
 
   factory Message.fromJson(Map<String, dynamic> json) {
-    return Message(
-        message: json['message']
-    );
+    return Message(message: json['message']);
   }
 }
 

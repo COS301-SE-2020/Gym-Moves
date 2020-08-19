@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "414677594346",
+    "firebase_url": "https://nfcreader-233f4.firebaseio.com",
+    "project_id": "nfcreader-233f4",
+    "storage_bucket": "nfcreader-233f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414677594346:android:cbe353f039525ced946793",
+        "android_client_info": {
+          "package_name": "com.example.gym_moves"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414677594346-48f2v0lf5kjka2u77gjeohqb2u7u9mkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbPGMLp_hV_sZ5QPympMStJZZCQsvfUzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414677594346-48f2v0lf5kjka2u77gjeohqb2u7u9mkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
