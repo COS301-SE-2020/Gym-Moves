@@ -252,6 +252,7 @@
             var instructors;
 
             async function getTopThreeClasses() {
+
                 for (var i = 0; i < classes.length; i++) {
                     await jQuery.ajax({
                         url: "@Url.Content("~/api/classes/getAttendanceForClass?classId=")" + classes[i].classId,
@@ -266,7 +267,7 @@
 
                     });
                 }
-                
+
                 var classesAttendanceIdOrder = [];
                 var sum;
 
@@ -302,7 +303,7 @@
 
                 }
 
-                if (classes.length > 0) {
+                if (classesInIdOrder.length > 0) {
 
                     var classId = classesInIdOrder[classesInIdOrder.length - 1][0].classId;
 
@@ -317,7 +318,7 @@
                         }
                     }
 
-                    if (classes.length > 1) {
+                    if (classesInIdOrder.length > 1) {
 
                         var classId = classesInIdOrder[classesInIdOrder.length - 2][0].classId;
 
@@ -330,7 +331,7 @@
                             }
                         }
 
-                        if (classes.length > 3) {
+                        if (classesInIdOrder.length > 2) {
                             var classId = classesInIdOrder[classesInIdOrder.length - 3][0].classId;
 
                             for (var i = 0; i < classes.length; i++) {
@@ -349,6 +350,11 @@
                         document.getElementById("cardTwo").style.display = "none";
                         document.getElementById("cardThree").style.display = "none";
                     }
+                }
+                else {
+                    document.getElementById("cardOne").style.display = "none";
+                    document.getElementById("cardTwo").style.display = "none";
+                    document.getElementById("cardThree").style.display = "none";
                 }
 
                 await jQuery.ajax({
