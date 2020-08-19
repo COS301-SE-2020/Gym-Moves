@@ -59,9 +59,14 @@ Functional Description:
             }
 
             .button-colour {
-                background-color: #7341E6;
+                background-color: #545454;
                 color: white;
             }
+
+                .button-colour:hover {
+                    background-color: #3d3d3d;
+                    color: white;
+                }
 
         </style>
 </head>
@@ -97,7 +102,7 @@ Functional Description:
     <section>
         <div class="container">
             <h3 style="text-align: center; color: grey;">
-                Are you interested in using our application at your gym? Follow the steps below.
+               Follow the steps below to use Gym Moves for your gym.
             </h3>
             <br><br>
             <div style="width: 80%; text-align: justify; margin-left: 10%; color: grey;">
@@ -159,10 +164,10 @@ Functional Description:
         <div class="container">
             <div class="row justify-content-center content-row">
                 <div class="media-container-column col-md-5">
-                    <h3 style="color: grey;"> Got your code already?</h3>
+                    <h3 style="color: grey;"> Want to register?</h3>
                 </div>
                 <div class="media-container-column col-10 col-lg-3 col-md-5">
-                    <a href="@Url.Content("~/RegisterMyGym")"> <button type="button" class="btn button-colour">Register</button> </a>
+                    <a href="@Url.Content("~/RegisterMyGym")"> <button type="button" class="btn button-colour">Register Gym</button> </a>
                 </div>
             </div>
         </div>
