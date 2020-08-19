@@ -195,7 +195,7 @@ Functional Description:
                     document.getElementById("errorUsername").style.visibility = "hidden";
                     document.getElementById("username").style.boxShadow = "0 0 5px #7341E6";
 
-                    document.getElementById("errorCode").style.visibility = "visible";
+                    document.getElementById("errorCode").style.visibility = "hidden";
                     document.getElementById("code").style.boxShadow = "0 0 5px #7341E6";
 
                     return;
@@ -209,7 +209,7 @@ Functional Description:
                      document.getElementById("errorPassword").style.visibility = "hidden";
                      document.getElementById("password").style.boxShadow = "0 0 5px #7341E6";
 
-                    document.getElementById("errorCode").style.visibility = "visible";
+                    document.getElementById("errorCode").style.visibility = "hidden";
                     document.getElementById("code").style.boxShadow = "0 0 5px #7341E6";
                      return;
 
@@ -239,7 +239,6 @@ Functional Description:
                     document.getElementById("errorCode").style.visibility = "hidden";
                     document.getElementById("code").style.boxShadow = "0 0 5px #7341E6";
                 }
-
                 const msgBuffer = new TextEncoder('utf-8').encode(document.getElementById("password").value);
                 const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
 
