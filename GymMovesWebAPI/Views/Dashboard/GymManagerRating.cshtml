@@ -273,11 +273,14 @@ Functional Description:
                         if (classRatingsJson.length == 0) { }
                         else
                         {
-                            var rating = (classRatingsJson.ratingSum) / (classRatingsJson.ratingCount);
-                            if (classRatingsJson.ratingCount == 0) {
-                                rating = 0;
+                            var rating = 0;
+                            if (classRatingsJson.ratingCount != 0) {
+                                rating = parseInt(classRatingsJson.ratingSum) / parseInt(classRatingsJson.ratingCount);
+                                console.log(rating);
+                                console.log(parseInt(classRatingsJson.ratingSum) / parseInt(classRatingsJson.ratingCount));
+
                             }
-                            Results.push([d, classesjson[d].name, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, (rating * 5).toFixed(2)]);
+                            Results.push([d, classesjson[d].name, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, (rating).toFixed(2)]);
                         }
                     }
                     else if (xmlhttp.status == 400) {
