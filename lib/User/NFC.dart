@@ -12,7 +12,11 @@ class NFCReader extends StatefulWidget {
 class _NFCReaderState extends State {
     bool _supportsNFC = false;
     bool _reading = false;
+    //we'll have to get original counter from the database, so we make an api request here to get number of people at the gym
+    int counter =0;
     StreamSubscription<NDEFMessage> _stream;
+
+    //api request
 
     @override
     void initState() {
@@ -34,6 +38,8 @@ class _NFCReaderState extends State {
                 onPressed: null,
             );
         }
+// i think we can scan again and see if theyve alreadsy scanned in,
+// by having a temp variable and set it to 1 when they scan, and if they scan again then it'll mean they exiting the gym
 
         return RaisedButton(
             child: Text(_reading ? "Stop reading" : "Start reading"),
@@ -51,7 +57,11 @@ class _NFCReaderState extends State {
                             once: true,
                             throwOnUserCancel: false,
                         ).listen((NDEFMessage message) {
+                            counter+=1;
+                            //we can send a request to the api here and then increase the counter, then display the message
+                            // on the welcome page we can just make an api request and get this count variable
                             print("read NDEF message: ${message.payload}");
+                            print("Number of gym members: ${counter}");
                         }, onError: (e) {
                             // Check error handling guide below
                         });
