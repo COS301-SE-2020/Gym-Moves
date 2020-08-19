@@ -256,7 +256,7 @@ Functional Description:
 
         function loadrankings() {
 
-            document.cookie = "username=test, path=/";
+            //document.cookie = "username=test, path=/";
             var xhr = new XMLHttpRequest();
             var url = "@Url.Content("~/api/GymApplication/GetAllApplications")";
             xhr.open("POST", url, true);
@@ -268,8 +268,8 @@ Functional Description:
                     populateRankings(json);
                 }
             };
-            var username = getCookie("username").split(",")[0];
-            var data = JSON.stringify({ "Username": username});
+            //var username = getCookie("username").split(",")[0];
+            var data = JSON.stringify({ "Username": "kevinbarnard"});
             xhr.send(data);
 
         }

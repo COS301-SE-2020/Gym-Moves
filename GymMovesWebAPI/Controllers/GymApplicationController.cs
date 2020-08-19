@@ -130,6 +130,7 @@ namespace GymMovesWebAPI.Controllers {
                // GymApplications[] application = await applicationRepository.getApplication(request.GymName, request.BranchName);
                 application[0].Status = ApplicationStatus.Rejected;
                 bool updateStatus = await applicationRepository.updateApplication(application[0]);
+                await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Gym Application Rejected", $"Unfortunately your gym application has been declined.", application[0].Email);
             }
 
             return Ok(application);
