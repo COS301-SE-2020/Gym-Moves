@@ -121,6 +121,21 @@ namespace GymMovesWebAPI.Controllers {
         [HttpPost("changeNotificationSettings")]
         public async Task<ActionResult> changeNotificationSetting(ChangeNotificationsSettingsRequest request) {
 
+            if(request.username == null)
+            {
+                return BadRequest("A username is needed to update settings.");
+            }
+
+            if (request.email == null)
+            {
+                return BadRequest("An email preference is needed to update settings.");
+            }
+
+            if (request.push == null)
+            {
+                return BadRequest("A push preference is needed to update settings.");
+            }
+
             bool changed = await notificationSettingsRepository.changeSetting(request.username, request.email, request.push);
 
             if (changed) {
