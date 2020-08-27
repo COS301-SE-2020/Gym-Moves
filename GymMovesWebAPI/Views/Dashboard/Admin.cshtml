@@ -22,176 +22,142 @@ Functional Description:
 <!DOCTYPE html>
 
 <html>
-<head>
+    <head>
 
-    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
-
-
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
 
-    <!-- Custom fonts for this template-->
-    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
-    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
-
-    <title>Gym Moves</title>
-
-    <style>
-          .navbar_background {
-            background-color: #7341e6;
-            color: white;
-        }
-
-        @@font-face {
-            font-family: 'Lastwaerk';
-            src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
-        }
-
-        table {
-
-            border-collapse: collapse;
-            font-family: Arial, sans-serif;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #EEEBEA;
-            text-align: center;
-            padding: 8px;
-        }
-
-        table.greyGridTable tr:nth-child(even) {
-            background: #EEEBEA;
-        }
-
-        ul {
-
-        }
-    </style>
-
-</head>
-
-<body id="page-top">
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-        <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                <div class="sidebar-brand-icon">
-                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                </div>
-                <div class="sidebar-brand-text mx-3">Gym Moves</div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Charts
-    <li class="nav-item">
-        <a class="nav-link" href="@Url.Content("~/dashboard/MainPageForDashboard")">
-            <span>Home</span>
-        </a>
-    </li>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
 
-    <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <span>Dashboard</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="login.html">Gym Attendance</a>
-                <a class="collapse-item" href="register.html">Gym Ratings</a>
-                <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
-            </div>
-        </div>
-    </li>
+        <!-- Custom fonts for this template-->
+        <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+        <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")" rel="stylesheet">
 
+        <!-- Custom styles for this template-->
+        <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
 
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <span>Profile</span>
-                </a>
-            </li>-->
+        <title>Gym Moves</title>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+        <style>
+              .navbar_background {
+                background-color: #7341e6;
+                color: white;
+            }
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+            @@font-face {
+                font-family: 'Lastwaerk';
+                src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
+            }
 
-        </ul>
-        <!-- End of Sidebar -->
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+            table {
 
-            <!-- Main Content -->
-            <div id="content">
+                border-collapse: collapse;
+                font-family: Arial, sans-serif;
+                width: 100%;
+            }
 
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            td, th {
+                border: 1px solid #EEEBEA;
+                text-align: center;
+                padding: 8px;
+            }
 
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+            table.greyGridTable tr:nth-child(even) {
+                background: #EEEBEA;
+            }
 
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                        Accept/Reject Gym Applications
+            ul {
+
+            }
+        </style>
+
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                    <div class="sidebar-brand-icon">
+                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                     </div>
+                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
+                </a>
 
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information
-                            <li class="nav-item dropdown no-arrow">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                                    <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Logout
-                                    </a>
-                                </div>
-                            </li>
-    -->
-                    </ul>
-
-                </nav>
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
 
 
-                <div id=black>
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+
+            </ul>
+            <!-- End of Sidebar -->
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <!-- Sidebar Toggle (Topbar) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                            Accept/Reject Gym Applications
+                        </div>
+
+                        <!-- Topbar Navbar -->
+                        <ul class="navbar-nav ml-auto">
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <!-- Nav Item - User Information
+                                            <li class="nav-item dropdown no-arrow">
+                                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                                                    <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                                </a>
+
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                        Logout
+                                                    </a>
+                                                </div>
+                                            </li>
+                    -->
+                        </ul>
+
+                    </nav>
+
+
                     <section>
                         <div class="container">
-
-                            <br><br>
-                            <br><br>
-                            <br><br>
-                            <br><br>
-
                             <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
                                 <div class=" card-body">
                                     <div class="table-responsive">
-                                        <table id="rankings-table" class="greyGridTable">
+                                        <table id="applicationsBody" class="greyGridTable">
                                             <thead>
                                                 <tr>
                                                     <th>Gym name</th>
@@ -201,164 +167,173 @@ Functional Description:
                                                     <th>Reject</th>
                                                 </tr>
                                             </thead>
-                                            <tfoot>
-                                                <tr>
-                                                </tr>
-                                            </tfoot>
                                             <tbody id="tbody">
-                                                
-
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </section>
-
-                    <br><br>
-
-                    
-                    <br><br>
-
-                    <br><br><br>
-
-                    <!-- Bootstrap core JavaScript-->
-                    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-                    <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
-
-                    <!-- Core plugin JavaScript-->
-                    <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
-
-                    <!-- Custom scripts for all pages-->
-                    <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+                </div>
+            </div>
+        </div>
 
 
-                    <script type="text/javascript">
 
-                           function getCookie(cname) {
-                        var name = cname + "=";
-                        var decodedCookie = decodeURIComponent(document.cookie);
-                        var ca = decodedCookie.split(';');
-                        for (var i = 0; i < ca.length; i++) {
-                            var c = ca[i];
-                            while (c.charAt(0) == ' ') {
-                                c = c.substring(1);
-                            }
-                            if (c.indexOf(name) == 0) {
-                                return c.substring(name.length, c.length);
-                            }
-                        }
-                        return "";
+
+        
+        <!-- Bootstrap core JavaScript-->        
+        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>      
+        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+        
+        <!-- Core plugin JavaScript-->     
+        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+        
+        <!-- Custom scripts for all pages-->       
+        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+
+ 
+        <script type="text/javascript">
+
+            function getCookie(cname) {
+
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+
+                for (var i = 0; i < ca.length; i++) {
+
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
                     }
 
-
-        const rankingsbody = document.querySelector("#rankings-table > tbody");
-
-        function loadrankings() {
-
-            //document.cookie = "username=test, path=/";
-            var xhr = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/GymApplication/GetAllApplications")";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                    console.log(xhr.responseText);
-                    populateRankings(json);
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
                 }
-            };
-            //var username = getCookie("username").split(",")[0];
-            var data = JSON.stringify({ "Username": "kevinbarnard"});
-            xhr.send(data);
 
-        }
-
-        function populateRankings(name) {
-            while (rankingsbody.firstChild) {
-                rankingsbody.removeChild(rankingsbody.firstChild)
+                return "";
             }
 
-            Object.keys(name).forEach((row) => {
-                var userDetails = [];
-                userDetails.push(name[row].gymName);
-                userDetails.push(name[row].branchName);
-                var Status = "";
-                if (name[row].status == 0) {
-                    Status = "Pending";
-                }
-               else if (name[row].status == 1) {
-                    Status = "Reviewed";
-                }
-                else if (name[row].status == 2) {
-                    Status = "Accepted";
-                }
-                else if (name[row].status == 3) {
-                    Status = "Declined";
-                }
-                userDetails.push(Status);
-                userDetails.push("Accept");
-                userDetails.push("Reject");
-                const tr = document.createElement("tr");
 
-                for (var cell = 0; cell < 3; cell++) {
-                    const td = document.createElement("td");
-                    td.textContent = userDetails[cell];
-                    tr.appendChild(td);
+            const applicationsBody = document.querySelector("#applicationsBody > tbody");
 
-                }
-                for (var cell = 3; cell < 4; cell++) {
+            function loadApplications() {
 
-                    const td = document.createElement("td");
-                    td.textContent = userDetails[cell];
-                    td.id = ("accept" + row);
-                    td.onclick = function () {
+                //document.cookie = "username=test, path=/";
+                var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/GymApplication/GetAllApplications")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        console.log(xhr.responseText);
+                        populateApplications(json);
+                    }
+                };
+                //var username = getCookie("username").split(",")[0];
+                var data = JSON.stringify({ "Username": "username"});
+                xhr.send(data);
 
-                        accept("Approve",name[row].gymName, name[row].branchName);
-                    };
-                    tr.appendChild(td);
+            }
 
+            function populateApplications(name) {
+                while (applicationsBody.firstChild) {
+                    applicationsBody.removeChild(applicationsBody.firstChild)
                 }
 
-                for (var cell = 4; cell < 5; cell++) {
+                Object.keys(name).forEach((row) => {
+                    var userDetails = [];
+                    userDetails.push(name[row].gymName);
+                    userDetails.push(name[row].branchName);
+                    var Status = "";
 
-                    const td = document.createElement("td");
-                    td.textContent = userDetails[cell];
-                    td.id = ("reject" + row);
-                    td.onclick = function () {
-                        accept("Reject", name[row].gymName, name[row].branchName);
-                    };
-                    tr.appendChild(td);
-                    console.log(userDetails[row]);
-                }
+                    if (name[row].status == 0) {
+                        Status = "Pending";
+                    }
+                    else if (name[row].status == 1) {
+                        Status = "Reviewed";
+                    }
+                    else if (name[row].status == 2) {
+                        Status = "Accepted";
+                    }
+                    else if (name[row].status == 3) {
+                        Status = "Declined";
+                    }
 
-                rankingsbody.appendChild(tr);
-            });
+                    userDetails.push(Status);
+                    userDetails.push("Accept");
+                    userDetails.push("Reject");
+                    const tr = document.createElement("tr");
 
-        }
+                    for (var cell = 0; cell < 3; cell++) {
+                        const td = document.createElement("td");
+                        td.textContent = userDetails[cell];
+                        tr.appendChild(td);
 
-            function accept(stats, gym, branch) {
+                    }
 
-               var xhr = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/GymApplication/AcceptApplications")";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                    console.log(xhr.responseText);
-                    //  populateRankings(json);
-                } else {
-                    console.log(xhr.responseText);
-                }
-            };
+                    if (name[row].status != 0) {
+                        var td = document.createElement("td");
+                        tr.appendChild(td);
+
+                        td = document.createElement("td");
+                        tr.appendChild(td);
+                    } else {
+
+                        var td = document.createElement("td");
+                        td.textContent = userDetails[3];
+                        td.id = ("accept" + row);
+                        td.onclick = function () {
+                            decision("Approve", name[row].gymName, name[row].branchName);
+                        };
+                        td.style.cursor = "pointer";
+                        td.style.color = "blue";
+                        tr.appendChild(td);
+
+                        td = document.createElement("td");
+                        td.textContent = userDetails[4];
+                        td.id = ("reject" + row);
+                        td.onclick = function () {
+                            decision("Reject", name[row].gymName, name[row].branchName);
+                        };
+                        td.style.cursor = "pointer";
+                        td.style.color = "blue";
+                        tr.appendChild(td);
+                    }
+
+                   
+                    applicationsBody.appendChild(tr);
+                });
+
+            }
+
+            function decision(stats, gym, branch) {
+
+                var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/GymApplication/AcceptApplications")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        applicationsBody.innerHTML = "";
+                        loadApplications();         
+                    } else {
+                        
+                    }
+                };
                 var data = JSON.stringify({ "status": stats, "GymName": gym, "BranchName": branch});
-            xhr.send(data);
+                xhr.send(data);
             }
 
-        document.addEventListener("DOMContentLoaded", () => { loadrankings() })
-                    </script>
+
+            document.addEventListener("DOMContentLoaded", () => { loadApplications() })
+
+        </script>
 
 
-</body>
+    </body>
 </html>
