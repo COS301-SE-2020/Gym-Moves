@@ -9,12 +9,9 @@ Update History:
 --------------------------------------------------------------------------------
 | Name               | Date              | Changes                             |
 --------------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
 Raeesa                 08/08/2020          Added number of people in gym in real
                                             time, using firebase
  --------------------------------------------------------------------------------
->>>>>>> User
 Functional Description:
 
 Classes in the File:
@@ -24,10 +21,7 @@ Classes in the File:
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:convert';
-<<<<<<< HEAD
-=======
 import 'package:firebase_database/firebase_database.dart';
->>>>>>> User
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 
@@ -47,13 +41,10 @@ class Welcome extends StatefulWidget {
   WelcomeState createState() => WelcomeState();
 }
 
-<<<<<<< HEAD
-=======
 
 /* This creates a database reference.*/
 FirebaseDatabase database = new FirebaseDatabase();
 DatabaseReference _userRef=database.reference().child('users');
->>>>>>> User
 /*
 Class Name:
   ManagerPagesState
@@ -81,18 +72,19 @@ class WelcomeState extends State<Welcome> {
 
   Future local;
 
-<<<<<<< HEAD
-=======
   /*
    Method Name: numUsers
    Purpose:
     This method fetches the number of people from the firebase database in real time
    */
-  void numUsers(){
-
-     _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
+  void numUsers() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
+    _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" + gymID)
         .onValue.listen((event) {
-       var snapshot = event.snapshot;
+      var snapshot = event.snapshot;
       setState(() {
         numberOfPeople = snapshot.value.toString();
       });
@@ -100,7 +92,6 @@ class WelcomeState extends State<Welcome> {
   }
 
 
->>>>>>> User
   @override
   void initState() {
     local = _getDetails();
@@ -123,26 +114,22 @@ class WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-<<<<<<< HEAD
-
-=======
     numUsers();
->>>>>>> User
     return new FutureBuilder(
         future: local,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
                 backgroundColor: const Color(0xffffffff),
-<<<<<<< HEAD
-                body: new ListView(children: <Widget>[
+                body: new Column(children: <Widget>[
                   Container(
                     alignment: Alignment.center,
                     width: media.size.width * 0.8,
                     height: 0.4 * media.size.height,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage('assets/MenuPicture.png'),
+                        image:
+                        const AssetImage('assets/MenuPicture.png'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -174,83 +161,26 @@ class WelcomeState extends State<Welcome> {
                       child: Text(
                         numberOfPeople,
                         style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: media.size.width * 0.05,
-                          color: const Color(0xff3e3e3e),
+                          fontFamily: 'Digital',
+                          fontSize: media.size.width * 0.2,
+                          color: const Color(0xff7341E6),
                         ),
                         textAlign: TextAlign.center,
                       ))
-                ]));
-          } else {
-            return Scaffold(
-                backgroundColor: const Color(0xff513369),
-                body: new ListView(children: <Widget>[
-=======
-                body: new Column(children: <Widget>[
-                 Container(
-                   alignment: Alignment.center,
-                      width: media.size.width * 0.8,
-                      height: 0.4 * media.size.height,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                          const AssetImage('assets/MenuPicture.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                    Container(
-                            width: media.size.width,
-                            child: AutoSizeText('Welcome $name!',
-                                style: TextStyle(
-                                    fontFamily: 'Lastwaerk',
-                                    fontSize: 42,
-                                    color: const Color(0xff3e3e3e),
-                                   ),
-                                maxLines: 1,
-                                textAlign: TextAlign.center)),
-                   Container(
-                     padding: EdgeInsets.all(10),
-                            width: media.size.width,
-                            child: Text(
-                              'Number of people at $gymName:',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: media.size.width * 0.05,
-                                color: const Color(0xff3e3e3e),
-                              ),
-                              textAlign: TextAlign.center,
-                            )),
-                    Container(
-                            width: media.size.width,
-                            child: Text(
-                              numberOfPeople,
-                              style: TextStyle(
-                                fontFamily: 'Digital',
-                                fontSize: media.size.width * 0.2,
-                                color: const Color(0xff7341E6),
-                              ),
-                              textAlign: TextAlign.center,
-                            ))
-                  ])
-                );
+                ])
+            );
           } else {
             return Scaffold(
                 backgroundColor: const Color(0xff513369),
                 body: new Column(children: <Widget>[
->>>>>>> User
                   Stack(children: <Widget>[
                     Container(
                       width: media.size.width,
                       height: media.size.height,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-<<<<<<< HEAD
-                          image: const AssetImage('assets/MenuPicture.png'),
-=======
                           image:
                           const AssetImage('assets/MenuPicture.png'),
->>>>>>> User
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -321,9 +251,5 @@ class WelcomeState extends State<Welcome> {
           }
         });
   }
-<<<<<<< HEAD
-}
-=======
 
 }
->>>>>>> User
