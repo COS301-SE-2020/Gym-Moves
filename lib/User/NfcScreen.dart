@@ -172,6 +172,11 @@ class NfcScreenState extends State<NfcScreen> {
 void check() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   allowedtoexit = prefs.get("entered");
+  int gymid = prefs.get('gymId');
+ String gym = gymid.toString();
+ String gymID = "gym" + gym;
+
+ print(gymID);
 
   if(allowedtoexit!=null){
     allowedtoexit = prefs.get("entered");
@@ -182,18 +187,25 @@ void check() async {
   }
 }
   void _entering() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
+
     check();
     if(allowedtoexit==false) {
       int result;
       final prefs = await SharedPreferences.getInstance();
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
+      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" + gymID)
           .once()
           .then((snapshot) {
+            if(snapshot.value!=null)
         result = snapshot.value;
+            else result =0;
       });
       int finalresult = result + 1;
       await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-        "count": finalresult,
+        "count/" + gymID: finalresult,
       }).then((_) {
         prefs.setBool('entered', true);
         allowedtoexit = true;
@@ -207,17 +219,23 @@ void check() async {
 
   void _exiting() async {
     check();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
     if (allowedtoexit == true) {
       int result;
       final prefs = await SharedPreferences.getInstance();
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
+      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" +gymID)
           .once()
           .then((snapshot) {
-        result = snapshot.value;
+        if(snapshot.value!=null)
+          result = snapshot.value;
+        else result =0;
       });
       int finalresult = result - 1;
       await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-        "count": finalresult,
+        "count/"+gymID: finalresult,
       }).then((_) {
         allowedtoexit = false;
         prefs.setBool('entered', false);
