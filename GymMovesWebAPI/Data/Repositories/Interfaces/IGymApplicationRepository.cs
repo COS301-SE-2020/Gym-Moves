@@ -26,7 +26,6 @@ List of Classes:
 using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Migrations;
 using System.Threading.Tasks;
-
 namespace GymMovesWebAPI.Data.Repositories.Interfaces {
     public interface IGymApplicationRepository {
         public Task<bool> addApplication(GymApplications application);

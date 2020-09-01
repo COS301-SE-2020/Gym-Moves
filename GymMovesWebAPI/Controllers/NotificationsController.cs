@@ -20,7 +20,7 @@ Date          |    Author      |     Changes
 --------------------------------------------------------------------------------
 12/07/2020    | Danel          | Added getting announcements
 --------------------------------------------------------------------------------
-
+29/08/2020    | Tia            | Added integrity checks
 
 Functional Description:
     This file implements the controller that will handle all notification
@@ -42,6 +42,7 @@ using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.MailerProgram;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Data.SqlClient.Server;
 
 namespace GymMovesWebAPI.Controllers {
     [Route("api/[controller]")]
@@ -76,9 +77,51 @@ namespace GymMovesWebAPI.Controllers {
             return dateTime;
         }
 
+        private async Task<String> checkIntegrity(NotificationRequest req)
+        {
+            bool chk = await gymRepository.getGymById(req.gymId) == null;
+            string c = chk.ToString();
+            if (c == "True")
+            {
+                return "Invalid Gym ID";
+            }
 
+            try
+            {
+                if (int.Parse(req.announcementDay) < 1 || int.Parse(req.announcementDay) > 31)
+                {
+                    return "Invalid date";
+                }
+
+                if (int.Parse(req.announcementMonth) < 1 || int.Parse(req.announcementMonth) > 12)
+                {
+                    return "Invalid date";
+                }
+
+                if (int.Parse(req.announcementYear) < DateTime.Today.Year)
+                {
+                    return "Invalid date";
+                }
+            }
+            catch (FormatException e)
+            {
+                return "Invalid date";
+            }
+
+            
+
+            return "Valid";
+        }
+
+       
+        
         [HttpPost("sendNotification")]
         public async Task<ActionResult<NotificationResponse>> sendEmail(NotificationRequest req) {
+
+            String integrity = await checkIntegrity(req);
+            if ( integrity != "Valid") {
+                return BadRequest(integrity);
+            }
 
             bool sent = await addAnnouncement(req);
             if (sent) {
@@ -102,7 +145,7 @@ namespace GymMovesWebAPI.Controllers {
                             await mailer.sendEmail(from, "Gym Moves Notifications", req.heading, req.body, user.Email);
                         }
                     }
-
+                    
                     return Ok(new NotificationResponse() { message = "Notification added and sent successfully." });
                 }else
                     return Ok(new NotificationResponse() { message = "Notification added and will be sent on " + announcementDate});
