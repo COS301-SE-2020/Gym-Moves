@@ -68,6 +68,7 @@ flutter:
     - assets/MenuPicture.png
     - assets/Classes.png
     - assets/nfc.png
+    - assets/SignupPicture.png
     - assets/WelcomeBackground.png
     - assets/profile.png
     - assets/notifications.png
