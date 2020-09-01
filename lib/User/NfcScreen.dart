@@ -48,7 +48,7 @@ class NfcScreen extends StatefulWidget {
 FirebaseDatabase database = new FirebaseDatabase();
 DatabaseReference _userRef=database.reference().child('users');
 
-bool allowedtoexit = false;
+String allowedtoexit = "";
 
 class NfcScreenState extends State<NfcScreen> {
 
@@ -171,29 +171,32 @@ class NfcScreenState extends State<NfcScreen> {
   }
 void check() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //prefs.setString('entered', "no");
   allowedtoexit = prefs.get("entered");
   int gymid = prefs.get('gymId');
  String gym = gymid.toString();
  String gymID = "gym" + gym;
 
- print(gymID);
+// print(gymID);
 
   if(allowedtoexit!=null){
     allowedtoexit = prefs.get("entered");
   }
 
   else{
-    allowedtoexit = false;
+    allowedtoexit = "no";
   }
 }
   void _entering() async{
+    check();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int gymid = prefs.get('gymId');
     String gym = gymid.toString();
     String gymID = "gym" + gym;
 
-    check();
-    if(allowedtoexit==false) {
+    allowedtoexit = prefs.get("entered");
+
+    if(allowedtoexit=="no") {
       int result;
       final prefs = await SharedPreferences.getInstance();
       await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" + gymID)
@@ -207,8 +210,8 @@ void check() async {
       await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
         "count/" + gymID: finalresult,
       }).then((_) {
-        prefs.setBool('entered', true);
-        allowedtoexit = true;
+        prefs.setString('entered', "yes");
+       // allowedtoexit = "yes";
         print('Transaction  committed.');
       });
     }
@@ -223,7 +226,10 @@ void check() async {
     int gymid = prefs.get('gymId');
     String gym = gymid.toString();
     String gymID = "gym" + gym;
-    if (allowedtoexit == true) {
+
+    allowedtoexit = prefs.get("entered");
+
+    if (allowedtoexit == "yes") {
       int result;
       final prefs = await SharedPreferences.getInstance();
       await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" +gymID)
@@ -237,8 +243,8 @@ void check() async {
       await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
         "count/"+gymID: finalresult,
       }).then((_) {
-        allowedtoexit = false;
-        prefs.setBool('entered', false);
+        allowedtoexit = "no";
+        prefs.setString('entered', "no");
         print('Transaction  committed.');
       });
     }
