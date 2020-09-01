@@ -86,7 +86,10 @@ class WelcomeState extends State<Welcome> {
         .onValue.listen((event) {
       var snapshot = event.snapshot;
       setState(() {
+        if(snapshot.value!=null)
         numberOfPeople = snapshot.value.toString();
+        else
+          numberOfPeople="0";
       });
     });
   }
