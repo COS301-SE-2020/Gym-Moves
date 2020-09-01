@@ -46,5 +46,11 @@ namespace GymMovesWebAPI.Controllers
         {
             return View();
         }
+
+        [Route("AddStaffMember")]
+        public IActionResult AddStaffMember()
+        {
+            return View();
+        }
     }
 }

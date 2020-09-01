@@ -20,7 +20,7 @@ Date          |    Author      |     Changes
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon" />
 
-    <title>Forgot Password</title>
+    <title>Sign Up</title>
 
     <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
     <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
@@ -89,15 +89,15 @@ Date          |    Author      |     Changes
 
 
                         <div class="form-group">
-                            <label for="password">Password</label>
+                            <label for="password">Given Password</label>
                             <input type="password" class="form-control form-control-lg" name="password" id="password" />
                             <div id="errorPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="confirmPassword" id="confirmLabel">Confirm Password</label>
+                            <label for="confirmPassword" id="confirmLabel">New Password</label>
                             <input type="password" class="form-control form-control-lg" name="confirmPassword" id="confirmPassword" />
-                            <div id="errorConfirm" style="color: red; visibility: hidden;"> Password confirmation is needed! </div>
+                            <div id="errorConfirm" style="color: red; visibility: hidden;"> Password is needed! </div>
                         </div>
 
 
@@ -137,7 +137,7 @@ Date          |    Author      |     Changes
                 document.getElementById("confirmPassword").style.borderColor = color;
                 matches = true;
 
-                if (document.getElementById("password").value != document.getElementById("confirmPassword").value) {
+                if (document.getElementById("password").value == document.getElementById("confirmPassword").value) {
                     document.getElementById("confirmPassword").style.borderColor = "red";
                     matches = false;
                 }
@@ -198,25 +198,30 @@ Date          |    Author      |     Changes
                 if (checkAllFieldsNotEmpty() == true) {
                     if (matches == true) {
                         var username = document.getElementById("username").value;
-                        var password = await hashPassword();
+                        var password = document.getElementById("password").value;
+                        var confirmPassword = await hashPassword();
 
                         var data = {
                             username: username,
-                            password: password
+                            tempPassword: password,
+                            password: confirmPassword
                         }
 
                         jQuery.ajax({
-                            url: "@Url.Content("~/api/user/AdminSignUp")",
+                            url: "@Url.Content("~/api/Admin/signup")",
                             type: "POST",
                             data: JSON.stringify(data),
                             contentType: "application/json",
                             success: function (result) {
                             window.location.href = "@Url.Content("~/AdminLogin")";
 
+                            },
+                            error: function (result) {
+                                window.alert(result.responseText);
                             }
                         });
                     } else {
-                        alert("Passwords do not match!");
+                        alert("Please change your password!");
                     }
                 }
             }

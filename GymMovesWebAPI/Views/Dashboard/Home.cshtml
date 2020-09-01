@@ -41,6 +41,7 @@ Functional Description:
     <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
 
+
     <style>
 
             .look {
@@ -74,13 +75,21 @@ Functional Description:
             table, th, td {
                 border: 2px solid #878787 !important;
             }
+
+        .col-xl-4 col-lg-5 {
+            left: 50%;
+        }
     </style>
 </head>
 <body id="page-top">
 
     <script>
-            if (document.cookie == "") {
-                window.location.href = "@Url.Content("~/ManagerLogin")";
+        if (document.cookie == "") {
+            //document.cookie = "username=esdgsrsa, path=/";
+            //document.cookie = "gymId=15, path=/";
+            //getVar1();
+            //getVar2();
+             window.location.href = "@Url.Content("~/ManagerLogin")";
             }
     </script>
 
@@ -195,7 +204,7 @@ Functional Description:
                 <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="rankings-table dataTable" class="table" width="100%" cellspacing="0">
+                            <table id="rankings-table" class="table" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -210,7 +219,23 @@ Functional Description:
                     </div>
                 </div>
             </div>
+            <!-- Donut Chart -->
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Registered vs Not registered members on app</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-pie pt-4">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
@@ -218,10 +243,9 @@ Functional Description:
         <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
         <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
-
+        <script src="@Url.Content("~/assets/js/demo/pie.js")"></script>
 
         <script>
-
 
                 document.getElementById("All").onclick = function () {
                     document.getElementById("dropdownMenuLink").innerHTML="All";
@@ -274,6 +298,10 @@ Functional Description:
                         var json = JSON.parse(xhr.responseText);
                         console.log(xhr.responseText);
                         populateRankings(json);
+
+                        var all = json.length;
+                        document.cookie = "registered=" + all + ", path = /";
+                        //console.log(json.length);
                     }
                 };
                 var username = getCookie("username").split(",")[0];
@@ -281,8 +309,41 @@ Functional Description:
 
                 var data = JSON.stringify({ "Username": username, "GymId": parseInt(gymid) });
                 xhr.send(data);
+
+
             }
 
+
+            function getVar1() {
+
+                 var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/Gym/registeredMembers")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        var all = json.length;
+                        document.cookie = "registered=" + all + ", path = /";
+                    }
+                };
+            }
+
+            function getVar2() {
+
+                var xhr = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/Gym/unregisteredMembers")";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        var notreg = json.length;
+                        document.cookie = "notregistered=" + notreg + ", path = /";
+                    }
+                };
+
+            }
 
             function getCookie(cname) {
 
@@ -314,8 +375,9 @@ Functional Description:
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         var json = JSON.parse(xhr.responseText);
-                     //   console.log(xhr.responseText);
+
                         populateRankings(json);
+
                     }
                 };
 
@@ -324,6 +386,7 @@ Functional Description:
 
                 var data = JSON.stringify({ "Username": username, "GymId": parseInt(gymid) });
                 xhr.send(data);
+
 
             }
 
@@ -339,6 +402,11 @@ Functional Description:
                         var json = JSON.parse(xhr.responseText);
                      //   console.log(xhr.responseText);
                         populateRankings(json);
+
+
+                        var notreg = json.length;
+                        document.cookie = "notregistered=" + notreg + ", path = /";
+                        // console.log(json.length);
                     }
                 };
                    var username = getCookie("username").split(",")[0];
@@ -346,6 +414,7 @@ Functional Description:
                    var gym = parseInt(gymid);
                    var data = JSON.stringify({ "Username":username, "GymId": gym });
                 xhr.send(data);
+
 
             }
 
@@ -378,11 +447,14 @@ Functional Description:
 
 
             document.addEventListener("DOMContentLoaded", () => { loadAll() });
-
+            //document.addEventListener("DOMContentLoaded", () => { getVar1() });
+           // document.addEventListener("DOMContentLoaded", () => { getVar2() });
             function logout() {
 
                  document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                document.cookie = "notregistered=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;";
+                document.cookie = "registered=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;";
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
 

@@ -182,7 +182,7 @@ Update History:
                 };
 
                 jQuery.ajax({
-                     url: "@Url.Content("~/api/user/AdminLogin")",
+                     url: "@Url.Content("~/api/Admin/login")",
                      type: "POST",
                      data: JSON.stringify(user),
                      contentType: "application/json",
@@ -190,8 +190,7 @@ Update History:
                             document.cookie = "username=" + document.getElementById("username").value + ", path=/";
                             document.cookie = "gymId=" + result.gymID + ", path=/";
                             window.location.href = "@Url.Content("~/dashboard/Admin")";
-                        }
-                                                },
+                     },
                         error: function (result) {
                             window.alert(result.responseText);
                         }
