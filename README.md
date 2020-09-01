@@ -2,6 +2,9 @@
 
 Gym Moves is an application that will make life easier for gym members and gym staff. The application will allow users to see the number of people currently at the gym, the classes that have been cancelled, and information about the gym. This will include promotions and maintenance announcements which will be added by the gym's staff members. This will allow members to make an informed decision about visiting the gym. This project is being developed by the Lockdown Squad.
 
+<br/>
+
+[![Build Status](https://travis-ci.org/COS301-SE-2020/Gym-Moves.svg?branch=master)](https://travis-ci.org/COS301-SE-2020/Gym-Moves)
 
 <br/>
 
