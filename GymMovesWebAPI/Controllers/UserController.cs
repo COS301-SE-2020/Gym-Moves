@@ -103,9 +103,35 @@ namespace GymMovesWebAPI.Controllers {
 
             Users newUserAccount = new Users();
 
+            if(user.gymMemberId == null){
+                return BadRequest("A gym member ID is needed to sign up.");
+            }
+
+            if (user.username == null){
+                return BadRequest("A username is needed to sign up.");
+            }
+
+            if (user.gymName == null)
+            {
+                return BadRequest("A gym name is needed to sign up.");
+            }
+
+            if (user.gymBranch == null)
+            {
+                return BadRequest("A gym branch is needed to sign up.");
+            }
+
             newUserAccount.MembershipId = user.gymMemberId.Trim();
             newUserAccount.Username = user.username.Trim();
             newUserAccount.Gym = await gymRepository.getGymByNameAndBranch(user.gymName.Trim(), user.gymBranch.Trim());
+
+
+            if (newUserAccount.Gym == null)
+            {
+                return BadRequest("A gym with this name and branch does not exist.");
+            }
+
+
             newUserAccount.GymIdForeignKey = newUserAccount.Gym.GymId;
 
             GymMember member = await gymMembersRepository.getMember(newUserAccount.MembershipId,
@@ -238,6 +264,16 @@ namespace GymMovesWebAPI.Controllers {
         [HttpPost("login")]
         public async Task<ActionResult<UserResponseModel>> logIn(LogInRequestModel user) {
 
+            if(user.username == null)
+            {
+                return BadRequest("A username is required to login.");
+            }
+
+            if (user.password == null)
+            {
+                return BadRequest("A password is required to login.");
+            }
+
             Users checkUser = await userGymMovesRepository.getUser(user.username.Trim());
 
             /* If null, no user with that username exists.*/
@@ -343,6 +379,11 @@ namespace GymMovesWebAPI.Controllers {
        [HttpGet("getCode")]
         public async Task<ActionResult> getCode(string username)  {
 
+            if(username == null)
+            {
+                return BadRequest("Your username is needed to receive a code.");
+            }
+
             /* Check if user already has a code.*/
             PasswordReset checkIfHasCode = await resetPasswordRepository.getUser(username);
 
@@ -418,6 +459,16 @@ namespace GymMovesWebAPI.Controllers {
                 return NotFound("This username does not exist! Are you sure you typed the correct one?");
             }
 
+            if(user.password == null)
+            {
+                return BadRequest("A password is needed to reset password.");
+            }
+
+            if (user.code == null)
+            {
+                return BadRequest("A code is needed to reset password.");
+            }
+
 
             /*Get code from code table to see if it matches.*/
             PasswordReset userInCodeTabe = await resetPasswordRepository.getUser(user.username);
@@ -473,8 +524,18 @@ namespace GymMovesWebAPI.Controllers {
                 return NotFound("This user doesn't exist.");
             }
 
+            if (user.newPassword == null)
+            {
+                return BadRequest("A new password is needed in order to change password.");
+            }
+
+            if (user.oldPassword == null)
+            {
+                return BadRequest("The current password is needed in order to change password.");
+            }
+
             /* Verifies the old password matches the one in the db. */
-            if(verifyHash(SHA256.Create(), user.oldPassword + userToChange.Salt, userToChange.Password))  {
+            if (verifyHash(SHA256.Create(), user.oldPassword + userToChange.Salt, userToChange.Password))  {
                 
                 /* Hash new password.*/
                 string hash = getHash(SHA256.Create(), user.newPassword + userToChange.Salt);
@@ -501,16 +562,19 @@ namespace GymMovesWebAPI.Controllers {
             This method will return all instructors for a specific gym.
        */
         [HttpGet("allInstructors")]
-        public async Task<ActionResult<InstructorResponseModel[]>> getAllInstructors(int gymID)
-        {
+        public async Task<ActionResult<InstructorResponseModel[]>> getAllInstructors(int gymID) {
 
             Users[] instructors = await userGymMovesRepository.getAllInstructors(gymID);
+
+            if (instructors == null)  {
+                return BadRequest("There was an error wih retrieving the instructors.");
+            }
+
             List<InstructorResponseModel> instructorsToReturn = new List<InstructorResponseModel>();
 
-            foreach(Users user in instructors)
-            {
-                instructorsToReturn.Add(new InstructorResponseModel
-                {
+            foreach(Users user in instructors) {
+                
+                instructorsToReturn.Add(new InstructorResponseModel  {
                     name = user.Name,
                     surname = user.Surname,
                     username = user.Username

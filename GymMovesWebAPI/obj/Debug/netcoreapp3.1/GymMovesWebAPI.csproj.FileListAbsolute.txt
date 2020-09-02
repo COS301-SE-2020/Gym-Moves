@@ -233,3 +233,5 @@ C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\GymMovesWebAPI.pdb
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\GymMovesWebAPI.genruntimeconfig.cache
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Website\ManagerDetails.cshtml.g.cs
+C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Website\AdminLogin.cshtml.g.cs
+C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Website\AdminSignUp.cshtml.g.cs
