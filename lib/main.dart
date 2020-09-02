@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gym_moves/User/LogIn.dart';
+import 'package:gym_moves/User/Welcome.dart';
+
+import 'User/NfcScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:(LogIn()),
+      home:(Welcome()),
     );
   }
 }
