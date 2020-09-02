@@ -193,23 +193,54 @@
         </script>
 
         <script>
-        async function submitCsv() {
-            var text = document.getElementById("textarea").value;
+            function getCookie(cname) {
 
-            var data = {
-                Username: "SunnyManager",
-                Records: text
-            };
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
 
-            $.ajax({
-                url: "@Url.Content("~/api/membership/addmember")",
-                type: "POST",
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                success: function (result) {
-                    console.log(result);
+                for (var i = 0; i < ca.length; i++) {
+
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+
+                        c = c.substring(1);
+                    }
+
+                    if (c.indexOf(name) == 0) {
+
+                        return c.substring(name.length, c.length);
+                    }
                 }
-            });
+
+                return "";
+            }
+
+            async function submitCsv() {
+                var text = document.getElementById("textarea").value;
+
+                var data = {
+                    Username: getCookie("username").split(",")[0],
+                    Records: text
+                };
+
+                $.ajax({
+                    url: "@Url.Content("~/api/membership/addmember")",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (result) {
+                        console.log(result);
+                        console.log(result["success"]);
+                        console.log(result["duplicates"]);
+                        console.log(result["failure"]);
+
+                        alert(result["success"] + " results successfully added\r\n" + result["duplicates"] + " duplicates were not added\r\n" + result["failure"] + " records not added");
+                    },
+                    failure: function () {
+                        console.log(result);
+                    }
+                });
             }
 
             function logout() {
