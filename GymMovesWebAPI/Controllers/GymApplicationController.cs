@@ -57,6 +57,43 @@ namespace GymMovesWebAPI.Controllers {
 
         [HttpPost("add")]
         public async Task<ActionResult<GymApplications>> addApplication(GymApplicationsRequest application) {
+
+            if(application.GymName == "")
+            {
+                    return StatusCode(StatusCodes.Status400BadRequest, "Gym name cannot be empty!");
+            }
+
+            if (application.BranchName == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Branch name cannot be empty!");
+            }
+
+            if (application.Name == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Name cannot be empty!");
+            }
+
+            if (application.Surname == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Surname cannot be empty!");
+            }
+
+            if (application.Email == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Email cannot be empty!");
+            }
+
+            if (application.PhoneNumber== "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Phone number cannot be empty!");
+            }
+
+            if (application.Address == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Gym address cannot be empty!");
+            }
+
+
             Gym gym = await gymRepository.getGymByNameAndBranch(application.GymName, application.BranchName);
 
             if (gym != null) {
