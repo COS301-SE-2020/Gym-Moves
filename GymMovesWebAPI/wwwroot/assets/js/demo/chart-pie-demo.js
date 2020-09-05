@@ -12,8 +12,8 @@ function createChart(labelsForGraph, values) {
             labels: labelsForGraph,
             datasets: [{
                 data: values,
-                backgroundColor: ['#4e73df', '#1cc88a'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673'],
+                backgroundColor: ['#7341E6', '#C5ABFF'],
+                hoverBackgroundColor: ['#B762FB', '#E3BCFF'],
                 hoverBorderColor: "rgba(234, 236, 244, 1)",
             }],
         },
