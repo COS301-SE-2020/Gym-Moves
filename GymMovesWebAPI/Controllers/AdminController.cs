@@ -23,19 +23,14 @@ List of Classes:
 
  */
 
-using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
-using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
-using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.MailerProgram;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Models.DatabaseModels;
 
 namespace GymMovesWebAPI.Controllers
