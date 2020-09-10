@@ -89,15 +89,15 @@ Date          |    Author      |     Changes
 
 
                         <div class="form-group">
-                            <label for="password">Given Password</label>
-                            <input type="password" class="form-control form-control-lg" name="password" id="password" />
-                            <div id="errorPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
+                            <label for="givenPassword">Given Password</label>
+                            <input type="password" class="form-control form-control-lg" name="givenPassword" id="givenPassword"/>
+                            <div id="errorGivenPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="confirmPassword" id="confirmLabel">New Password</label>
-                            <input type="password" class="form-control form-control-lg" name="confirmPassword" id="confirmPassword" />
-                            <div id="errorConfirm" style="color: red; visibility: hidden;"> Password is needed! </div>
+                            <label for="newPassword" id="confirmLabel">New Password</label>
+                            <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" />
+                            <div id="errorNewPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
                         </div>
 
 
@@ -129,16 +129,16 @@ Date          |    Author      |     Changes
             });
 
 
-            $("#password").on('keyup', function (e) {
-                document.getElementById("password").style.borderColor = color;
+            $("#newPassword").on('keyup', function (e) {
+                document.getElementById("newPassword").style.borderColor = color;
             });
 
-            $("#confirmPassword").on('keyup', function (e) {
-                document.getElementById("confirmPassword").style.borderColor = color;
+            $("#givenPassword").on('keyup', function (e) {
+                document.getElementById("givenPassword").style.borderColor = color;
                 matches = true;
 
-                if (document.getElementById("password").value == document.getElementById("confirmPassword").value) {
-                    document.getElementById("confirmPassword").style.borderColor = "red";
+                if (document.getElementById("newPassword").value == document.getElementById("givenPassword").value) {
+                    document.getElementById("newPassword").style.borderColor = "red";
                     matches = false;
                 }
             });
@@ -154,19 +154,19 @@ Date          |    Author      |     Changes
             }
 
 
-            function checkPasswordNotEmpty() {
-                if (document.getElementById("password").value == "") {
-                    document.getElementById("errorPassword").style.visibility = "visible";
-                    document.getElementById("password").style.boxShadow = "0 0 5px red";
+            function checkGivenPasswordNotEmpty() {
+                if (document.getElementById("givenPassword").value == "") {
+                    document.getElementById("errorGivenPassword").style.visibility = "visible";
+                    document.getElementById("givenPassword").style.boxShadow = "0 0 5px red";
                     return false;
                 }
                 return true;
             }
 
-            function checkConfirmPasswordNotEmpty() {
-                if (document.getElementById("confirmPassword").value == "") {
-                    document.getElementById("errorConfirm").style.visibility = "visible";
-                    document.getElementById("confirmPassword").style.boxShadow = "0 0 5px red";
+            function checkNewPasswordNotEmpty() {
+                if (document.getElementById("newPassword").value == "") {
+                    document.getElementById("errorNewPassword").style.visibility = "visible";
+                    document.getElementById("newPassword").style.boxShadow = "0 0 5px red";
                     return false;
                 }
                 return true;
@@ -175,15 +175,17 @@ Date          |    Author      |     Changes
             function checkAllFieldsNotEmpty() {
                 var status = false;
 
-                status = checkUsernameNotEmpty();
-                status = checkPasswordNotEmpty();
-                status = checkConfirmPasswordNotEmpty();
+                if (checkUsernameNotEmpty() && checkGivenPasswordNotEmpty() && checkNewPasswordNotEmpty()) {
+                    checkGivenPasswordNotEmpty();
+                    checkNewPasswordNotEmpty();
+                    return true;
+                }
 
                 return status;
             }
 
-            async function hashPassword() {
-                const msgBuffer = new TextEncoder('utf-8').encode(document.getElementById("password").value);
+            async function hashPassword(password) {
+                const msgBuffer = new TextEncoder('utf-8').encode(password);
 
                 const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
 
@@ -198,13 +200,13 @@ Date          |    Author      |     Changes
                 if (checkAllFieldsNotEmpty() == true) {
                     if (matches == true) {
                         var username = document.getElementById("username").value;
-                        var password = document.getElementById("password").value;
-                        var confirmPassword = await hashPassword();
+                        var givenPassword = await hashPassword(document.getElementById("givenPassword").value);
+                        var newPassword = await hashPassword(document.getElementById("newPassword").value);
 
                         var data = {
                             username: username,
-                            tempPassword: password,
-                            password: confirmPassword
+                            tempPassword: givenPassword,
+                            password: newPassword
                         }
 
                         jQuery.ajax({
