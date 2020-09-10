@@ -299,6 +299,122 @@ void check() async {
     }
   }
 
+  
+  
+
+
+  void getTime() async{
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
+    var time ="12:00";
+
+
+    // gets the time from api
+    _userRef.child("uizCT8uR8oWSKgOIiVYy/times/"+gymID+"/time")
+        .onValue.listen((event) async {
+      if(event.snapshot == null){
+        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
+          "times/"+gymID+"/day": time,
+        }).then((_) {
+          print('Transaction  committed.');
+        });
+      }
+      var snapshot1 = event.snapshot;
+      //creates array
+      var arrayOfTime= snapshot1.value.toString().split(",");
+
+      //getlength
+      print(arrayOfTime.length);
+
+      //gets at specific index
+      print(arrayOfTime[1]);
+
+      if(arrayOfTime.length>30){
+        //this becomes our new index to start at, to get the
+        //30 most recent entries
+        var newarr = arrayOfTime.length - 30;
+
+        //send through the index to the getdatefunction so it pulls the corresponding date
+        getDate(newarr);
+        getDay(newarr)
+      }
+
+      else{
+        getDay(arrayOfTime.length);
+        getDate(arrayOfTime.length);
+      }
+    });
+  }
+
+  void getDay(index) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
+    var day="Monday";
+
+    _userRef.child("uizCT8uR8oWSKgOIiVYy/times/"+gymID+"/day")
+        .onValue.listen((event) async {
+      if(event.snapshot == null){
+        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
+          "times/"+gymID+"/day": day,
+        }).then((_) {
+          print('Transaction  committed.');
+        });
+      }
+      var snapshot1 = event.snapshot;
+      //creates array
+      var arrayOfTime= snapshot1.value.toString().split(",");
+
+      //getlength
+      print(arrayOfTime.length);
+
+      //gets at specific index
+      print(arrayOfTime[1]);
+
+
+    });
+
+
+  }
+
+  void getDate(index) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
+    var day="08/09/2020";
+
+    _userRef.child("uizCT8uR8oWSKgOIiVYy/times/"+gymID+"/date")
+        .onValue.listen((event) async {
+      if(event.snapshot == null){
+        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
+          "times/"+gymID+"/date": day,
+        }).then((_) {
+          print('Transaction  committed.');
+        });
+      }
+      var snapshot1 = event.snapshot;
+      //creates array
+      var arrayOfTime= snapshot1.value.toString().split(",");
+
+      //getlength
+      print(arrayOfTime.length);
+
+      //gets at specific index
+      print(arrayOfTime[1]);
+
+
+    });
+
+
+  }
+  
+  
+  
   void _showAlertDialog(String message, String message2) {
     // set up the button
     Widget okButton = FlatButton(
