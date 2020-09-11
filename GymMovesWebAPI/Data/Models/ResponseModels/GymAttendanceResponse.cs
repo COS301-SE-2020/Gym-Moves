@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace GymMovesWebAPI.Data.Models.DatabaseModels {
-    public class GymAttendenceRecord {
-        public int GymId { get; set; }
+namespace GymMovesWebAPI.Data.Models.ResponseModels {
+    public class GetGymAttendanceResponse {
         public string Time { get; set; }
         public string Day { get; set; }
         public string Month { get; set; }

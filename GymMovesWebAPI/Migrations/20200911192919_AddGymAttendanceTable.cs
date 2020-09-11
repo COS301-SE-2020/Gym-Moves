@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GymMovesWebAPI.Migrations
 {
-    public partial class AddGymRecordTable : Migration
+    public partial class AddGymAttendanceTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,14 +11,15 @@ namespace GymMovesWebAPI.Migrations
                 columns: table => new
                 {
                     GymId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    TimeInterval = table.Column<string>(nullable: false),
-                    Day = table.Column<string>(nullable: true),
+                    Time = table.Column<string>(nullable: false),
+                    Day = table.Column<int>(nullable: false),
+                    Month = table.Column<int>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
                     Count = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GymAttendence", x => new { x.GymId, x.Date, x.TimeInterval });
+                    table.PrimaryKey("PK_GymAttendence", x => new { x.GymId, x.Time, x.Day, x.Month, x.Year });
                 });
         }
 

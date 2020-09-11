@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace GymMovesWebAPI.Data.Repositories.Interfaces {
     public interface IGymAttendenceRepository {
-        public Task<bool> addAttendence(GymAttendenceRecord record);
-        public Task<GymAttendenceRecord> getAttendenceRecord(int gymId, string time, string day, string month, string year);
-        public Task<bool> updateAttendence(GymAttendenceRecord record);
+        public Task<bool> addAttendence(GymAttendanceRecord record);
+        public Task<GymAttendanceRecord> getAttendenceRecord(int gymId, string time, int day, int month, int year);
+        public Task<bool> updateAttendence(GymAttendanceRecord record);
+        public Task<GymAttendanceRecord[]> GetAttendanceRecords(int gymId);
     }
 }

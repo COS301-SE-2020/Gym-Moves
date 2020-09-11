@@ -15,13 +15,21 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             this.context = context;
         }
 
-        public async Task<bool> addAttendence(GymAttendenceRecord record) {
+        public async Task<bool> addAttendence(GymAttendanceRecord record) {
             context.Add(record);
             return (await context.SaveChangesAsync()) > 0;
         }
 
-        public async Task<GymAttendenceRecord> getAttendenceRecord(int gymId, string time, string day, string month, string year) {
-            IQueryable<GymAttendenceRecord> query = context.GymAttendence;
+        public async Task<GymAttendanceRecord[]> GetAttendanceRecords(int gymId) {
+            IQueryable<GymAttendanceRecord> query = context.GymAttendence;
+
+            query = query.Where(p => p.GymId == gymId);
+
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<GymAttendanceRecord> getAttendenceRecord(int gymId, string time, int day, int month, int year) {
+            IQueryable<GymAttendanceRecord> query = context.GymAttendence;
 
             query = query.Where(p => p.GymId == gymId);
             query = query.Where(p => p.Time == time);
@@ -32,7 +40,7 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<bool> updateAttendence(GymAttendenceRecord record) {
+        public async Task<bool> updateAttendence(GymAttendanceRecord record) {
             context.Update(record);
             return (await context.SaveChangesAsync()) > 0;
         }

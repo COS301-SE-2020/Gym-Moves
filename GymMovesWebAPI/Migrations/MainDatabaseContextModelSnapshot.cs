@@ -142,7 +142,7 @@ namespace GymMovesWebAPI.Migrations
                     b.ToTable("GymApplications");
                 });
 
-            modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymAttendenceRecord", b =>
+            modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymAttendanceRecord", b =>
                 {
                     b.Property<int>("GymId")
                         .HasColumnType("int");
@@ -150,14 +150,14 @@ namespace GymMovesWebAPI.Migrations
                     b.Property<string>("Time")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Day")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Month")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Year")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
