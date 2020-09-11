@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymMovesWebAPI.Migrations
 {
     [DbContext(typeof(MainDatabaseContext))]
-    [Migration("20200911174438_RemoveTimeInterval")]
-    partial class RemoveTimeInterval
+    [Migration("20200911183818_ChangedGymAttendenceFormat")]
+    partial class ChangedGymAttendenceFormat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,16 +149,22 @@ namespace GymMovesWebAPI.Migrations
                     b.Property<int>("GymId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Time")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Day")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<string>("Day")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GymId", "Date");
+                    b.HasKey("GymId", "Time", "Day", "Month", "Year");
 
                     b.ToTable("GymAttendence");
                 });

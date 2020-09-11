@@ -20,11 +20,14 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations {
             return (await context.SaveChangesAsync()) > 0;
         }
 
-        public async Task<GymAttendenceRecord> getAttendenceRecord(int gymId, DateTime date) {
+        public async Task<GymAttendenceRecord> getAttendenceRecord(int gymId, string time, string day, string month, string year) {
             IQueryable<GymAttendenceRecord> query = context.GymAttendence;
 
             query = query.Where(p => p.GymId == gymId);
-            query = query.Where(p => p.Date == date);
+            query = query.Where(p => p.Time == time);
+            query = query.Where(p => p.Day == day);
+            query = query.Where(p => p.Month == month);
+            query = query.Where(p => p.Year == year);
 
             return await query.FirstOrDefaultAsync();
         }

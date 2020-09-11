@@ -144,7 +144,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                 .HasKey(p => new { p.GymName, p.BranchName, p.Code });
 
             modelBuilder.Entity<GymAttendenceRecord>()
-                .HasKey(p => new {p.GymId, p.Date});
+                .HasKey(p => new {p.GymId, p.Time, p.Day, p.Month, p.Year});
 
             /* Default data for gym */
             /*modelBuilder.Entity<Gym>()
