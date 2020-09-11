@@ -33,7 +33,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:nearby_connections/nearby_connections.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NfcScreen extends StatefulWidget {
@@ -117,8 +116,8 @@ class NfcScreenState extends State<NfcScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                           color:const Color(0xff7341E6).withOpacity(0.8),
-                          onPressed: () async {
-                            await _connect(true);
+                          onPressed: () {
+                            _entering();
                           },
                           textColor: Colors.white,
                           padding: const EdgeInsets.all(0.0),
@@ -145,8 +144,8 @@ class NfcScreenState extends State<NfcScreen> {
                               borderRadius: BorderRadius.circular(10.0)
                           ),
                           color: const Color(0xff7341E6).withOpacity(0.8),
-                          onPressed: () async {
-                            await _connect(false);
+                          onPressed: () {
+                              _exiting();
                           },
                           textColor: Colors.white,
                           padding: const EdgeInsets.all(0.0),
@@ -173,11 +172,6 @@ class NfcScreenState extends State<NfcScreen> {
 void check() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   allowedtoexit = prefs.get("entered");
-  int gymid = prefs.get('gymId');
- String gym = gymid.toString();
- String gymID = "gym" + gym;
-
- print(gymID);
 
   if(allowedtoexit!=null){
     allowedtoexit = prefs.get("entered");
@@ -187,107 +181,78 @@ void check() async {
     allowedtoexit = false;
   }
 }
-  void _connect(bool entering) async {
-    String username = (await SharedPreferences.getInstance()).get('username');
-    Strategy strategy = Strategy.P2P_STAR;
-
-    bool a = await Nearby().startDiscovery(
-        username,
-        strategy,
-        onEndpointFound: (id, name, serviceId) {
-          //if (serviceId == _serviceId) {
-          print('[Google Nearby] Service Id: $serviceId');
-          Nearby().requestConnection(
-              username,
-              id,
-              onConnectionInitiated: (id, info) {
-                Nearby().acceptConnection(id,
-                    onPayLoadRecieved: (endId, payload) async {
-                      if (payload.type == PayloadType.BYTES) {
-                        String received = String.fromCharCodes(payload.bytes);
-
-                        if (received.contains("GymId")) {
-                          int id = int.parse(received.split("=")[1]);
-                          print('[Google Nearby] Gym Id: $id');
-
-                          if (entering) {
-                            _entering(id);
-                          } else {
-                            _exiting(id);
-                          }
-                        }
-                      }
-                      await Nearby().disconnectFromEndpoint(id);
-                      await Nearby().stopDiscovery();
-                    }
-                );
-              },
-              onConnectionResult: (id, status) async {
-                await Nearby().stopDiscovery();
-              },
-              onDisconnected: (id) async {
-                await Nearby().stopDiscovery();
-              }
-          );
-          //}
-        },
-        onEndpointLost: (id) async {
-          await Nearby().stopDiscovery();
-        }
-    );
-  }
-
-  void _entering(int gymid) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //int gymid = prefs.get('gymId');
+  void _entering() async{
+   
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
     String gym = gymid.toString();
     String gymID = "gym" + gym;
 
     check();
-
+    
     if(allowedtoexit==false) {
+      
+      int day = (new DateTime.now().day);
+      int month = (new DateTime.now().month);
+      int year = (new DateTime.now().year);
+      String startHour = (new DateTime.now().hour.toString());
+      String time = startHour + ":00";
+
+      String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymattendance/change';
+
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{'Content-type': 'application/json'},
+        body: jsonEncode({
+          "gymid" : gymid,
+          "time": time,
+          "day": day,
+          "month": month,
+          "year": year,
+
+        }),
+      );
+      
+      
+       if (response.statusCode == 200) {
       int result;
       final prefs = await SharedPreferences.getInstance();
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" + gymID)
+      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
           .once()
           .then((snapshot) {
-        if(snapshot.value!=null)
-          result = snapshot.value;
-        else result =0;
+        result = snapshot.value;
       });
       int finalresult = result + 1;
       await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-        "count/" + gymID: finalresult,
+        "count": finalresult,
       }).then((_) {
         prefs.setBool('entered', true);
         allowedtoexit = true;
         print('Transaction  committed.');
       });
     }
+     else {
+        _showAlertDialog(response.body, "Error");
+      }
+    }
     else{
       _showAlertDialog("You've already entered the gym.", "Error");
     }
   }
 
-  void _exiting(int gymid) async {
+  void _exiting() async {
     check();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //int gymid = prefs.get('gymId');
-    String gym = gymid.toString();
-    String gymID = "gym" + gym;
     if (allowedtoexit == true) {
       int result;
       final prefs = await SharedPreferences.getInstance();
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" +gymID)
+      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
           .once()
           .then((snapshot) {
-        if(snapshot.value!=null)
-          result = snapshot.value;
-        else result =0;
+        result = snapshot.value;
       });
       int finalresult = result - 1;
       await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-        "count/"+gymID: finalresult,
+        "count": finalresult,
       }).then((_) {
         allowedtoexit = false;
         prefs.setBool('entered', false);
@@ -299,122 +264,6 @@ void check() async {
     }
   }
 
-  
-  
-
-
-  void getTime() async{
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int gymid = prefs.get('gymId');
-    String gym = gymid.toString();
-    String gymID = "gym" + gym;
-    var time ="12:00";
-
-
-    // gets the time from api
-    _userRef.child("uizCT8uR8oWSKgOIiVYy/times/"+gymID+"/time")
-        .onValue.listen((event) async {
-      if(event.snapshot == null){
-        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-          "times/"+gymID+"/day": time,
-        }).then((_) {
-          print('Transaction  committed.');
-        });
-      }
-      var snapshot1 = event.snapshot;
-      //creates array
-      var arrayOfTime= snapshot1.value.toString().split(",");
-
-      //getlength
-      print(arrayOfTime.length);
-
-      //gets at specific index
-      print(arrayOfTime[1]);
-
-      if(arrayOfTime.length>30){
-        //this becomes our new index to start at, to get the
-        //30 most recent entries
-        var newarr = arrayOfTime.length - 30;
-
-        //send through the index to the getdatefunction so it pulls the corresponding date
-        getDate(newarr);
-        getDay(newarr)
-      }
-
-      else{
-        getDay(arrayOfTime.length);
-        getDate(arrayOfTime.length);
-      }
-    });
-  }
-
-  void getDay(index) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int gymid = prefs.get('gymId');
-    String gym = gymid.toString();
-    String gymID = "gym" + gym;
-    var day="Monday";
-
-    _userRef.child("uizCT8uR8oWSKgOIiVYy/times/"+gymID+"/day")
-        .onValue.listen((event) async {
-      if(event.snapshot == null){
-        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-          "times/"+gymID+"/day": day,
-        }).then((_) {
-          print('Transaction  committed.');
-        });
-      }
-      var snapshot1 = event.snapshot;
-      //creates array
-      var arrayOfTime= snapshot1.value.toString().split(",");
-
-      //getlength
-      print(arrayOfTime.length);
-
-      //gets at specific index
-      print(arrayOfTime[1]);
-
-
-    });
-
-
-  }
-
-  void getDate(index) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int gymid = prefs.get('gymId');
-    String gym = gymid.toString();
-    String gymID = "gym" + gym;
-    var day="08/09/2020";
-
-    _userRef.child("uizCT8uR8oWSKgOIiVYy/times/"+gymID+"/date")
-        .onValue.listen((event) async {
-      if(event.snapshot == null){
-        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-          "times/"+gymID+"/date": day,
-        }).then((_) {
-          print('Transaction  committed.');
-        });
-      }
-      var snapshot1 = event.snapshot;
-      //creates array
-      var arrayOfTime= snapshot1.value.toString().split(",");
-
-      //getlength
-      print(arrayOfTime.length);
-
-      //gets at specific index
-      print(arrayOfTime[1]);
-
-
-    });
-
-
-  }
-  
-  
-  
   void _showAlertDialog(String message, String message2) {
     // set up the button
     Widget okButton = FlatButton(
