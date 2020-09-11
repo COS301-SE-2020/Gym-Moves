@@ -5,7 +5,6 @@ namespace GymMovesWebAPI.Data.Models.DatabaseModels {
         public int GymId { get; set; }
         public string Day { get; set; }
         public DateTime Date { get; set; }
-        public string TimeInterval { get; set; }
         public int Count { get; set; }
     }
 }
