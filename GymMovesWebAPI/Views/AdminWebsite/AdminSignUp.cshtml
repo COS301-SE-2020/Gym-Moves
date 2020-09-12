@@ -200,7 +200,7 @@ Date          |    Author      |     Changes
                 if (checkAllFieldsNotEmpty() == true) {
                     if (matches == true) {
                         var username = document.getElementById("username").value;
-                        var givenPassword = await hashPassword(document.getElementById("givenPassword").value);
+                        var givenPassword = document.getElementById("givenPassword").value;
                         var newPassword = await hashPassword(document.getElementById("newPassword").value);
 
                         var data = {
@@ -215,7 +215,7 @@ Date          |    Author      |     Changes
                             data: JSON.stringify(data),
                             contentType: "application/json",
                             success: function (result) {
-                            window.location.href = "@Url.Content("~/AdminLogin")";
+                            window.location.href = "@Url.Content("~/adminwebsite/AdminLogin")";
 
                             },
                             error: function (result) {

@@ -189,7 +189,7 @@ Update History:
                     success: function (result) {
                             document.cookie = "username=" + document.getElementById("username").value + ", path=/";
                             document.cookie = "gymId=" + result.gymID + ", path=/";
-                            window.location.href = "@Url.Content("~/dashboard/Admin")";
+                            window.location.href = "@Url.Content("~/adminwebsite/Adminhome")";
                      },
                         error: function (result) {
                             window.alert(result.responseText);
