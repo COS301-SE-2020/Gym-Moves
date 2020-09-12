@@ -245,20 +245,50 @@
                                 </div>
                             </div>
                         </div>
-                    </div>   
+                    </div>
+
+                    <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; padding-right:400px;">
+                        <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Line Graph
+                        </a>
+
+                        <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#" id="line">Line Graph</a>
+                            <a class="dropdown-item" href="#" id="bar">Bar Graph</a>
+                        </div>
+                    </div>
 
                     <div align="center" id="lineGraph" style="display: none; padding-left: 50px; padding-right: 50px;">
                         <div class="card shadow mb-4">
 
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary" id="className"></h6>
+                                <h6 class="m-0 font-weight-bold text-primary" id="classNameLine"></h6>
                                 <a onclick="showAllClassesTable()" style="cursor: pointer;">
                                     <i class="text-gray-400" style="text-decoration: underline;"> Back to all classes</i>
                                 </a>
                             </div>
 
                             <div class="card-body">
-                                <div class="chart-area" id="chart">
+                                <div class="chart-area" id="lineChart">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div align="center" id="barGraph" style="display: none; padding-left: 50px; padding-right: 50px;">
+                        <div class="card shadow mb-4">
+
+
+
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary" id="classNameBar"></h6>
+                                <a onclick="showAllClassesTable()" style="cursor: pointer;">
+                                    <i class="text-gray-400" style="text-decoration: underline;"> Back to all classes</i>
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="chart-area" id="barChart">
                                 </div>
                             </div>
                         </div>
@@ -282,6 +312,7 @@
         <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
         <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+        <script src="@Url.Content("~/assets/js/demo/chart-bar-demo.js")"></script>
         <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
 
 
@@ -289,6 +320,8 @@
 
             var username = getCookie("username").split(",")[0];
             var gymId = getCookie("gymId").split(",")[0];
+
+            document.getElementById("type").style.display = "none";
 
             var modal = document.getElementById("alertModal");
             var span = document.getElementsByClassName("close")[0];
@@ -532,10 +565,13 @@
 
                     tableBody.appendChild(tr);
 
-                    var canvas_ = document.createElement('canvas');
-                    canvas_.id = "canvas" + ids;
+                    var lineCanvas = document.createElement('canvas');
+                    var barCanvas = document.createElement('canvas');
+                    lineCanvas.id = "lineCanvas" + ids;
+                    barCanvas.id = "barCanvas" + ids;
 
-                    document.getElementById("chart").appendChild(canvas_);
+                    document.getElementById("lineChart").appendChild(lineCanvas);
+                    document.getElementById("barChart").appendChild(barCanvas);
 
                 }
 
@@ -548,9 +584,18 @@
                 table.style.display = "block";
                 //hide all graphs
                 document.getElementById("lineGraph").style.display = "none";
+                document.getElementById("barGraph").style.display = "none";
+
+                document.getElementById("type").style.display = "none";
             }
 
+            var currentRow;
+
             async function showDetailsOfOneClass(rowToGet) {
+
+                document.getElementById("type").style.display = "block";
+
+                currentRow = rowToGet;
 
                 // get row to show
                 var row = document.getElementById("attendanceData").childNodes[rowToGet];
@@ -559,9 +604,6 @@
                 var table = document.getElementById("classTable");
                 table.style.display = "none";
 
-                // show graph area
-                document.getElementById("lineGraph").style.display = "block";
-
                 // name of class
                 var name = row.childNodes[0].innerHTML;
 
@@ -569,36 +611,77 @@
                 var values = [];
 
                 // set heading of graph
-                document.getElementById("className").innerHTML = name;
+                document.getElementById("classNameLine").innerHTML = name;
+                document.getElementById("classNameBar").innerHTML = name;
 
                 // get which canvas to draw on
-                var canvasId = "canvas" + rowToGet;
+                var canvasId = "Canvas" + rowToGet;
 
-                // draw correct graph
-                for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
+                var type = document.getElementById("type").innerHTML;
 
-                    if (i == rowToGet) {
-                        for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
-                            values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
-                            labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
+                if (type.includes("Line")) {
+                    // show graph area
+                    type = "line";
+                    document.getElementById("lineGraph").style.display = "block";
+                    // draw correct graph
+                    for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
+
+                        if (i == rowToGet) {
+                            for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
+                                values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
+                                labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
+                            }
+
+                            createLineChart(type + canvasId, labelsForGraph, values, name);
                         }
-
-                        createChart(canvasId, labelsForGraph, values, name);
                     }
+
                 }
+                else {
+                    // show graph area
+                    type = "bar";
+                    document.getElementById("barGraph").style.display = "block";
+                    // draw correct graph
+                    for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
+
+                        if (i == rowToGet) {
+                            for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
+                                values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
+                                labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
+                            }
+
+                            createBarChart(type + canvasId, labelsForGraph, values, name);
+                        }
+                    }
+
+                }
+
 
                 // make sure on correct graph shows
                 for (var i = 0; i < document.getElementById("attendanceData").childNodes.length; i++) {
                     if (i != rowToGet) {
-                        var canvas = document.getElementById("canvas" + i);
+                        var canvas = document.getElementById(type + "Canvas" + i);
                         canvas.style.display = "none";
                     }
                     else {
-                        var canvas = document.getElementById("canvas" + i);
+                        var canvas = document.getElementById(type + "Canvas" + i);
                         canvas.style.display = "block";
                     }
                 }
             }
+
+            document.getElementById("line").onclick = function () {
+                document.getElementById("type").innerHTML = "Line Graph";
+                document.getElementById("barGraph").style.display = "none";
+                showDetailsOfOneClass(currentRow);
+            }
+
+            document.getElementById("bar").onclick = function () {
+                document.getElementById("type").innerHTML = "Bar Graph";
+                document.getElementById("lineGraph").style.display = "none";
+                showDetailsOfOneClass(currentRow);
+            }
+
 
             function getCookie(cname) {
 
