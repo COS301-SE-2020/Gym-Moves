@@ -172,13 +172,18 @@ class NfcScreenState extends State<NfcScreen> {
   }
 void check() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  allowedtoexit = prefs.get("entered");
+  bool allowed = prefs.get("entered");
+  int gymid = prefs.get('gymId');
+  String gym = gymid.toString();
+  String gymID = "gym" + gym;
 
-  if(allowedtoexit!=null){
-    allowedtoexit = prefs.get("entered");
+  print(gymID);
+
+  if (allowed != null) {
+    allowedtoexit = allowed;
   }
 
-  else{
+  else {
     allowedtoexit = false;
   }
 }
