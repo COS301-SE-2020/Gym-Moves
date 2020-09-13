@@ -47,14 +47,12 @@ yValues = list()
 getData(3, xValues, yValues)
 
 #X_train, X_test, y_train, y_test = train_test_split(xValues, yValues, test_size=0.30, random_state=40)
-print(xValues)
-print(yValues)
+#print(xValues)
+#print(yValues)
 
 mlp = MLPRegressor(solver= 'lbfgs', learning_rate='adaptive', shuffle = False)
 mlp.fit(xValues,yValues)
 
 predict_train = mlp.predict(xValues)
-prediction = mlp.predict([[1,72000]])
-print(prediction.round(0))
-print(predict_train.round(0))
-print("yes")
+#print(prediction.round(2))
+#print(predict_train.round(2))
