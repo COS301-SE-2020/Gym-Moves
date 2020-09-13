@@ -34,6 +34,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class NfcScreen extends StatefulWidget {
   NfcScreen({
@@ -171,19 +172,55 @@ class NfcScreenState extends State<NfcScreen> {
   }
 void check() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  allowedtoexit = prefs.get("entered");
+  bool allowed = prefs.get("entered");
+  int gymid = prefs.get('gymId');
+  String gym = gymid.toString();
+  String gymID = "gym" + gym;
 
-  if(allowedtoexit!=null){
-    allowedtoexit = prefs.get("entered");
+  print(gymID);
+
+  if (allowed != null) {
+    allowedtoexit = allowed;
   }
 
-  else{
+  else {
     allowedtoexit = false;
   }
 }
   void _entering() async{
+   
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
+
     check();
+    
     if(allowedtoexit==false) {
+      
+      int day = (new DateTime.now().day);
+      int month = (new DateTime.now().month);
+      int year = (new DateTime.now().year);
+      String startHour = (new DateTime.now().hour.toString());
+      String time = startHour + ":00";
+
+      String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymattendance/change';
+
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{'Content-type': 'application/json'},
+        body: jsonEncode({
+          "gymid" : gymid,
+          "time": time,
+          "day": day,
+          "month": month,
+          "year": year,
+
+        }),
+      );
+      
+      
+       if (response.statusCode == 200) {
       int result;
       final prefs = await SharedPreferences.getInstance();
       await _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
@@ -199,6 +236,10 @@ void check() async {
         allowedtoexit = true;
         print('Transaction  committed.');
       });
+    }
+     else {
+        _showAlertDialog(response.body, "Error");
+      }
     }
     else{
       _showAlertDialog("You've already entered the gym.", "Error");
