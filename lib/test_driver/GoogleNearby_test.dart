@@ -30,7 +30,7 @@ void main() {
 
     test('decrements the counter', () async {
       await driver.tap(exitFinder);
-      expect(await driver.getText(enterFinder), "0");
+      expect(await driver.getText(exitFinder), "0");
     });
   });
 }
