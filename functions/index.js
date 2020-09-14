@@ -8,7 +8,7 @@ var m = gapi.google.ml('v1');
 exports.predictSPAM = functions.https.onRequest( async(request, response)=> {
     const time = request.body.decimaltime;
     const dow = request.body.dayoftheweek;
-    var instance = [[dow, time]];
+    var instances = [[dow, time]];
     const model = "GymPredictions";
     //const​ { ​credential​ } ​=​​ await gapi.​google​.​auth​.​getApplicationDefault​();
     const {credential} = await gapi.google.auth.getApplicationDefault();
@@ -18,7 +18,7 @@ exports.predictSPAM = functions.https.onRequest( async(request, response)=> {
       auth: credential,
       name: modelName,
       requestBody: {
-        instance
+        instances
       }
     /*const​​ preds ​​= ​​await ​​m.​projects​.​predict​({
 		auth​:​​ credential, 
@@ -27,7 +27,7 @@ exports.predictSPAM = functions.https.onRequest( async(request, response)=> {
 			​instance
 		​}​*/
     });
-  response.send(preds.data['predictions']);
+  response.send(preds.data);
 	//response​.​send​(​preds​.​data​[​'predictions'​][​0​]);
   });
 
