@@ -89,7 +89,15 @@ class LogInState extends State<LogIn> {
 
     List<dynamic> gymsJson = json.decode(responseBody);
 
-    gymName = Gym.fromJson(gymsJson[id - 1]).gymName;
+    for (dynamic curr in gymsJson) {
+      Gym gym = Gym.fromJson(curr);
+
+      if (gym.gymId == id) {
+        gymName = gym.gymName;
+      }
+    }
+
+    //gymName = Gym.fromJson(gymsJson[id - 1]).gymName;
   }
 
   @override
