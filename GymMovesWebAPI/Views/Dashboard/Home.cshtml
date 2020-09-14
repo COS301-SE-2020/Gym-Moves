@@ -45,15 +45,15 @@ Functional Description:
         <style>
 
             .look {
-                width: 50%;
+                width: 60%;
                 border-radius: 15px;
                 border: 1px #7341e6 solid;
             }
 
             #searching{
-                left: 30%;
-
+                left: 40%;
             }
+
             .navbar_background {
                 background-color: #7341e6;
                 color: white;
@@ -73,13 +73,16 @@ Functional Description:
             }
 
             table, th, td {
-                border: 2px solid #878787 !important;
+                border: none !important;
             }
 
             .col-xl-4 col-lg-5 {
                 left: 50%;
             }
 
+            .row-m-t {
+                margin-top: 20px
+            }
         </style>
     </head>
 
@@ -129,12 +132,6 @@ Functional Description:
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href=#>
-                        <span>Profile</span>
-                    </a>
-                </li>
-
                 <hr class="sidebar-divider d-none d-md-block">
 
                 <div class="text-center d-none d-md-inline">
@@ -143,7 +140,7 @@ Functional Description:
 
             </ul>
 
-            <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content-wrapper" class="flex-column" style="padding-bottom:20px;">
 
                 <div id="content">
 
@@ -177,65 +174,71 @@ Functional Description:
                         </ul>
                     </nav>
 
-                    <div class="row" style="padding-left:50px;">
+                </div>
 
-                        <div class="dropdown">
-                            <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                All
-                            </a>
+                <div class="row" style="padding-left:50px; padding-top:20px;">
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            All
+                        </a>
 
-                            <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#" id="All">All</a>
-                                <a class="dropdown-item" href="#" id="r">Registered</a>
-                                <a class="dropdown-item" href="#" id="nr">Not Registered</a>
-                            </div>
+                        <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#" id="All">All</a>
+                            <a class="dropdown-item" href="#" id="r">Registered</a>
+                            <a class="dropdown-item" href="#" id="nr">Not Registered</a>
                         </div>
+                    </div>
 
-                        <div id="searching" class="wrapping col-xl-3 col-md-6 mb-4">
-                            <div class="search">
-                                <input type="text" style="padding-top: 10px; padding-bottom: 10px;" id="search" class="look" onkeyup='searchTable()' placeholder="Type to search">
-                            </div>
-                        </div>
-
+                    <div id="searching" class="wrapping col-xl-3 col-md-6 mb-4">
+                        <input class="form-control look" type="text"id="search" onkeyup='searchTable()' placeholder="Type to search" aria-label="Search">
                     </div>
                 </div>
 
-                <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="membersTable" class="table" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Surname</th>
-                                        <th>Email</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody">
-                                </tbody>
-                            </table>
+                <div><h2></h2></div>
+
+                <div class="row">
+
+                    <div class="col-xl-8 col-lg-7" style="padding-left:50px;">
+
+                        <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="membersTable" class="table" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-xl-4 col-lg-5">
-                    <div class="card shadow mb-4">
-                        <!-- Card Header - Dropdown -->
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Registered vs Not registered members on app</h6>
-                        </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <div class="chart-pie pt-4">
-                                <canvas id="myPieChart"></canvas>
+                    <div class="col-xl-4 col-lg-5" style="padding-right:50px;">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Registered vs Not registered members on app</h6>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="chart-pie pt-4">
+                                    <canvas id="myPieChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>    
-        </div>
 
+
+            </div>
             
+        </div>
+                  
         <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>

@@ -216,45 +216,49 @@ Functional Description:
                         </div>
                     </div>
 
-                    <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table" id="classDataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Position</th>
-                                            <th>Class</th>
-                                            <th>Instructor</th>
-                                            <th>Day</th>
-                                            <th>Time</th>
-                                            <th>Rating</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="classRatingData">
-                                    </tbody>
-                                </table>
+                    <div style="padding-left: 50px; padding-right: 50px; display: none;">
+                        <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="classDataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Position</th>
+                                                <th>Class</th>
+                                                <th>Instructor</th>
+                                                <th>Day</th>
+                                                <th>Time</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="classRatingData">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Position</th>
-                                            <th>Instructor</th>
-                                            <th>Rating</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="instructorRatingData">
-                                    </tbody>
-                                </table>
+                    <div style="padding-left: 50px; padding-right: 50px; display: none;">
+                        <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Position</th>
+                                                <th>Instructor</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="instructorRatingData">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>        
             </div>
         </div>
 
@@ -417,7 +421,6 @@ Functional Description:
 
             function showInstructors() {
                 var table = document.getElementById("instructorRatingData");
-                console.log(instructorsJson);
                 table.innerHTML = "";
 
                 for (let i = 0; i < instructorsJson.length; i++) {
