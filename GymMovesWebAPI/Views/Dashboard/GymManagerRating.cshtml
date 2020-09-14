@@ -216,49 +216,66 @@ Functional Description:
                         </div>
                     </div>
 
-                    <div style="padding-left: 50px; padding-right: 50px; display: none;">
-                        <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table" id="classDataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Position</th>
-                                                <th>Class</th>
-                                                <th>Instructor</th>
-                                                <th>Day</th>
-                                                <th>Time</th>
-                                                <th>Rating</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="classRatingData">
-                                        </tbody>
-                                    </table>
+                        <div style="padding-left:50px; padding-right:50px;">
+                            <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="classDataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Position</th>
+                                                    <th>Class</th>
+                                                    <th>Instructor</th>
+                                                    <th>Day</th>
+                                                    <th>Time</th>
+                                                    <th>Rating</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="classRatingData">
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div style="padding-left: 50px; padding-right: 50px; display: none;">
-                        <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Position</th>
-                                                <th>Instructor</th>
-                                                <th>Rating</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="instructorRatingData">
-                                        </tbody>
-                                    </table>
+                        <div id="classChartDiv" style="padding-right:50px; padding-left:50px;">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <canvas id="classChart"></canvas>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>        
+
+                        <div style="padding-left:50px; padding-right:50px;">
+                            <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Position</th>
+                                                    <th>Instructor</th>
+                                                    <th>Rating</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="instructorRatingData">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <canvas id="instructorChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
             </div>
         </div>
 
@@ -276,15 +293,18 @@ Functional Description:
         <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
         <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
-        <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
 
 
         <script>
 
             var classesJson = [];
             var classRatings = [];
+            var classRatingsValues = [];
             var instructorsJson = [];
             var instructorsRatings = [];
+            var instructorsRatingsValues = [];
+            var instructorLabels = [];
+            var classLabels = [];
 
             var gymId = getCookie("gymId").split(",")[0];
 
@@ -351,7 +371,7 @@ Functional Description:
                         success: function (result) {
                             if (result.length == 0) {
                                 var rating = 0;
-                                classesRatings.push([classesJson[i].name, classesJson[i].instructor, classesJson[i].day, classesJson[i].startTime, (rating).toFixed(2)]); 
+                                classesRatings.push([classesJson[i].name, classesJson[i].instructor, classesJson[i].day, classesJson[i].startTime, (rating).toFixed(2)]);
                             } else {
                                 var rating = 0;
                                 if (result.ratingCount != 0) {
@@ -376,7 +396,7 @@ Functional Description:
                         url: '@Url.Content("~/api/ratings/instructor?instructor=")' + instructorsJson[i].username,
                         type: "GET",
                         success: function (result) {
-                            console.log(result);
+
                             if (result.length == 0) {
                                 var rating = 0;
                                 instructorsRatings.push([instructorsJson[i].name + instructorsJson[i].surname, (rating).toFixed(2)]);
@@ -385,7 +405,7 @@ Functional Description:
                                 if (result.ratingCount != 0) {
                                     rating = parseInt(result.ratingSum) / parseInt(result.ratingCount);
                                 }
-                                instructorsRatings.push([instructorsJson[i].name + instructorsJson[i].surname, (rating).toFixed(2)]);
+                                instructorsRatings.push([instructorsJson[i].name + " " + instructorsJson[i].surname, (rating).toFixed(2)]);
                             }
                         },
                         error: function (result) {
@@ -401,12 +421,19 @@ Functional Description:
                     document.getElementById("classTable").style.display = "none";
                     document.getElementById("instructorTable").style.display = "block";
                     showInstructors();
+                    drawInstructorChart();
+                    document.getElementById("instructorChartDiv").style.display = "block";
+                    document.getElementById("classChartDiv").style.display = "none";
                 }
                 else {
                     document.getElementById("classTable").style.display = "block";
                     document.getElementById("instructorTable").style.display = "none";
                     showClasses();
+                    drawClassChart();
+                    document.getElementById("instructorChartDiv").style.display = "none";
+                    document.getElementById("classChartDiv").style.display = "block";
                 }
+
             }
 
             document.getElementById("instructor").onclick = function () {
@@ -435,13 +462,16 @@ Functional Description:
                             instructorsRatings[j] = instructorsRatings[j + 1];
                             instructorsJson[j] = instructorsJson[j + 1];
 
-                            classesRatings[j + 1] = tmp;
-                            instructorsRatings[j + 1] = tmpOther;
+                            instructorsRatings[j + 1] = tmp;
+                            instructorsJson[j + 1] = tmpOther;
                         }
                     }
                 }
 
                 for (var j = 0; j < instructorsJson.length; j++) {
+
+                    instructorLabels.push(instructorsRatings[j][0]);
+                    instructorsRatingsValues.push(instructorsRatings[j][1]);
 
                     var tr = document.createElement('tr');
 
@@ -498,6 +528,9 @@ Functional Description:
                 }
 
                 for (var j = 0; j < classesJson.length; j++) {
+
+                    classLabels.push(classRatings[j][0]);
+                    classRatingsValues.push(classRatings[j][4]);
 
                     var tr = document.createElement('tr');
 
@@ -580,6 +613,73 @@ Functional Description:
                 await getInstructors();
                 await getGymClasses();
                 showTable();
+            }
+
+            function drawInstructorChart() {
+
+               var ctx = document.getElementById("instructorChart");
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: instructorLabels,
+                        datasets: [{
+                            label: 'Ratings of Instructors',
+                            data: instructorsRatingsValues,
+                            backgroundColor: "#7341e6",
+                            hoverBackgroundColor: "#7341e6",
+                            borderColor: "#7341e6",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                barPercentage: 0.1
+                            }]
+                        }
+                    }
+                });
+
+                instructorLabels = [];
+                instructorsRatingsValues = [];
+            }
+
+            function drawClassChart() {
+                var ctx = document.getElementById("classChart");
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: classLabels,
+                        datasets: [{
+                            label: 'Ratings of Classes',
+                            data: classRatingsValues,
+                            backgroundColor: "#7341e6",
+                            hoverBackgroundColor: "#7341e6",
+                            borderColor: "#7341e6",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                barPercentage: 0.1
+                            }]
+                        }
+                    }
+                });
+
+                classLabels = [];
+                classRatingsValues = [];
             }
 
         </script>

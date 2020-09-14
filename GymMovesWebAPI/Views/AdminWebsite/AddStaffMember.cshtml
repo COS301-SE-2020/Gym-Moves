@@ -124,6 +124,12 @@ Functional Description:
 
     <body id="page-top">
 
+        <script>
+                if (document.cookie == "") {
+                    window.location.href = "@Url.Content("~/adminwebsite/adminlogin")";
+                }
+        </script>
+
         <div id="wrapper">
 
             <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">

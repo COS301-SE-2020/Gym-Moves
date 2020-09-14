@@ -61,6 +61,13 @@ Update History:
 </head>
 
 <body style="font-family: Roboto;">
+
+    <script>
+            if (document.cookie != "") {
+                window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
+            }
+    </script>
+
     <div class="bs-example">
         <nav class="navbar navbar-expand-md navbar-light navbar_background">
             <a href="#" class="navbar-brand">
@@ -73,7 +80,7 @@ Update History:
 
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ml-auto">
-                   </div>
+                </div>
             </div>
         </nav>
     </div>
