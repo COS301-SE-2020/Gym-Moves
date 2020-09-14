@@ -421,9 +421,12 @@ namespace GymMovesWebAPI.Controllers {
 
                 if(added) {
                     int statusCode = await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Gym Moves Code", 
+                        message, member.Email);
+
+                    await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Gym Moves Code",
                         message, emailReceiver);
 
-                    if(statusCode == 202) {
+                    if (statusCode == 202) {
                         return Ok();
                     }
                     else {

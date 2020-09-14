@@ -23,14 +23,19 @@ List of Classes:
 
  */
 
+using GymMovesWebAPI.Data.Models.DatabaseModels;
 using GymMovesWebAPI.Data.Models.RequestModels;
+using GymMovesWebAPI.Data.Models.ResponseModels;
 using GymMovesWebAPI.Data.Repositories.Interfaces;
+using GymMovesWebAPI.Data.Models.VerificationDatabaseModels;
 using GymMovesWebAPI.MailerProgram;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using GymMovesWebAPI.Data.Enums;
 using GymMovesWebAPI.Models.DatabaseModels;
 
 namespace GymMovesWebAPI.Controllers
@@ -96,6 +101,7 @@ namespace GymMovesWebAPI.Controllers
             string password = getRandomString(10);
 
             user.user.Password = getHash(SHA256.Create(), password);
+            user.user.Password = getHash(SHA256.Create(), user.user.Password);
 
             SupportUsers exists = await adminRepository.getAdmin(user.user.Username);
 
@@ -258,6 +264,13 @@ namespace GymMovesWebAPI.Controllers
             return hashOfPassword.Equals(hash);
         }
 
+        [HttpGet("getallusernames")]
+        public async Task<ActionResult<SupportUsers[]>> getAllUsernames()
+        {
+
+            return Ok(await adminRepository.getAll());
+
+        }
     }
 }
 
