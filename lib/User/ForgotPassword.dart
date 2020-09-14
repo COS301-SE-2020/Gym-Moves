@@ -123,9 +123,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     borderSide: new BorderSide(color: Color(0xff787878)),
                     borderRadius: BorderRadius.circular(15.0))),
             onChanged: (value) {
-              setState(() {
                 password = value;
-              });
             }));
 
     final codeField = Container(
@@ -151,9 +149,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     borderSide: new BorderSide(color: Color(0xff787878)),
                     borderRadius: BorderRadius.circular(15.0))),
             onChanged: (value) {
-              setState(() {
                 password = value;
-              });
             }));
 
     return Scaffold(
