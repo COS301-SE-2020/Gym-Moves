@@ -3,7 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import joblib
 from firebase_admin import storage
-import predictionModel
+from predictionModel import predictionModel
 
 if (not len(firebase_admin._apps)):
 	cred = credentials.Certificate(r'Machine Learning\sdk.json')
@@ -11,7 +11,6 @@ if (not len(firebase_admin._apps)):
         'storageBucket': 'fbprojid.appspot.com'
     })
 db = firestore.client()
-mlp = predictionModel.predictionModel()
 joblib.dump(mlp, 'model.joblib')
 bucket = storage.bucket()
 b = bucket.blob('model-v/model.joblib')
