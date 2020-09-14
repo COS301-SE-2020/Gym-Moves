@@ -47,6 +47,22 @@ bool allowedtoexit = false;
 
 class NfcScreenState extends State<NfcScreen> {
 
+  Future<void> _permissions() async {
+    if (!await Nearby().checkLocationPermission()) {
+    Nearby().askLocationPermission();
+    }
+
+    if (!await Nearby().checkLocationEnabled()) {
+    Nearby().enableLocationServices();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _permissions();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +79,12 @@ class NfcScreenState extends State<NfcScreen> {
                     width:0.6* media.size.width,
                     height: 0.4* media.size.height,
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: const AssetImage('assets/nfc.png'),
-                          fit: BoxFit.fill,
+                      image: DecorationImage(
+                        image: const AssetImage('assets/nfc.png'),
+                        fit: BoxFit.fill,
 
-                        ),
-)
+                      ),
+                    )
                 )
             ),
 
@@ -157,30 +173,30 @@ class NfcScreenState extends State<NfcScreen> {
                         )
                     )
                 ),
-                
+
               ],
             ),
           )
         ])
     );
   }
-void check() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool allowed = prefs.get("entered");
-  int gymid = prefs.get('gymId');
- String gym = gymid.toString();
- String gymID = "gym" + gym;
+  void check() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool allowed = prefs.get("entered");
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
 
- print(gymID);
+    print(gymID);
 
-  if(allowed!=null){
-    allowedtoexit = allowed;
+    if(allowed!=null){
+      allowedtoexit = allowed;
+    }
+
+    else{
+      allowedtoexit = false;
+    }
   }
-
-  else{
-    allowedtoexit = false;
-  }
-}
   void _connect(bool entering) async {
     String username = (await SharedPreferences.getInstance()).get('username');
     Strategy strategy = Strategy.P2P_STAR;
@@ -241,52 +257,52 @@ void check() async {
 
     if(allowedtoexit==false) {
 
-    
-     int day = (new DateTime.now().day);
-          int month = (new DateTime.now().month);
-          int year = (new DateTime.now().year);
-          String startHour = (new DateTime.now().hour.toString());
-          String time = startHour + ":00";
 
-          String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymattendance/change';
+      int day = (new DateTime.now().day);
+      int month = (new DateTime.now().month);
+      int year = (new DateTime.now().year);
+      String startHour = (new DateTime.now().hour.toString());
+      String time = startHour + ":00";
 
-          final http.Response response = await http.post(
-            url,
-            headers: <String, String>{'Content-type': 'application/json'},
-            body: jsonEncode({
-              "gymid" : gymid,
-              "time": time,
-              "day": day,
-              "month": month,
-              "year": year,
+      String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymattendance/change';
 
-            }),
-          );
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{'Content-type': 'application/json'},
+        body: jsonEncode({
+          "gymid" : gymid,
+          "time": time,
+          "day": day,
+          "month": month,
+          "year": year,
+
+        }),
+      );
 
 
       if (response.statusCode == 200) {
-      int result;
-      final prefs = await SharedPreferences.getInstance();
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" + gymID)
-          .once()
-          .then((snapshot) {
-        if(snapshot.value!=null)
-          result = snapshot.value;
-        else result =0;
-      });
-      int finalresult = result + 1;
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-        "count/" + gymID: finalresult,
-      }).then((_) {
-        prefs.setBool('entered', true);
-        allowedtoexit = true;
-        print('Transaction  committed.');
-      });
+        int result;
+        final prefs = await SharedPreferences.getInstance();
+        await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" + gymID)
+            .once()
+            .then((snapshot) {
+          if(snapshot.value!=null)
+            result = snapshot.value;
+          else result =0;
+        });
+        int finalresult = result + 1;
+        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
+          "count/" + gymID: finalresult,
+        }).then((_) {
+          prefs.setBool('entered', true);
+          allowedtoexit = true;
+          print('Transaction  committed.');
+        });
+      }
+      else {
+        _showAlertDialog(response.body, "Error");
+      }
     }
-    else {
-            _showAlertDialog(response.body, "Error");
-          }
-        }
     else{
       _showAlertDialog("You've already entered the gym.", "Error");
     }
