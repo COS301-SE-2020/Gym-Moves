@@ -80,6 +80,10 @@
                 text-decoration: none;
                 cursor: pointer;    
             }
+            #downloadCSV {
+                background-color: #7341E6;
+                color: white;
+            }
 
         </style>
 
@@ -89,7 +93,7 @@
 
         <script>
             if (document.cookie == "") {
-               // window.location.href = "@Url.Content("~/ManagerLogin")";
+                window.location.href = "@Url.Content("~/ManagerLogin")";
             }
         </script>
 
@@ -273,6 +277,7 @@
                                 </div>
                             </div>
                         </div>
+                        <button id="downloadCSV">Download Chart Data as CSV</button>
                     </div>
 
                     <div align="center" id="barGraph" style="display: none; padding-left: 50px; padding-right: 50px;">
@@ -292,6 +297,7 @@
                                 </div>
                             </div>
                         </div>
+                        <button id="downloadCSV">Download Chart Data as CSV</button>
                     </div>
                 </div>
             </div>
@@ -318,8 +324,9 @@
 
         <script>
 
-            var username = getCookie("username").split(",")[0];
-            var gymId = getCookie("gymId").split(",")[0];
+            var encodedUri;
+            var username = "hello"; //getCookie("username").split(",")[0];
+            var gymId = 6; // getCookie("gymId").split(",")[0];
 
             document.getElementById("type").style.display = "none";
 
@@ -337,8 +344,7 @@
             var classAttendanceRecordsInIdOrder = [];
             var classAttendanceValuesInIdOrder = [];
             var instructors;
-
- 
+           
             async function getAllClasses() {
 
                 jQuery.ajax({
@@ -380,8 +386,8 @@
                                 classAttendanceRecordsInIdOrder.push(result);
                             }
                             else {
-                                //modalMessage.innerHTML = "There is currently no attendance for classes at your gym!";
-                               // modal.style.display = "block";
+                                modalMessage.innerHTML = "There is currently no attendance for classes at your gym!";
+                                modal.style.display = "block";
                             }
                         },
                         error: function (result) {
@@ -421,6 +427,10 @@
 
                             classAttendanceValuesInIdOrder[j + 1] = tmp;
                             classAttendanceRecordsInIdOrder[j + 1] = tmpOther;
+
+                 
+
+
                         }
                     }
                 }
@@ -500,6 +510,22 @@
                     document.getElementById("cardTwo").style.display = "none";
                     document.getElementById("cardThree").style.display = "none";
                 }
+
+
+
+           //     for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
+             //       for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
+               //         result.push([classAttendanceValuesInIdOrder[i][classInside].capacity, allClasses[i].name, allClasses[i].classId, classAttendanceValuesInIdOrder[i][classInside].date, classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents]);
+                 //       console.log(result);
+                   // }
+                //}
+
+               
+            }
+
+            function downloadCSV() {
+
+                window.open(encodedUri);
             }
 
             function showTableOfClasses() {
@@ -555,6 +581,7 @@
                     average_td.appendChild(document.createTextNode((sum / classAttendanceRecordsInIdOrder[ids].length * 100).toFixed(2) + "%"));
                     tr.appendChild(average_td);
 
+                   
 
                     var link_td = document.createElement('td');
                     var a = document.createElement('a');
@@ -579,92 +606,45 @@
             }
 
             var csvArray = [];
-
             function showAllClassesTable() {
-
                 var table = document.getElementById("classTable");
                 // show all classes
                 table.style.display = "block";
                 //hide all graphs
                 document.getElementById("lineGraph").style.display = "none";
                 document.getElementById("barGraph").style.display = "none";
-
                 document.getElementById("type").style.display = "none";
-
                 csvArray = [];
             }
-
             var currentRow;
-
             async function showDetailsOfOneClass(rowToGet) {
-
                 document.getElementById("type").style.display = "block";
-
                 currentRow = rowToGet;
-
                 // get row to show
                 var row = document.getElementById("attendanceData").childNodes[rowToGet];
-
                 // hide the table
                 var table = document.getElementById("classTable");
                 table.style.display = "none";
-
                 // name of class
                 var name = row.childNodes[0].innerHTML;
-
                 var labelsForGraph = [];
                 var values = [];
-
                 // set heading of graph
                 document.getElementById("classNameLine").innerHTML = name;
                 document.getElementById("classNameBar").innerHTML = name;
-
                 // get which canvas to draw on
                 var canvasId = "Canvas" + rowToGet;
-
                 var type = document.getElementById("type").innerHTML;
-
                 if (type.includes("Line")) {
                     // show graph area
                     type = "line";
                     document.getElementById("lineGraph").style.display = "block";
                     // draw correct graph
                     for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
-
                         if (i == rowToGet) {
                             for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
                                 values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
                                 labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
-
-                                var index; 
-                                for (var x = 0; x < allClasses.length; x++) {
-                                    if (classAttendanceRecordsInIdOrder[i][0].classId == allClasses[x].classId) {
-                                        index = x;
-                                        break;
-                                    }
-                                }
-
-                                csvArray.push([allClasses[index].name, classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0],
-                                    (classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2)]);
-                            }
-
-                            createLineChart(type + canvasId, labelsForGraph, values, name);
-                        }
-                    }
-
-                }
-                else {
-                    // show graph area
-                    type = "bar";
-                    document.getElementById("barGraph").style.display = "block";
-                    // draw correct graph
-                    for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
-
-                        if (i == rowToGet) {
-                            for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
-                                values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
-                                labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
-
                                 var index;
                                 for (var x = 0; x < allClasses.length; x++) {
                                     if (classAttendanceRecordsInIdOrder[i][0].classId == allClasses[x].classId) {
@@ -672,18 +652,37 @@
                                         break;
                                     }
                                 }
-
                                 csvArray.push([allClasses[index].name, classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0],
                                 (classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2)]);
                             }
-
-
+                            createLineChart(type + canvasId, labelsForGraph, values, name);
+                        }
+                    }
+                }
+                else {
+                    // show graph area
+                    type = "bar";
+                    document.getElementById("barGraph").style.display = "block";
+                    // draw correct graph
+                    for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
+                        if (i == rowToGet) {
+                            for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
+                                values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
+                                labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
+                                var index;
+                                for (var x = 0; x < allClasses.length; x++) {
+                                    if (classAttendanceRecordsInIdOrder[i][0].classId == allClasses[x].classId) {
+                                        index = x;
+                                        break;
+                                    }
+                                }
+                                csvArray.push([allClasses[index].name, classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0],
+                                (classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2)]);
+                            }
                             createBarChart(type + canvasId, labelsForGraph, values, name);
                         }
                     }
                 }
-
-
                 // make sure on correct graph shows
                 for (var i = 0; i < document.getElementById("attendanceData").childNodes.length; i++) {
                     if (i != rowToGet) {
@@ -695,19 +694,33 @@
                         canvas.style.display = "block";
                     }
                 }
+                console.log(csvArray);
+                document.getElementById("downloadCSV").addEventListener("click", function () {
+                    downloadCSV()
+                });
+
+                let csvContent = "data:text/csv;charset=utf-8,";
+
+                csvArray.forEach(function (rowArray) {
+                    let csvArray = rowArray.join(",");
+                    csvContent += csvArray + "\r\n";
+                });
+
+                encodedUri = encodeURI(csvContent);
             }
+
 
             document.getElementById("line").onclick = function () {
                 document.getElementById("type").innerHTML = "Line Graph";
                 document.getElementById("barGraph").style.display = "none";
                 showDetailsOfOneClass(currentRow);
             }
-
             document.getElementById("bar").onclick = function () {
                 document.getElementById("type").innerHTML = "Bar Graph";
                 document.getElementById("lineGraph").style.display = "none";
                 showDetailsOfOneClass(currentRow);
             }
+
 
 
             function getCookie(cname) {
