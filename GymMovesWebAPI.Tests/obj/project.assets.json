@@ -1362,11 +1362,10 @@
           }
         }
       },
-      "SendGrid/9.18.0": {
+      "SendGrid/9.17.0": {
         "type": "package",
         "dependencies": {
-          "Newtonsoft.Json": "9.0.1",
-          "starkbank-ecdsa": "[1.2.0, 2.0.0)"
+          "Newtonsoft.Json": "9.0.1"
         },
         "compile": {
           "lib/netstandard2.0/SendGrid.dll": {}
@@ -1472,15 +1471,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
-        }
-      },
-      "starkbank-ecdsa/1.2.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.1/StarkbankEcdsa.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.1/StarkbankEcdsa.dll": {}
         }
       },
       "System.Collections/4.3.0": {
@@ -2947,13 +2937,15 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
+          "Google.Apis": "1.47.0",
           "Google.Apis.Auth": "1.47.0",
           "MailKit": "2.7.0",
           "Microsoft.EntityFrameworkCore": "3.1.5",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.5",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.5",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.3",
           "MimeKit": "2.8.0",
-          "SendGrid": "9.18.0"
+          "SendGrid": "9.17.0"
         },
         "compile": {
           "bin/placeholder/GymMovesWebAPI.dll": {}
@@ -5083,10 +5075,10 @@
         "version.txt"
       ]
     },
-    "SendGrid/9.18.0": {
-      "sha512": "WEZUHnHpdI/6xHvqZRZDCKhFyyyys4lnAf50qiME29QDyCVjYBjMDC/KkuLEEDnQfllBrmqkX8DNyf4XU9og9g==",
+    "SendGrid/9.17.0": {
+      "sha512": "9s5YdEP/7o0PgHmmaRYfu4zsg2IneAV9ljR++bn+FPmtTg8702RAjpaa9Vrc5ofNZrsNlcZ7j0AgvXc63GXNeg==",
       "type": "package",
-      "path": "sendgrid/9.18.0",
+      "path": "sendgrid/9.17.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5102,7 +5094,7 @@
         "lib/netstandard2.0/SendGrid.dll",
         "lib/netstandard2.0/SendGrid.pdb",
         "lib/netstandard2.0/SendGrid.xml",
-        "sendgrid.9.18.0.nupkg.sha512",
+        "sendgrid.9.17.0.nupkg.sha512",
         "sendgrid.nuspec"
       ]
     },
@@ -5176,22 +5168,6 @@
         "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll",
         "sqlitepclraw.provider.dynamic_cdecl.2.0.2.nupkg.sha512",
         "sqlitepclraw.provider.dynamic_cdecl.nuspec"
-      ]
-    },
-    "starkbank-ecdsa/1.2.0": {
-      "sha512": "hP53QPYOOEIR44EK9phz+DYliM6DEieDZxpb8GZzE+++qyrWqUscKcyHCC6L9yu/ehllYtqxtT4qrjWDsuQlUQ==",
-      "type": "package",
-      "path": "starkbank-ecdsa/1.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net40/StarkbankEcdsa.dll",
-        "lib/net452/StarkbankEcdsa.dll",
-        "lib/netstandard1.3/StarkbankEcdsa.dll",
-        "lib/netstandard2.0/StarkbankEcdsa.dll",
-        "lib/netstandard2.1/StarkbankEcdsa.dll",
-        "starkbank-ecdsa.1.2.0.nupkg.sha512",
-        "starkbank-ecdsa.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -9256,25 +9232,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\danel\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Longji\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\danel\\source\\repos\\GymMovesWebAPI\\GymMovesWebAPI.Tests\\GymMovesWebAPI.Tests.csproj",
+      "projectUniqueName": "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI.Tests\\GymMovesWebAPI.Tests.csproj",
       "projectName": "GymMovesWebAPI.Tests",
-      "projectPath": "C:\\Users\\danel\\source\\repos\\GymMovesWebAPI\\GymMovesWebAPI.Tests\\GymMovesWebAPI.Tests.csproj",
-      "packagesPath": "C:\\Users\\danel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\danel\\source\\repos\\GymMovesWebAPI\\GymMovesWebAPI.Tests\\obj\\",
+      "projectPath": "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI.Tests\\GymMovesWebAPI.Tests.csproj",
+      "packagesPath": "C:\\Users\\Longji\\.nuget\\packages\\",
+      "outputPath": "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI.Tests\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\danel\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\Longji\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -9286,8 +9257,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\danel\\source\\repos\\GymMovesWebAPI\\GymMovesWebAPI\\GymMovesWebAPI.csproj": {
-              "projectPath": "C:\\Users\\danel\\source\\repos\\GymMovesWebAPI\\GymMovesWebAPI\\GymMovesWebAPI.csproj"
+            "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj": {
+              "projectPath": "E:\\Programming\\COS 301\\Capstone\\Gym-Moves\\GymMovesWebAPI\\GymMovesWebAPI.csproj"
             }
           }
         }
@@ -9344,12 +9315,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.2, 3.1.2]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -9358,7 +9323,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
