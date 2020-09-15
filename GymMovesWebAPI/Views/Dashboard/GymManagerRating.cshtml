@@ -371,7 +371,7 @@ Functional Description:
                         success: function (result) {
                             if (result.length == 0) {
                                 var rating = 0;
-                                classesRatings.push([classesJson[i].name, classesJson[i].instructor, classesJson[i].day, classesJson[i].startTime, (rating).toFixed(2)]);
+                                classRatings.push([classesJson[i].name, classesJson[i].instructor, classesJson[i].day, classesJson[i].startTime, (rating).toFixed(2)]);
                             } else {
                                 var rating = 0;
                                 if (result.ratingCount != 0) {
@@ -515,7 +515,7 @@ Functional Description:
 
                         if (classRatings[j] < classRatings[j + 1]) {
 
-                            let tmp = classesRatings[j];
+                            let tmp = classRatings[j];
                             let tmpOther = classesJson[j];
 
                             classRatings[j] = classRatings[j + 1];

@@ -587,14 +587,8 @@ namespace GymMovesWebAPI.Controllers
         {
             ClassAttendance[] classAttendance = await classAttendanceRepository.getClassAttendance(classId);
 
-            if(classAttendance.Length == 0)
-            {
-                return Ok(null);
-            }
-            else
-            {
-                return Ok(classAttendance);
-            }
+             return Ok(classAttendance);
+
         }
 
         /*Days and their differences for the other days*/
