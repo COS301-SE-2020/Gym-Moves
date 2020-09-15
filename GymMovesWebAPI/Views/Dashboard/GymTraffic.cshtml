@@ -102,12 +102,6 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <span>Profile</span>
-                </a>
-            </li>
-
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="text-center d-none d-md-inline">
@@ -354,7 +348,7 @@
             }
 
             var req = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/gymattendance/get?gymId=")" + gymId
+            var url = "@Url.Content("~/api/gymattendance/get?gymid=")" + gymId
             req.open("GET", url, true);
             req.setRequestHeader("Content-Type", "application/json");
             req.onreadystatechange = function () {
