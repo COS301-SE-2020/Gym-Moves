@@ -42,5 +42,10 @@ namespace GymMovesWebAPI.Data.Repositories.Implementations
 
             return (await context.SaveChangesAsync()) > 0;
         }
+
+        public async Task<SupportUsers[]> getAll()
+        {
+            return context.SupportStaff.ToArray();
+        }
     }
 }
