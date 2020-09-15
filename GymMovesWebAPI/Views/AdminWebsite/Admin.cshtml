@@ -79,13 +79,50 @@ Functional Description:
                 background: #EEEBEA;
             }
 
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
     </style>
 
 </head>
 
-    <body id="page-top">
+<body id="page-top">
 
-        <script>
+    <script>
 
             function getCookie(cname) {
 
@@ -142,109 +179,118 @@ Functional Description:
             }
 
 
-        </script>
+    </script>
 
-        <div id="wrapper">
+    <div id="wrapper">
 
-            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                    <div class="sidebar-brand-icon">
-                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                    </div>
-                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
-                </a>
-
-                <hr class="sidebar-divider my-0">
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Content("~/adminwebsite/adminhome")">
-                        <span>Home</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Content("~/adminwebsite/addStaffMember")">
-                        <span>Add A Staff Member</span>
-                    </a>
-                </li>
-
-                <hr class="sidebar-divider d-none d-md-block">
-
-                <div class="text-center d-none d-md-inline">
-                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                <div class="sidebar-brand-icon">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                 </div>
+                <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            </a>
 
-            </ul>
+            <hr class="sidebar-divider my-0">
 
-            <div id="content-wrapper" class="d-flex flex-column">
-                <div id="content">
+            <li class="nav-item active">
+                <a class="nav-link" href="@Url.Content("~/adminwebsite/adminhome")">
+                    <span>Home</span>
+                </a>
+            </li>
 
-                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/adminwebsite/addStaffMember")">
+                    <span>Add A Staff Member</span>
+                </a>
+            </li>
 
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
+            <hr class="sidebar-divider d-none d-md-block">
 
-                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                            Accept/Reject Gym Applications
-                        </div>
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
-                        <ul class="navbar-nav ml-auto">
+        </ul>
 
-                            <div class="topbar-divider d-none d-sm-block"></div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
 
-                            <li class="nav-item dropdown no-arrow">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                        Accept/Reject Gym Applications
+                    </div>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
                                 </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
 
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Logout
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <section>
-                        <div class="container">
-                            <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                                <div class=" card-body">
-                                    <div class="table-responsive">
-                                        <table id="applicationsBody" class="greyGridTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Gym name</th>
-                                                    <th>Branch Name</th>
-                                                    <th>Status</th>
-                                                    <th>Accept</th>
-                                                    <th>Reject</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tbody">
-                                            </tbody>
-                                        </table>
-                                    </div>
+                <section>
+                    <div class="container">
+                        <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                            <div class=" card-body">
+                                <div class="table-responsive">
+                                    <table id="applicationsBody" class="greyGridTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Gym name</th>
+                                                <th>Branch Name</th>
+                                                <th>Status</th>
+                                                <th>Accept</th>
+                                                <th>Reject</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </div>
+                    </div>
+                </section>
             </div>
         </div>
+    </div>
 
-        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
-       
-        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <span align="right" class="close">&times;</span>
+            <h4 id="modalHeading"></h4>
+            <br />
+            <p id="message"></p>
+        </div>
+    </div>
 
-        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
 
-        <script type="text/javascript">
+    <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+
+    <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+
+    <script type="text/javascript">
 
             function getCookie(cname) {
 
@@ -383,8 +429,8 @@ Functional Description:
                 window.location.href = "@Url.Content("~/adminwebsite/adminLogin")";
             }
 
-        </script>
+    </script>
 
 
-    </body>
+</body>
 </html>
