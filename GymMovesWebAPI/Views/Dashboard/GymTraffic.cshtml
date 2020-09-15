@@ -262,7 +262,10 @@
 
         <script>
 
-        var days = new Array(7); //days of the week data
+            var days = new Array(7); //days of the week data
+            var tm = 0;
+            var dow = 0;
+            var prev = 0;
         function getCookie(cname) {
 
             var name = cname + "=";
@@ -302,7 +305,7 @@
         function showData() {
             console.log("1")
             showChart();
-            //showDailyPredictions();
+            showDailyPredictions();
         }
 
         async function showDailyPredictions() {
@@ -310,9 +313,12 @@
             for (k = 0; k < 6; k++) { //each day of the week
                 var peakcount = 0;
                 var peaktime = 0;
+                prev = days[k];
                 for (p = 6; p < 20; p++) { // each hour of the day
-                    var tm = p * 3600;
-                    var pred = await getPrediction(tm, k);
+                    tm = p-6;
+                    dow = k;
+
+                    var pred = await getPrediction();
 
                     if (pred > peakcount) {
                         peakcount = pred;
@@ -320,12 +326,17 @@
                     }
                 }
 
-                var el = document.getElementById(k.toString());
-                el.innerHTML = "Peak Time: " + peaktime.toFixed(0);
+                if (prev == 1) {
+                    var el = document.getElementById(k.toString());
+                    el.innerHTML = "No  predictions";
+                } else {
+                    var el = document.getElementById(k.toString());
+                    el.innerHTML = "Peak Time: " + peaktime.toFixed(0);
+                }
             }
         }
 
-        async function getPrediction(tm, dow) {
+        async function getPrediction() {
             var req = new XMLHttpRequest();
             var url = 'https://us-central1-fbprojid.cloudfunctions.net/predictSPAM';
             req.open("POST", url, true);
@@ -339,7 +350,8 @@
             }
             var data = JSON.stringify({
                 "decimaltime": tm,
-                "dayoftheweek": dow
+                "dayoftheweek": dow,
+                "prevweek": prev
             });
             req.send(data)
         }
