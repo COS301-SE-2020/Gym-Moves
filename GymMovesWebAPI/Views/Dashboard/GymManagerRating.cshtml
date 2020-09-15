@@ -458,7 +458,7 @@ Functional Description:
 
                     for (let j = 0; j < instructorsJson.length; j++) {
 
-                        if (instructorsRatings[j] < instructorsRatings[j + 1]) {
+                        if (instructorsRatings[j][1] < instructorsRatings[j + 1][1]) {
 
                             let tmp = instructorsRatings[j];
                             let tmpOther = instructorsJson[j];
@@ -532,7 +532,7 @@ Functional Description:
 
                     for (let j = 0; j < classesJson.length; j++) {
 
-                        if (classRatings[j] < classRatings[j + 1]) {
+                        if (classRatings[j][4] < classRatings[j + 1][4]) {
 
                             let tmp = classRatings[j];
                             let tmpOther = classesJson[j];
