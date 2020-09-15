@@ -25,19 +25,23 @@ List of Classes:
 
  */
 
+using System.ComponentModel.DataAnnotations;
+
 namespace GymMovesWebAPI.Data.Models.RequestModels
 {
     public class NotificationRequest
     {
+        [Required]
         public int gymId { get; set; }
+        [Required]
         public string heading { get; set; }
-
+        [Required]
         public string body { get; set; }
-
+        [Required]
         public string announcementDay { get; set; }
-
+        [Required]
         public string announcementMonth { get; set; }
-
+        [Required]
         public string announcementYear { get; set; }
     }
 
@@ -50,8 +54,11 @@ namespace GymMovesWebAPI.Data.Models.RequestModels
     */
     public class ChangeNotificationsSettingsRequest
     {
+        [Required]
         public bool push { get; set; }
+        [Required]
         public bool email { get; set; }
+        [Required]
         public string username { get; set; }
     }
 

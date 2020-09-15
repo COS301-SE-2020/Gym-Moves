@@ -4,14 +4,16 @@ using GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GymMovesWebAPI.Migrations
 {
     [DbContext(typeof(MainDatabaseContext))]
-    partial class MainDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200909141506_fix_FixGymKey")]
+    partial class fix_FixGymKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,31 +142,6 @@ namespace GymMovesWebAPI.Migrations
                     b.HasKey("GymName", "BranchName");
 
                     b.ToTable("GymApplications");
-                });
-
-            modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymAttendanceRecord", b =>
-                {
-                    b.Property<int>("GymId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Month")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.HasKey("GymId", "Time", "Day", "Month", "Year");
-
-                    b.ToTable("GymAttendence");
                 });
 
             modelBuilder.Entity("GymMovesWebAPI.Data.Models.DatabaseModels.GymClasses", b =>

@@ -380,7 +380,7 @@ namespace GymMovesWebAPI.Controllers
                classToChange.Name + " that was supposed to happen on " + classToChange.Day +
                " at " + classToChange.StartTime + ".";
 
-                returnMessage = "This class has been cancelled. Remember to uncancel it when you can.";
+                returnMessage = "This class has been cancelled. Remember to resume it when you can.";
             }
 
             bool changed = await classRepository.instructorCancelClass(classRequest.classId);
@@ -587,14 +587,8 @@ namespace GymMovesWebAPI.Controllers
         {
             ClassAttendance[] classAttendance = await classAttendanceRepository.getClassAttendance(classId);
 
-            if(classAttendance.Length == 0)
-            {
-                return Ok(null);
-            }
-            else
-            {
-                return Ok(classAttendance);
-            }
+             return Ok(classAttendance);
+
         }
 
         /*Days and their differences for the other days*/

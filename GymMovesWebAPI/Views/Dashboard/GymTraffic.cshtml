@@ -56,7 +56,7 @@
 
 </head>
 
-<body id="page-top" onload="getAllClasses()">
+<body id="page-top" onload="showData()">
 
     <script>
             if (document.cookie == "") {
@@ -99,12 +99,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
                     <span>Upload database</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <span>Profile</span>
                 </a>
             </li>
 
@@ -154,10 +148,8 @@
 
                     <div class="container-fluid">
                         <h1 class="mt-5">Gym Statistics</h1>
-                        <div>
-                            Number of people at Gym:
-                        </div>
-                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                        
+                        <div id="chart" style="height: 300px; width: 100%;"></div>
                         <div>
                             <h1>Gym predictions</h1>
                             <div class="row">
@@ -167,7 +159,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Monday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="0">Peak Time</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -182,7 +174,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tuesday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="1">Peak Time</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -197,7 +189,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Wednesday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="2">Peak Time</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -214,7 +206,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thursday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="3">Peak Time</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -229,7 +221,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Friday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="4">Peak Time</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -244,7 +236,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Saturday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Peak Time</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="5">Peak Time</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -263,11 +255,34 @@
 
     <script src="@Url.Content("~/assets/jquery.min.js")"></script>
     <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
-    <script src="@Url.Content("~/assets/bootstrap/js/GymTraffic.js")"></script>
     <script src="@Url.Content("https://canvasjs.com/assets/script/canvasjs.min.js")"></script>
 
 
     <script>
+
+        function getCookie(cname) {
+
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+
+            for (var i = 0; i < ca.length; i++) {
+
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+
+            return "";
+        }
+
+        var gymId = getCookie("gymId").split(",")[0];
+
         $("#menu-toggle").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
@@ -278,7 +293,119 @@
                  document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 window.location.href = "@Url.Content("~/ManagerLogin")";
+
+        }
+
+        function showData() {
+            showChart();
+            //showDailyPredictions();
+        }
+
+        async function showDailyPredictions() {
+
+            for (k = 0; k < 6; k++) { //each day of the week
+                var peakcount = 0;
+                var peaktime = 0;
+                for (p = 6; p < 20; p++) { // each hour of the day
+                    var tm = p * 3600;
+                    var pred = await getPrediction(tm, k);
+
+                    if (pred > peakcount) {
+                        peakcount = pred;
+                        peaktime = tm;
+                    }
+                }
+
+                var el = document.getElementById(k.toString());
+                el.innerHTML = "Peak Time: " + peaktime.toFixed(0);
             }
+        }
+
+        async function getPrediction(tm, dow) {
+            var req = new XMLHttpRequest();
+            var url = 'https://us-central1-fbprojid.cloudfunctions.net/predictSPAM';
+            req.open("POST", url, true);
+            req.setRequestHeader("Content-Type", "application/json");
+            req.onreadystatechange = function () {
+                if (req.readyState == 4 && req.status == 200) {
+                    var json = JSON.parse(req.responseText);
+                    console.log(json.predictions[0]);
+                    return json.predictions[0];
+                }
+            }
+            var data = JSON.stringify({
+                "decimaltime": tm,
+                "dayoftheweek": dow
+            });
+            req.send(data)
+        }
+
+        async function showChart() {
+            var days = new Array(7); //days of the week data
+
+            for (k = 0; k < 7; k++) {
+                days[k] = 0;
+            }
+
+            var req = new XMLHttpRequest();
+            var url = "@Url.Content("~/api/gymattendance/get?gymid=")" + gymId
+            req.open("GET", url, true);
+            req.setRequestHeader("Content-Type", "application/json");
+            req.onreadystatechange = function () {
+                if (req.readyState == 4 && req.status == 200) {
+                    var attendance = JSON.parse(req.responseText);
+
+                    var last = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
+                    var day = last.getDate();
+
+                    for (i = 0; i < attendance.length; i++) {
+
+                        var dt = new Date(attendance.year, attendance.month, attendance.day);
+                        if (dt < day) {
+                            var dow = dt.getDay();
+                            if(dow > 0)
+                                days[dow-1] += attendance.count;
+                        }
+                    }
+
+                    drawChart(days);
+                }
+            }
+            req.send();
+        }
+
+        function drawChart(idayArr) {
+            var ctx = document.getElementById("chart");
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: classLabels,
+                    datasets: [{
+                        label: 'Gym Attendance in the past week',
+                        data: idayArr,
+                        backgroundColor: "#7341e6",
+                        hoverBackgroundColor: "#7341e6",
+                        borderColor: "#7341e6",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            barPercentage: 0.1
+                        }]
+                    }
+                }
+            });
+
+            classLabels = [];
+            classRatingsValues = [];
+        }
 
     </script>
 

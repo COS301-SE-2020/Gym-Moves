@@ -53,6 +53,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
         public DbSet<GymApplications> GymApplications { get; set; }
         public DbSet<ClassAttendance> ClassAttendance { get; set; }
         public DbSet<GymApplicationCodes> ApplicationCodes { get; set; }
+        public DbSet<GymAttendanceRecord> GymAttendence { get; set; }
 
         private readonly IConfiguration config = null;
 
@@ -76,15 +77,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                 .HasKey(p => new { p.MembershipId, p.GymId });
 
             modelBuilder.Entity<GymApplications>()
-                .HasKey(p => new { p.GymName, p.BranchName});
-
-            modelBuilder.Entity<Gym>()
-                .HasIndex(p => p.GymName)
-                .IsUnique();
-
-            modelBuilder.Entity<Gym>()
-                .HasIndex(p => p.GymBranch)
-                .IsUnique();
+                .HasKey(p => new { p.GymName, p.BranchName });
 
             modelBuilder.Entity<Gym>()
                 .HasMany(p => p.Notifications)
@@ -148,7 +141,10 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                 .HasOne(p => p.Class);
 
             modelBuilder.Entity<GymApplicationCodes>()
-                .HasKey(p => new {p.GymName, p.BranchName, p.Code });
+                .HasKey(p => new { p.GymName, p.BranchName, p.Code });
+
+            modelBuilder.Entity<GymAttendanceRecord>()
+                .HasKey(p => new {p.GymId, p.Time, p.Day, p.Month, p.Year});
 
             /* Default data for gym */
             /*modelBuilder.Entity<Gym>()

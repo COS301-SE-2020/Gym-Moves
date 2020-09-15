@@ -1,4 +1,27 @@
-﻿<!DOCTYPE html>
+﻿<!--
+File Name
+  AddMembers.cshtml
+
+Author:
+  Longji
+
+Date Created
+  28/08/2020
+
+Update History:
+--------------------------------------------------------------------------------
+| Date       | Author       | Changes
+--------------------------------------------------------------------------------
+ 10/09/2020  | Danel        |  Changed UI
+--------------------------------------------------------------------------------
+
+
+Functional Description:
+
+
+-->
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -45,18 +68,62 @@
 
             .pred {
                 width: 25%;
-                back
             }
 
             .dow {
                 font-size: 1.5rem;
             }
 
-        .button-colour {
-            background-color: #7341E6;
-            color: white;
-            padding: 20px;
-        }
+            .button-colour {
+                background-color: #7341E6;
+                color: white;
+                padding: 10px;
+            }
+
+            .button-colour:hover {
+                background-color: #7341E6;
+                color: white;
+                padding: 10px;
+            }
+
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
 
     </style>
 
@@ -108,12 +175,6 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <span>Profile</span>
-                </a>
-            </li>
-
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="text-center d-none d-md-inline">
@@ -156,70 +217,163 @@
                     </ul>
                 </nav>
 
-                <div class="row" style="padding-left:50px;">
+                <div class="row" style="padding-left: 50px; padding-right: 50px; padding-bottom: 50px;">
 
-                    <div class="container-fluid">
-                        <h2 class="mt-4">Required format...</h2>
-                        The required format is the following: <br />
+                    <div class="container-fluid card shadow" style="padding-left:50px;">
+                        <h3 class="mt-4">Required format</h3>
+                        <br /><br />
                         <pre>   Membership ID, Name, Surname, Email, PhoneNumber, User Type</pre> <br />
                         <pre>   User Types:</pre>
                         <pre>       0: Member</pre>
                         <pre>       1: Instructor</pre>
                         <pre>       2: Manager</pre>
 
-                        <h2 class="mt-4">
-                            Copy and Paste your CSV contents here!</h2">
-                            <form id="text_form">
-                                <textarea rows="25" cols="100" style="font-size:12px;" id="textarea"></textarea>
-                            </form>
-                            <div align="center" class="form-group">
-                                <button type="button" class="btn button-colour" onclick="submitCsv()">Submit</button>
-                            </div>
-</div>
+                        <br />
+
+                        <h3 class="mt-4">Copy and Paste your CSV contents here!</h3>
+                        <br />
+                        <form id="text_form">
+                            <textarea class="form-control" id="textarea" rows="10"></textarea>
+                        </form>
+                        <br />
+                        <div align="right" class="form-group">
+                            <button type="button" class="btn button-colour" onclick="submitCsv()">Submit</button>
+                        </div>
+
+                        <h3 class="mt-4">Select your .csv here!</h3>
+                        We accept .csv as well as .txt files
+                        <br />
+                        <form id="text_form">
+                            <input class="form-control-file" type="file" id="csvfile" accept=".csv,.txt"> 
+                        </form>
+                        <br />
+                        <div align="right" class="form-group">
+                            <button type="button" class="btn button-colour" onclick="submitFileContents()">Submit</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <div id="alertModal" class="modal">
+            <div class="modal-content">
+                <span align="right" class="close">&times;</span>
+                <h4 id="modalHeading"> Summary</h4>
+                <br />
+                <p id="message"></p>
+            </div>
+        </div>
+    </div>
+
 
         <script src="@Url.Content("~/assets/jquery.min.js")"></script>
         <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
 
 
         <script>
+
+            var modal = document.getElementById("alertModal");
+            var span = document.getElementsByClassName("close")[0];
+            var modalMessage = document.getElementById("message");
+
+            modal.style.display = "none";
+
+            var fileTextValue = "";
+
+            document.getElementById('csvfile').addEventListener('change', function () {
+                var fileReader = new FileReader();
+
+                fileReader.onload = function () {
+                    fileTextValue = fileReader.result;
+                    console.log(fileTextValue);
+                }
+
+                fileReader.readAsText(this.files[0]);
+            });
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
             $("#menu-toggle").click(function (e) {
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
-        </script>
 
-        <script>
-        async function submitCsv() {
-            var text = document.getElementById("textarea").value;
+            async function submitFileContents() {
+                var data = {
+                    Username: getCookie("username").split(",")[0],
+                    Records: fileTextValue
+                };
 
-            var data = {
-                Username: "SunnyManager",
-                Records: text
-            };
+                $.ajax({
+                    url: "@Url.Content("~/api/membership/addmember")",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (result) {
+                        modalMessage.innerHTML = "Duplicates: " + result.duplicates +
+                            "<br /> Successful: " + result.success + "<br /> Failures: " +
+                            result.failure;
 
-            $.ajax({
-                url: "@Url.Content("~/api/membership/addmember")",
-                type: "POST",
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                success: function (result) {
-                    console.log(result);
-                }
-            });
+                        modal.style.display = "block";
+                    }
+                });
+            }
+
+            async function submitCsv() {
+                var text = document.getElementById("textarea").value;
+
+                var data = {
+                    Username: getCookie("username").split(",")[0],
+                    Records: text
+                };
+
+                $.ajax({
+                    url: "@Url.Content("~/api/membership/addmember")",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (result) {
+                        modalMessage.innerHTML = "Duplicates: " + result.duplicates +
+                            "<br /> Successful: " + result.success + "<br /> Failures: " +
+                            result.failure;
+
+                        modal.style.display = "block";
+                    }
+                });
             }
 
             function logout() {
-
                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
-        </script>
 
+            function getCookie(cname) {
+
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+
+                for (var i = 0; i < ca.length; i++) {
+
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+
+                return "";
+            }
+
+        </script>
 </body>
 </html>
 
