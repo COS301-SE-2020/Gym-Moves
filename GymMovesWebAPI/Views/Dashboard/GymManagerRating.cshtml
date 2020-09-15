@@ -456,7 +456,7 @@ Functional Description:
 
                 for (let i = 0; i < instructorsJson.length; i++) {
 
-                    for (let j = 0; j < instructorsJson.length; j++) {
+                    for (let j = 0; j < instructorsJson.length-1; j++) {
 
                         if (instructorsRatings[j][1] < instructorsRatings[j + 1][1]) {
 
@@ -530,7 +530,7 @@ Functional Description:
 
                 for (let i = 0; i < classesJson.length; i++) {
 
-                    for (let j = 0; j < classesJson.length; j++) {
+                    for (let j = 0; j < classesJson.length-1; j++) {
 
                         if (classRatings[j][4] < classRatings[j + 1][4]) {
 
