@@ -10,5 +10,6 @@ namespace GymMovesWebAPI.Data.Repositories.Interfaces
         public Task<bool> addAdmin(SupportUsers user);
         public Task<SupportUsers> getAdmin(string username);
         public Task<bool> changePassword(string username, string password);
+        public Task<SupportUsers[]> getAll();
     }
 }
