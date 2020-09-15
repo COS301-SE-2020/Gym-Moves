@@ -370,8 +370,8 @@
                     for (i = 0; i < attendance.length; i++) {
                         console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
                         var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
-                        console.log(dt);
-                        console.log(day + " " + last);
+                        //console.log(dt);
+                        //console.log(day + " " + last);
                         if ((dt > last) && (dt < d)) {                                                                                       ;
                             var dow = dt.getDay();
                             console.log(dow);
