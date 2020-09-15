@@ -332,25 +332,25 @@ Update History:
                             data: JSON.stringify(data),
                             contentType: "application/json",
                             success: function (result) {
-                                document.cookie = "username=" + document.getElementById("username").value + ", path=/";
+                                document.cookie = "username=" + document.getElementById("username").value + "; path=/";
                                 window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
                             },
                             error: function (result) {
                                 modalHeading.innerHTML = "An error occurred!";
                                 modalMessage.innerHTML = result.responseText;
-                                modalMessage.style.display = "block";
+                                alertModal.style.display = "block";
                             }
                         });
 
                     } else {
                         modalHeading.innerHTML = "Oh no!";
                         modalMessage.innerHTML = "You can't choose the same password as your given password.";
-                        modalMessage.style.display = "block";
+                        alertModal.style.display = "block";
                     }
                 } else {
                     modalHeading.innerHTML = "Oh no!";
                     modalMessage.innerHTML = "You can't leave fields empty.";
-                    modalMessage.style.display = "block";
+                    alertModal.style.display = "block";
                 }
             }
 
