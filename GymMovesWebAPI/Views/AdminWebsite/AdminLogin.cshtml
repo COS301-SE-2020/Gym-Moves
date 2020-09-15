@@ -57,6 +57,11 @@ Update History:
                 color: white;
             }
 
+            .button-colour:hover {
+                background-color: #7341E6;
+                color: white;
+            }
+
 
         </style>
 
@@ -252,7 +257,7 @@ Update History:
                     data: JSON.stringify(user),
                     contentType: "application/json",
                     success: function (result) {
-                        document.cookie = "username=" + document.getElementById("username").value + ", path=/";
+                        document.cookie = "username=" + document.getElementById("username").value + "; path=/";
                         window.location.href = "@Url.Content("~/adminwebsite/Adminhome")";
                     },
                     error: function (result) {
