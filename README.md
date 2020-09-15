@@ -6,58 +6,34 @@ Gym Moves is an application that will make life easier for gym members and gym s
 
 [![Build Status](https://travis-ci.org/COS301-SE-2020/Gym-Moves.svg?branch=master)](https://travis-ci.org/COS301-SE-2020/Gym-Moves)
 
-<br/>
-
-
-### Recorded Demo 1
-
-Link to google drive folder with video: [Demo 1 Video](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+* * *
 
 <br/>
 
-### Recorded Demo 2
-
-Link to google drive folder with video: [Demo 2 Video](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
-
-<br/>
-
-
-### SRS Document
-
-#### Version 1
-View only link on Overleaf: [SRS_V1 Overleaf](https://www.overleaf.com/read/chgypmxyntsm) <br/>
-Link to drive folder with pdf: [SRS_V1 PDF](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
-
-#### Version 2
-
-View only link on Overleaf: [SRS_V2 Overleaf](https://www.overleaf.com/read/pccntnjzxgyf)<br/>
-Link to drive folder with pdf: [SRS_V2 PDF](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
-
-#### Version 3
-
-View only link on Overleaf: [SRS_V3 Overleaf](https://www.overleaf.com/read/rtnrndmvmwxh)<br/>
-Link to drive folder with pdf: [SRS_V3 PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
+### Link to: 
+  - Mobile Application
+  - Web Application
 
 <br/>
 
-### User Manual Document
-
-View only link on overleaf: [User Manual Overleaf](https://www.overleaf.com/read/szdbsjkrbxdx) <br/>
-Link to drive folder with pdf: [User Manual PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
-
-<br/>
-
-### Coding Standards Document
-
-View only link on overleaf: [Coding Standards Overleaf](https://www.overleaf.com/read/chssqmjbrmmx)<br/>
-Link to drive folder with pdf: [Coding Standards PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
+### Recorded Demos
+- [Demo 1 Video](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+- [Demo 2 Video](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
+- [Demo 3 Video]()
+- [Demo 4 Video]()
 
 <br/>
 
-### Technical Installation Manual Document
-
-View only link on overleaf: [Technical Installation Manual Overleaf](https://www.overleaf.com/read/hgwsygjsssjj)<br/>
-Link to drive folder with pdf: [Technical Installation Manual PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
+### Documentation
++ SRS
+    - [Version 1](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
+    - [Version 2](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
+    - [Version 3](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
+    - [Version 4]()
++ [User Manual PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
++ [Coding Standards PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
++ [Technical Installation Manual PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
++ [Testing Policy Manual PDF]()
 
 <br/>
 
