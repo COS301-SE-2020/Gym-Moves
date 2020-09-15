@@ -84,6 +84,12 @@ Functional Description:
             .row-m-t {
                 margin-top: 20px
             }
+
+        #downloadCSV {
+            background-color: #7341E6;
+            color: white;
+            
+        }
     </style>
 </head>
 
@@ -91,9 +97,9 @@ Functional Description:
 
         <script>
             if (document.cookie == "") {
-           //     document.cookie = "username=esdgsrsa, path=/";
-            //    document.cookie = "gymId=15, path=/";
-             window.location.href = "@Url.Content("~/ManagerLogin")";
+                document.cookie = "username=esdgsrsa, path=/";
+                document.cookie = "gymId=15, path=/";
+                 //window.location.href = "@Url.Content("~/ManagerLogin")";
                 }
         </script>
 
@@ -233,8 +239,11 @@ Functional Description:
                                     <canvas id="myPieChart"></canvas>
                                 </div>
                             </div>
-                            <button id="downloadCSV">Download Chart Data as CSV</button>
+
                         </div>
+                      <div align="center" class="form-group">
+                        <button id="downloadCSV">Download Chart Data as CSV</button>
+                          </div>
                     </div>
                 </div>
 
