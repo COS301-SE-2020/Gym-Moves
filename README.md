@@ -28,7 +28,7 @@ Gym Moves is an application that will make life easier for gym members and gym s
 + SRS
     - [Version 1](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
     - [Version 2](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
-    - [Version 3]](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
+    - [Version 3](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
     - [Version 4]()
 + [User Manual PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
 + [Coding Standards PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
