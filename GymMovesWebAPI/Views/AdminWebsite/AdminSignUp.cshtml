@@ -9,9 +9,11 @@ Date Created:
     29/08/2020
 
 Update History:
---------------------------------------------------------------------------------
-Date          |    Author      |     Changes
---------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+    Date          |    Author      |     Changes
+-----------------------------------------------------------------------------------
+    11/09/2020    | Danel          | Fixed some errors
+-----------------------------------------------------------------------------------
 
 -->
 
@@ -53,15 +55,66 @@ Date          |    Author      |     Changes
                 color: white;
             }
 
-
         </style>
     </head>
 
     <body style="font-family: Roboto;">
 
         <script>
-            if (document.cookie != "") {
-                window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
+
+            function getCookie(cname) {
+
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+
+                return "";
+            }
+
+            adminUsernames = [];
+
+            doRequest();
+
+            async function doRequest() {
+                await jQuery.ajax({
+                    url: "@Url.Content("~/api/admin/getallusernames")",
+                    type: "GET",
+                    success: function (result) {
+
+                        for (var i = 0; i < result.length; i++) {
+                            adminUsernames.push(result[i].username);
+                        }
+
+                        var flag = false;
+
+                        for (var i = 0; i < adminUsernames.length; i++) {
+                            if ((getCookie("username").split(",")[0]).includes(adminUsernames[i])) {
+                                flag = true;
+                            }
+                        }
+
+                        if (flag) {
+                            window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
+                        }
+
+                    },
+                    error: function (result) {
+                        modalHeading.innerHTML = "An error occurred!";
+                        modalMessage.innerHTML = result.responseText;
+                        modal.style.display = "block";
+                    }
+                });
             }
         </script>
 
@@ -94,7 +147,6 @@ Date          |    Author      |     Changes
                                 <div id="errorUsername" style="color: red; visibility: hidden;"> Username is needed! </div>
                             </div>
 
-
                             <div class="form-group">
                                 <label for="givenPassword">Given Password</label>
                                 <input type="password" class="form-control form-control-lg" name="givenPassword" id="givenPassword" />
@@ -106,7 +158,6 @@ Date          |    Author      |     Changes
                                 <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" />
                                 <div id="errorNewPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
                             </div>
-
 
                             <div align="center" class="form-group">
                                 <button type="button" class="btn button-colour" onclick="onSubmit()">Signup</button>
@@ -128,112 +179,130 @@ Date          |    Author      |     Changes
         <script src="@Url.Content("~/assets/jquery.min.js")"></script>
 
         <script>
-                var color = document.getElementById("username").style.borderColor;
-                var matches = false;
 
-                $("#username").on('keyup', function (e) {
-                    document.getElementById("username").style.borderColor = color;
-                });
+            var color = document.getElementById("username").style.borderColor;
+            var matches = false;
+
+            $("#username").on('keyup', function (e) {
+                document.getElementById("username").style.borderColor = color;
+            });
+
+            $("#newPassword").on('keyup', function (e) {
+                document.getElementById("newPassword").style.borderColor = color;
+            });
+
+            $("#givenPassword").on('keyup', function (e) {
+                document.getElementById("givenPassword").style.borderColor = color;
+
+                if (document.getElementById("newPassword").value == document.getElementById("givenPassword").value) {
+                    document.getElementById("newPassword").style.borderColor = "red";
+                    matches = false;
+                }
+            });
 
 
-                $("#newPassword").on('keyup', function (e) {
-                    document.getElementById("newPassword").style.borderColor = color;
-                });
+            function checkUsernameNotEmpty() {
 
-                $("#givenPassword").on('keyup', function (e) {
-                    document.getElementById("givenPassword").style.borderColor = color;
-                    matches = true;
-
-                    if (document.getElementById("newPassword").value == document.getElementById("givenPassword").value) {
-                        document.getElementById("newPassword").style.borderColor = "red";
-                        matches = false;
-                    }
-                });
-
-                function checkUsernameNotEmpty() {
-                    if (document.getElementById("username").value == "") {
-                        document.getElementById("errorUsername").style.visibility = "visible";
-                        document.getElementById("username").style.boxShadow = "0 0 5px red";
-                        return false;
-                    }
-
-                    return true;
+                if (document.getElementById("username").value == "") {
+                    document.getElementById("errorUsername").style.visibility = "visible";
+                    document.getElementById("username").style.boxShadow = "0 0 5px red";
+                    return false;
                 }
 
+                return true;
+            }
 
-                function checkGivenPasswordNotEmpty() {
-                    if (document.getElementById("givenPassword").value == "") {
-                        document.getElementById("errorGivenPassword").style.visibility = "visible";
-                        document.getElementById("givenPassword").style.boxShadow = "0 0 5px red";
-                        return false;
-                    }
-                    return true;
+
+            function checkGivenPasswordNotEmpty() {
+
+                if (document.getElementById("givenPassword").value == "") {
+                    document.getElementById("errorGivenPassword").style.visibility = "visible";
+                    document.getElementById("givenPassword").style.boxShadow = "0 0 5px red";
+                    return false;
                 }
 
-                function checkNewPasswordNotEmpty() {
-                    if (document.getElementById("newPassword").value == "") {
-                        document.getElementById("errorNewPassword").style.visibility = "visible";
-                        document.getElementById("newPassword").style.boxShadow = "0 0 5px red";
-                        return false;
-                    }
-                    return true;
+                return true;
+            }
+
+
+            function checkNewPasswordNotEmpty() {
+
+                if (document.getElementById("newPassword").value == "") {
+                    document.getElementById("errorNewPassword").style.visibility = "visible";
+                    document.getElementById("newPassword").style.boxShadow = "0 0 5px red";
+                    return false;
                 }
 
-                function checkAllFieldsNotEmpty() {
-                    var status = false;
+                return true;
+            }
 
-                    if (checkUsernameNotEmpty() && checkGivenPasswordNotEmpty() && checkNewPasswordNotEmpty()) {
-                        checkGivenPasswordNotEmpty();
-                        checkNewPasswordNotEmpty();
-                        return true;
-                    }
 
-                    return status;
+            function checkAllFieldsNotEmpty() {
+
+                var status = true;
+
+                if (!(checkUsernameNotEmpty() && checkGivenPasswordNotEmpty() && checkNewPasswordNotEmpty())) {
+                    status = false;
                 }
 
-                async function hashPassword(password) {
-                    const msgBuffer = new TextEncoder('utf-8').encode(password);
+                return status;
+            }
 
-                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
 
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+            async function hashPassword(password) {
 
-                    const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+                const msgBuffer = new TextEncoder('utf-8').encode(password);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
 
-                    return hashHex;
-                }
+                return hashHex;
+            }
 
-                async function onSubmit() {
-                    if (checkAllFieldsNotEmpty() == true) {
-                        if (matches == true) {
-                            var username = document.getElementById("username").value;
-                            var givenPassword = document.getElementById("givenPassword").value;
-                            var newPassword = await hashPassword(document.getElementById("newPassword").value);
 
-                            var data = {
-                                username: username,
-                                tempPassword: givenPassword,
-                                password: newPassword
-                            }
+            async function onSubmit() {
 
-                            jQuery.ajax({
-                                url: "@Url.Content("~/api/Admin/signup")",
-                                type: "POST",
-                                data: JSON.stringify(data),
-                                contentType: "application/json",
-                                success: function (result) {
-                                window.location.href = "@Url.Content("~/adminwebsite/AdminLogin")";
+                if (checkAllFieldsNotEmpty()) {
+                    if (!matches) {
 
-                                },
-                                error: function (result) {
-                                    window.alert(result.responseText);
-                                }
-                            });
-                        } else {
-                            alert("Please change your password!");
+                        var username = document.getElementById("username").value;
+                        var givenPassword = document.getElementById("givenPassword").value;
+                        var newPassword = await hashPassword(document.getElementById("newPassword").value);
+
+                        var data = {
+                            username: username,
+                            tempPassword: givenPassword,
+                            password: newPassword
                         }
+
+                        jQuery.ajax({
+                            url: "@Url.Content("~/api/Admin/signup")",
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            contentType: "application/json",
+                            success: function (result) {
+                                document.cookie = "username=" + document.getElementById("username").value + ", path=/";
+                                window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
+                            },
+                            error: function (result) {
+                                modalHeading.innerHTML = "An error occurred!";
+                                modalMessage.innerHTML = result.responseText;
+                                modal.style.display = "block";
+                            }
+                        });
+
+                    } else {
+                        modalHeading.innerHTML = "Oh no!";
+                        modalMessage.innerHTML = "You can't choose the same password as your given password.";
+                        modal.style.display = "block";
                     }
+                } else {
+                    modalHeading.innerHTML = "Oh no!";
+                    modalMessage.innerHTML = "You can't leave fields empty.";
+                    modal.style.display = "block";
                 }
+            }
+
         </script>
     </body>
 </html>

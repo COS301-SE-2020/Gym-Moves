@@ -22,12 +22,6 @@ namespace GymMovesWebAPI.Controllers
             return View();
         }
 
-        [Route("Admin")]
-        public IActionResult Admin()
-        {
-            return View();
-        }
-
         [Route("Home")]
         public IActionResult Home()
         {
@@ -47,10 +41,5 @@ namespace GymMovesWebAPI.Controllers
             return View();
         }
 
-        [Route("AddStaffMember")]
-        public IActionResult AddStaffMember()
-        {
-            return View();
-        }
     }
 }

@@ -1,6 +1,6 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
+Chart.defaults.global.defaultFontColor = '#C5ABFF';
 
 function createBarChart(canvasId, labelsForGraph, values, name) {
     var ctx = document.getElementById(canvasId);
@@ -10,9 +10,9 @@ function createBarChart(canvasId, labelsForGraph, values, name) {
             labels: labelsForGraph,
             datasets: [{
                 label: name,
-                backgroundColor: "#7341e6",
-                hoverBackgroundColor: "#7341e6",
-                borderColor: "#7341e6",
+                backgroundColor: "#34abeb",
+                hoverBackgroundColor: "#34abeb",
+                borderColor: "#34abeb",
                 data: values,
             }],
         },
