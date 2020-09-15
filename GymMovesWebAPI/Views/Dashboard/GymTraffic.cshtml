@@ -354,7 +354,6 @@
             req.onreadystatechange = function () {
                 if (req.readyState == 4 && req.status == 200) {
                     var attendance = JSON.parse(req.responseText);
-                    console.log(json);
 
                     var last = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
                     var day = last.getDate();
