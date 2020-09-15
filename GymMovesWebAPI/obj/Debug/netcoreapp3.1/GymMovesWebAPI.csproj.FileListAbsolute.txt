@@ -209,7 +209,6 @@ C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\GymMovesWebAPI.TagHelpers.output.cache
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\GymMovesWebAPI.RazorCoreGenerate.cache
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\AddMembers.cshtml.g.cs
-C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\Admin.cshtml.g.cs
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\ClassAttendance.cshtml.g.cs
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\GymManagerRating.cshtml.g.cs
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\GymTraffic.cshtml.g.cs
@@ -233,3 +232,7 @@ C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\GymMovesWebAPI.pdb
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\GymMovesWebAPI.genruntimeconfig.cache
 C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\Website\ManagerDetails.cshtml.g.cs
+C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\AdminWebsite\AddStaffMember.cshtml.g.cs
+C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\AdminWebsite\Admin.cshtml.g.cs
+C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\AdminWebsite\AdminLogin.cshtml.g.cs
+C:\Users\Tia_2\Documents\GitHub\Gym-Moves\GymMovesWebAPI\obj\Debug\netcoreapp3.1\Razor\Views\AdminWebsite\AdminSignUp.cshtml.g.cs

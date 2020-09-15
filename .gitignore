@@ -9,3 +9,4 @@
 /GymMovesFunctionApp/.vs/GymMovesFunctionApp/v16
 /GymMovesFunctionApp/GymMovesFunctionApp
 /GymMovesWebAPI.Tests/obj/Release/netcoreapp3.1
+/GymMovesWebAPI/.config/dotnet-tools.json

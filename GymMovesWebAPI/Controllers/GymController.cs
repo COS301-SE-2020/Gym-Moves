@@ -76,6 +76,11 @@ namespace GymMovesWebAPI.Controllers
         [HttpPost("registeredMembers")]
         public async Task<ActionResult<GetMembersResponse[]>> getRegisteredMembers(GetMembersRequest request)
         {
+            if (request.Username == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Username cannot be empty!");
+            }
+
             Users user = await userGymMovesRepository.getUser(request.Username);
 
             if (user == null)
@@ -109,6 +114,12 @@ namespace GymMovesWebAPI.Controllers
         [HttpPost("unregisteredMembers")]
         public async Task<ActionResult<GetMembersResponse>> getUnregisteredMembers(GetMembersRequest request)
         {
+
+            if (request.Username == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Username cannot be empty!");
+            }
+
             Users user = await userGymMovesRepository.getUser(request.Username);
 
             if (user == null)
@@ -144,6 +155,13 @@ namespace GymMovesWebAPI.Controllers
         [HttpPost("AllMembers")]
         public async Task<ActionResult<GetMembersResponse>> getAllMembers(GetMembersRequest request)
         {
+
+            if (request.Username == "")
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Username cannot be empty!");
+            }
+
+
             Users user = await userGymMovesRepository.getUser(request.Username);
 
             if (user == null)

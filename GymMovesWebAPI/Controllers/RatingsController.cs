@@ -44,12 +44,47 @@ namespace GymMovesWebAPI.Controllers {
         private readonly IUserRepository userRepository;
         private readonly IClassRatingRepository classRatingRepository;
         private readonly IInstructorRatingRepository instructorRatingRepository;
+        private readonly IGymRepository gymRepository;
 
-        public RatingsController(IClassRepository cr, IUserRepository ur, IClassRatingRepository crr, IInstructorRatingRepository irr) {
+        public RatingsController(IClassRepository cr, IUserRepository ur, IClassRatingRepository crr, IInstructorRatingRepository irr, IGymRepository gr) {
             classRepository = cr;
             userRepository = ur;
             classRatingRepository = crr;
             instructorRatingRepository = irr;
+            gymRepository = gr;
+        }
+
+        [HttpGet("gym")]
+        public async Task<ActionResult<AllClassRatingResponse[]>> getGymClassRatings(int gymid) {
+            Gym gym = await gymRepository.getGymById(gymid);
+
+            if (gym == null) {
+                return StatusCode(StatusCodes.Status404NotFound, "Specified gym does not exist!");
+            }
+
+            GymClasses[] classes = await classRepository.getGymClasses(gymid);
+            AllClassRatingResponse[] responses = new AllClassRatingResponse[classes.Length];
+
+            for (int i = 0; i < classes.Length; i++) {
+                ClassRating rating = await classRatingRepository.getRating(classes[i].ClassId);
+
+                if (rating == null) {
+                    rating = new ClassRating();
+
+                    rating.ClassIdForeignKey = classes[i].ClassId;
+                    rating.RatingCount = 0;
+                    rating.RatingSum = 0;
+                }
+
+                responses[i].Name = classes[i].Name;
+                responses[i].Instructor = classes[i].InstructorUsername;
+                responses[i].Day = classes[i].Day;
+                responses[i].Time = classes[i].StartTime;
+                responses[i].RatingSum = rating.RatingSum;
+                responses[i].RatingCount = rating.RatingCount;
+            }
+
+            return Ok(responses);
         }
 
         [HttpPost("class")]

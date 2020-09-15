@@ -39,20 +39,22 @@ Functional Description:
           rel="stylesheet">
     <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+
 
 
     <style>
 
             .look {
-                width: 50%;
+                width: 60%;
                 border-radius: 15px;
                 border: 1px #7341e6 solid;
             }
 
             #searching{
-                left: 30%;
-
+                left: 40%;
             }
+
             .navbar_background {
                 background-color: #7341e6;
                 color: white;
@@ -72,106 +74,112 @@ Functional Description:
             }
 
             table, th, td {
-                border: 2px solid #878787 !important;
+                border: none !important;
+            }
+
+            .col-xl-4 col-lg-5 {
+                left: 50%;
+            }
+
+            .row-m-t {
+                margin-top: 20px
             }
     </style>
 </head>
-<body id="page-top">
 
-    <script>
+    <body id="page-top">
+
+        <script>
             if (document.cookie == "") {
-                window.location.href = "@Url.Content("~/ManagerLogin")";
-            }
-    </script>
+           //     document.cookie = "username=esdgsrsa, path=/";
+            //    document.cookie = "gymId=15, path=/";
+             window.location.href = "@Url.Content("~/ManagerLogin")";
+                }
+        </script>
 
-    <div id="wrapper">
+        <div id="wrapper">
 
-        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                <div class="sidebar-brand-icon">
-                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                </div>
-                <div class="sidebar-brand-text mx-3">Gym Moves</div>
-            </a>
-
-            <hr class="sidebar-divider my-0">
-
-            <li class="nav-item active">
-                <a class="nav-link" href=#>
-                    <span>Home</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <span>Dashboard</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Attendance</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                    <div class="sidebar-brand-icon">
+                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                     </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
-                    <span>Upload Database</span>
+                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
                 </a>
-            </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href=#>
-                    <span>Profile</span>
-                </a>
-            </li>
+                <hr class="sidebar-divider my-0">
 
-            <hr class="sidebar-divider d-none d-md-block">
+                <li class="nav-item active">
+                    <a class="nav-link" href=#>
+                        <span>Home</span>
+                    </a>
+                </li>
 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-        </ul>
-
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <div id="content">
-
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                        Home
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                        <span>Dashboard</span>
+                    </a>
+                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Attendance</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                        </div>
                     </div>
+                </li>
 
-                    <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                        <span>Upload Database</span>
+                    </a>
+                </li>
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
+                <hr class="sidebar-divider d-none d-md-block">
 
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
-                            </a>
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            </ul>
 
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+            <div id="content-wrapper" class="flex-column" style="padding-bottom:20px;">
+
+                <div id="content">
+
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                            Home
+                        </div>
+
+                        <ul class="navbar-nav ml-auto">
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
                                 </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
 
-                <div class="row" style="padding-left:50px;">
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+
+                </div>
+
+                <div class="row" style="padding-left:50px; padding-top:20px;">
                     <div class="dropdown">
                         <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             All
@@ -185,57 +193,87 @@ Functional Description:
                     </div>
 
                     <div id="searching" class="wrapping col-xl-3 col-md-6 mb-4">
-                        <div class="search">
-                            <input type="text" id="search" class="look" onkeyup='searchTable()' placeholder="Type to search">
+                        <input class="form-control look" type="text"id="search" onkeyup='searchTable()' placeholder="Type to search" aria-label="Search">
+                    </div>
+                </div>
+
+                <div><h2></h2></div>
+
+                <div class="row">
+
+                    <div class="col-xl-8 col-lg-7" style="padding-left:50px;">
+
+                        <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="membersTable" class="table" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                </div>
+                    <div class="col-xl-4 col-lg-5" style="padding-right:50px;">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Registered vs Not registered members on app</h6>
+                            </div>
 
-                <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="rankings-table dataTable" class="table" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Surname</th>
-                                        <th>Email</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody">
-                                </tbody>
-                            </table>
+                            <div class="card-body">
+                                <div class="chart-pie pt-4">
+                                    <canvas id="myPieChart"></canvas>
+                                </div>
+                            </div>
+                            <button id="downloadCSV">Download Chart Data as CSV</button>
                         </div>
                     </div>
                 </div>
+
+
             </div>
+            
         </div>
-
+                  
         <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
         <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
         <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
-        <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
+        <script src="@Url.Content("~/assets/js/demo/chart-pie-demo.js")"></script>
 
-
+            
         <script>
 
+            var notRegistered = 0;
+            var registered = 0;
+            var all;
 
-                document.getElementById("All").onclick = function () {
-                    document.getElementById("dropdownMenuLink").innerHTML="All";
+            var labelsForGraph = ["Registered", "Not Registered"];
+            var values;
+
+            document.getElementById("All").onclick = function () {
+                document.getElementById("dropdownMenuLink").innerHTML = "All";
                 loadAll();
             }
 
-                document.getElementById("nr").onclick = function () {
-                    document.getElementById("dropdownMenuLink").innerHTML= "Not Registered";
-                loadnotregistered();
+            document.getElementById("nr").onclick = function () {
+                document.getElementById("dropdownMenuLink").innerHTML = "Not Registered";
+                loadnotregistered(true);
             }
 
-                document.getElementById("r").onclick = function () {
-                    document.getElementById("dropdownMenuLink").innerHTML="Registered";
-                loadregistered();
+
+            document.getElementById("r").onclick = function () {
+                document.getElementById("dropdownMenuLink").innerHTML = "Registered";
+                loadregistered(true);
             }
 
 
@@ -245,6 +283,7 @@ Functional Description:
                 filter = input.value.toUpperCase();
                 table = document.getElementById("tbody");
                 tr = table.getElementsByTagName("tr");
+
                 for (i = 0; i < tr.length; i++) {
                     td = tr[i].getElementsByTagName("td");
                     for (j = 0; j < td.length; j++) {
@@ -252,36 +291,49 @@ Functional Description:
                             found = true;
                         }
                     }
+
                     if (found) {
                         tr[i].style.display = "";
                         found = false;
                     } else {
                         tr[i].style.display = "none";
                     }
+
                 }
+
             }
 
-            const rankingsbody = document.getElementById("tbody");
+            const membersTableBody = document.getElementById("tbody");
 
-            function loadregistered() {
+            async function loadregistered(loadTable) {
 
-                var xhr = new XMLHttpRequest();
                 var url = "@Url.Content("~/api/Gym/registeredMembers")";
-                xhr.open("POST", url, true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var json = JSON.parse(xhr.responseText);
-                        console.log(xhr.responseText);
-                        populateRankings(json);
-                    }
-                };
+
                 var username = getCookie("username").split(",")[0];
                 var gymid = getCookie("gymId").split(",")[0];
 
                 var data = JSON.stringify({ "Username": username, "GymId": parseInt(gymid) });
-                xhr.send(data);
+
+                await jQuery.ajax({
+                     url: url,
+                     type: "POST",
+                     data: data,
+                     contentType: "application/json",
+                    success: function (result) {
+
+                        if (loadTable) {
+                            populateTable(result);
+                        } else {
+                            registered = result.length;
+                        }
+                                                },
+                    error: function (result) {
+                        window.alert(result.responseText);
+                    }
+                });
             }
+
+
 
 
             function getCookie(cname) {
@@ -291,6 +343,7 @@ Functional Description:
                 var ca = decodedCookie.split(';');
 
                 for (var i = 0; i < ca.length; i++) {
+
                     var c = ca[i];
                     while (c.charAt(0) == ' ') {
                         c = c.substring(1);
@@ -299,95 +352,114 @@ Functional Description:
                     if (c.indexOf(name) == 0) {
                         return c.substring(name.length, c.length);
                     }
+
                 }
 
                 return "";
+
             }
 
-            function loadAll() {
 
+            async function loadAll() {
 
-                var xhr = new XMLHttpRequest();
                 var url = "@Url.Content("~/api/Gym/AllMembers")";
-                xhr.open("POST", url, true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var json = JSON.parse(xhr.responseText);
-                     //   console.log(xhr.responseText);
-                        populateRankings(json);
-                    }
-                };
 
                 var username = getCookie("username").split(",")[0];
                 var gymid = getCookie("gymId").split(",")[0];
 
                 var data = JSON.stringify({ "Username": username, "GymId": parseInt(gymid) });
-                xhr.send(data);
 
-            }
+                await jQuery.ajax({
+                     url: url,
+                     type: "POST",
+                     data: data,
+                     contentType: "application/json",
+                    success: async function (result) {
 
-            function loadnotregistered() {
+                        all = result.length;
+                        await loadregistered(false);
+                        await loadnotregistered(false);
+                        populateTable(result);
 
+                        values = [];
+                        values.push(registered / all * 100);
+                        values.push(notRegistered / all * 100);
 
-                var xhr = new XMLHttpRequest();
-                var url = "@Url.Content("~/api/Gym/unregisteredMembers")";
-                xhr.open("POST", url, true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var json = JSON.parse(xhr.responseText);
-                     //   console.log(xhr.responseText);
-                        populateRankings(json);
+                        createChart(labelsForGraph, values);
+
+                    },
+                    error: function (result) {
+                        window.alert(result.responseText);
                     }
-                };
-                   var username = getCookie("username").split(",")[0];
-                   var gymid = getCookie("gymId").split(",")[0];
-                   var gym = parseInt(gymid);
-                   var data = JSON.stringify({ "Username":username, "GymId": gym });
-                xhr.send(data);
-
-            }
-
-
-
-
-            function populateRankings(name) {
-                while (rankingsbody.firstChild) {
-                    rankingsbody.removeChild(rankingsbody.firstChild)
-                }
-
-                Object.keys(name).forEach( (row) => {
-                    var userDetails = [];
-                    userDetails.push(name[row].name);
-                    userDetails.push(name[row].surname);
-                    userDetails.push(name[row].email);
-                    const tr = document.createElement("tr");
-
-                    for (var cell = 0; cell < 3; cell++) {
-                        const td = document.createElement("td");
-                        td.textContent = userDetails[cell];
-                        tr.appendChild(td);
-
-                    }
-
-                    rankingsbody.appendChild(tr);
                 });
 
             }
 
 
+            async function loadnotregistered(loadTable) {
+
+                var url = "@Url.Content("~/api/Gym/unregisteredMembers")";
+
+                var username = getCookie("username").split(",")[0];
+                var gymid = getCookie("gymId").split(",")[0];
+
+                var data = JSON.stringify({ "Username": username, "GymId": parseInt(gymid) });
+
+                await jQuery.ajax({
+                     url: url,
+                     type: "POST",
+                     data: data,
+                     contentType: "application/json",
+                    success: function (result) {
+
+                        if (loadTable) {
+                            populateTable(result);
+                        } else {
+                            notRegistered = result.length;
+                        }
+                    },
+                    error: function (result) {
+                        window.alert(result.responseText);
+                    }
+                });
+            }
+
+
+            function populateTable(name) {
+                while (membersTableBody.firstChild) {
+                    membersTableBody.removeChild(membersTableBody.firstChild)
+                }
+
+                 Object.keys(name).forEach( (row) => {
+
+                     var userDetails = [];
+                     userDetails.push(name[row].name);
+                     userDetails.push(name[row].surname);
+                     userDetails.push(name[row].email);
+
+                     const tr = document.createElement("tr");
+
+                     for (var cell = 0; cell < 3; cell++) {
+                         const td = document.createElement("td");
+                         td.textContent = userDetails[cell];
+                         tr.appendChild(td);
+                     }
+                     membersTableBody.appendChild(tr);
+                 });
+            }
+
             document.addEventListener("DOMContentLoaded", () => { loadAll() });
 
             function logout() {
 
-                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 window.location.href = "@Url.Content("~/ManagerLogin")";
+
             }
 
 
         </script>
 
-</body>
+    </body>
 </html>

@@ -2,7 +2,7 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
-function createChart(canvasId, labelsForGraph, values, name) {
+function createLineChart(canvasId, labelsForGraph, values, name) {
 
     var ctx = document.getElementById(canvasId);
     var myLineChart = new Chart(ctx, {

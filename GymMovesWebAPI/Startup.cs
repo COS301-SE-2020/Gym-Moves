@@ -37,6 +37,8 @@ namespace GymMovesWebAPI {
             services.AddScoped<ISupportStaffRepository, SupportStaffRepository>();
             services.AddScoped<IClassAttendanceRepository, ClassAttendanceRepository>();
             services.AddScoped<IApplicationCodeRepository, ApplicationCodeRepository>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IGymAttendenceRepository, GymAttendenceRepository>();
 
             services.AddScoped<IMailer, Mailer>();
 

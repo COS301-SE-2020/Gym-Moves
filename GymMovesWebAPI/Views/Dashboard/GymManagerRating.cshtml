@@ -12,7 +12,11 @@ Update History:
 --------------------------------------------------------------------------------
 | Date       | Author       | Changes
 --------------------------------------------------------------------------------
-08/11/2020   |    Ayanda     |  Added content
+08/11/2020   |    Ayanda    |  Added content
+--------------------------------------------------------------------------------
+30/08/2020   | Tia          | Added instructor rating
+--------------------------------------------------------------------------------
+13/09/2020   | Danel        |  Fixed UI
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -24,25 +28,25 @@ Functional Description:
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
+        <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
-    <title>Class Rating Statistics</title>
+        <title>Class Rating Statistics</title>
 
-    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
-    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
-          rel="stylesheet">
-    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
-    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+        <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+              rel="stylesheet">
+        <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
-    <style>
+        <style>
 
             .navbar_background {
                 background-color: #7341e6;
@@ -54,375 +58,674 @@ Functional Description:
                 src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
             }
 
-        tr:nth-child(even) {
-            background-color: #EEEBEA;
-        } 
+            tbody tr:nth-child(odd) {
+                background-color: #eeebea;
+            }
 
             table {
                 border-collapse: collapse;
             }
 
             table, th, td {
-                border: 2px solid #878787 !important;
+                border: none !important;
             }
 
-        .button-colour {
-            background-color: #7341E6;
-            color: white;
-        }
-
-    </style>
-
-</head>
-
-<body id="page-top" onload="Generate()">
-
-    <script>
-            if (document.cookie == "") {
-                window.location.href = "@Url.Content("~/ManagerLogin")";
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
             }
-    </script>
 
-    <div id="wrapper">
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
 
-        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+                
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;    
+                cursor: pointer;
+            }
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                <div class="sidebar-brand-icon">
-                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                </div>
-                <div class="sidebar-brand-text mx-3">Gym Moves</div>
-            </a>
+            .button-colour {
+                background-color: #7341E6;
+                color: white;
+            }
 
-            <hr class="sidebar-divider my-0">
+        </style>
 
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/home")">
-                    <span>Home</span>
-                </a>
-            </li>
+    </head>
 
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <span>Dashboard</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
-                        <a class="collapse-item" href=#>Gym Ratings</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+    <body id="page-top" onload="load()">
+
+        <script>
+                if (document.cookie == "") {
+                    window.location.href = "@Url.Content("~/ManagerLogin")";
+                }
+        </script>
+
+        <div id="wrapper">
+
+            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                    <div class="sidebar-brand-icon">
+                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                     </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
-                    <span>Upload database</span>
+                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
                 </a>
-            </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <span>Profile</span>
-                </a>
-            </li>
+                <hr class="sidebar-divider my-0">
 
-            <hr class="sidebar-divider d-none d-md-block">
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/home")">
+                        <span>Home</span>
+                    </a>
+                </li>
 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-        </ul>
-
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <div id="content">
-
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                        Class Rating Statistics
-                    </div>
-
-                    <ul class="navbar-nav ml-auto">
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-
-                <div class="row" style="padding-left:50px;">
-                    <select id="order" name="myclasses">
-                        <option value="1">Top Rated First</option>
-                        <option value="2">Bottom Rated First</option>]
-                    </select>
-                    <button id="topbtn=" button" type="button" class="btn button-colour" onclick="GenerateTable()" style="margin-left:10%;"> View </button>
-
-                </div>
-
-
-
-
-                <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Position</th>
-                                        <th>Class</th>
-                                        <th>Instructor</th>
-                                        <th>Day</th>
-                                        <th>Time</th>
-                                        <th>Rating</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ratingeData">
-                                </tbody>
-                            </table>
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                        <span>Dashboard</span>
+                    </a>
+                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
+                            <a class="collapse-item" href=#>Gym Ratings</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
                         </div>
                     </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                        <span>Upload database</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+
+            </ul>
+
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <div id="content">
+
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                            Rating Statistics
+                        </div>
+
+                        <ul class="navbar-nav ml-auto">
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; padding-right:400px;">
+                        <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="choice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Class Ratings
+                        </a>
+
+                        <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#" id="class">Class Ratings</a>
+                            <a class="dropdown-item" href="#" id="instructor">Instructor Ratings</a>
+                        </div>
+                    </div>
+
+                        <div style="padding-left:50px; padding-right:50px;">
+                            <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="classDataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Position</th>
+                                                    <th>Class</th>
+                                                    <th>Instructor</th>
+                                                    <th>Day</th>
+                                                    <th>Time</th>
+                                                    <th>Rating</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="classRatingData">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="classChartDiv" style="padding-right:50px; padding-left:50px;">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <canvas id="classChart"></canvas>
+                                </div>
+                            </div>
+                            <button id="downloadCSV">Download Chart Data as CSV</button>
+                        </div>
+
+                        <div style="padding-left:50px; padding-right:50px;">
+                            <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Position</th>
+                                                    <th>Instructor</th>
+                                                    <th>Rating</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="instructorRatingData">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <canvas id="instructorChart"></canvas>
+                                </div>
+                            </div>
+                            <button id="downloadCSVI">Download Chart Data as CSV</button>
+                        </div>
+
                 </div>
             </div>
-            </div>
-
-           
         </div>
-    
+
+        <div id="alertModal" class="modal">
+            <div class="modal-content">
+                <span align="right" class="close">&times;</span>
+                <h4 id="modalHeading"></h4>
+                <br />
+                <p id="message"></p>
+            </div>
+        </div>
+
+        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
 
 
-    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-    <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
-    <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
-    <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
-    <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
-    <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
+        <script>
+            var encodedUri;
+            var encodedUrii;
+            var classesJson = [];
+            var classRatings = [];
+            var classRatingsValues = [];
+            var instructorsJson = [];
+            var instructorsRatings = [];
+            var instructorsRatingsValues = [];
+            var instructorLabels = [];
+            var classLabels = [];
 
+            var gymId = getCookie("gymId").split(",")[0];
 
-    <script>
+            var modal = document.getElementById("alertModal");
+            var span = document.getElementsByClassName("close")[0];
+            var modalMessage = document.getElementById("message");
 
-        var classesjson;
-        var Results = new Array();
+            modal.style.display = "none";
 
-        var gymId = getCookie("gymId").split(",")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
 
+            async function getGymClasses() {
 
-        function getGymClasses() {
-
-            var xmlhttp = new XMLHttpRequest();
-
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-                    if (xmlhttp.status == 200)
-                    {
-                        classesjson = JSON.parse(xmlhttp.responseText);
-                        if (classesjson.length == 0) { window.alert("There are no classes at the gym.");}
+                await jQuery.ajax({
+                    url: "@Url.Content("~/api/classes/gymlist?gymId=")" + gymId,
+                    type: "GET",
+                    success: function (result) {
+                        if (result.length > 0) {
+                            classesJson = result;
+                        }
                         else {
+                            var table = document.getElementById("classTable");
+                            table.style.display = "none";
 
-                            console.log(xmlhttp.responseText);
+                            modalMessage.innerHTML = "There are currently no classes at your gym!";
+                            modal.style.display = "block";
+                        }
+                    },
+                    error: function (result) {
+                        modalMessage.innerHTML = "Oh no! <br /> " + result.responseText;
+                        modal.style.display = "block";
+                    }
+                });
 
-                            for (var y = 0; y < classesjson.length; y++) {
-                                getClassRatings(classesjson[y].classId, y);
+                await getClassRatings();
+            }
+
+            async function getInstructors() {
+
+                 await jQuery.ajax({
+                    url: "@Url.Content("~/api/user/allInstructors?gymId=")" + gymId,
+                    type: "GET",
+                     success: function (result) {
+                         instructorsJson = result;
+                    },
+                    error: function (result) {
+                        modalMessage.innerHTML = "Oh no! <br /> " + result.responseText;
+                        modal.style.display = "block";
+                    }
+                 });
+
+                await getInstructorsRatings();
+            }
+
+            async function getClassRatings() {
+
+                for (var i = 0; i < classesJson.length; i++) {
+
+                    await jQuery.ajax({
+                        url: '@Url.Content("~/api/ratings/class?classid=")' + classesJson[i].classId,
+                        type: "GET",
+                        success: function (result) {
+                            if (result.length == 0) {
+                                var rating = 0;
+                                classRatings.push([classesJson[i].name, classesJson[i].instructor, classesJson[i].day, classesJson[i].startTime, (rating).toFixed(2)]);
+                            } else {
+                                var rating = 0;
+                                if (result.ratingCount != 0) {
+                                    rating = parseInt(result.ratingSum) / parseInt(result.ratingCount);
+                                }
+                                classRatings.push([classesJson[i].name, classesJson[i].instructor, classesJson[i].day, classesJson[i].startTime, (rating).toFixed(2)]);
                             }
+                        },
+                        error: function (result) {
+                            modalMessage.innerHTML = "Oh no! <br /> " + result.responseText;
+                            modal.style.display = "block";
+                        }
+                    });
+                }
+            }
+
+            async function getInstructorsRatings() {
+
+                for (var i = 0; i < instructorsJson.length; i++) {
+
+                    await jQuery.ajax({
+                        url: '@Url.Content("~/api/ratings/instructor?instructor=")' + instructorsJson[i].username,
+                        type: "GET",
+                        success: function (result) {
+
+                            if (result.length == 0) {
+                                var rating = 0;
+                                instructorsRatings.push([instructorsJson[i].name + instructorsJson[i].surname, (rating).toFixed(2)]);
+                            } else {
+                                var rating = 0;
+                                if (result.ratingCount != 0) {
+                                    rating = parseInt(result.ratingSum) / parseInt(result.ratingCount);
+                                }
+                                instructorsRatings.push([instructorsJson[i].name + " " + instructorsJson[i].surname, (rating).toFixed(2)]);
+                            }
+                        },
+                        error: function (result) {
+                            modalMessage.innerHTML = "Oh no! <br /> " + result.responseText;
+                            modal.style.display = "block";
+                        }
+                    });
+                }
+            }
+
+            function showTable() {
+                if (document.getElementById("choice").innerHTML.includes("Instructor")) {
+                    document.getElementById("classTable").style.display = "none";
+                    document.getElementById("instructorTable").style.display = "block";
+                    showInstructors();
+                    drawInstructorChart();
+                    document.getElementById("instructorChartDiv").style.display = "block";
+                    document.getElementById("classChartDiv").style.display = "none";
+                }
+                else {
+                    document.getElementById("classTable").style.display = "block";
+                    document.getElementById("instructorTable").style.display = "none";
+                    showClasses();
+                    drawClassChart();
+                    document.getElementById("instructorChartDiv").style.display = "none";
+                    document.getElementById("classChartDiv").style.display = "block";
+                }
+
+            }
+
+            document.getElementById("instructor").onclick = function () {
+                document.getElementById("choice").innerHTML = "Instructor Ratings";
+                showTable();
+            }
+
+            document.getElementById("class").onclick = function () {
+                document.getElementById("choice").innerHTML = "Class Ratings";
+                showTable();
+            }
+
+            function showInstructors() {
+                var table = document.getElementById("instructorRatingData");
+                table.innerHTML = "";
+
+                for (let i = 0; i < instructorsJson.length; i++) {
+
+                    for (let j = 0; j < instructorsJson.length; j++) {
+
+                        if (instructorsRatings[j] < instructorsRatings[j + 1]) {
+
+                            let tmp = instructorsRatings[j];
+                            let tmpOther = instructorsJson[j];
+
+                            instructorsRatings[j] = instructorsRatings[j + 1];
+                            instructorsJson[j] = instructorsJson[j + 1];
+
+                            instructorsRatings[j + 1] = tmp;
+                            instructorsJson[j + 1] = tmpOther;
                         }
                     }
-                    else if (xmlhttp.status == 400) {
-                        alert('400');
+                }
+
+                for (var j = 0; j < instructorsJson.length; j++) {
+
+                    instructorLabels.push(instructorsRatings[j][0]);
+                    instructorsRatingsValues.push(instructorsRatings[j][1]);
+
+                    var tr = document.createElement('tr');
+
+                    var instructorPositionTd = document.createElement('td');
+                    if (j == 0) {
+                        instructorPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 226 226" style=" fill:#000000;"> <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#f1c40f"></stop><stop offset="1" stop-color="#f1c40f"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#000000" stroke="none" stroke-width="1"><path d="M105.39,137.09v-3.55h6.72v-23.23l0.48,-2.84l-1.92,2.26l-5.28,3.79l-1.82,-2.45l10.56,-8.16h1.73v30.63h6.57v3.55z"></path></g><path d="M93.57,147.09v-54.18h38.86v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg>';
+                    }
+                    else if (j == 1) {
+                        instructorPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width = "48" height = "48" viewBox = "0 0 226 226" <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#cccccc"></stop><stop offset="1" stop-color="#cccccc"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#090909" stroke="none" stroke-width="1"><path d="M121.88,111.12v0c0,1.7 -0.31333,3.43667 -0.94,5.21c-0.62,1.77333 -1.43667,3.55667 -2.45,5.35c-1.00667,1.79333 -2.13333,3.54667 -3.38,5.26c-1.24667,1.71333 -2.49333,3.33667 -3.74,4.87v0l-2.36,2.06v0.2l3.08,-0.53h10.46v3.55h-19.1v-1.39c0.7,-0.74 1.54667,-1.65333 2.54,-2.74c0.99333,-1.08667 2.02667,-2.29333 3.1,-3.62c1.06667,-1.32667 2.12,-2.73667 3.16,-4.23c1.04,-1.48667 1.98667,-2.99667 2.84,-4.53c0.84667,-1.54 1.52667,-3.06 2.04,-4.56c0.50667,-1.50667 0.76,-2.93 0.76,-4.27v0c0,-1.57333 -0.44667,-2.88 -1.34,-3.92c-0.89333,-1.04 -2.25333,-1.56 -4.08,-1.56v0c-1.21333,0 -2.39667,0.25 -3.55,0.75c-1.15333,0.49333 -2.14667,1.06 -2.98,1.7v0l-1.58,-2.73c1.12,-0.96 2.44667,-1.71333 3.98,-2.26c1.54,-0.54667 3.19,-0.82 4.95,-0.82v0c1.37333,0 2.58667,0.2 3.64,0.6c1.06,0.4 1.95667,0.97 2.69,1.71c0.74,0.73333 1.3,1.60333 1.68,2.61c0.38667,1.01333 0.58,2.11 0.58,3.29z"></path></g><path d="M93.45,147.09v-54.18h39.1v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg >';
+                    }
+                    else if (j == 2) {
+                        instructorPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width = "48" height = "48" viewBox = "0 0 226 226" style = " fill:#000000;" ><defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#e67e22"></stop><stop offset="1" stop-color="#feb705"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#050505" stroke="none" stroke-width="1"><path d="M110.79,133.73v0c1.08667,0 2.09667,-0.16 3.03,-0.48c0.92667,-0.32 1.72667,-0.79333 2.4,-1.42c0.66667,-0.62667 1.19333,-1.37 1.58,-2.23c0.38667,-0.86667 0.58,-1.81 0.58,-2.83v0c0,-2.24 -0.66667,-3.90667 -2,-5c-1.32667,-1.08667 -3.15667,-1.63 -5.49,-1.63v0h-3.55v-1.39l6.91,-10.66l2.21,-2.11l-3.12,0.48h-9.51v-3.55h17.14v1.39l-7.63,11.47l-1.68,1.4v0.09l1.63,-0.33c1.28,0.02667 2.46333,0.25667 3.55,0.69c1.08667,0.43333 2.03,1.05667 2.83,1.87c0.8,0.82 1.42333,1.79667 1.87,2.93c0.45333,1.14 0.68,2.43 0.68,3.87v0c0,1.72667 -0.30667,3.26 -0.92,4.6c-0.60667,1.34667 -1.43,2.47667 -2.47,3.39c-1.04,0.91333 -2.26333,1.61 -3.67,2.09c-1.40667,0.48 -2.89333,0.72 -4.46,0.72v0c-1.44,0 -2.73667,-0.11333 -3.89,-0.34c-1.15333,-0.22667 -2.16333,-0.51333 -3.03,-0.86v0l1.01,-3.41c0.74,0.35333 1.61333,0.65 2.62,0.89c1.00667,0.24 2.13333,0.36 3.38,0.36z"></path></g><path d="M93.78,147.09v-54.18h38.44v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg >';
                     }
                     else {
-                        alert('There are currently no classes at the gym.');
+                        instructorPositionTd.innerHTML = j;
                     }
+                    tr.appendChild(instructorPositionTd);
+
+                    var instructorNameTd = document.createElement('td');
+                    instructorNameTd.innerHTML = instructorsRatings[j][0];
+                    tr.appendChild(instructorNameTd);
+
+                    var instructorRatingTd = document.createElement('td');
+                    instructorRatingTd.innerHTML = instructorsRatings[j][1];
+                    tr.appendChild(instructorRatingTd);
+
+                    table.appendChild(tr);
+   
+                  //  console.log(instructorsRatings);
+                    let csvContent = "data:text/csv;charset=utf-8,";
+
+                    instructorsRatings.forEach(function (rowArray) {
+                        let instructorsRatings = rowArray.join(",");
+                        csvContent += instructorsRatings + "\r\n";
+                    });
+
+                    encodedUrii = encodeURI(csvContent);
+
+
+                    document.getElementById("downloadCSVI").addEventListener("click", function () {
+                        downloadCSVI()
+                    });
                 }
-            };
+            }
 
-             var url = '@Url.Content("~/api/classes/gymlist?gymid=")'+gymId;
+            function showClasses() {
+               
 
-           xmlhttp.open("GET", url, true);
-            xmlhttp.send();
-        }
+                var table = document.getElementById("classRatingData");
 
+                table.innerHTML = "";
 
-        function getClassRatings(id, d)
-        {
+                for (let i = 0; i < classesJson.length; i++) {
 
-          var xmlhttp = new XMLHttpRequest();
+                    for (let j = 0; j < classesJson.length; j++) {
 
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-                    if (xmlhttp.status == 200) {
+                        if (classRatings[j] < classRatings[j + 1]) {
 
-                         classRatingsJson = JSON.parse(xmlhttp.responseText);
-                        if (classRatingsJson.length == 0) { }
-                        else
-                        {
-                            var rating = 0;
-                            if (classRatingsJson.ratingCount != 0) {
-                                rating = parseInt(classRatingsJson.ratingSum) / parseInt(classRatingsJson.ratingCount);
-                                console.log(rating);
-                                console.log(parseInt(classRatingsJson.ratingSum) / parseInt(classRatingsJson.ratingCount));
+                            let tmp = classRatings[j];
+                            let tmpOther = classesJson[j];
 
-                            }
-                            Results.push([d, classesjson[d].name, classesjson[d].instructor, classesjson[d].day, classesjson[d].startTime, (rating).toFixed(2)]);
+                            classRatings[j] = classRatings[j + 1];
+                            classesJson[j] = classesJson[j + 1];
+
+                            classRatings[j + 1] = tmp;
+                            classesJson[j + 1] = tmpOther;
                         }
                     }
-                    else if (xmlhttp.status == 400) {
-                        alert('400');
+                }
+
+                for (var j = 0; j < classesJson.length; j++) {
+
+                    classLabels.push(classRatings[j][0]);
+                    classRatingsValues.push(classRatings[j][4]);
+
+                    var tr = document.createElement('tr');
+
+                    var classPositionTd = document.createElement('td');
+                    if (j == 0) {
+                        classPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 226 226" style=" fill:#000000;"> <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#f1c40f"></stop><stop offset="1" stop-color="#f1c40f"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#000000" stroke="none" stroke-width="1"><path d="M105.39,137.09v-3.55h6.72v-23.23l0.48,-2.84l-1.92,2.26l-5.28,3.79l-1.82,-2.45l10.56,-8.16h1.73v30.63h6.57v3.55z"></path></g><path d="M93.57,147.09v-54.18h38.86v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg>';
+                    }
+                    else if (j == 1) {
+                        classPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width = "48" height = "48" viewBox = "0 0 226 226" <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#cccccc"></stop><stop offset="1" stop-color="#cccccc"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#090909" stroke="none" stroke-width="1"><path d="M121.88,111.12v0c0,1.7 -0.31333,3.43667 -0.94,5.21c-0.62,1.77333 -1.43667,3.55667 -2.45,5.35c-1.00667,1.79333 -2.13333,3.54667 -3.38,5.26c-1.24667,1.71333 -2.49333,3.33667 -3.74,4.87v0l-2.36,2.06v0.2l3.08,-0.53h10.46v3.55h-19.1v-1.39c0.7,-0.74 1.54667,-1.65333 2.54,-2.74c0.99333,-1.08667 2.02667,-2.29333 3.1,-3.62c1.06667,-1.32667 2.12,-2.73667 3.16,-4.23c1.04,-1.48667 1.98667,-2.99667 2.84,-4.53c0.84667,-1.54 1.52667,-3.06 2.04,-4.56c0.50667,-1.50667 0.76,-2.93 0.76,-4.27v0c0,-1.57333 -0.44667,-2.88 -1.34,-3.92c-0.89333,-1.04 -2.25333,-1.56 -4.08,-1.56v0c-1.21333,0 -2.39667,0.25 -3.55,0.75c-1.15333,0.49333 -2.14667,1.06 -2.98,1.7v0l-1.58,-2.73c1.12,-0.96 2.44667,-1.71333 3.98,-2.26c1.54,-0.54667 3.19,-0.82 4.95,-0.82v0c1.37333,0 2.58667,0.2 3.64,0.6c1.06,0.4 1.95667,0.97 2.69,1.71c0.74,0.73333 1.3,1.60333 1.68,2.61c0.38667,1.01333 0.58,2.11 0.58,3.29z"></path></g><path d="M93.45,147.09v-54.18h39.1v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg >';
+                    }
+                    else if (j == 2) {
+                        classPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width = "48" height = "48" viewBox = "0 0 226 226" style = " fill:#000000;" ><defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#e67e22"></stop><stop offset="1" stop-color="#feb705"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#050505" stroke="none" stroke-width="1"><path d="M110.79,133.73v0c1.08667,0 2.09667,-0.16 3.03,-0.48c0.92667,-0.32 1.72667,-0.79333 2.4,-1.42c0.66667,-0.62667 1.19333,-1.37 1.58,-2.23c0.38667,-0.86667 0.58,-1.81 0.58,-2.83v0c0,-2.24 -0.66667,-3.90667 -2,-5c-1.32667,-1.08667 -3.15667,-1.63 -5.49,-1.63v0h-3.55v-1.39l6.91,-10.66l2.21,-2.11l-3.12,0.48h-9.51v-3.55h17.14v1.39l-7.63,11.47l-1.68,1.4v0.09l1.63,-0.33c1.28,0.02667 2.46333,0.25667 3.55,0.69c1.08667,0.43333 2.03,1.05667 2.83,1.87c0.8,0.82 1.42333,1.79667 1.87,2.93c0.45333,1.14 0.68,2.43 0.68,3.87v0c0,1.72667 -0.30667,3.26 -0.92,4.6c-0.60667,1.34667 -1.43,2.47667 -2.47,3.39c-1.04,0.91333 -2.26333,1.61 -3.67,2.09c-1.40667,0.48 -2.89333,0.72 -4.46,0.72v0c-1.44,0 -2.73667,-0.11333 -3.89,-0.34c-1.15333,-0.22667 -2.16333,-0.51333 -3.03,-0.86v0l1.01,-3.41c0.74,0.35333 1.61333,0.65 2.62,0.89c1.00667,0.24 2.13333,0.36 3.38,0.36z"></path></g><path d="M93.78,147.09v-54.18h38.44v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg >';
                     }
                     else {
-                        alert(xmlhttp.status);
+                        classPositionTd.innerHTML = j;
+                    }
+                    tr.appendChild(classPositionTd);
+
+                    console.log(classRatings);
+
+                    let csvContent = "data:text/csv;charset=utf-8,";
+
+                    classRatings.forEach(function (rowArray) {
+                        let classRatings = rowArray.join(",");
+                        csvContent += classRatings + "\r\n";
+                    });
+
+                    encodedUri = encodeURI(csvContent);
+                  //  window.open(encodedUri);
+
+                    document.getElementById("downloadCSV").addEventListener("click", function () {
+                        downloadCSV()
+                    });
+
+                    var classNameTd = document.createElement('td');
+                    classNameTd.innerHTML = classRatings[j][0];
+                    tr.appendChild(classNameTd);
+
+                    var instructorNameTd = document.createElement('td');
+                    for (var t = 0; t < instructorsJson.length; t++) {
+                        if (instructorsJson[t].username == classRatings[j][1]) {
+                            instructorNameTd.innerHTML = instructorsJson[t].name + " " + instructorsJson[t].surname;
+                        }
+                    }
+                    tr.appendChild(instructorNameTd);
+
+                    var classDayTd = document.createElement('td');
+                    classDayTd.innerHTML = classRatings[j][2];
+                    tr.appendChild(classDayTd);
+
+                    var classTimeTd = document.createElement('td');
+                    classTimeTd.innerHTML = classRatings[j][3];
+                    tr.appendChild(classTimeTd);
+
+                    var classRatingTd = document.createElement('td');
+                    classRatingTd.innerHTML = classRatings[j][4];
+                    tr.appendChild(classRatingTd);
+
+                    table.appendChild(tr);
+
+                }
+            }
+
+            function downloadCSV() {
+
+                window.open(encodedUri);
+            }
+
+
+            function downloadCSVI() {
+
+                window.open(encodedUrii);
+            }
+
+            function getCookie(cname) {
+
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+
+                for (var i = 0; i < ca.length; i++) {
+
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+
+                        c = c.substring(1);
+                    }
+
+                    if (c.indexOf(name) == 0) {
+
+                        return c.substring(name.length, c.length);
                     }
                 }
-            };
-            var url = '@Url.Content("~/api/ratings/class?classid=")'+id;
 
-
-            xmlhttp.open("GET",url);
-            xmlhttp.send();
-
-
-        }
-
-
-    function Generate()
-    {
-
-        getGymClasses();
-    }
-
-
-    function GenerateTable()
-    {
-
-        var e = document.getElementById("order");
-        var option = e.options[e.selectedIndex].value;
-
-        Results.sort((a, b) => a[5] - b[5]);
-
-      
-
-        if (option == 1) {
-
-            Results.reverse();
-            
-            //Create a HTML Table element.
-            var xtable = document.getElementById("dataTable");
-
-            var rows = xtable.rows;
-            var i = rows.length;
-            while (--i) {
-                rows[i].parentNode.removeChild(rows[i]);
+                return "";
             }
 
-            //Get the count of columns.
-            var columnCount = 6;
-
-            for (var i = 0; i < Results.length; i++) {
-                Results[i][0] = i + 1;
-            }
-            //Add the data rows.
-            for (var i = 1; i < Results.length+1; i++) {
-                row = xtable.insertRow(-1);
-                for (var j = 0; j < columnCount; j++) {
-                    var cell = row.insertCell(-1);
-                    if ((i == 1) && (j == 0)) {
-                        cell.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 226 226" style=" fill:#000000;"> <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#f1c40f"></stop><stop offset="1" stop-color="#f1c40f"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#000000" stroke="none" stroke-width="1"><path d="M105.39,137.09v-3.55h6.72v-23.23l0.48,-2.84l-1.92,2.26l-5.28,3.79l-1.82,-2.45l10.56,-8.16h1.73v30.63h6.57v3.55z"></path></g><path d="M93.57,147.09v-54.18h38.86v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg>';
-                    }
-                    else if ((i == 2) && (j == 0)) {
-                        cell.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width = "48" height = "48" viewBox = "0 0 226 226" <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#cccccc"></stop><stop offset="1" stop-color="#cccccc"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#090909" stroke="none" stroke-width="1"><path d="M121.88,111.12v0c0,1.7 -0.31333,3.43667 -0.94,5.21c-0.62,1.77333 -1.43667,3.55667 -2.45,5.35c-1.00667,1.79333 -2.13333,3.54667 -3.38,5.26c-1.24667,1.71333 -2.49333,3.33667 -3.74,4.87v0l-2.36,2.06v0.2l3.08,-0.53h10.46v3.55h-19.1v-1.39c0.7,-0.74 1.54667,-1.65333 2.54,-2.74c0.99333,-1.08667 2.02667,-2.29333 3.1,-3.62c1.06667,-1.32667 2.12,-2.73667 3.16,-4.23c1.04,-1.48667 1.98667,-2.99667 2.84,-4.53c0.84667,-1.54 1.52667,-3.06 2.04,-4.56c0.50667,-1.50667 0.76,-2.93 0.76,-4.27v0c0,-1.57333 -0.44667,-2.88 -1.34,-3.92c-0.89333,-1.04 -2.25333,-1.56 -4.08,-1.56v0c-1.21333,0 -2.39667,0.25 -3.55,0.75c-1.15333,0.49333 -2.14667,1.06 -2.98,1.7v0l-1.58,-2.73c1.12,-0.96 2.44667,-1.71333 3.98,-2.26c1.54,-0.54667 3.19,-0.82 4.95,-0.82v0c1.37333,0 2.58667,0.2 3.64,0.6c1.06,0.4 1.95667,0.97 2.69,1.71c0.74,0.73333 1.3,1.60333 1.68,2.61c0.38667,1.01333 0.58,2.11 0.58,3.29z"></path></g><path d="M93.45,147.09v-54.18h39.1v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg >';
-                    }
-                    else if ((i == 3) && (j == 0)) {
-                        cell.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width = "48" height = "48" viewBox = "0 0 226 226" style = " fill:#000000;" ><defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#e67e22"></stop><stop offset="1" stop-color="#feb705"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#050505" stroke="none" stroke-width="1"><path d="M110.79,133.73v0c1.08667,0 2.09667,-0.16 3.03,-0.48c0.92667,-0.32 1.72667,-0.79333 2.4,-1.42c0.66667,-0.62667 1.19333,-1.37 1.58,-2.23c0.38667,-0.86667 0.58,-1.81 0.58,-2.83v0c0,-2.24 -0.66667,-3.90667 -2,-5c-1.32667,-1.08667 -3.15667,-1.63 -5.49,-1.63v0h-3.55v-1.39l6.91,-10.66l2.21,-2.11l-3.12,0.48h-9.51v-3.55h17.14v1.39l-7.63,11.47l-1.68,1.4v0.09l1.63,-0.33c1.28,0.02667 2.46333,0.25667 3.55,0.69c1.08667,0.43333 2.03,1.05667 2.83,1.87c0.8,0.82 1.42333,1.79667 1.87,2.93c0.45333,1.14 0.68,2.43 0.68,3.87v0c0,1.72667 -0.30667,3.26 -0.92,4.6c-0.60667,1.34667 -1.43,2.47667 -2.47,3.39c-1.04,0.91333 -2.26333,1.61 -3.67,2.09c-1.40667,0.48 -2.89333,0.72 -4.46,0.72v0c-1.44,0 -2.73667,-0.11333 -3.89,-0.34c-1.15333,-0.22667 -2.16333,-0.51333 -3.03,-0.86v0l1.01,-3.41c0.74,0.35333 1.61333,0.65 2.62,0.89c1.00667,0.24 2.13333,0.36 3.38,0.36z"></path></g><path d="M93.78,147.09v-54.18h38.44v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg >';
-                    }
-                    else cell.innerHTML = Results[i - 1][j];
-
-
-                }
-            }
-        }
-        else if (option == 2)
-          {
-
-
-            //Create a HTML Table element.
-            var xtable = document.getElementById("dataTable");
-
-
-            var rows = xtable.rows;
-            var i = rows.length;
-            while (--i) {
-                rows[i].parentNode.removeChild(rows[i]);
-            }
-
-            //while (xtable.childNodes.length > 3) { xtable.removeChild(xtable.lastChild); }
-
-            //Get the count of columns.
-            var columnCount = 6;
-
-
-            for (var i = 0; i < Results.length; i++) {
-                Results[i][0] = (Results.length - i).toString();
-            }
-            //Add the data rows.
-            for (var i =0; i < Results.length; i++) {
-                row = xtable.insertRow(-1);
-                for (var j = 0; j < columnCount; j++) {
-                    var cell = row.insertCell(-1);
-                    cell.innerHTML = Results[i][j];
-                   
-                }
-            }
-        }
-
-        }
-
-        function getCookie(cname) {
-
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-
-            for (var i = 0; i < ca.length; i++) {
-
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-
-                    c = c.substring(1);
-                }
-
-                if (c.indexOf(name) == 0) {
-
-                    return c.substring(name.length, c.length);
-                }
-            }
-
-            return "";
-        }
             function logout() {
-
-                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
 
-    </script>
+            async function load() {
+                await getInstructors();
+                await getGymClasses();
+                showTable();
+            }
 
-</body>
+            function drawInstructorChart() {
+
+               var ctx = document.getElementById("instructorChart");
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: instructorLabels,
+                        datasets: [{
+                            label: 'Ratings of Instructors',
+                            data: instructorsRatingsValues,
+                            backgroundColor: "#34abeb",
+                            hoverBackgroundColor: "#34abeb",
+                            borderColor: "#34abeb",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                barPercentage: 0.1
+                            }]
+                        }
+                    }
+                });
+
+                instructorLabels = [];
+                instructorsRatingsValues = [];
+            }
+
+            function drawClassChart() {
+                var ctx = document.getElementById("classChart");
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: classLabels,
+                        datasets: [{
+                            label: 'Ratings of Classes',
+                            data: classRatingsValues,
+                            backgroundColor: "#34abeb",
+                            hoverBackgroundColor: "#34abeb",
+                            borderColor: "#34abeb",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                barPercentage: 0.1
+                            }]
+                        }
+                    }
+                });
+
+                classLabels = [];
+                classRatingsValues = [];
+            }
+
+        </script>
+    </body>
 </html>

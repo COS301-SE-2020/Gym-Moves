@@ -1,0 +1,308 @@
+﻿<!--
+File Name:
+    AdminSignUp.cshtml
+
+Author:
+    Raeesa
+
+Date Created:
+    29/08/2020
+
+Update History:
+-----------------------------------------------------------------------------------
+    Date          |    Author      |     Changes
+-----------------------------------------------------------------------------------
+    11/09/2020    | Danel          | Fixed some errors
+-----------------------------------------------------------------------------------
+
+-->
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+        <link rel="shortcut icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")" type="image/x-icon" />
+
+        <title>Admin Sign Up</title>
+
+        <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap.min.css")">
+        <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-grid.min.css")">
+        <link rel="stylesheet" href="@Url.Content("~/assets/bootstrap/css/bootstrap-reboot.min.css")">
+        <link rel="stylesheet" href="@Url.Content("~/assets/styles.css")">
+
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <style>
+
+            @@import url(https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap);
+
+            @@font-face {
+                font-family: 'Lastwaerk';
+                src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
+            }
+
+            .navbar_background {
+                background-color: #7341E6;
+                color: white;
+            }
+
+            .button-colour {
+                background-color: #7341E6;
+                color: white;
+            }
+
+        </style>
+    </head>
+
+    <body style="font-family: Roboto;">
+
+        <script>
+
+            function getCookie(cname) {
+
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+
+                return "";
+            }
+
+            adminUsernames = [];
+
+            doRequest();
+
+            async function doRequest() {
+                await jQuery.ajax({
+                    url: "@Url.Content("~/api/admin/getallusernames")",
+                    type: "GET",
+                    success: function (result) {
+
+                        for (var i = 0; i < result.length; i++) {
+                            adminUsernames.push(result[i].username);
+                        }
+
+                        var flag = false;
+
+                        for (var i = 0; i < adminUsernames.length; i++) {
+                            if ((getCookie("username").split(",")[0]).includes(adminUsernames[i])) {
+                                flag = true;
+                            }
+                        }
+
+                        if (flag) {
+                            window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
+                        }
+
+                    },
+                    error: function (result) {
+                        modalHeading.innerHTML = "An error occurred!";
+                        modalMessage.innerHTML = result.responseText;
+                        modal.style.display = "block";
+                    }
+                });
+            }
+        </script>
+
+        <div class="bs-example">
+            <nav class="navbar navbar-expand-md navbar-light navbar_background">
+                <a href="#" class="navbar-brand">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="28" alt="dumbbell">
+                    <span id="heading" style="font-family: 'Lastwaerk'; font-size: 1.5em">Gym Moves</span>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" style="background-color: white;">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto">
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <section>
+            <div class="col-md-12 d-flex flex-column justify-content-center">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <div class="card-body">
+                        <form role="form" autocomplete="off" id="forgotpassword" method="get" novalidate="">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control form-control-lg" name="username" id="username" />
+                                <div id="errorUsername" style="color: red; visibility: hidden;"> Username is needed! </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="givenPassword">Given Password</label>
+                                <input type="password" class="form-control form-control-lg" name="givenPassword" id="givenPassword" />
+                                <div id="errorGivenPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="newPassword" id="confirmLabel">New Password</label>
+                                <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" />
+                                <div id="errorNewPassword" style="color: red; visibility: hidden;"> Password is needed! </div>
+                            </div>
+
+                            <div align="center" class="form-group">
+                                <button type="button" class="btn button-colour" onclick="onSubmit()">Signup</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section once="footers" class="footer barColour">
+            <div class="container">
+
+                © Copyright 2020 Gym Moves - All Rights Reserved
+
+            </div>
+        </section>
+
+        <script src="@Url.Content("~/assets/jquery.min.js")"></script>
+
+        <script>
+
+            var color = document.getElementById("username").style.borderColor;
+            var matches = false;
+
+            $("#username").on('keyup', function (e) {
+                document.getElementById("username").style.borderColor = color;
+            });
+
+            $("#newPassword").on('keyup', function (e) {
+                document.getElementById("newPassword").style.borderColor = color;
+            });
+
+            $("#givenPassword").on('keyup', function (e) {
+                document.getElementById("givenPassword").style.borderColor = color;
+
+                if (document.getElementById("newPassword").value == document.getElementById("givenPassword").value) {
+                    document.getElementById("newPassword").style.borderColor = "red";
+                    matches = false;
+                }
+            });
+
+
+            function checkUsernameNotEmpty() {
+
+                if (document.getElementById("username").value == "") {
+                    document.getElementById("errorUsername").style.visibility = "visible";
+                    document.getElementById("username").style.boxShadow = "0 0 5px red";
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            function checkGivenPasswordNotEmpty() {
+
+                if (document.getElementById("givenPassword").value == "") {
+                    document.getElementById("errorGivenPassword").style.visibility = "visible";
+                    document.getElementById("givenPassword").style.boxShadow = "0 0 5px red";
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            function checkNewPasswordNotEmpty() {
+
+                if (document.getElementById("newPassword").value == "") {
+                    document.getElementById("errorNewPassword").style.visibility = "visible";
+                    document.getElementById("newPassword").style.boxShadow = "0 0 5px red";
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            function checkAllFieldsNotEmpty() {
+
+                var status = true;
+
+                if (!(checkUsernameNotEmpty() && checkGivenPasswordNotEmpty() && checkNewPasswordNotEmpty())) {
+                    status = false;
+                }
+
+                return status;
+            }
+
+
+            async function hashPassword(password) {
+
+                const msgBuffer = new TextEncoder('utf-8').encode(password);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+
+                return hashHex;
+            }
+
+
+            async function onSubmit() {
+
+                if (checkAllFieldsNotEmpty()) {
+                    if (!matches) {
+
+                        var username = document.getElementById("username").value;
+                        var givenPassword = document.getElementById("givenPassword").value;
+                        var newPassword = await hashPassword(document.getElementById("newPassword").value);
+
+                        var data = {
+                            username: username,
+                            tempPassword: givenPassword,
+                            password: newPassword
+                        }
+
+                        jQuery.ajax({
+                            url: "@Url.Content("~/api/Admin/signup")",
+                            type: "POST",
+                            data: JSON.stringify(data),
+                            contentType: "application/json",
+                            success: function (result) {
+                                document.cookie = "username=" + document.getElementById("username").value + ", path=/";
+                                window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
+                            },
+                            error: function (result) {
+                                modalHeading.innerHTML = "An error occurred!";
+                                modalMessage.innerHTML = result.responseText;
+                                modal.style.display = "block";
+                            }
+                        });
+
+                    } else {
+                        modalHeading.innerHTML = "Oh no!";
+                        modalMessage.innerHTML = "You can't choose the same password as your given password.";
+                        modal.style.display = "block";
+                    }
+                } else {
+                    modalHeading.innerHTML = "Oh no!";
+                    modalMessage.innerHTML = "You can't leave fields empty.";
+                    modal.style.display = "block";
+                }
+            }
+
+        </script>
+    </body>
+</html>
