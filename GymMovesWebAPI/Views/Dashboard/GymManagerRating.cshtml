@@ -235,6 +235,7 @@ Functional Description:
                                             </tbody>
                                         </table>
                                     </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -245,6 +246,7 @@ Functional Description:
                                     <canvas id="classChart"></canvas>
                                 </div>
                             </div>
+                            <button id="downloadCSV">Download Chart Data as CSV</button>
                         </div>
 
                         <div style="padding-left:50px; padding-right:50px;">
@@ -273,6 +275,7 @@ Functional Description:
                                     <canvas id="instructorChart"></canvas>
                                 </div>
                             </div>
+                            <button id="downloadCSVI">Download Chart Data as CSV</button>
                         </div>
 
                 </div>
@@ -296,7 +299,8 @@ Functional Description:
 
 
         <script>
-
+            var encodedUri;
+            var encodedUrii;
             var classesJson = [];
             var classRatings = [];
             var classRatingsValues = [];
@@ -499,11 +503,26 @@ Functional Description:
                     tr.appendChild(instructorRatingTd);
 
                     table.appendChild(tr);
+   
+                  //  console.log(instructorsRatings);
+                    let csvContent = "data:text/csv;charset=utf-8,";
 
+                    instructorsRatings.forEach(function (rowArray) {
+                        let instructorsRatings = rowArray.join(",");
+                        csvContent += instructorsRatings + "\r\n";
+                    });
+
+                    encodedUrii = encodeURI(csvContent);
+
+
+                    document.getElementById("downloadCSVI").addEventListener("click", function () {
+                        downloadCSVI()
+                    });
                 }
             }
 
             function showClasses() {
+               
 
                 var table = document.getElementById("classRatingData");
 
@@ -551,6 +570,20 @@ Functional Description:
 
                     console.log(classRatings);
 
+                    let csvContent = "data:text/csv;charset=utf-8,";
+
+                    classRatings.forEach(function (rowArray) {
+                        let classRatings = rowArray.join(",");
+                        csvContent += classRatings + "\r\n";
+                    });
+
+                    encodedUri = encodeURI(csvContent);
+                  //  window.open(encodedUri);
+
+                    document.getElementById("downloadCSV").addEventListener("click", function () {
+                        downloadCSV()
+                    });
+
                     var classNameTd = document.createElement('td');
                     classNameTd.innerHTML = classRatings[j][0];
                     tr.appendChild(classNameTd);
@@ -578,6 +611,17 @@ Functional Description:
                     table.appendChild(tr);
 
                 }
+            }
+
+            function downloadCSV() {
+
+                window.open(encodedUri);
+            }
+
+
+            function downloadCSVI() {
+
+                window.open(encodedUrii);
             }
 
             function getCookie(cname) {

@@ -91,7 +91,9 @@ Functional Description:
 
         <script>
             if (document.cookie == "") {
-                 window.location.href = "@Url.Content("~/ManagerLogin")";
+           //     document.cookie = "username=esdgsrsa, path=/";
+            //    document.cookie = "gymId=15, path=/";
+             window.location.href = "@Url.Content("~/ManagerLogin")";
                 }
         </script>
 
@@ -231,6 +233,7 @@ Functional Description:
                                     <canvas id="myPieChart"></canvas>
                                 </div>
                             </div>
+                            <button id="downloadCSV">Download Chart Data as CSV</button>
                         </div>
                     </div>
                 </div>

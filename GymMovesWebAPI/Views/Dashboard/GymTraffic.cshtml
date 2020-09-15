@@ -148,8 +148,8 @@
 
                     <div class="container-fluid">
                         <h1 class="mt-5">Gym Statistics</h1>
-                        
-                        <div id="chart" style="height: 300px; width: 100%;"></div>
+
+                        <canvas id="chart" style="height: 300px; width: 100%;"></canvas>
                         <div>
                             <h1>Gym predictions</h1>
                             <div class="row">
@@ -253,13 +253,16 @@
         </div>
 
 
-    <script src="@Url.Content("~/assets/jquery.min.js")"></script>
-    <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
-    <script src="@Url.Content("https://canvasjs.com/assets/script/canvasjs.min.js")"></script>
+        <script src="@Url.Content("~/assets/jquery.min.js")"></script>
+        <script src="@Url.Content("~/assets/bootstrap/js/bootstrap.bundle.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+        <script src="@Url.Content("~/assets/js/demo/chart-bar-demo.js")"></script>
+        <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
 
 
-    <script>
+        <script>
 
+        var days = new Array(7); //days of the week data
         function getCookie(cname) {
 
             var name = cname + "=";
@@ -297,6 +300,7 @@
         }
 
         function showData() {
+            console.log("1")
             showChart();
             //showDailyPredictions();
         }
@@ -341,10 +345,12 @@
         }
 
         async function showChart() {
-            var days = new Array(7); //days of the week data
+
+            console.log("2");
+
 
             for (k = 0; k < 7; k++) {
-                days[k] = 0;
+                days[k] = 1;
             }
 
             var req = new XMLHttpRequest();
@@ -354,35 +360,46 @@
             req.onreadystatechange = function () {
                 if (req.readyState == 4 && req.status == 200) {
                     var attendance = JSON.parse(req.responseText);
+                    console.log(attendance);
+                    var d = new Date();
 
-                    var last = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
+                    var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
                     var day = last.getDate();
-
+                    console.log(attendance.length);
+               
                     for (i = 0; i < attendance.length; i++) {
-
-                        var dt = new Date(attendance.year, attendance.month, attendance.day);
-                        if (dt < day) {
+                        console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
+                        var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
+                        console.log(dt);
+                        console.log(day + " " + last);
+                        if ((dt > last) && (dt < d)) {                                                                                       ;
                             var dow = dt.getDay();
+                            console.log(dow);
                             if(dow > 0)
-                                days[dow-1] += attendance.count;
+                                days[dow - 1] += attendance[i].count;
                         }
                     }
 
                     drawChart(days);
-                }
+                } /*else {
+                    var out = document.getElementById("chart");
+                    out.innerHTML = req.status + " Error: " + req.responseText;
+
+                }*/
             }
             req.send();
         }
 
-        function drawChart(idayArr) {
+            function drawChart(idayArr) {
+                console.log(days);
             var ctx = document.getElementById("chart");
             var myBarChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: classLabels,
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                     datasets: [{
                         label: 'Gym Attendance in the past week',
-                        data: idayArr,
+                        data: days,
                         backgroundColor: "#7341e6",
                         hoverBackgroundColor: "#7341e6",
                         borderColor: "#7341e6",
@@ -403,11 +420,10 @@
                 }
             });
 
-            classLabels = [];
-            classRatingsValues = [];
+            days = [];
         }
 
-    </script>
+        </script>
 
 
 
