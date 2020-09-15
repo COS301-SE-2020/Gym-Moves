@@ -10,24 +10,18 @@ exports.predictSPAM = functions.https.onRequest( async(request, response)=> {
     const dow = request.body.dayoftheweek;
     var instances = [[dow, time]];
     const model = "GymPredictions";
-    //const​ { ​credential​ } ​=​​ await gapi.​google​.​auth​.​getApplicationDefault​();
+    
     const {credential} = await gapi.google.auth.getApplicationDefault();
     const modelName = 'projects/fbprojid/models/' + model;
-    //var ​​modelName​​ =​​ 'projects/fbprojid/models/​'+ ​model​;
+    
     const preds = await m.projects.predict({
       auth: credential,
       name: modelName,
       requestBody: {
         instances
       }
-    /*const​​ preds ​​= ​​await ​​m.​projects​.​predict​({
-		auth​:​​ credential, 
-		name​:​​ modelName,  
-		requestBody​:​​ {
-			​instance
-		​}​*/
+      
     });
   response.send(preds.data);
-	//response​.​send​(​preds​.​data​[​'predictions'​][​0​]);
   });
 
