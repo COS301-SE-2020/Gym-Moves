@@ -1,14 +1,17 @@
 const admin = require("firebase-admin");
 const gapi = require("googleapis");
 const functions = require("firebase-functions");
+const cors = require('cors')({origin: true});
 
 admin.initializeApp(functions.config());
 var m = gapi.google.ml('v1');
 
 exports.predictSPAM = functions.https.onRequest( async(request, response)=> {
+    cors(request ,response, async ()=> {
     const time = request.body.decimaltime;
     const dow = request.body.dayoftheweek;
-    var instances = [[dow, time]];
+    const prev = request.body.prevweek;
+    var instances = [[dow, time, prev]];
     const model = "GymPredictions";
     
     const {credential} = await gapi.google.auth.getApplicationDefault();
@@ -18,10 +21,12 @@ exports.predictSPAM = functions.https.onRequest( async(request, response)=> {
       auth: credential,
       name: modelName,
       requestBody: {
+
         instances
       }
       
     });
   response.send(preds.data);
+    });
   });
 
