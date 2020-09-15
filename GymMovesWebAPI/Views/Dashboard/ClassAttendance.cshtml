@@ -379,8 +379,8 @@
                                 classAttendanceRecordsInIdOrder.push(result);
                             }
                             else {
-                                modalMessage.innerHTML = "There is currently no attendance for classes at your gym!";
-                                modal.style.display = "block";
+                                //modalMessage.innerHTML = "There is currently no attendance for classes at your gym!";
+                               // modal.style.display = "block";
                             }
                         },
                         error: function (result) {
@@ -501,6 +501,8 @@
                 }
             }
 
+            csvArray = [];
+
             function showTableOfClasses() {
 
                 var tableBody = document.getElementById("attendanceData");
@@ -573,6 +575,7 @@
                     document.getElementById("lineChart").appendChild(lineCanvas);
                     document.getElementById("barChart").appendChild(barCanvas);
 
+                    csvArray.push([allClasses[index].name, (sum / classAttendanceRecordsInIdOrder[ids].length * 100).toFixed(2) + "%"]);
                 }
 
             }
