@@ -239,6 +239,17 @@ Functional Description:
                         <div align="right" class="form-group">
                             <button type="button" class="btn button-colour" onclick="submitCsv()">Submit</button>
                         </div>
+
+                        <h3 class="mt-4">Select your .csv here!</h3>
+                        We accept .csv as well as .txt files
+                        <br />
+                        <form id="text_form">
+                            <input class="form-control-file" type="file" id="csvfile" accept=".csv,.txt"> 
+                        </form>
+                        <br />
+                        <div align="right" class="form-group">
+                            <button type="button" class="btn button-colour" onclick="submitFileContents()">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -252,6 +263,7 @@ Functional Description:
                 <p id="message"></p>
             </div>
         </div>
+    </div>
 
 
         <script src="@Url.Content("~/assets/jquery.min.js")"></script>
@@ -268,6 +280,19 @@ Functional Description:
 
             modal.style.display = "none";
 
+            var fileTextValue = "";
+
+            document.getElementById('csvfile').addEventListener('change', function () {
+                var fileReader = new FileReader();
+
+                fileReader.onload = function () {
+                    fileTextValue = fileReader.result;
+                    console.log(fileTextValue);
+                }
+
+                fileReader.readAsText(this.files[0]);
+            });
+
             span.onclick = function () {
                 modal.style.display = "none";
             }
@@ -276,6 +301,27 @@ Functional Description:
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
+
+            async function submitFileContents() {
+                var data = {
+                    Username: getCookie("username").split(",")[0],
+                    Records: fileTextValue
+                };
+
+                $.ajax({
+                    url: "@Url.Content("~/api/membership/addmember")",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (result) {
+                        modalMessage.innerHTML = "Duplicates: " + result.duplicates +
+                            "<br /> Successful: " + result.success + "<br /> Failures: " +
+                            result.failure;
+
+                        modal.style.display = "block";
+                    }
+                });
+            }
 
             async function submitCsv() {
                 var text = document.getElementById("textarea").value;

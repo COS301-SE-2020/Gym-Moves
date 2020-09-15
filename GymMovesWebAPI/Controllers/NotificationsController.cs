@@ -133,7 +133,7 @@ namespace GymMovesWebAPI.Controllers {
 
                     Users[] Members = await gymRepository.getMembers(req.gymId);
 
-                    string from = "tiamangena@gmail.com"; //From address   
+                    string from = "lockdown.squad.301@gmail.com"; //From address   
                     await mailer.sendEmail(from, "Gym Moves Notifications", req.heading, req.body, emailReceiver);
                     
                     foreach (Users user in Members) {
