@@ -112,15 +112,6 @@ Functional Description:
                 background-color: #7341E6;
                 color: white;
             }
-            #downloadCSV {
-                background-color: #7341E6;
-                color: white;
-            }
-
-            #downloadCSVI {
-                background-color: #7341E6;
-                color: white;
-            }
 
         </style>
 
@@ -255,43 +246,39 @@ Functional Description:
                                     <canvas id="classChart"></canvas>
                                 </div>
                             </div>
-                            <div align="center" class="form-group">
-                                <button id="downloadCSV">Download Chart Data as CSV</button>
-                            </div>
-                            </div>
-
-                            <div style="padding-left:50px; padding-right:50px;">
-                                <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Position</th>
-                                                        <th>Instructor</th>
-                                                        <th>Rating</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="instructorRatingData">
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
-                                <div class="card shadow mb-4">
-                                    <div class="card-body">
-                                        <canvas id="instructorChart"></canvas>
-                                    </div>
-                                </div>
-                                <div align="center" class="form-group">
-                                    <button id="downloadCSVI">Download Chart Data as CSV</button>
-                                </div>
-                            </div>
-
+                            <button id="downloadCSV">Download Chart Data as CSV</button>
                         </div>
+
+                        <div style="padding-left:50px; padding-right:50px;">
+                            <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Position</th>
+                                                    <th>Instructor</th>
+                                                    <th>Rating</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="instructorRatingData">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <canvas id="instructorChart"></canvas>
+                                </div>
+                            </div>
+                            <button id="downloadCSVI">Download Chart Data as CSV</button>
+                        </div>
+
+                </div>
             </div>
         </div>
 
