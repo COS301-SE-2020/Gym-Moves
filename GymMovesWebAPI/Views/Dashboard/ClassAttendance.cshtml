@@ -89,7 +89,7 @@
 
         <script>
             if (document.cookie == "") {
-                window.location.href = "@Url.Content("~/ManagerLogin")";
+               // window.location.href = "@Url.Content("~/ManagerLogin")";
             }
         </script>
 
@@ -338,6 +338,7 @@
             var classAttendanceValuesInIdOrder = [];
             var instructors;
 
+ 
             async function getAllClasses() {
 
                 jQuery.ajax({
@@ -501,8 +502,6 @@
                 }
             }
 
-            csvArray = [];
-
             function showTableOfClasses() {
 
                 var tableBody = document.getElementById("attendanceData");
@@ -575,10 +574,11 @@
                     document.getElementById("lineChart").appendChild(lineCanvas);
                     document.getElementById("barChart").appendChild(barCanvas);
 
-                    csvArray.push([allClasses[index].name, (sum / classAttendanceRecordsInIdOrder[ids].length * 100).toFixed(2) + "%"]);
                 }
 
             }
+
+            var csvArray = [];
 
             function showAllClassesTable() {
 
@@ -590,6 +590,8 @@
                 document.getElementById("barGraph").style.display = "none";
 
                 document.getElementById("type").style.display = "none";
+
+                csvArray = [];
             }
 
             var currentRow;
@@ -633,6 +635,17 @@
                             for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
                                 values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
                                 labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
+
+                                var index; 
+                                for (var x = 0; x < allClasses.length; x++) {
+                                    if (classAttendanceRecordsInIdOrder[i][0].classId == allClasses[x].classId) {
+                                        index = x;
+                                        break;
+                                    }
+                                }
+
+                                csvArray.push([allClasses[index].name, classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0],
+                                    (classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2)]);
                             }
 
                             createLineChart(type + canvasId, labelsForGraph, values, name);
@@ -651,12 +664,23 @@
                             for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
                                 values.push(classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2);
                                 labelsForGraph.push(classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0]);
+
+                                var index;
+                                for (var x = 0; x < allClasses.length; x++) {
+                                    if (classAttendanceRecordsInIdOrder[i][0].classId == allClasses[x].classId) {
+                                        index = x;
+                                        break;
+                                    }
+                                }
+
+                                csvArray.push([allClasses[index].name, classAttendanceRecordsInIdOrder[i][classInside].date.split("T")[0],
+                                (classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[i][classInside].capacity).toFixed(2)]);
                             }
+
 
                             createBarChart(type + canvasId, labelsForGraph, values, name);
                         }
                     }
-
                 }
 
 
