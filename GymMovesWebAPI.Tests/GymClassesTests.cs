@@ -27,7 +27,7 @@ namespace GymMovesWebAPI.Tests {
 
         public GymClassesTests() : base() {
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("AppSettings.json");
+            configurationBuilder.AddJsonFile("appSettings.json");
             IConfiguration configuration = configurationBuilder.Build();
 
             userRepository = new UserRepository(DbContext);

@@ -30,7 +30,7 @@ namespace GymMovesWebAPI.Tests {
 
         public GymApplicationTests() : base() {
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("AppSettings.json");
+            configurationBuilder.AddJsonFile("appSettings.json");
             IConfiguration configuration = configurationBuilder.Build();
 
             /* Setup Repositories */
