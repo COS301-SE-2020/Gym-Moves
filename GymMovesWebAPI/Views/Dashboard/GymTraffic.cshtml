@@ -45,19 +45,23 @@
 
             .pred {
                 width: 25%;
-                back
+                back;
             }
 
             .dow {
                 font-size: 1.5rem;
             }
+        #downloadCSV {
+            background-color: #7341E6;
+            color: white;
+        }
 
     </style>
 
 </head>
 
 <body id="page-top" onload="showData()">
-
+   
     <script>
             if (document.cookie == "") {
                 window.location.href = "@Url.Content("~/ManagerLogin")";
@@ -149,8 +153,15 @@
                     <div class="container-fluid">
                         <h1 class="mt-5">Gym Statistics</h1>
 
+
+                   
                         <canvas id="chart" style="height: 300px; width: 100%;"></canvas>
                         <div>
+                            <br />
+                            <div align="center" class="form-group">
+                                <button id="downloadCSV">Download Chart Data as CSV</button>
+                            </div>
+                            <br />
                             <h1>Gym predictions</h1>
                             <div class="row">
                                 <div class="col-xl-3 col-md-6 mb-4">
@@ -305,7 +316,7 @@
         }
 
         function showData() {
-            console.log("1")
+         //   console.log("1");
             showChart();
         }
 
@@ -314,12 +325,12 @@
             var d = new Date();
             var dd = new Array(6);
             var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
-            console.log("prevdt: " + last);
-            var pred = 0; 
+          //  console.log("prevdt: " + last);
+            var pred = 0;
             var peakcount = new Array(7);
             var peaktime = new Array(7);
 
-            for (l = 0; l < 7 l++) {
+            for (l = 0; l < 7;l++) {
                 peakcount[l] = 0;
                 peaktime[l] = 0;
             }
@@ -343,9 +354,9 @@
                            }
                     }
 
-                    console.log(pred + " " + peakcount[k] + " " + pre);
+                //    console.log(pred + " " + peakcount[k] + " " + pre);
                     if (pre > peakcount[k]) {
-                        
+
                         peakcount[k] = pre;
                         peaktime[k] = tm;
                         pre = 0;
@@ -357,7 +368,7 @@
                     var el = document.getElementById(k.toString());
                     el.innerHTML = "No  predictions";
                 } else {
-                    console.log(pre)
+                 //   console.log(pre)
                     var el = document.getElementById(k.toString());
                     el.innerHTML = "Peak Time: " + (peaktime[k]+6) + ":00(" + peakcount[k]+ ")";
                 }
@@ -383,10 +394,10 @@
             });
             req.send(data);;
         }
-
+           // var row;
         async function showChart() {
 
-            console.log("2");
+         //   console.log("2");
 
 
             for (k = 0; k < 7; k++) {
@@ -400,7 +411,8 @@
             req.onreadystatechange = function () {
                 if (req.readyState == 4 && req.status == 200) {
                     var attendance = JSON.parse(req.responseText);
-                    console.log(attendance);
+                  //  console.log(attendance);
+                  //  row = attendance;
                     var d = new Date();
                     attendanceData = attendance;
                     var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
@@ -408,13 +420,13 @@
                     //console.log(attendance.length);
                     showDailyPredictions();
                     for (i = 0; i < attendance.length; i++) {
-                        console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
+                       // console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
                         var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
                         //console.log(dt);
-                        console.log(dt.getDate() + " " + last.getDate());
+                     //   console.log(dt.getDate() + " " + last.getDate());
                         if ((dt >= last) && (dt < d)) {                                                                                       ;
                             var dow = dt.getDay();
-                            console.log(dow);
+                         //   console.log(dow);
                             if(dow > 0)
                                 days[dow - 1] += attendance[i].count;
                         }
@@ -431,7 +443,7 @@
         }
 
             function drawChart(idayArr) {
-                console.log(days);
+             //   console.log(days);
             var ctx = document.getElementById("chart");
             var myBarChart = new Chart(ctx, {
                 type: 'bar',
@@ -459,10 +471,35 @@
                     }
                 }
             });
+                console.log(days);
+                myBarChart.render();
 
-            days = [];
-        }
+                document.getElementById("downloadCSV").addEventListener("click", function () {
+                    downloadCSV()
+                });
 
+                const rows = [
+                    ['Monday', days[0]], ['Tuesday', days[1]], ['Wednesday', days[2]], ['Thursday', days[3]], ['Friday', days[4]], ['Saturday', days[5]]
+                ];
+
+                let csvContent = "data:text/csv;charset=utf-8,";
+
+                rows.forEach(function (rowArray) {
+                    let row = rowArray.join(",");
+                    csvContent += row + "\r\n";
+                });
+
+                encodedUri = encodeURI(csvContent);
+
+                days = [];
+               
+
+            }
+
+            function downloadCSV() {
+
+                window.open(encodedUri);
+            }
         </script>
 
 
