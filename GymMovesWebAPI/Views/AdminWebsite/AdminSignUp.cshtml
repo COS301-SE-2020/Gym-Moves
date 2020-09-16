@@ -310,6 +310,14 @@ Update History:
                 return hashHex;
             }
 
+            var modal = document.getElementById("alertModal");
+            var span = document.getElementsByClassName("close")[0];
+            var modalMessage = document.getElementById("message");
+            var modalHeading = document.getElementById("modalHeading");
+            modal.style.display = "none";
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
 
             async function onSubmit() {
 
@@ -338,19 +346,19 @@ Update History:
                             error: function (result) {
                                 modalHeading.innerHTML = "An error occurred!";
                                 modalMessage.innerHTML = result.responseText;
-                                alertModal.style.display = "block";
+                                modal.style.display = "block";
                             }
                         });
 
                     } else {
                         modalHeading.innerHTML = "Oh no!";
                         modalMessage.innerHTML = "You can't choose the same password as your given password.";
-                        alertModal.style.display = "block";
+                        modal.style.display = "block";
                     }
                 } else {
                     modalHeading.innerHTML = "Oh no!";
                     modalMessage.innerHTML = "You can't leave fields empty.";
-                    alertModal.style.display = "block";
+                    modal.style.display = "block";
                 }
             }
 
