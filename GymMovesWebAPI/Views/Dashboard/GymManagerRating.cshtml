@@ -1,13 +1,10 @@
 ﻿<!--
 File Name
   GymManagerRating.html
-
 Author:
   Ayanda
-
 Date Created
   26/07/2020
-
 Update History:
 --------------------------------------------------------------------------------
 | Date       | Author       | Changes
@@ -18,58 +15,49 @@ Update History:
 --------------------------------------------------------------------------------
 13/09/2020   | Danel        |  Fixed UI
 --------------------------------------------------------------------------------
-
 Functional Description:
-
-
 -->
 
 
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
+    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
-        <title>Class Rating Statistics</title>
+    <title>Class Rating Statistics</title>
 
-        <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
-        <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
-              rel="stylesheet">
-        <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
-        <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+          rel="stylesheet">
+    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
-        <style>
-
+    <style>
             .navbar_background {
                 background-color: #7341e6;
                 color: white;
             }
-
             @@font-face {
                 font-family: 'Lastwaerk';
                 src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
             }
-
             tbody tr:nth-child(odd) {
                 background-color: #eeebea;
             }
-
             table {
                 border-collapse: collapse;
             }
-
             table, th, td {
                 border: none !important;
             }
-
             .modal {
                 display: none; /* Hidden by default */
                 position: fixed; /* Stay in place */
@@ -83,7 +71,6 @@ Functional Description:
                 background-color: rgb(0,0,0); /* Fallback color */
                 background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
             }
-
             /* Modal Content */
             .modal-content {
                 background-color: #fefefe;
@@ -92,7 +79,6 @@ Functional Description:
                 border: 1px solid #888;
                 width: 80%;
             }
-
             /* The Close Button */
             .close {
                 color: #aaaaaa;
@@ -100,205 +86,217 @@ Functional Description:
                 font-size: 28px;
                 font-weight: bold;
             }
-                
+
             .close:hover,
             .close:focus {
                 color: #000;
-                text-decoration: none;    
+                text-decoration: none;
                 cursor: pointer;
             }
-
             .button-colour {
                 background-color: #7341E6;
                 color: white;
             }
 
-        </style>
+        #downloadCSV {
+            background-color: #7341E6;
+            color: white;
+        }
 
-    </head>
+        #downloadCSVI {
+            background-color: #7341E6;
+            color: white;
+        }
+    </style>
 
-    <body id="page-top" onload="load()">
+</head>
 
-        <script>
+<body id="page-top" onload="load()">
+
+    <script>
                 if (document.cookie == "") {
                     window.location.href = "@Url.Content("~/ManagerLogin")";
                 }
-        </script>
+    </script>
 
-        <div id="wrapper">
+    <div id="wrapper">
 
-            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                    <div class="sidebar-brand-icon">
-                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                    </div>
-                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                <div class="sidebar-brand-icon">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
+                </div>
+                <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/home")">
+                    <span>Home</span>
                 </a>
+            </li>
 
-                <hr class="sidebar-divider my-0">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Content("~/dashboard/home")">
-                        <span>Home</span>
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                        <span>Dashboard</span>
-                    </a>
-                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
-                            <a class="collapse-item" href=#>Gym Ratings</a>
-                            <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
-                        </div>
+            <li class="nav-item active">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <span>Dashboard</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
+                        <a class="collapse-item" href=#>Gym Ratings</a>
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
                     </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
-                        <span>Upload database</span>
-                    </a>
-                </li>
-
-                <hr class="sidebar-divider d-none d-md-block">
-
-                <div class="text-center d-none d-md-inline">
-                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
+            </li>
 
-            </ul>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                    <span>Upload database</span>
+                </a>
+            </li>
 
-            <div id="content-wrapper" class="d-flex flex-column">
+            <hr class="sidebar-divider d-none d-md-block">
 
-                <div id="content">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
-                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        </ul>
 
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
+        <div id="content-wrapper" class="d-flex flex-column">
 
-                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                            Rating Statistics
-                        </div>
+            <div id="content">
 
-                        <ul class="navbar-nav ml-auto">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                            <div class="topbar-divider d-none d-sm-block"></div>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
-                            <li class="nav-item dropdown no-arrow">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                        Rating Statistics
+                    </div>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
                                 </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
 
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; padding-right:400px;">
+                    <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="choice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Class Ratings
+                    </a>
 
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Logout
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
+                    <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#" id="class">Class Ratings</a>
+                        <a class="dropdown-item" href="#" id="instructor">Instructor Ratings</a>
+                    </div>
+                </div>
 
-                    <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; padding-right:400px;">
-                        <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="choice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Class Ratings
-                        </a>
+                <div style="padding-left:50px; padding-right:50px;">
+                    <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="classDataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Position</th>
+                                            <th>Class</th>
+                                            <th>Instructor</th>
+                                            <th>Day</th>
+                                            <th>Time</th>
+                                            <th>Rating</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="classRatingData">
+                                    </tbody>
+                                </table>
+                            </div>
 
-                        <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#" id="class">Class Ratings</a>
-                            <a class="dropdown-item" href="#" id="instructor">Instructor Ratings</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="classChartDiv" style="padding-right:50px; padding-left:50px;">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <canvas id="classChart"></canvas>
+                        </div>
+                    </div>
+                    <div align="center" class="form-group">
+                        <button id="downloadCSV">Download Chart Data as CSV</button>
                         </div>
                     </div>
 
-                        <div style="padding-left:50px; padding-right:50px;">
-                            <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table" id="classDataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Position</th>
-                                                    <th>Class</th>
-                                                    <th>Instructor</th>
-                                                    <th>Day</th>
-                                                    <th>Time</th>
-                                                    <th>Rating</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="classRatingData">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                   
+                    <div style="padding-left:50px; padding-right:50px;">
+                        <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Position</th>
+                                                <th>Instructor</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="instructorRatingData">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div id="classChartDiv" style="padding-right:50px; padding-left:50px;">
-                            <div class="card shadow mb-4">
-                                <div class="card-body">
-                                    <canvas id="classChart"></canvas>
-                                </div>
-                            </div>
-                            <button id="downloadCSV">Download Chart Data as CSV</button>
-                        </div>
-
-                        <div style="padding-left:50px; padding-right:50px;">
-                            <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Position</th>
-                                                    <th>Instructor</th>
-                                                    <th>Rating</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="instructorRatingData">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                    <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+                                <canvas id="instructorChart"></canvas>
                             </div>
                         </div>
-
-                        <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
-                            <div class="card shadow mb-4">
-                                <div class="card-body">
-                                    <canvas id="instructorChart"></canvas>
-                                </div>
-                            </div>
+                        <div align="center" class="form-group">
                             <button id="downloadCSVI">Download Chart Data as CSV</button>
+                            <div align="center" class="form-group">
+                            </div>
+
                         </div>
-
-                </div>
-            </div>
         </div>
+    </div>
 
-        <div id="alertModal" class="modal">
-            <div class="modal-content">
-                <span align="right" class="close">&times;</span>
-                <h4 id="modalHeading"></h4>
-                <br />
-                <p id="message"></p>
-            </div>
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <span align="right" class="close">&times;</span>
+            <h4 id="modalHeading"></h4>
+            <br />
+            <p id="message"></p>
         </div>
+    </div>
 
-        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
-        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
 
 
-        <script>
+    <script>
             var encodedUri;
             var encodedUrii;
             var classesJson = [];
@@ -309,21 +307,15 @@ Functional Description:
             var instructorsRatingsValues = [];
             var instructorLabels = [];
             var classLabels = [];
-
             var gymId = getCookie("gymId").split(",")[0];
-
             var modal = document.getElementById("alertModal");
             var span = document.getElementsByClassName("close")[0];
             var modalMessage = document.getElementById("message");
-
             modal.style.display = "none";
-
             span.onclick = function () {
                 modal.style.display = "none";
             }
-
             async function getGymClasses() {
-
                 await jQuery.ajax({
                     url: "@Url.Content("~/api/classes/gymlist?gymId=")" + gymId,
                     type: "GET",
@@ -334,7 +326,6 @@ Functional Description:
                         else {
                             var table = document.getElementById("classTable");
                             table.style.display = "none";
-
                             modalMessage.innerHTML = "There are currently no classes at your gym!";
                             modal.style.display = "block";
                         }
@@ -344,12 +335,9 @@ Functional Description:
                         modal.style.display = "block";
                     }
                 });
-
                 await getClassRatings();
             }
-
             async function getInstructors() {
-
                  await jQuery.ajax({
                     url: "@Url.Content("~/api/user/allInstructors?gymId=")" + gymId,
                     type: "GET",
@@ -361,14 +349,10 @@ Functional Description:
                         modal.style.display = "block";
                     }
                  });
-
                 await getInstructorsRatings();
             }
-
             async function getClassRatings() {
-
                 for (var i = 0; i < classesJson.length; i++) {
-
                     await jQuery.ajax({
                         url: '@Url.Content("~/api/ratings/class?classid=")' + classesJson[i].classId,
                         type: "GET",
@@ -391,16 +375,12 @@ Functional Description:
                     });
                 }
             }
-
             async function getInstructorsRatings() {
-
                 for (var i = 0; i < instructorsJson.length; i++) {
-
                     await jQuery.ajax({
                         url: '@Url.Content("~/api/ratings/instructor?instructor=")' + instructorsJson[i].username,
                         type: "GET",
                         success: function (result) {
-
                             if (result.length == 0) {
                                 var rating = 0;
                                 instructorsRatings.push([instructorsJson[i].name + instructorsJson[i].surname, (rating).toFixed(2)]);
@@ -419,7 +399,6 @@ Functional Description:
                     });
                 }
             }
-
             function showTable() {
                 if (document.getElementById("choice").innerHTML.includes("Instructor")) {
                     document.getElementById("classTable").style.display = "none";
@@ -437,48 +416,34 @@ Functional Description:
                     document.getElementById("instructorChartDiv").style.display = "none";
                     document.getElementById("classChartDiv").style.display = "block";
                 }
-
             }
-
             document.getElementById("instructor").onclick = function () {
                 document.getElementById("choice").innerHTML = "Instructor Ratings";
                 showTable();
             }
-
             document.getElementById("class").onclick = function () {
                 document.getElementById("choice").innerHTML = "Class Ratings";
                 showTable();
             }
-
             function showInstructors() {
                 var table = document.getElementById("instructorRatingData");
                 table.innerHTML = "";
-
                 for (let i = 0; i < instructorsJson.length; i++) {
-
-                    for (let j = 0; j < instructorsJson.length; j++) {
-
-                        if (instructorsRatings[j] < instructorsRatings[j + 1]) {
-
+                    for (let j = 0; j < instructorsJson.length-1; j++) {
+                        if (instructorsRatings[j][1] < instructorsRatings[j + 1][1]) {
                             let tmp = instructorsRatings[j];
                             let tmpOther = instructorsJson[j];
-
                             instructorsRatings[j] = instructorsRatings[j + 1];
                             instructorsJson[j] = instructorsJson[j + 1];
-
                             instructorsRatings[j + 1] = tmp;
                             instructorsJson[j + 1] = tmpOther;
                         }
                     }
                 }
-
                 for (var j = 0; j < instructorsJson.length; j++) {
-
                     instructorLabels.push(instructorsRatings[j][0]);
                     instructorsRatingsValues.push(instructorsRatings[j][1]);
-
                     var tr = document.createElement('tr');
-
                     var instructorPositionTd = document.createElement('td');
                     if (j == 0) {
                         instructorPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 226 226" style=" fill:#000000;"> <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#f1c40f"></stop><stop offset="1" stop-color="#f1c40f"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#000000" stroke="none" stroke-width="1"><path d="M105.39,137.09v-3.55h6.72v-23.23l0.48,-2.84l-1.92,2.26l-5.28,3.79l-1.82,-2.45l10.56,-8.16h1.73v30.63h6.57v3.55z"></path></g><path d="M93.57,147.09v-54.18h38.86v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg>';
@@ -493,66 +458,46 @@ Functional Description:
                         instructorPositionTd.innerHTML = j;
                     }
                     tr.appendChild(instructorPositionTd);
-
                     var instructorNameTd = document.createElement('td');
                     instructorNameTd.innerHTML = instructorsRatings[j][0];
                     tr.appendChild(instructorNameTd);
-
                     var instructorRatingTd = document.createElement('td');
                     instructorRatingTd.innerHTML = instructorsRatings[j][1];
                     tr.appendChild(instructorRatingTd);
-
                     table.appendChild(tr);
-   
+
                   //  console.log(instructorsRatings);
                     let csvContent = "data:text/csv;charset=utf-8,";
-
                     instructorsRatings.forEach(function (rowArray) {
                         let instructorsRatings = rowArray.join(",");
                         csvContent += instructorsRatings + "\r\n";
                     });
-
                     encodedUrii = encodeURI(csvContent);
-
-
                     document.getElementById("downloadCSVI").addEventListener("click", function () {
                         downloadCSVI()
                     });
                 }
             }
-
             function showClasses() {
-               
 
                 var table = document.getElementById("classRatingData");
-
                 table.innerHTML = "";
-
                 for (let i = 0; i < classesJson.length; i++) {
-
-                    for (let j = 0; j < classesJson.length; j++) {
-
-                        if (classRatings[j] < classRatings[j + 1]) {
-
+                    for (let j = 0; j < classesJson.length-1; j++) {
+                        if (classRatings[j][4] < classRatings[j + 1][4]) {
                             let tmp = classRatings[j];
                             let tmpOther = classesJson[j];
-
                             classRatings[j] = classRatings[j + 1];
                             classesJson[j] = classesJson[j + 1];
-
                             classRatings[j + 1] = tmp;
                             classesJson[j + 1] = tmpOther;
                         }
                     }
                 }
-
                 for (var j = 0; j < classesJson.length; j++) {
-
                     classLabels.push(classRatings[j][0]);
                     classRatingsValues.push(classRatings[j][4]);
-
                     var tr = document.createElement('tr');
-
                     var classPositionTd = document.createElement('td');
                     if (j == 0) {
                         classPositionTd.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48" height="48" viewBox="0 0 226 226" style=" fill:#000000;"> <defs><linearGradient x1="42.41738" y1="29.945" x2="179.34983" y2="213.12742" gradientUnits="userSpaceOnUse" id="color-1_8ggStxqyboK5_gr1"><stop offset="0" stop-color="#f1c40f"></stop><stop offset="1" stop-color="#f1c40f"></stop></linearGradient></defs><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none" stroke="none" stroke-width="1"></path><g fill="url(#color-1_8ggStxqyboK5_gr1)" stroke="none" stroke-width="1"><path d="M117.29871,24.41742l25.79225,57.856l62.98808,6.65287c4.05387,0.42846 5.68296,5.45225 2.6555,8.17838l-47.05037,42.39854l13.14096,61.96638c0.8475,3.98796 -3.42767,7.09075 -6.95892,5.05675l-54.86621,-31.65413l-54.86621,31.64942c-3.53125,2.034 -7.80171,-1.06879 -6.95892,-5.05675l13.14096,-61.96638l-47.05037,-42.39854c-3.02746,-2.72613 -1.39367,-7.74992 2.6555,-8.17838l62.98808,-6.65287l25.79225,-57.856c1.65733,-3.71958 6.94008,-3.71958 8.59742,0.00471z"></path></g><g fill="#000000" stroke="none" stroke-width="1"><path d="M105.39,137.09v-3.55h6.72v-23.23l0.48,-2.84l-1.92,2.26l-5.28,3.79l-1.82,-2.45l10.56,-8.16h1.73v30.63h6.57v3.55z"></path></g><path d="M93.57,147.09v-54.18h38.86v54.18z" fill="#ff0000" stroke="#50e3c2" stroke-width="3" opacity="0"></path></g></svg>';
@@ -567,27 +512,20 @@ Functional Description:
                         classPositionTd.innerHTML = j;
                     }
                     tr.appendChild(classPositionTd);
-
                     console.log(classRatings);
-
                     let csvContent = "data:text/csv;charset=utf-8,";
-
                     classRatings.forEach(function (rowArray) {
                         let classRatings = rowArray.join(",");
                         csvContent += classRatings + "\r\n";
                     });
-
                     encodedUri = encodeURI(csvContent);
                   //  window.open(encodedUri);
-
                     document.getElementById("downloadCSV").addEventListener("click", function () {
                         downloadCSV()
                     });
-
                     var classNameTd = document.createElement('td');
                     classNameTd.innerHTML = classRatings[j][0];
                     tr.appendChild(classNameTd);
-
                     var instructorNameTd = document.createElement('td');
                     for (var t = 0; t < instructorsJson.length; t++) {
                         if (instructorsJson[t].username == classRatings[j][1]) {
@@ -595,72 +533,50 @@ Functional Description:
                         }
                     }
                     tr.appendChild(instructorNameTd);
-
                     var classDayTd = document.createElement('td');
                     classDayTd.innerHTML = classRatings[j][2];
                     tr.appendChild(classDayTd);
-
                     var classTimeTd = document.createElement('td');
                     classTimeTd.innerHTML = classRatings[j][3];
                     tr.appendChild(classTimeTd);
-
                     var classRatingTd = document.createElement('td');
                     classRatingTd.innerHTML = classRatings[j][4];
                     tr.appendChild(classRatingTd);
-
                     table.appendChild(tr);
-
                 }
             }
-
             function downloadCSV() {
-
                 window.open(encodedUri);
             }
-
-
             function downloadCSVI() {
-
                 window.open(encodedUrii);
             }
-
             function getCookie(cname) {
-
                 var name = cname + "=";
                 var decodedCookie = decodeURIComponent(document.cookie);
                 var ca = decodedCookie.split(';');
-
                 for (var i = 0; i < ca.length; i++) {
-
                     var c = ca[i];
                     while (c.charAt(0) == ' ') {
-
                         c = c.substring(1);
                     }
-
                     if (c.indexOf(name) == 0) {
-
                         return c.substring(name.length, c.length);
                     }
                 }
-
                 return "";
             }
-
             function logout() {
                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
-
             async function load() {
                 await getInstructors();
                 await getGymClasses();
                 showTable();
             }
-
             function drawInstructorChart() {
-
                var ctx = document.getElementById("instructorChart");
                 var myBarChart = new Chart(ctx, {
                     type: 'bar',
@@ -688,11 +604,9 @@ Functional Description:
                         }
                     }
                 });
-
                 instructorLabels = [];
                 instructorsRatingsValues = [];
             }
-
             function drawClassChart() {
                 var ctx = document.getElementById("classChart");
                 var myBarChart = new Chart(ctx, {
@@ -721,11 +635,9 @@ Functional Description:
                         }
                     }
                 });
-
                 classLabels = [];
                 classRatingsValues = [];
             }
-
-        </script>
-    </body>
+    </script>
+</body>
 </html>

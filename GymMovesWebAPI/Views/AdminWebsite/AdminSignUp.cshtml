@@ -55,6 +55,48 @@ Update History:
                 color: white;
             }
 
+            .button-colour:hover {
+                background-color: #7341E6;
+                color: white;
+            }
+
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+                .close:hover,
+                .close:focus {
+                    color: #000;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+
         </style>
     </head>
 
@@ -112,7 +154,7 @@ Update History:
                     error: function (result) {
                         modalHeading.innerHTML = "An error occurred!";
                         modalMessage.innerHTML = result.responseText;
-                        modal.style.display = "block";
+                        modalMessage.style.display = "block";
                     }
                 });
             }
@@ -167,6 +209,15 @@ Update History:
                 </div>
             </div>
         </section>
+
+        <div id="alertModal" class="modal">
+            <div class="modal-content">
+                <span align="right" class="close">&times;</span>
+                <h4 id="modalHeading"></h4>
+                <br />
+                <p id="modalMessage"></p>
+            </div>
+        </div>
 
         <section once="footers" class="footer barColour">
             <div class="container">
@@ -259,6 +310,14 @@ Update History:
                 return hashHex;
             }
 
+            var modal = document.getElementById("alertModal");
+            var span = document.getElementsByClassName("close")[0];
+            var modalMessage = document.getElementById("message");
+            var modalHeading = document.getElementById("modalHeading");
+            modal.style.display = "none";
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
 
             async function onSubmit() {
 
@@ -266,7 +325,7 @@ Update History:
                     if (!matches) {
 
                         var username = document.getElementById("username").value;
-                        var givenPassword = document.getElementById("givenPassword").value;
+                        var givenPassword = await hashPassword(document.getElementById("givenPassword").value);
                         var newPassword = await hashPassword(document.getElementById("newPassword").value);
 
                         var data = {
@@ -281,7 +340,7 @@ Update History:
                             data: JSON.stringify(data),
                             contentType: "application/json",
                             success: function (result) {
-                                document.cookie = "username=" + document.getElementById("username").value + ", path=/";
+                                document.cookie = "username=" + document.getElementById("username").value + "; path=/";
                                 window.location.href = "@Url.Content("~/adminwebsite/adminhome")";
                             },
                             error: function (result) {
