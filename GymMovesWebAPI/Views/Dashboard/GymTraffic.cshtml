@@ -266,6 +266,8 @@
             var tm = 0;
             var dow = 0;
             var prev = 0;
+            var attendanceData;
+            var pre = 0;
         function getCookie(cname) {
 
             var name = cname + "=";
@@ -305,33 +307,59 @@
         function showData() {
             console.log("1")
             showChart();
-            showDailyPredictions();
         }
 
         async function showDailyPredictions() {
 
+            var d = new Date();
+            var dd = new Array(6);
+            var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
+            console.log("prevdt: " + last);
+            var pred = 0; 
+            var peakcount = new Array(7);
+            var peaktime = new Array(7);
+
+            for (l = 0; l < 7 l++) {
+                peakcount[l] = 0;
+                peaktime[l] = 0;
+            }
+
             for (k = 0; k < 6; k++) { //each day of the week
-                var peakcount = 0;
-                var peaktime = 0;
-                prev = days[k];
+                //prev = days[k];
                 for (p = 6; p < 20; p++) { // each hour of the day
                     tm = p-6;
                     dow = k;
+                    for (i = 0; i < attendanceData.length; i++) {
+                        var dt = new Date(attendanceData[i].year, attendanceData[i].month - 1, attendanceData[i].day);
+                        h = attendanceData[i].time.split(':');
+                        //console.log("h: " + h[0] + " " + p);
+                        //console.log("d: " + dt.getDate() + " " + last.getDate());
+                        //console.log("day: " + dt.getDay() + " " + k);
+                        if (dt >= last && parseInt(h[0]) == p && dt.getDay() ==k) {
+                            console.log("prev: send");
+                            prev = attendanceData[i].count;
+                            dd[k] = 1;
+                            pred = await getPrediction();
+                           }
+                    }
 
-                    var pred = await getPrediction();
-
-                    if (pred > peakcount) {
-                        peakcount = pred;
-                        peaktime = tm;
+                    console.log(pred + " " + peakcount[k] + " " + pre);
+                    if (pre > peakcount[k]) {
+                        
+                        peakcount[k] = pre;
+                        peaktime[k] = tm;
+                        pre = 0;
+                        console.log(peakcount[k]);
                     }
                 }
 
-                if (prev == 1) {
+                if (dd[k] == 1) {
                     var el = document.getElementById(k.toString());
                     el.innerHTML = "No  predictions";
                 } else {
+                    console.log(pre)
                     var el = document.getElementById(k.toString());
-                    el.innerHTML = "Peak Time: " + peaktime.toFixed(0);
+                    el.innerHTML = "Peak Time: " + (peaktime[k]+6) + ":00(" + peakcount[k]+ ")";
                 }
             }
         }
@@ -339,13 +367,13 @@
         async function getPrediction() {
             var req = new XMLHttpRequest();
             var url = 'https://us-central1-fbprojid.cloudfunctions.net/predictSPAM';
-            req.open("POST", url, true);
+            req.open("POST", url, false);
             req.setRequestHeader("Content-Type", "application/json");
             req.onreadystatechange = function () {
                 if (req.readyState == 4 && req.status == 200) {
-                    var json = JSON.parse(req.responseText);
-                    console.log(json.predictions[0]);
-                    return json.predictions[0];
+                    var j = JSON.parse(req.responseText);
+                    pre = j.predictions[0].toFixed();
+                    return j.predictions[0];
                 }
             }
             var data = JSON.stringify({
@@ -353,7 +381,7 @@
                 "dayoftheweek": dow,
                 "prevweek": prev
             });
-            req.send(data)
+            req.send(data);;
         }
 
         async function showChart() {
@@ -374,17 +402,17 @@
                     var attendance = JSON.parse(req.responseText);
                     console.log(attendance);
                     var d = new Date();
-
+                    attendanceData = attendance;
                     var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
                     var day = last.getDate();
-                    console.log(attendance.length);
-               
+                    //console.log(attendance.length);
+                    showDailyPredictions();
                     for (i = 0; i < attendance.length; i++) {
                         console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
                         var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
                         //console.log(dt);
-                        //console.log(day + " " + last);
-                        if ((dt > last) && (dt < d)) {                                                                                       ;
+                        console.log(dt.getDate() + " " + last.getDate());
+                        if ((dt >= last) && (dt < d)) {                                                                                       ;
                             var dow = dt.getDay();
                             console.log(dow);
                             if(dow > 0)
