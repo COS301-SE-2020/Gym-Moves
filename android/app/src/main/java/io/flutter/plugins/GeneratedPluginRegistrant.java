@@ -20,6 +20,7 @@ public final class GeneratedPluginRegistrant {
       io.flutter.plugins.firebaseauth.FirebaseAuthPlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.firebaseauth.FirebaseAuthPlugin"));
     flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.core.FirebaseCorePlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.database.FirebaseDatabasePlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin());
       io.github.ponnamkarthik.toast.fluttertoast.FluttertoastPlugin.registerWith(shimPluginRegistry.registrarFor("io.github.ponnamkarthik.toast.fluttertoast.FluttertoastPlugin"));
       com.pkmnapps.nearby_connections.NearbyConnectionsPlugin.registerWith(shimPluginRegistry.registrarFor("com.pkmnapps.nearby_connections.NearbyConnectionsPlugin"));
       me.andisemler.nfc_in_flutter.NfcInFlutterPlugin.registerWith(shimPluginRegistry.registrarFor("me.andisemler.nfc_in_flutter.NfcInFlutterPlugin"));
