@@ -311,17 +311,19 @@
 
         async function showDailyPredictions() {
 
-            var d = new Date();
+            var temp = new Date();
+            var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
             var dd = new Array(6);
             var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
-            console.log("prevdt: " + last);
+            //console.log("prevdt: " + last);
             var pred = 0; 
             var peakcount = new Array(7);
             var peaktime = new Array(7);
 
-            for (l = 0; l < 7 l++) {
+            for (l = 0; l < 7; l++) {
                 peakcount[l] = 0;
                 peaktime[l] = 0;
+                dd[k] = 0;
             }
 
             for (k = 0; k < 6; k++) { //each day of the week
@@ -332,39 +334,36 @@
                     for (i = 0; i < attendanceData.length; i++) {
                         var dt = new Date(attendanceData[i].year, attendanceData[i].month - 1, attendanceData[i].day);
                         h = attendanceData[i].time.split(':');
-                        //console.log("h: " + h[0] + " " + p);
-                        //console.log("d: " + dt.getDate() + " " + last.getDate());
-                        //console.log("day: " + dt.getDay() + " " + k);
                         if (dt >= last && parseInt(h[0]) == p && dt.getDay() ==k) {
-                            console.log("prev: send");
+                            //console.log("prev: send");
                             prev = attendanceData[i].count;
                             dd[k] = 1;
                             pred = await getPrediction();
                            }
                     }
 
-                    console.log(pred + " " + peakcount[k] + " " + pre);
+                    //console.log(pred + " " + peakcount[k] + " " + pre + " " + k);
                     if (pre > peakcount[k]) {
-                        
                         peakcount[k] = pre;
                         peaktime[k] = tm;
+                        //console.log(peakcount[k]);
                         pre = 0;
-                        console.log(peakcount[k]);
                     }
                 }
 
-                if (dd[k] == 1) {
+                if (peakcount[k] == 0) {
                     var el = document.getElementById(k.toString());
                     el.innerHTML = "No  predictions";
                 } else {
-                    console.log(pre)
+                    //console.log(k);
                     var el = document.getElementById(k.toString());
                     el.innerHTML = "Peak Time: " + (peaktime[k]+6) + ":00(" + peakcount[k]+ ")";
                 }
             }
         }
 
-        async function getPrediction() {
+            async function getPrediction() {
+                //console.log(dow);
             var req = new XMLHttpRequest();
             var url = 'https://us-central1-fbprojid.cloudfunctions.net/predictSPAM';
             req.open("POST", url, false);
@@ -373,6 +372,7 @@
                 if (req.readyState == 4 && req.status == 200) {
                     var j = JSON.parse(req.responseText);
                     pre = j.predictions[0].toFixed();
+                    //console.log(j);
                     return j.predictions[0];
                 }
             }
@@ -401,16 +401,17 @@
                 if (req.readyState == 4 && req.status == 200) {
                     var attendance = JSON.parse(req.responseText);
                     console.log(attendance);
-                    var d = new Date();
+                    var temp = new Date();
+                    var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
                     attendanceData = attendance;
                     var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
                     var day = last.getDate();
-                    //console.log(attendance.length);
+                    console.log(last);
                     showDailyPredictions();
                     for (i = 0; i < attendance.length; i++) {
-                        console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
+                        //console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
                         var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
-                        //console.log(dt);
+                        console.log(dt);
                         console.log(dt.getDate() + " " + last.getDate());
                         if ((dt >= last) && (dt < d)) {                                                                                       ;
                             var dow = dt.getDay();
