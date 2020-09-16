@@ -24,6 +24,7 @@ namespace GymMovesWebAPI.Tests {
             attendanceController = new GymAttendanceController(gymRepository, gymAttendenceRepository);
         }
 
+        /* Check attendance */
         [Fact]
         public async Task CanAddAttendanceCanGetAttendance() {
             bool added = await gymRepository.addGym(new Gym {
