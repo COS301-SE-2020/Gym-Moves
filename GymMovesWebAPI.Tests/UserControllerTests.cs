@@ -51,8 +51,8 @@ namespace GymMovesWebAPI.Tests
 
 
             var userController = new UserController(new UserRepository(DbContext), gymMember,
-               gym, new NotificationSettingsRepository(DbContext), new PasswordResetRepository(DbContext), 
-                new Mailer(configuration));
+               gym, new NotificationSettingsRepository(DbContext), new PasswordResetRepository(DbContext),
+                new Mailer(configuration), new GymApplicationRepository(DbContext), new ApplicationCodeRepository(DbContext));
 
            ActionResult<UserResponseModel> signedup = await userController.signUp(new SignUpRequestModel {username = "test",
             password = "test", gymBranch = "testBranch", gymMemberId = "1", gymName = "testName"});
@@ -90,7 +90,7 @@ namespace GymMovesWebAPI.Tests
 
             var userController = new UserController(new UserRepository(DbContext), gymMember,
                gym, new NotificationSettingsRepository(DbContext), new PasswordResetRepository(DbContext),
-                new Mailer(configuration));
+                new Mailer(configuration), new GymApplicationRepository(DbContext), new ApplicationCodeRepository(DbContext));
 
             ActionResult<UserResponseModel> signedup = await userController.signUp(new SignUpRequestModel
             {
@@ -142,8 +142,8 @@ namespace GymMovesWebAPI.Tests
 
             var userController = new UserController(new UserRepository(DbContext), gymMember,
                gym, new NotificationSettingsRepository(DbContext), new PasswordResetRepository(DbContext),
-                new Mailer(configuration));
-
+                new Mailer(configuration), new GymApplicationRepository(DbContext), new ApplicationCodeRepository(DbContext));
+            
             ActionResult<UserResponseModel> signedup = await userController.signUp(new SignUpRequestModel
             {
                 username = "test",
@@ -192,7 +192,7 @@ namespace GymMovesWebAPI.Tests
 
             var userController = new UserController(new UserRepository(DbContext), gymMember,
                gym, new NotificationSettingsRepository(DbContext), new PasswordResetRepository(DbContext),
-                new Mailer(configuration));
+                new Mailer(configuration), new GymApplicationRepository(DbContext), new ApplicationCodeRepository(DbContext));
 
             ActionResult<UserResponseModel> signedup = await userController.signUp(new SignUpRequestModel
             {

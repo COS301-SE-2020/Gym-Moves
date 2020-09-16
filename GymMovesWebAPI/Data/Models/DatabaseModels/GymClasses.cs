@@ -41,8 +41,6 @@ namespace GymMovesWebAPI.Data.Models.DatabaseModels {
         public int CurrentStudents { get; set; }
         public bool Cancelled { get; set; }
         public ClassRating ClassRating { get; set; }
-        [ForeignKey("GymIdForeignKey")]
-        public Gym ReferenceGym { get; set; }
         public ICollection<ClassRegister> Registers { get; set; }
     }
 }

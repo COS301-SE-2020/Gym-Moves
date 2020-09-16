@@ -208,17 +208,17 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
                         UserType = UserTypes.Member
                     }
                 );
-
+            */
             modelBuilder.Entity<SupportUsers>()
                 .HasData(
                     new {
-                        Username = "test",
-                        Name = "Support",
-                        Surname = "Test",
-                        Email = "testmail@gmail.com",
-                        Password = "testpass",
+                        Username = "mastersupport",
+                        Name = "Master",
+                        Surname = "Support",
+                        Email = "kanglongjidev@gmail.com",
+                        Password = "bd5779f74e521b9a7fab223b4a5d3eb9880b9e50a3e3b3e50c24b25b7ed896ef",
                     }
-                );*/
+                );
         }
     }
 }
