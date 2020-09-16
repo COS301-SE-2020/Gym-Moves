@@ -30,7 +30,7 @@ namespace GymMovesWebAPI.Tests {
 
         public GymApplicationTests() : base() {
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("/home/travis/build/COS301-SE-2020/Gym-Moves/GymMovesWebAPI.Tests/bin/Debug/netcoreapp3.1/appSettings.json");
+            configurationBuilder.AddJsonFile("appsettings.json");
             IConfiguration configuration = configurationBuilder.Build();
 
             /* Setup Repositories */
