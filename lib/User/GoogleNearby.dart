@@ -1,6 +1,6 @@
 /*
 File Name
-  NfcScreen.dart
+  GoogleNearby.dart
 Author:
   Raeesa
 Date Created
@@ -12,13 +12,13 @@ Update History:
 Functional Description:
   This file contains the Forget password functionality, which enables a user to
   change their respective passwords.
-  The NfcScreenState class handles the building of the UI and making all the
+  The GoogleNearbyState class handles the building of the UI and making all the
   components functional and responsive.
   This file will also handle sending the information that is entered to change the
   password in the database.
 Classes in the File:
-- NfcScreen
-- NfcScreenState
+- GoogleNearby
+- GoogleNearbyState
  */
 
 import 'dart:convert';
@@ -30,13 +30,13 @@ import 'package:nearby_connections/nearby_connections.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class NfcScreen extends StatefulWidget {
-  NfcScreen({
+class GoogleNearby extends StatefulWidget {
+  GoogleNearby({
     Key key,
   }) : super(key: key);
 
   @override
-  NfcScreenState createState() => NfcScreenState();
+  GoogleNearbyState createState() => GoogleNearbyState();
 }
 
 
@@ -45,7 +45,9 @@ DatabaseReference _userRef=database.reference().child('users');
 
 bool allowedtoexit = false;
 
-class NfcScreenState extends State<NfcScreen> {
+class GoogleNearbyState extends State<GoogleNearby> {
+  get enter => null;
+  get exit => null;
 
   Future<void> _permissions() async {
     if (!await Nearby().checkLocationPermission()) {
@@ -124,6 +126,7 @@ class NfcScreenState extends State<NfcScreen> {
                     child: SizedBox(
                         width: 0.38 * media.size.width,
                         child: FlatButton(
+                          key: enter,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                           color:const Color(0xff7341E6).withOpacity(0.8),
@@ -151,6 +154,7 @@ class NfcScreenState extends State<NfcScreen> {
                     child: SizedBox(
                         width: 0.38 * media.size.width,
                         child: FlatButton(
+                          key: exit,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)
                           ),

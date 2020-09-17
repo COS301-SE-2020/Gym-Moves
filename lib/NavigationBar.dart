@@ -26,6 +26,7 @@ Classes in the File:
 
 import 'package:flutter/material.dart';
 import 'package:gym_moves/GymClass/MemberViewAllClasses.dart';
+import 'package:gym_moves/User/GoogleNearby.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gym_moves/Announcement/Announcements.dart';
 import 'package:gym_moves/GymClass/ManagerViewClasses.dart';
@@ -76,7 +77,8 @@ class NavigationBarState extends State<NavigationBar> {
             (type == 2) ? ManagerViewClasses() :
             (this.widget.previous == "Mine") ? MemberViewAllClasses() :
             MemberViewMyClasses(),
-            ViewMyProfile()
+            ViewMyProfile(),
+            GoogleNearby()
           ];
 
           return Scaffold(
@@ -107,6 +109,12 @@ class NavigationBarState extends State<NavigationBar> {
                         color: const Color(0xff787878)),
                     title: Text('PROFILE'),
                     activeIcon: Icon(Icons.account_circle,
+                        color: const Color(0xff7341E6))),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.cast,
+                        color: const Color(0xff787878)),
+                    title: Text('GOOGLE'),
+                    activeIcon: Icon(Icons.cast,
                         color: const Color(0xff7341E6))),
               ],
               onTap: (index) {

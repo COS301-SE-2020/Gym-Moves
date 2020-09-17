@@ -17,8 +17,10 @@ Date          |    Author      |     Changes
 28/06/2020    |    Danel       |    Added date picker
 --------------------------------------------------------------------------------
 01/07/2020    |    Tia         |    Added request to send announcement
+02/07/2020    |    Ayanda         |    Added request to send announcement to firebase console
 --------------------------------------------------------------------------------
 05/08/2020    |    Raeesa      |    Fixed UI
+01/08/2020    |    Ayanda         |    Fixed Push Notifications
 --------------------------------------------------------------------------------
 
 Functional Description:
@@ -31,7 +33,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:gym_moves/NavigationBar.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:convert';
+import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*
@@ -61,6 +65,8 @@ Purpose:
 class SendAnnouncementState extends State<SendAnnouncement> {
   String headingOfAnnouncement, detailsOfAnnouncement;
 
+  String serverToken = "AAAAHKLq9MA:APA91bEArbWAhsvd6sWybfGe4d-RXUH0zWNvhoa4yUyFIOfeDPFcSZ9Grlfs7nPc5KGVAgYpDsCZxIJBk8i8cXYTf5ITKZsA-TVLF2q9-nAsP8CbEBYnlTjDa6b6EKRhX8FrAbpuY11o";
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
   final announcementFormKey = GlobalKey<FormState>();
 
   String day = (new DateTime.now().day).toString();
@@ -330,7 +336,59 @@ class SendAnnouncementState extends State<SendAnnouncement> {
         ])
     );
   }
+/*
+Class Name:
+  sendPushNotification
 
+Purpose:
+  This method sends a post request to the api which then forwards the message as a notification
+  to the user.
+ */
+
+  Future<Map<String, dynamic>> sendPushNotification() async {
+    await firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: false),
+    );
+    final prefs = await SharedPreferences.getInstance();
+    final int gymId = prefs.getInt('gymId');
+
+    await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': headingOfAnnouncement,
+            'title': detailsOfAnnouncement,
+            'day': day,
+            'month': month,
+            'year': year,
+            'gymid': gymId
+          },
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done'
+          },
+          'to': await firebaseMessaging.getToken(),
+        },
+      ),
+    );
+
+    final Completer<Map<String, dynamic>> completer =
+    Completer<Map<String, dynamic>>();
+
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        completer.complete(message);
+      },
+    );
+    return completer.future;
+  }
   /*
   Method Name:
     sendValuesToNotify
@@ -341,7 +399,7 @@ class SendAnnouncementState extends State<SendAnnouncement> {
 */
   void sendValuesToNotify() async {
     final prefs = await SharedPreferences.getInstance();
-
+    sendPushNotification();
     final int gymId = prefs.getInt('gymId');
 
     final http.Response response = await http.post(

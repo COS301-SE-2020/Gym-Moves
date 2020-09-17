@@ -30,8 +30,14 @@ dependencies:
   firebase_analytics: ^5.0.2
   firebase_auth: ^0.14.0+5
   firebase_database: ^3.1.1
+  firebase_messaging: ^6.0.16
   cloud_firestore: ^0.12.9+5
+  schedule_controller: ^0.1.3+1
   smooth_star_rating: 1.1.1
+  crypto: ^2.1.4
+  flutter_icons: ^1.1.0
+  localstorage: ^3.0.2+5
+  nearby_connections: ^1.0.3
   path_provider:
 
 
@@ -43,18 +49,12 @@ dev_dependencies:
 
 flutter:
   fonts:
-    - family: FreestyleScript
-      fonts:
-        - asset: assets/FreestyleScript.ttf
     - family: Roboto
       fonts:
         - asset: assets/Roboto.ttf
     - family: Lastwaerk
       fonts:
        - asset: assets/Lastwaerk.ttf
-    - family: Digit
-      fonts:
-       - asset: assets/DIGITALDREAM.ttf
     - family: Digital
       fonts:
         - asset: assets/DIGITALDREAMFATNARROW.ttf
@@ -62,20 +62,14 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/Banner.jpg
-    - assets/Bicycles.jpg
-    - assets/Boxing.jpg
     - assets/MenuPicture.png
     - assets/Classes.png
     - assets/nfc.png
-    - assets/WelcomeBackground.png
+    - assets/SignupPicture.png
     - assets/profile.png
     - assets/notifications.png
+    - assets/LoginPicture.png
     - assets/Mail.png
     - assets/ForgotPasswordPicture.png
     - assets/send.png
     - assets/ClassDetailsPicture.png
-    - assets/LeftSidePool.png
-    - assets/LeftSidePoolHalf.png
-    - assets/RightSidePool.png
-    - assets/RightSidePoolHalf.png
