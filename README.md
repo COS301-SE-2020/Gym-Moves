@@ -9,8 +9,8 @@ Gym Moves is an application that will make life easier for gym members and gym s
 * * *
 
 ### Link to: 
-  - [https://github.com/COS301-SE-2020/Gym-Moves/releases](Mobile Application)
-  - [https://gymmoveswebapi.azurewebsites.net/GymMoves](Web Application)
+  - [Mobile Application](https://github.com/COS301-SE-2020/Gym-Moves/releases)
+  - [Website](https://gymmoveswebapi.azurewebsites.net/GymMoves)
 
 <br/>
 
