@@ -158,7 +158,7 @@ namespace GymMovesWebAPI.Controllers {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Unable to store generated code!");
                 }
 
-                await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Gym Application Approval", $"Congratulations! Your gym approval has been approved! Use the following code {generated}\nAt https://gymmoveswebapi.azurewebsites.net/managerdetails", application[0].Email);
+                await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Gym Application Approval", $"Congratulations! Your gym application has been approved! Use the following code {generated}\nAt https://gymmoveswebapi.azurewebsites.net/managerdetails", application[0].Email);
             }
 
 

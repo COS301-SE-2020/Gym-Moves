@@ -111,6 +111,7 @@ namespace GymMovesWebAPI.Controllers
                 string content = "Your username is " + user.user.Username + " and your temporary password you will use to sign in for the first time is " + password + ".";
                 await adminRepository.addAdmin(user.user);
                 await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Admin Account", content, emailReceiver);
+                await mailer.sendEmail("lockdown.squad.301@gmail.com", "Gym Moves", "Admin Account", content, user.user.Email.Trim());
 
                 return Ok();
             }

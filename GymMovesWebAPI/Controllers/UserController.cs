@@ -405,7 +405,7 @@ namespace GymMovesWebAPI.Controllers {
                 string code = getRandomString(8);
 
                 DateTime date = DateTime.Now;
-                date = date.AddHours(2);
+                date = date.AddHours(10);
 
                 string message = "The code for " + member.Name + " " + member.Surname +
                     " is " + code + ". This is only valid until " + date.ToLocalTime() + ".";
