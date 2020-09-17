@@ -10,7 +10,7 @@ Gym Moves is an application that will make life easier for gym members and gym s
 
 ### Link to: 
   - Mobile Application
-  - Web Application
+  - [Web Application](https://gymmoveswebapi.azurewebsites.net/gymmoves)
 
 <br/>
 
