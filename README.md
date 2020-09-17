@@ -8,19 +8,17 @@ Gym Moves is an application that will make life easier for gym members and gym s
 
 * * *
 
-<br/>
-
 ### Link to: 
-  - Mobile Application
-  - Web Application
+  - [Mobile Application](https://github.com/COS301-SE-2020/Gym-Moves/releases)
+  - [Website](https://gymmoveswebapi.azurewebsites.net/GymMoves)
 
 <br/>
 
 ### Recorded Demos
 - [Demo 1 Video](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
 - [Demo 2 Video](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
-- [Demo 3 Video]()
-- [Demo 4 Video]()
+- [Demo 3 Video](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
+- [Demo 4 Video](https://drive.google.com/drive/folders/1BMd5cpIeyrYdD81s_F_U1n_HQg5NvAHA?usp=sharing)
 
 <br/>
 
@@ -29,11 +27,11 @@ Gym Moves is an application that will make life easier for gym members and gym s
     - [Version 1](https://drive.google.com/drive/folders/1MyTwVSr6ChM58coY9_BjYyGyFwhlx-G_?usp=sharing)
     - [Version 2](https://drive.google.com/drive/folders/1FbcjdPC-sIM7J9nz_dvD4aW7ej8KTYqa?usp=sharing)
     - [Version 3](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
-    - [Version 4]()
-+ [User Manual PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
-+ [Coding Standards PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
-+ [Technical Installation Manual PDF](https://drive.google.com/drive/folders/1mEs_Rn_rKro_PZBcHpCWHHWyeadfGxAG?usp=sharing)
-+ [Testing Policy Manual PDF]()
+    - [Version 4](https://drive.google.com/drive/folders/1BMd5cpIeyrYdD81s_F_U1n_HQg5NvAHA?usp=sharing)
++ [User Manual PDF](https://drive.google.com/drive/folders/1BMd5cpIeyrYdD81s_F_U1n_HQg5NvAHA?usp=sharing)
++ [Coding Standards PDF](https://drive.google.com/drive/folders/1BMd5cpIeyrYdD81s_F_U1n_HQg5NvAHA?usp=sharing)
++ [Technical Installation Manual PDF](https://drive.google.com/drive/folders/1BMd5cpIeyrYdD81s_F_U1n_HQg5NvAHA?usp=sharing)
++ [Testing Policy Manual PDF](https://drive.google.com/drive/folders/1BMd5cpIeyrYdD81s_F_U1n_HQg5NvAHA?usp=sharing)
 
 <br/>
 

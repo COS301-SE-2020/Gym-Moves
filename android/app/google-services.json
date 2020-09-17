@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "414677594346",
-    "firebase_url": "https://nfcreader-233f4.firebaseio.com",
-    "project_id": "nfcreader-233f4",
-    "storage_bucket": "nfcreader-233f4.appspot.com"
+    "project_number": "122992391360",
+    "firebase_url": "https://consolegymmoves.firebaseio.com",
+    "project_id": "consolegymmoves",
+    "storage_bucket": "consolegymmoves.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:414677594346:android:cbe353f039525ced946793",
+        "mobilesdk_app_id": "1:122992391360:android:d9136255f14f0696946925",
         "android_client_info": {
           "package_name": "com.example.gym_moves"
         }
       },
       "oauth_client": [
         {
-          "client_id": "414677594346-48f2v0lf5kjka2u77gjeohqb2u7u9mkh.apps.googleusercontent.com",
+          "client_id": "122992391360-390gf07rv2euc609kl3dkps8ql9siqsm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBbPGMLp_hV_sZ5QPympMStJZZCQsvfUzw"
+          "current_key": "AIzaSyBtYcMAGU80a_s7hMhggSLwYew51NL_l-o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "414677594346-48f2v0lf5kjka2u77gjeohqb2u7u9mkh.apps.googleusercontent.com",
+              "client_id": "122992391360-390gf07rv2euc609kl3dkps8ql9siqsm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

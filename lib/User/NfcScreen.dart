@@ -1,20 +1,14 @@
 /*
 File Name
   NfcScreen.dart
-
 Author:
   Raeesa
-
 Date Created
   07/08/2020
-
 Update History:
 --------------------------------------------------------------------------------
  Name               | Date              | Changes
 --------------------------------------------------------------------------------
-
-
-
 Functional Description:
   This file contains the Forget password functionality, which enables a user to
   change their respective passwords.
@@ -22,7 +16,6 @@ Functional Description:
   components functional and responsive.
   This file will also handle sending the information that is entered to change the
   password in the database.
-
 Classes in the File:
 - NfcScreen
 - NfcScreenState
@@ -33,7 +26,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:nearby_connections/nearby_connections.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class NfcScreen extends StatefulWidget {
   NfcScreen({
@@ -52,6 +47,22 @@ bool allowedtoexit = false;
 
 class NfcScreenState extends State<NfcScreen> {
 
+  Future<void> _permissions() async {
+    if (!await Nearby().checkLocationPermission()) {
+    Nearby().askLocationPermission();
+    }
+
+    if (!await Nearby().checkLocationEnabled()) {
+    Nearby().enableLocationServices();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _permissions();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +79,12 @@ class NfcScreenState extends State<NfcScreen> {
                     width:0.6* media.size.width,
                     height: 0.4* media.size.height,
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: const AssetImage('assets/nfc.png'),
-                          fit: BoxFit.fill,
+                      image: DecorationImage(
+                        image: const AssetImage('assets/nfc.png'),
+                        fit: BoxFit.fill,
 
-                        ),
-)
+                      ),
+                    )
                 )
             ),
 
@@ -116,8 +127,8 @@ class NfcScreenState extends State<NfcScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                           color:const Color(0xff7341E6).withOpacity(0.8),
-                          onPressed: () {
-                            _entering();
+                          onPressed: () async {
+                            await _connect(true);
                           },
                           textColor: Colors.white,
                           padding: const EdgeInsets.all(0.0),
@@ -144,8 +155,8 @@ class NfcScreenState extends State<NfcScreen> {
                               borderRadius: BorderRadius.circular(10.0)
                           ),
                           color: const Color(0xff7341E6).withOpacity(0.8),
-                          onPressed: () {
-                              _exiting();
+                          onPressed: () async {
+                            await _connect(false);
                           },
                           textColor: Colors.white,
                           padding: const EdgeInsets.all(0.0),
@@ -162,62 +173,160 @@ class NfcScreenState extends State<NfcScreen> {
                         )
                     )
                 ),
-                
+
               ],
             ),
           )
         ])
     );
   }
-void check() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  allowedtoexit = prefs.get("entered");
+  void check() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool allowed = prefs.get("entered");
+    int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
 
-  if(allowedtoexit!=null){
-    allowedtoexit = prefs.get("entered");
+    print(gymID);
+
+    if(allowed!=null){
+      allowedtoexit = allowed;
+    }
+
+    else{
+      allowedtoexit = false;
+    }
+  }
+  void _connect(bool entering) async {
+    String username = (await SharedPreferences.getInstance()).get('username');
+    Strategy strategy = Strategy.P2P_STAR;
+
+    bool a = await Nearby().startDiscovery(
+        username,
+        strategy,
+        onEndpointFound: (id, name, serviceId) {
+          //if (serviceId == _serviceId) {
+          print('[Google Nearby] Service Id: $serviceId');
+          Nearby().requestConnection(
+              username,
+              id,
+              onConnectionInitiated: (id, info) {
+                Nearby().acceptConnection(id,
+                    onPayLoadRecieved: (endId, payload) async {
+                      if (payload.type == PayloadType.BYTES) {
+                        String received = String.fromCharCodes(payload.bytes);
+
+                        if (received.contains("GymId")) {
+                          int id = int.parse(received.split("=")[1]);
+                          print('[Google Nearby] Gym Id: $id');
+
+                          if (entering) {
+                            _entering(id);
+                          } else {
+                            _exiting(id);
+                          }
+                        }
+                      }
+                      await Nearby().disconnectFromEndpoint(id);
+                      await Nearby().stopDiscovery();
+                    }
+                );
+              },
+              onConnectionResult: (id, status) async {
+                await Nearby().stopDiscovery();
+              },
+              onDisconnected: (id) async {
+                await Nearby().stopDiscovery();
+              }
+          );
+          //}
+        },
+        onEndpointLost: (id) async {
+          await Nearby().stopDiscovery();
+        }
+    );
   }
 
-  else{
-    allowedtoexit = false;
-  }
-}
-  void _entering() async{
+  void _entering(int gymid) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
+
     check();
+
     if(allowedtoexit==false) {
-      int result;
-      final prefs = await SharedPreferences.getInstance();
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
-          .once()
-          .then((snapshot) {
-        result = snapshot.value;
-      });
-      int finalresult = result + 1;
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-        "count": finalresult,
-      }).then((_) {
-        prefs.setBool('entered', true);
-        allowedtoexit = true;
-        print('Transaction  committed.');
-      });
+
+
+      int day = (new DateTime.now().day);
+      int month = (new DateTime.now().month);
+      int year = (new DateTime.now().year);
+      String startHour = (new DateTime.now().hour.toString());
+      String time = startHour + ":00";
+
+      String url = 'https://gymmoveswebapi.azurewebsites.net/api/gymattendance/change';
+
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{'Content-type': 'application/json'},
+        body: jsonEncode({
+          "gymid" : gymid,
+          "time": time,
+          "day": day,
+          "month": month,
+          "year": year,
+
+        }),
+      );
+
+
+      if (response.statusCode == 200) {
+        int result;
+        final prefs = await SharedPreferences.getInstance();
+        await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" + gymID)
+            .once()
+            .then((snapshot) {
+          if(snapshot.value!=null)
+            result = snapshot.value;
+          else result =0;
+        });
+        int finalresult = result + 1;
+        await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
+          "count/" + gymID: finalresult,
+        }).then((_) {
+          prefs.setBool('entered', true);
+          allowedtoexit = true;
+          print('Transaction  committed.');
+        });
+      }
+      else {
+        _showAlertDialog(response.body, "Error");
+      }
     }
     else{
       _showAlertDialog("You've already entered the gym.", "Error");
     }
   }
 
-  void _exiting() async {
+  void _exiting(int gymid) async {
     check();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //int gymid = prefs.get('gymId');
+    String gym = gymid.toString();
+    String gymID = "gym" + gym;
     if (allowedtoexit == true) {
       int result;
       final prefs = await SharedPreferences.getInstance();
-      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count")
+      await _userRef.child("uizCT8uR8oWSKgOIiVYy/count/" +gymID)
           .once()
           .then((snapshot) {
-        result = snapshot.value;
+        if(snapshot.value!=null)
+          result = snapshot.value;
+        else result =0;
       });
       int finalresult = result - 1;
       await _userRef.child("uizCT8uR8oWSKgOIiVYy").update({
-        "count": finalresult,
+        "count/"+gymID: finalresult,
       }).then((_) {
         allowedtoexit = false;
         prefs.setBool('entered', false);
