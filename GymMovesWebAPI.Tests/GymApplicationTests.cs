@@ -45,6 +45,7 @@ namespace GymMovesWebAPI.Tests {
         }
 
         /* Check that we can connect to the database */
+        //
         [Fact]
         public async Task CanConnectToDatabase() {
             Assert.True(await DbContext.Database.CanConnectAsync());
