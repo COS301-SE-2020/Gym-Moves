@@ -45,19 +45,23 @@
 
             .pred {
                 width: 25%;
-                back
+                back;
             }
 
             .dow {
                 font-size: 1.5rem;
             }
+        #downloadCSV {
+            background-color: #7341E6;
+            color: white;
+        }
 
     </style>
 
 </head>
 
 <body id="page-top" onload="showData()">
-
+   
     <script>
             if (document.cookie == "") {
                 window.location.href = "@Url.Content("~/ManagerLogin")";
@@ -149,8 +153,15 @@
                     <div class="container-fluid">
                         <h1 class="mt-5">Gym Statistics</h1>
 
+
+                   
                         <canvas id="chart" style="height: 300px; width: 100%;"></canvas>
                         <div>
+                            <br />
+                            <div align="center" class="form-group">
+                                <button id="downloadCSV">Download Chart Data as CSV</button>
+                            </div>
+                            <br />
                             <h1>Gym predictions</h1>
                             <div class="row">
                                 <div class="col-xl-3 col-md-6 mb-4">
@@ -266,6 +277,8 @@
             var tm = 0;
             var dow = 0;
             var prev = 0;
+            var attendanceData;
+            var pre = 0;
         function getCookie(cname) {
 
             var name = cname + "=";
@@ -303,49 +316,75 @@
         }
 
         function showData() {
-            console.log("1")
+         //   console.log("1");
             showChart();
-            showDailyPredictions();
         }
 
         async function showDailyPredictions() {
 
+            var temp = new Date();
+            var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
+            var dd = new Array(6);
+            var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
+            //console.log("prevdt: " + last);
+            var pred = 0; 
+            var peakcount = new Array(7);
+            var peaktime = new Array(7);
+
+            for (l = 0; l < 7; l++) {
+                peakcount[l] = 0;
+                peaktime[l] = 0;
+                dd[k] = 0;
+            }
+
             for (k = 0; k < 6; k++) { //each day of the week
-                var peakcount = 0;
-                var peaktime = 0;
-                prev = days[k];
+                //prev = days[k];
                 for (p = 6; p < 20; p++) { // each hour of the day
                     tm = p-6;
                     dow = k;
+                    for (i = 0; i < attendanceData.length; i++) {
+                        var dt = new Date(attendanceData[i].year, attendanceData[i].month - 1, attendanceData[i].day);
+                        h = attendanceData[i].time.split(':');
+                        if (dt >= last && parseInt(h[0]) == p && dt.getDay() ==k) {
+                            //console.log("prev: send");
+                            prev = attendanceData[i].count;
+                            dd[k] = 1;
+                            pred = await getPrediction();
+                           }
+                    }
 
-                    var pred = await getPrediction();
-
-                    if (pred > peakcount) {
-                        peakcount = pred;
-                        peaktime = tm;
+                    //console.log(pred + " " + peakcount[k] + " " + pre + " " + k);
+                    if (pre > peakcount[k]) {
+                        peakcount[k] = pre;
+                        peaktime[k] = tm;
+                        //console.log(peakcount[k]);
+                        pre = 0;
                     }
                 }
 
-                if (prev == 1) {
+                if (peakcount[k] == 0) {
                     var el = document.getElementById(k.toString());
                     el.innerHTML = "No  predictions";
                 } else {
+                    //console.log(k);
                     var el = document.getElementById(k.toString());
-                    el.innerHTML = "Peak Time: " + peaktime.toFixed(0);
+                    el.innerHTML = "Peak Time: " + (peaktime[k]+6) + ":00(" + peakcount[k]+ ")";
                 }
             }
         }
 
-        async function getPrediction() {
+            async function getPrediction() {
+                //console.log(dow);
             var req = new XMLHttpRequest();
             var url = 'https://us-central1-fbprojid.cloudfunctions.net/predictSPAM';
-            req.open("POST", url, true);
+            req.open("POST", url, false);
             req.setRequestHeader("Content-Type", "application/json");
             req.onreadystatechange = function () {
                 if (req.readyState == 4 && req.status == 200) {
-                    var json = JSON.parse(req.responseText);
-                    console.log(json.predictions[0]);
-                    return json.predictions[0];
+                    var j = JSON.parse(req.responseText);
+                    pre = j.predictions[0].toFixed();
+                    //console.log(j);
+                    return j.predictions[0];
                 }
             }
             var data = JSON.stringify({
@@ -353,12 +392,12 @@
                 "dayoftheweek": dow,
                 "prevweek": prev
             });
-            req.send(data)
+            req.send(data);;
         }
-
+           // var row;
         async function showChart() {
 
-            console.log("2");
+         //   console.log("2");
 
 
             for (k = 0; k < 7; k++) {
@@ -373,20 +412,21 @@
                 if (req.readyState == 4 && req.status == 200) {
                     var attendance = JSON.parse(req.responseText);
                     console.log(attendance);
-                    var d = new Date();
-
+                    var temp = new Date();
+                    var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
+                    attendanceData = attendance;
                     var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
                     var day = last.getDate();
-                    console.log(attendance.length);
-               
+                    console.log(last);
+                    showDailyPredictions();
                     for (i = 0; i < attendance.length; i++) {
-                        console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
+                        //console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
                         var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
-                        //console.log(dt);
-                        //console.log(day + " " + last);
-                        if ((dt > last) && (dt < d)) {                                                                                       ;
+                        console.log(dt);
+                        console.log(dt.getDate() + " " + last.getDate());
+                        if ((dt >= last) && (dt < d)) {                                                                                       ;
                             var dow = dt.getDay();
-                            console.log(dow);
+                         //   console.log(dow);
                             if(dow > 0)
                                 days[dow - 1] += attendance[i].count;
                         }
@@ -403,7 +443,7 @@
         }
 
             function drawChart(idayArr) {
-                console.log(days);
+             //   console.log(days);
             var ctx = document.getElementById("chart");
             var myBarChart = new Chart(ctx, {
                 type: 'bar',
@@ -431,10 +471,35 @@
                     }
                 }
             });
+                console.log(days);
+                myBarChart.render();
 
-            days = [];
-        }
+                document.getElementById("downloadCSV").addEventListener("click", function () {
+                    downloadCSV()
+                });
 
+                const rows = [
+                    ['Monday', days[0]], ['Tuesday', days[1]], ['Wednesday', days[2]], ['Thursday', days[3]], ['Friday', days[4]], ['Saturday', days[5]]
+                ];
+
+                let csvContent = "data:text/csv;charset=utf-8,";
+
+                rows.forEach(function (rowArray) {
+                    let row = rowArray.join(",");
+                    csvContent += row + "\r\n";
+                });
+
+                encodedUri = encodeURI(csvContent);
+
+                days = [];
+               
+
+            }
+
+            function downloadCSV() {
+
+                window.open(encodedUri);
+            }
         </script>
 
 
