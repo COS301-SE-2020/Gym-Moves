@@ -35,6 +35,7 @@ import 'package:gym_moves/Announcement/SetNotificationType.dart';
 import 'package:gym_moves/User/ChangePassword.dart';
 import 'package:gym_moves/User/HelpManual.dart';
 import 'package:gym_moves/User/LogIn.dart';
+import 'package:gym_moves/User/Pedometer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*
@@ -141,19 +142,6 @@ class ViewMyProfileState extends State<ViewMyProfile> {
         SizedBox(height: 0.05 * media.size.height),
         Center(
             child: Stack(children: <Widget>[
-          getOptionContainer(media, HelpManual()),
-          Transform.translate(
-              offset: Offset(0.8 * 0.82 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getIcon(helpIcon, 0.08 * 0.5 * media.size.height)),
-          Transform.translate(
-              offset: Offset(0.8 * 0.1 * media.size.width,
-                  0.08 * 0.25 * media.size.height),
-              child: getOptionText(media, "Help Manual")),
-        ])),
-        SizedBox(height: 0.05 * media.size.height),
-        Center(
-            child: Stack(children: <Widget>[
           getOptionContainer(media, SetNotificationType()),
           Transform.translate(
               offset: Offset(0.8 * 0.82 * media.size.width,
@@ -164,6 +152,40 @@ class ViewMyProfileState extends State<ViewMyProfile> {
                   0.08 * 0.25 * media.size.height),
               child: getOptionText(media, "Notifications"))
         ])),
+//        SizedBox(height: 0.05 * media.size.height),
+//        Center(
+//            child: Stack(children: <Widget>[
+//              getOptionContainer(media, Progress()),
+//              Transform.translate(
+//                  offset: Offset(0.8 * 0.82 * media.size.width,
+//                      0.08 * 0.25 * media.size.height),
+//                  child: Icon(
+//                      Icons.person,
+//                      color: Color(0xff7341E6),
+//                      size: 0.08*0.5*media.size.height
+//                  )),
+//              Transform.translate(
+//                  offset: Offset(0.8 * 0.1 * media.size.width,
+//                      0.08 * 0.25 * media.size.height),
+//                  child: getOptionText(media, "Progress"))
+//            ])),
+        SizedBox(height: 0.05 * media.size.height),
+        Center(
+            child: Stack(children: <Widget>[
+              getOptionContainer(media, pedometer()),
+              Transform.translate(
+                  offset: Offset(0.8 * 0.82 * media.size.width,
+                      0.08 * 0.25 * media.size.height),
+                  child: Icon(
+                    Icons.directions_walk,
+                    color: Color(0xff7341E6),
+                    size: 0.08*0.5*media.size.height
+                  )),
+              Transform.translate(
+                  offset: Offset(0.8 * 0.1 * media.size.width,
+                      0.08 * 0.25 * media.size.height),
+                  child: getOptionText(media, "Step count"))
+            ])),
         SizedBox(height: 0.05 * media.size.height),
         Center(
             child: Stack(children: <Widget>[

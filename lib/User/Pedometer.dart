@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-
-
 import 'StepCount.dart';
 
 String formatDate(DateTime d) {
   return d.toString().substring(0, 19);
 }
-//
-//void main() {
-//  runApp(MyApp());
-//}
-//
+
 class pedometer extends StatefulWidget {
   pedometer({
     Key key,
@@ -24,8 +17,9 @@ class pedometer extends StatefulWidget {
 class pedometerState extends State<pedometer> {
   Stream<pedoCount> _pedoCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = '?', _steps = '?';
-
+  String _status = '', _steps ="";
+ String cals = "";
+// var temp = "";
   @override
   void initState() {
     super.initState();
@@ -72,50 +66,105 @@ class pedometerState extends State<pedometer> {
 
     if (!mounted) return;
   }
+String calc (){
+    if(_steps!="") {
+      var temp2 = double.parse(_steps);
+      var temp = 0.063 * temp2;
+      cals = _steps.toString();
 
+      return temp.toString();
+    }
+    else return "";
+}
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-    return Scaffold(
-
-        body: Center(
+    return new Scaffold(
+      body: ListView(children: <Widget>[
+        Center(
 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Steps taken:',
-                style: TextStyle(fontSize: 30),
-              ),
-              Text(
-                _steps,
-                style: TextStyle(fontSize: 60),
+              Image(
+                  image: AssetImage('assets/step.png')
               ),
               Divider(
                 height: 100,
                 thickness: 0,
                 color: Colors.white,
               ),
-              Text(
-                'Pedestrian status:',
-                style: TextStyle(fontSize: 30),
-              ),
-              Icon(
-                _status == 'walking'
-                    ? Icons.directions_walk
-                    : _status == 'stopped'
-                    ? Icons.accessibility_new
-                    : Icons.error,
-                size: 100,
-              ),
-              Center(
-                child: Text(
-                  _status,
-                  style: _status == 'walking' || _status == 'stopped'
-                      ? TextStyle(fontSize: 30)
-                      : TextStyle(fontSize: 20, color: Colors.red),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Steps taken ",
+                      style: TextStyle(fontSize: 30,color: Colors.black, fontFamily: 'Lastwaerk',),
+                    ),
+                    WidgetSpan(
+                      child: Icon(Icons.directions_walk, size:0.08*0.5*media.size.height,color: Color(0xff7341E6)),
+                    ),
+                    TextSpan(
+                      text: "\n \t \t" +_steps,
+                      style: TextStyle(fontSize: 50,color: Colors.black, fontFamily: 'Lastwaerk',),
+                    ),
+                  ],
                 ),
               ),
+//              Text(
+//                'Steps taken:',
+//                style: TextStyle(fontSize: 30),
+//              ),
+//              Icon(
+//                  Icons.directions_walk,
+//                  color: Color(0xff7341E6),
+//                  size: 0.08*0.5*media.size.height
+//              ),
+//              Text(
+//                _steps,
+//                style: TextStyle(fontSize: 60),
+//              ),
+              Divider(
+                height: 50,
+                thickness: 0,
+                color: Colors.white,
+              ),
+//              Text(
+//                'Calories burned:',
+//                style: TextStyle(fontSize: 30),
+//              ),
+//        Icon(
+//            Icons.whatshot,
+//            color: Color(0xff7341E6),
+//            size: 0.08*0.5*media.size.height
+//        ),
+//              Text(
+//                calc(),
+//                style: TextStyle(fontSize: 60),
+//              ),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Calories burned ",
+                      style: TextStyle(fontSize: 30,color: Colors.black, fontFamily: 'Lastwaerk',),
+                    ),
+                    WidgetSpan(
+                      child: Icon(Icons.whatshot, size:0.08*0.5*media.size.height, color: Color(0xff7341E6)),
+                    ),
+                    TextSpan(
+                      text:"\n \t \t" + calc(),
+                      style: TextStyle(fontSize: 50,color: Colors.black, fontFamily: 'Lastwaerk',),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 100,
+                thickness: 0,
+                color: Colors.white,
+              ),
+
 //              Transform.translate(
 //                  offset: Offset(0*media.size.width, -0.035 * media.size.height),
 //                  child: Container(
@@ -133,6 +182,7 @@ class pedometerState extends State<pedometer> {
             ],
           ),
         ),
-      );
+      ]),
+    );
   }
 }
