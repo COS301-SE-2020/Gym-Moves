@@ -1,7 +1,6 @@
 import sklearn;
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 import requests
 import json
 import datetime
@@ -12,6 +11,7 @@ from firebase_admin import firestore
 import joblib
 from firebase_admin import storage
 from datetime import timedelta
+import neurolab as nl
 
 def getCount7DaysAgo(dt,dates):
     prevweek = dt - timedelta(days = 7)
@@ -46,12 +46,12 @@ def getData(gym, xValues, yValues):
         intTime = int(h) - 6
         #intTime = int(h) * 3600 + int(m) * 60
         lis.append(intTime)
-        if prev != 0: 
+        if prev != 0:
             lis.append(prev)
-            yValues.append(d['count'])
+            yValues.append([d['count']])
         else:
             lis.append(5)
-            yValues.append(10)
+            yValues.append([10])
         xValues.append(lis)
 
         #again+++++++++++++++++++
@@ -60,7 +60,7 @@ def getData(gym, xValues, yValues):
         dayOfWeek = dt.isoweekday()
         prev = getCount7DaysAgo(dt,dates)
         #print(dayOfWeek)
-        lis = list()
+        lis = []
         lis.append(dayOfWeek)
         (h,m) = d['time'].split(':')
         intTime = int(h) - 6
@@ -68,10 +68,10 @@ def getData(gym, xValues, yValues):
         lis.append(intTime)
         if prev != 0:
             lis.append(int(prev/10))
-            yValues.append(int(d['count']/10))
+            yValues.append([int(d['count']/10)])
         else:
             lis.append(10)
-            yValues.append(12)
+            yValues.append([12])
         xValues.append(lis)
             
     #print(xValues)
@@ -90,27 +90,22 @@ def getClasses(gym):
         week[ind] += 1
     #print(week)
     return week
-xValues = list()
-yValues = list()
+xValues = []
+yValues = []
 getData(3, xValues, yValues)
 
 #X_train, X_test, y_train, y_test = train_test_split(xValues, yValues, test_size=0.30, random_state=40)
-sc_X = StandardScaler()
-X_scaled = sc_X.fit_transform(xValues)
 print("XVALUES=========================================")
-print(X_scaled)
+print(xValues)
 print("YVALUES=========================================")
 print(yValues)
 
-mlp = MLPRegressor(hidden_layer_sizes=(50,50,), solver= 'sgd', activation= 'relu', shuffle = False, 
-learning_rate_init = 0.01, max_iter = 400, tol=0.01, warm_start=True, validation_fraction= 0.1)
-mlp.fit(X_scaled,yValues)
+mlp = nl.net.newff([[1,7],[0,14],[0,1000]], [100,1])
+mlp.trainf = nl.train.train_ncg
+error = mlp.train(xValues, yValues, epochs=500, show=5)
+print("ERROR=======================")
+print(error)
 
-print(mlp.predict([X_scaled[0]]))
-print(mlp.predict([X_scaled[1]]))
-print(mlp.predict(X_scaled))
-print(mlp.predict([X_scaled[0]]))
-print(mlp.predict([X_scaled[1]]))
 
 #if (not len(firebase_admin._apps)):
 #	cred = credentials.Certificate(r'Machine Learning\sdk.json')
