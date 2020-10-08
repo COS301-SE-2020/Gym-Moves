@@ -76,6 +76,8 @@ namespace GymMovesWebAPI.Controllers {
                     rating.RatingSum = 0;
                 }
 
+                responses[i] = new AllClassRatingResponse();
+
                 responses[i].Name = classes[i].Name;
                 responses[i].Instructor = classes[i].InstructorUsername;
                 responses[i].Day = classes[i].Day;

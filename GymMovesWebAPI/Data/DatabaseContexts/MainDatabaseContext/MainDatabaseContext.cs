@@ -54,6 +54,7 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
         public DbSet<ClassAttendance> ClassAttendance { get; set; }
         public DbSet<GymApplicationCodes> ApplicationCodes { get; set; }
         public DbSet<GymAttendanceRecord> GymAttendence { get; set; }
+        public DbSet<WeightData> WeightData { get; set; }
 
         private readonly IConfiguration config = null;
 
@@ -146,69 +147,9 @@ namespace GymMovesWebAPI.Data.DatabaseContexts.MainDatabaseContext
             modelBuilder.Entity<GymAttendanceRecord>()
                 .HasKey(p => new {p.GymId, p.Time, p.Day, p.Month, p.Year});
 
-            /* Default data for gym */
-            /*modelBuilder.Entity<Gym>()
-                .HasData(
-                    new
-                    {
-                        GymId = 1,
-                        GymName = "TestName",
-                        GymBranch = "TestBranch"
-                    }
-                );
+            modelBuilder.Entity<WeightData>()
+                .HasKey(p => new { p.Username, p.Date });
 
-            modelBuilder.Entity<Gym>()
-                .HasData(
-                    new {
-                        GymId = 2,
-                        GymName = "AnotherGym",
-                        GymBranch = "TreeBranch"
-                    }
-                );*/
-
-            /* Default data for verification table */
-            /*modelBuilder.Entity<GymMember>()
-                .HasData(
-                    new
-                    {
-                        MembershipId = "testmanagermembershipid",
-                        GymId = 1,
-                        Name = "Test",
-                        Surname = "Manager",
-                        Email = "managertestemail@gmail.com",
-                        PhoneNumber = "0629058357",
-                        UserType = UserTypes.Manager
-                    }
-                );
-
-            modelBuilder.Entity<GymMember>()
-                .HasData(
-                    new
-                    {
-                        MembershipId = "testinstructormembershipid",
-                        GymId = 1,
-                        Name = "Test",
-                        Surname = "Instructor",
-                        Email = "instructortestemail@gmail.com",
-                        PhoneNumber = "0629058357",
-                        UserType = UserTypes.Instructor
-                    }
-                );
-
-            modelBuilder.Entity<GymMember>()
-                .HasData(
-                    new
-                    {
-                        MembershipId = "testmembermembershipid",
-                        GymId = 1,
-                        Name = "Test",
-                        Surname = "Member",
-                        Email = "membertestemail@gmail.com",
-                        PhoneNumber = "0629058357",
-                        UserType = UserTypes.Member
-                    }
-                );
-            */
             modelBuilder.Entity<SupportUsers>()
                 .HasData(
                     new {
