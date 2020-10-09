@@ -1,3 +1,4 @@
+import numpy as np
 import sklearn;
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
@@ -12,6 +13,10 @@ import time
 #import joblib
 #from firebase_admin import storage
 from datetime import timedelta
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.activations import hard_sigmoid
+
 
 def getCount7DaysAgo(dt,dates):
     prevweek = dt - timedelta(days = 7)
@@ -40,19 +45,19 @@ def getData(gym, xValues, yValues):
         dayOfWeek = dt.isoweekday()
         prev = getCount7DaysAgo(dt,dates)
         #print(dayOfWeek)
-        lis = list()
-        lis.append(dayOfWeek)
+        lis = np.array([dayOfWeek])
+        #lis.append(dayOfWeek)
         (h,m) = d['time'].split(':')
         intTime = int(h) - 6
         #intTime = int(h) * 3600 + int(m) * 60
-        lis.append(intTime)
+        np.append(lis, intTime)
         if prev != 0: 
-            lis.append(prev)
-            yValues.append(d['count'])
+            np.append(lis, prev)
+            np.append(yValues, d['count'])
         else:
-            lis.append(5)
-            yValues.append(10)
-        xValues.append(lis)
+            np.append(lis, 5)
+            np.append(yValues,10)
+        np.append(xValues, lis)
 
         #again+++++++++++++++++++
     for d in data:
@@ -60,19 +65,19 @@ def getData(gym, xValues, yValues):
         dayOfWeek = dt.isoweekday()
         prev = getCount7DaysAgo(dt,dates)
         #print(dayOfWeek)
-        lis = list()
-        lis.append(dayOfWeek)
+        lis = np.array([dayOfWeek])
+        #lis.append(dayOfWeek)
         (h,m) = d['time'].split(':')
         intTime = int(h) - 6
         #intTime = int(h) * 3600 + int(m) * 60
-        lis.append(intTime)
+        np.append(lis, intTime)
         if prev != 0:
-            lis.append(int(prev/10))
-            yValues.append(int(d['count']/10))
+            np.append(lis, int(prev/10))
+            np.append(yValues, int(d['count']/10))
         else:
-            lis.append(10)
-            yValues.append(12)
-        xValues.append(lis)
+            np.append(lis,10)
+            np.append(yValues, 12)
+        np.append(xValues, lis)
             
     #print(xValues)
     #print(yValues)
@@ -90,28 +95,39 @@ def getClasses(gym):
         week[ind] += 1
     #print(week)
     return week
-xValues = list()
-yValues = list()
+xValues = np.empty([350,3])
+yValues = np.empty([1])
 getData(3, xValues, yValues)
 
 #X_train, X_test, y_train, y_test = train_test_split(xValues, yValues, test_size=0.30, random_state=40)
-sc_X = StandardScaler()
-X_scaled = sc_X.fit_transform(xValues)
+
 print("XVALUES=========================================")
-print(X_scaled)
+print(xValues)
 print("YVALUES=========================================")
 print(yValues)
 
+model = Sequential()
+model.add(Dense(1, input_shape=(8,), activation=hard_sigmoid, kernel_initializer='glorot_uniform'))
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+    # Train the perceptron using stochastic gradient descent
+    # with a validation split of 20%
+model.fit(xValues, yValues, epochs=225, batch_size=25, verbose=1, validation_split=0.1)
+
+    # Evaluate the model accuracy
+_, accuracy = model.evaluate(X, y)
+print("%0.3f" % accuracy)
+     
+
 mlp = MLPRegressor(hidden_layer_sizes=(10,), solver= 'lbfgs', activation= 'relu', shuffle = False, 
-learning_rate_init = 0.1, max_iter = 300, tol=0.0001, warm_start=False, validation_fraction= 0.2)
+learning_rate_init = 0.001, max_iter = 400, tol=0.001, warm_start=True, validation_fraction= 0.1)
 mlp.fit(xValues,yValues)
 
-#print(mlp.predict(xValues))
-
-for v in xValues:
-    print(mlp.predict([v]))
-
-#print(mlp.predict([X_scaled[1]]))
+print(mlp.predict([xValues[0]]))
+print(mlp.predict([xValues[1]]))
+print(mlp.predict(xValues))
+print(mlp.predict([xValues[0]]))
+print(mlp.predict([xValues[1]]))
 
 #if (not len(firebase_admin._apps)):
 #	cred = credentials.Certificate(r'Machine Learning\sdk.json')

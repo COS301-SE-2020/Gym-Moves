@@ -1,3 +1,4 @@
+import tensorflow as tf
 import sklearn;
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
@@ -102,16 +103,66 @@ print(X_scaled)
 print("YVALUES=========================================")
 print(yValues)
 
-mlp = MLPRegressor(hidden_layer_sizes=(10,), solver= 'lbfgs', activation= 'relu', shuffle = False, 
-learning_rate_init = 0.1, max_iter = 300, tol=0.0001, warm_start=False, validation_fraction= 0.2)
-mlp.fit(xValues,yValues)
+learning_rate = 0.001 
+training_epochs = 20 
+batch_size = 100 
+display_step = 1 
 
+x = tf.placeholder(tf.float32, [None, 3])   # 3 features
+y = tf.placeholder(tf.float32, [None, 1])   # 1 outputs
+
+n_hidden_1 = 256 
+n_hidden_2 = 256
+
+h = tf.Variable(tf.random_normal([3, n_hidden_1])) # bias layer 1 
+bias_layer_1 = tf.Variable(tf.random_normal([n_hidden_1])) 
+
+
+w = tf.Variable(tf.random_normal([n_hidden_1, n_hidden_2]))
+bias_layer_2 = tf.Variable(tf.random_normal([n_hidden_2])) 
+
+layer_1 = tf.nn.sigmoid(tf.add(tf.matmul(x, h), bias_layer_1))
+layer_2 = tf.nn.sigmoid(tf.add(tf.matmul(layer_1, w), bias_layer_2)) 
+
+output = tf.Variable(tf.random_normal([n_hidden_2, n_classes])) 
+
+bias_output = tf.Variable(tf.random_normal([n_classes])) # output layer 
+output_layer = tf.matmul(layer_2, output) + bias_output
+
+cost = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+   logits = output_layer, labels = y)) 
+
+optimizer = tf.train.AdamOptimizer(learning_rate = learning_rate).minimize(cost) 
+
+
+init = tf.global_variables_initializer() 
+
+with tf.Session() as sess: 
+   sess.run(init) 
+   
+   # Training cycle
+   for epoch in range(training_epochs): 
+      avg_cost = 0. 
+      total_batch = int(len(yValues) / batch_size) 
+      
+      # Loop over all batches 
+      for i in range(total_batch): 
+         batch_xs, batch_ys = mnist.train.next_batch(batch_size) 
+         # Fit training using batch data 
+         sess.run(optimizer, feed_dict = { x: xValues, y: yValues}) 
+         # Compute average loss 
+##         avg_cost += sess.run(cost, feed_dict = {x: batch_xs, y: batch_ys}) / total_batch
+     
+
+#mlp = MLPRegressor(hidden_layer_sizes=(10,), solver= 'lbfgs', activation= 'relu', shuffle = False, 
+#learning_rate_init = 0.001, max_iter = 400, tol=0.001, warm_start=True, validation_fraction= 0.1)
+#mlp.fit(xValues,yValues)
+
+#print(mlp.predict([xValues[0]]))
+#print(mlp.predict([xValues[1]]))
 #print(mlp.predict(xValues))
-
-for v in xValues:
-    print(mlp.predict([v]))
-
-#print(mlp.predict([X_scaled[1]]))
+#print(mlp.predict([xValues[0]]))
+#print(mlp.predict([xValues[1]]))
 
 #if (not len(firebase_admin._apps)):
 #	cred = credentials.Certificate(r'Machine Learning\sdk.json')
