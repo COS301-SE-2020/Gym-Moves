@@ -1,25 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
+        <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
-    <title>Gym Traffic Statistics</title>
+        <title>Gym Traffic Statistics</title>
 
-    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
-    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
-          rel="stylesheet">
-    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
-    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+        <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+              rel="stylesheet">
+        <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
-    <style>
+        <style>
 
             .navbar_background {
                 background-color: #7341e6;
@@ -51,209 +51,211 @@
             .dow {
                 font-size: 1.5rem;
             }
-        #downloadCSV {
-            background-color: #7341E6;
-            color: white;
-        }
 
-    </style>
+            #downloadCSV {
+                background-color: #7341E6;
+                color: white;
+            }
 
-</head>
+        </style>
 
-<body id="page-top" onload="showData()">
+    </head>
+
+    <body id="page-top" onload="showData()">
    
-    <script>
+        <script>
             if (document.cookie == "") {
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
-    </script>
+        </script>
 
-    <div id="wrapper">
+        <div id="wrapper">
 
-        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                <div class="sidebar-brand-icon">
-                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                </div>
-                <div class="sidebar-brand-text mx-3">Gym Moves</div>
-            </a>
-
-            <hr class="sidebar-divider my-0">
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/home")">
-                    <span>Home</span>
-                </a>
-            </li>
-
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <span>Dashboard</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href=#>Gym Traffic</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                    <div class="sidebar-brand-icon">
+                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                     </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
-                    <span>Upload database</span>
+                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
                 </a>
-            </li>
 
-            <hr class="sidebar-divider d-none d-md-block">
+                <hr class="sidebar-divider my-0">
 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/home")">
+                        <span>Home</span>
+                    </a>
+                </li>
 
-        </ul>
-
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <div id="content">
-
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                        Class Attendance Statistics
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                        <span>Dashboard</span>
+                    </a>
+                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href=#>Gym Traffic</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                        </div>
                     </div>
+                </li>
 
-                    <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                        <span>Upload database</span>
+                    </a>
+                </li>
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
+                <hr class="sidebar-divider d-none d-md-block">
 
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
-                            </a>
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            </ul>
 
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+            <div id="content-wrapper" class="d-flex flex-column">
 
-                <div class="row" style="padding-left:50px;">
+                <div id="content">
 
-                    <div class="container-fluid">
-                        <h1 class="mt-5">Gym Statistics</h1>
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                        <div class="card shadow mb-4">
-                            <div class="card-body">
-                                <canvas id="chart" style="height: 300px; width: 100%;"></canvas>
-                            </div>
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                            Class Attendance Statistics
                         </div>
 
-                        <div>
-                            <br />
-                            <div align="center" class="form-group">
-                                <button id="downloadCSV">Download Chart Data as CSV</button>
-                            </div>
-                            <br />
-                            <h1>Gym predictions</h1>
-                            <div class="row">
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Monday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="0">Peak Time</div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <ul class="navbar-nav ml-auto">
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
                                 </div>
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tuesday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="1">Peak Time</div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Wednesday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="2">Peak Time</div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="row" style="padding-left:50px;">
+
+                        <div class="container-fluid">
+                            <h1 class="mt-5">Gym Statistics</h1>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <canvas id="chart" style="height: 300px; width: 100%;"></canvas>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thursday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="3">Peak Time</div>
+
+                            <div>
+                                <br />
+                                <div align="center" class="form-group">
+                                    <button type="button" class="btn button-colour" id="downloadCSV" ">Download Chart Data as CSV</button>
+                                </div>
+                                <br />
+                                <h1>Gym predictions</h1>
+                                <div class="row">
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Monday</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="0">Peak Time</div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tuesday</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="1">Peak Time</div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Wednesday</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="2">Peak Time</div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Friday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="4">Peak Time</div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                <div class="row">
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thursday</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="3">Peak Time</div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Saturday</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="5">Peak Time</div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Friday</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="4">Peak Time</div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Saturday</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="5">Peak Time</div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -282,198 +284,200 @@
             var prev = 0;
             var attendanceData;
             var pre = 0;
-        function getCookie(cname) {
 
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
+            function getCookie(cname) {
 
-            for (var i = 0; i < ca.length; i++) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
 
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
+                for (var i = 0; i < ca.length; i++) {
 
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-
-            return "";
-        }
-
-        var gymId = getCookie("gymId").split(",")[0];
-
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-
-        function logout() {
-
-                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
-                document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
-                window.location.href = "@Url.Content("~/ManagerLogin")";
-
-        }
-
-        function showData() {
-         //   console.log("1");
-            showChart();
-        }
-
-        async function showDailyPredictions() {
-
-            var temp = new Date();
-            var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
-            var dd = new Array(6);
-            var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
-            //console.log("prevdt: " + last);
-            var pred = 0; 
-            var peakcount = new Array(7);
-            var peaktime = new Array(7);
-
-            for (l = 0; l < 7; l++) {
-                peakcount[l] = 0;
-                peaktime[l] = 0;
-                dd[k] = 0;
-            }
-
-            for (k = 0; k < 6; k++) { //each day of the week
-                //prev = days[k];
-                for (p = 6; p < 20; p++) { // each hour of the day
-                    tm = p-6;
-                    dow = k;
-                    for (i = 0; i < attendanceData.length; i++) {
-                        var dt = new Date(attendanceData[i].year, attendanceData[i].month - 1, attendanceData[i].day);
-                        h = attendanceData[i].time.split(':');
-                        if (dt >= last && parseInt(h[0]) == p && dt.getDay() ==k) {
-                            //console.log("prev: send");
-                            prev = attendanceData[i].count;
-                            dd[k] = 1;
-                            pred = await getPrediction();
-                           }
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
                     }
 
-                    //console.log(pred + " " + peakcount[k] + " " + pre + " " + k);
-                    if (pre > peakcount[k]) {
-                        peakcount[k] = pre;
-                        peaktime[k] = tm;
-                        //console.log(peakcount[k]);
-                        pre = 0;
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
                     }
                 }
 
-                if (peakcount[k] == 0) {
-                    var el = document.getElementById(k.toString());
-                    el.innerHTML = "No  predictions";
-                } else {
-                    //console.log(k);
-                    var el = document.getElementById(k.toString());
-                    el.innerHTML = "Peak Time: " + (peaktime[k]+6) + ":00(" + peakcount[k]+ ")";
-                }
+                return "";
             }
-        }
 
-            async function getPrediction() {
-                //console.log(dow);
-            var req = new XMLHttpRequest();
-            var url = 'https://us-central1-fbprojid.cloudfunctions.net/predictSPAM';
-            req.open("POST", url, false);
-            req.setRequestHeader("Content-Type", "application/json");
-            req.onreadystatechange = function () {
-                if (req.readyState == 4 && req.status == 200) {
-                    var j = JSON.parse(req.responseText);
-                    pre = j.predictions[0].toFixed();
-                    //console.log(j);
-                    return j.predictions[0];
-                }
-            }
-            var data = JSON.stringify({
-                "decimaltime": tm,
-                "dayoftheweek": dow,
-                "prevweek": prev
+            var gymId = getCookie("gymId").split(",")[0];
+
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
             });
-            req.send(data);;
-        }
-           // var row;
-        async function showChart() {
 
-         //   console.log("2");
+            function logout() {
 
+                     document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                    document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+                    window.location.href = "@Url.Content("~/ManagerLogin")";
 
-            for (k = 0; k < 7; k++) {
-                days[k] = 1;
             }
 
-            var req = new XMLHttpRequest();
-            var url = "@Url.Content("~/api/gymattendance/get?gymid=")" + gymId
-            req.open("GET", url, true);
-            req.setRequestHeader("Content-Type", "application/json");
-            req.onreadystatechange = function () {
-                if (req.readyState == 4 && req.status == 200) {
-                    var attendance = JSON.parse(req.responseText);
-                    console.log(attendance);
-                    var temp = new Date();
-                    var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
-                    attendanceData = attendance;
-                    var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
-                    var day = last.getDate();
-                    console.log(last);
-                    showDailyPredictions();
-                    for (i = 0; i < attendance.length; i++) {
-                        //console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
-                        var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
-                        console.log(dt);
-                        console.log(dt.getDate() + " " + last.getDate());
-                        if ((dt >= last) && (dt < d)) {                                                                                       ;
-                            var dow = dt.getDay();
-                         //   console.log(dow);
-                            if(dow > 0)
-                                days[dow - 1] += attendance[i].count;
+            function showData() {
+             //   console.log("1");
+                showChart();
+            }
+
+            async function showDailyPredictions() {
+
+                var temp = new Date();
+                var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
+                var dd = new Array(6);
+                var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
+                //console.log("prevdt: " + last);
+                var pred = 0; 
+                var peakcount = new Array(7);
+                var peaktime = new Array(7);
+
+                for (l = 0; l < 7; l++) {
+                    peakcount[l] = 0;
+                    peaktime[l] = 0;
+                    dd[k] = 0;
+                }
+
+                for (k = 0; k < 6; k++) { //each day of the week
+                    //prev = days[k];
+                    for (p = 6; p < 20; p++) { // each hour of the day
+                        tm = p-6;
+                        dow = k;
+                        for (i = 0; i < attendanceData.length; i++) {
+                            var dt = new Date(attendanceData[i].year, attendanceData[i].month - 1, attendanceData[i].day);
+                            h = attendanceData[i].time.split(':');
+                            if (dt >= last && parseInt(h[0]) == p && dt.getDay() ==k) {
+                                //console.log("prev: send");
+                                prev = attendanceData[i].count;
+                                dd[k] = 1;
+                                pred = await getPrediction();
+                               }
+                        }
+
+                        //console.log(pred + " " + peakcount[k] + " " + pre + " " + k);
+                        if (pre > peakcount[k]) {
+                            peakcount[k] = pre;
+                            peaktime[k] = tm;
+                            //console.log(peakcount[k]);
+                            pre = 0;
                         }
                     }
 
-                    drawChart(days);
-                } /*else {
-                    var out = document.getElementById("chart");
-                    out.innerHTML = req.status + " Error: " + req.responseText;
-
-                }*/
+                    if (peakcount[k] == 0) {
+                        var el = document.getElementById(k.toString());
+                        el.innerHTML = "No  predictions";
+                    } else {
+                        //console.log(k);
+                        var el = document.getElementById(k.toString());
+                        el.innerHTML = "Peak Time: " + (peaktime[k]+6) + ":00(" + peakcount[k]+ ")";
+                    }
+                }
             }
-            req.send();
-        }
+
+            async function getPrediction() {
+                    //console.log(dow);
+                var req = new XMLHttpRequest();
+                var url = 'https://us-central1-fbprojid.cloudfunctions.net/predictSPAM';
+                req.open("POST", url, false);
+                req.setRequestHeader("Content-Type", "application/json");
+                req.onreadystatechange = function () {
+                    if (req.readyState == 4 && req.status == 200) {
+                        var j = JSON.parse(req.responseText);
+                        pre = j.predictions[0].toFixed();
+                        //console.log(j);
+                        return j.predictions[0];
+                    }
+                }
+                var data = JSON.stringify({
+                    "decimaltime": tm,
+                    "dayoftheweek": dow,
+                    "prevweek": prev
+                });
+                req.send(data);;
+            }
+               // var row;
+            async function showChart() {
+
+             //   console.log("2");
+
+
+                for (k = 0; k < 7; k++) {
+                    days[k] = 1;
+                }
+
+                var req = new XMLHttpRequest();
+                var url = "@Url.Content("~/api/gymattendance/get?gymid=")" + gymId
+                req.open("GET", url, true);
+                req.setRequestHeader("Content-Type", "application/json");
+                req.onreadystatechange = function () {
+                    if (req.readyState == 4 && req.status == 200) {
+                        var attendance = JSON.parse(req.responseText);
+                        console.log(attendance);
+                        var temp = new Date();
+                        var d = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
+                        attendanceData = attendance;
+                        var last = new Date(d.getTime() - (7 * 24 * 60 * 60 * 1000));
+                        var day = last.getDate();
+                        console.log(last);
+                        showDailyPredictions();
+                        for (i = 0; i < attendance.length; i++) {
+                            //console.log(attendance[i].year + " " + attendance[i].month + " " + attendance[i].day);
+                            var dt = new Date(attendance[i].year, attendance[i].month - 1, attendance[i].day);
+                            console.log(dt);
+                            console.log(dt.getDate() + " " + last.getDate());
+                            if ((dt >= last) && (dt < d)) {                                                                                       ;
+                                var dow = dt.getDay();
+                             //   console.log(dow);
+                                if(dow > 0)
+                                    days[dow - 1] += attendance[i].count;
+                            }
+                        }
+
+                        drawChart(days);
+                    } /*else {
+                        var out = document.getElementById("chart");
+                        out.innerHTML = req.status + " Error: " + req.responseText;
+
+                    }*/
+                }
+                req.send();
+            }
 
             function drawChart(idayArr) {
              //   console.log(days);
-            var ctx = document.getElementById("chart");
-            var myBarChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-                    datasets: [{
-                        label: 'Gym Attendance in the past week',
-                        data: days,
-                        backgroundColor: "#7341e6",
-                        hoverBackgroundColor: "#7341e6",
-                        borderColor: "#7341e6",
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }],
-                        xAxes: [{
-                            barPercentage: 0.1
+                var ctx = document.getElementById("chart");
+                var myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                        datasets: [{
+                            label: 'Gym Attendance in the past week',
+                            data: days,
+                            backgroundColor: "#7341e6",
+                            hoverBackgroundColor: "#7341e6",
+                            borderColor: "#7341e6",
+                            borderWidth: 1
                         }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                barPercentage: 0.1
+                            }]
+                        }
                     }
-                }
-            });
+                });
+
                 console.log(days);
                 myBarChart.render();
 
@@ -494,8 +498,7 @@
 
                 encodedUri = encodeURI(csvContent);
 
-                days = [];
-               
+                days = [];             
 
             }
 
@@ -504,10 +507,7 @@
                 window.open(encodedUri);
             }
         </script>
-
-
-
-</body>
+    </body>
 </html>
 
 

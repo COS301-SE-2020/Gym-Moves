@@ -22,25 +22,25 @@ Functional Description:
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
+        <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
-    <title>Class Rating Statistics</title>
+        <title>Class Rating Statistics</title>
 
-    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
-    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
-          rel="stylesheet">
-    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
-    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+        <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+              rel="stylesheet">
+        <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
 
-    <style>
+        <style>
             .navbar_background {
                 background-color: #7341e6;
                 color: white;
@@ -98,205 +98,208 @@ Functional Description:
                 color: white;
             }
 
-        #downloadCSV {
-            background-color: #7341E6;
-            color: white;
-        }
+            #downloadCSV {
+                background-color: #7341E6;
+                color: white;
+            }
 
-        #downloadCSVI {
-            background-color: #7341E6;
-            color: white;
-        }
-    </style>
+            #downloadCSVI {
+                background-color: #7341E6;
+                color: white;
+            }
+        </style>
 
-</head>
+    </head>
 
-<body id="page-top" onload="load()">
+    <body id="page-top" onload="load()">
 
-    <script>
-                if (document.cookie == "") {
-                    window.location.href = "@Url.Content("~/ManagerLogin")";
-                }
-    </script>
+        <script>
+                    if (document.cookie == "") {
+                        window.location.href = "@Url.Content("~/ManagerLogin")";
+                    }
+        </script>
 
-    <div id="wrapper">
+        <div id="wrapper">
 
-        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                <div class="sidebar-brand-icon">
-                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                </div>
-                <div class="sidebar-brand-text mx-3">Gym Moves</div>
-            </a>
-
-            <hr class="sidebar-divider my-0">
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/home")">
-                    <span>Home</span>
-                </a>
-            </li>
-
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <span>Dashboard</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
-                        <a class="collapse-item" href=#>Gym Ratings</a>
-                        <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                    <div class="sidebar-brand-icon">
+                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
                     </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
-                    <span>Upload database</span>
+                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
                 </a>
-            </li>
 
-            <hr class="sidebar-divider d-none d-md-block">
+                <hr class="sidebar-divider my-0">
 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-        </ul>
-
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <div id="content">
-
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                        Rating Statistics
-                    </div>
-
-                    <ul class="navbar-nav ml-auto">
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-
-                <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; padding-right:400px;">
-                    <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="choice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Class Ratings
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/home")">
+                        <span>Home</span>
                     </a>
+                </li>
 
-                    <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#" id="class">Class Ratings</a>
-                        <a class="dropdown-item" href="#" id="instructor">Instructor Ratings</a>
-                    </div>
-                </div>
-
-                <div style="padding-left:50px; padding-right:50px;">
-                    <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table" id="classDataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Position</th>
-                                            <th>Class</th>
-                                            <th>Instructor</th>
-                                            <th>Day</th>
-                                            <th>Time</th>
-                                            <th>Rating</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="classRatingData">
-                                    </tbody>
-                                </table>
-                            </div>
-
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                        <span>Dashboard</span>
+                    </a>
+                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
+                            <a class="collapse-item" href=#>Gym Ratings</a>
+                            <a class="collapse-item" href="@Url.Content("~/dashboard/ClassAttendance")">Class Attendance</a>
                         </div>
                     </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                        <span>Upload database</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
 
-                <div id="classChartDiv" style="padding-right:50px; padding-left:50px;">
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <canvas id="classChart"></canvas>
+            </ul>
+
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <div id="content">
+
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                            Rating Statistics
                         </div>
-                    </div>
-                    <div align="center" class="form-group">
-                        <button id="downloadCSV">Download Chart Data as CSV</button>
+
+                        <ul class="navbar-nav ml-auto">
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; padding-right:400px;">
+                        <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="choice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Class Ratings
+                        </a>
+
+                        <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#" id="class">Class Ratings</a>
+                            <a class="dropdown-item" href="#" id="instructor">Instructor Ratings</a>
                         </div>
                     </div>
 
                     <div style="padding-left:50px; padding-right:50px;">
-                        <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
+                        <div class="card shadow mb-4" id="classTable" style="padding: 10px;">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
+                                    <table class="table" id="classDataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Position</th>
+                                                <th>Class</th>
                                                 <th>Instructor</th>
+                                                <th>Day</th>
+                                                <th>Time</th>
                                                 <th>Rating</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="instructorRatingData">
+                                        <tbody id="classRatingData">
                                         </tbody>
                                     </table>
                                 </div>
+
                             </div>
                         </div>
                     </div>
 
-                    <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
+                    <div id="classChartDiv" style="padding-right:50px; padding-left:50px;">
                         <div class="card shadow mb-4">
                             <div class="card-body">
-                                <canvas id="instructorChart"></canvas>
+                                <canvas id="classChart"></canvas>
                             </div>
                         </div>
                         <div align="center" class="form-group">
-                            <button id="downloadCSVI">Download Chart Data as CSV</button>
+                            <button type="button" class="btn button-colour" id="downloadCSV1">Download Chart Data as CSV</button>
+                        </div>
+                    </div>
+
+                    <div style="padding-left:50px; padding-right:50px;">
+                         <div class="card shadow mb-4" id="instructorTable" style="padding: 10px;">
+                             <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="instructorDataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Position</th>
+                                                    <th>Instructor</th>
+                                                    <th>Rating</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="instructorRatingData">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="instructorChartDiv" style="padding-right:50px; padding-left:50px;">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <canvas id="instructorChart"></canvas>
+                                </div>
+                            </div>
                             <div align="center" class="form-group">
+                                <button type="button" class="btn button-colour" id="downloadCSV2">Download Chart Data as CSV</button>
+                                <div align="center" class="form-group">
                             </div>
 
                         </div>
+                    </div>
+                </div>
+
+                <div id="alertModal" class="modal">
+                    <div class="modal-content">
+                        <span align="right" class="close">&times;</span>
+                        <h4 id="modalHeading"></h4>
+                        <br />
+                        <p id="message"></p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div id="alertModal" class="modal">
-        <div class="modal-content">
-            <span align="right" class="close">&times;</span>
-            <h4 id="modalHeading"></h4>
-            <br />
-            <p id="message"></p>
-        </div>
-    </div>
-
-    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-    <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
-    <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
-    <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
-    <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+        <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
 
 
-    <script>
+        <script>
+
             var encodedUri;
             var encodedUrii;
             var classesJson = [];
@@ -308,13 +311,16 @@ Functional Description:
             var instructorLabels = [];
             var classLabels = [];
             var gymId = getCookie("gymId").split(",")[0];
+
             var modal = document.getElementById("alertModal");
             var span = document.getElementsByClassName("close")[0];
             var modalMessage = document.getElementById("message");
             modal.style.display = "none";
+
             span.onclick = function () {
                 modal.style.display = "none";
             }
+
             async function getGymClasses() {
                 await jQuery.ajax({
                     url: "@Url.Content("~/api/classes/gymlist?gymId=")" + gymId,
@@ -337,6 +343,7 @@ Functional Description:
                 });
                 await getClassRatings();
             }
+
             async function getInstructors() {
                  await jQuery.ajax({
                     url: "@Url.Content("~/api/user/allInstructors?gymId=")" + gymId,
@@ -351,6 +358,7 @@ Functional Description:
                  });
                 await getInstructorsRatings();
             }
+
             async function getClassRatings() {
                 for (var i = 0; i < classesJson.length; i++) {
                     await jQuery.ajax({
@@ -375,6 +383,7 @@ Functional Description:
                     });
                 }
             }
+
             async function getInstructorsRatings() {
                 for (var i = 0; i < instructorsJson.length; i++) {
                     await jQuery.ajax({
@@ -399,6 +408,7 @@ Functional Description:
                     });
                 }
             }
+
             function showTable() {
                 if (document.getElementById("choice").innerHTML.includes("Instructor")) {
                     document.getElementById("classTable").style.display = "none";
@@ -417,14 +427,17 @@ Functional Description:
                     document.getElementById("classChartDiv").style.display = "block";
                 }
             }
+
             document.getElementById("instructor").onclick = function () {
                 document.getElementById("choice").innerHTML = "Instructor Ratings";
                 showTable();
             }
+
             document.getElementById("class").onclick = function () {
                 document.getElementById("choice").innerHTML = "Class Ratings";
                 showTable();
             }
+
             function showInstructors() {
                 var table = document.getElementById("instructorRatingData");
                 table.innerHTML = "";
@@ -440,6 +453,7 @@ Functional Description:
                         }
                     }
                 }
+
                 for (var j = 0; j < instructorsJson.length; j++) {
                     instructorLabels.push(instructorsRatings[j][0]);
                     instructorsRatingsValues.push(instructorsRatings[j][1]);
@@ -457,6 +471,7 @@ Functional Description:
                     else {
                         instructorPositionTd.innerHTML = j + 1;
                     }
+
                     tr.appendChild(instructorPositionTd);
                     var instructorNameTd = document.createElement('td');
                     instructorNameTd.innerHTML = instructorsRatings[j][0];
@@ -473,11 +488,12 @@ Functional Description:
                         csvContent += instructorsRatings + "\r\n";
                     });
                     encodedUrii = encodeURI(csvContent);
-                    document.getElementById("downloadCSVI").addEventListener("click", function () {
+                    document.getElementById("downloadCSV2").addEventListener("click", function () {
                         downloadCSVI()
                     });
                 }
             }
+
             function showClasses() {
 
                 var table = document.getElementById("classRatingData");
@@ -494,9 +510,12 @@ Functional Description:
                         }
                     }
                 }
+
                 for (var j = 0; j < classesJson.length; j++) {
+
                     classLabels.push(classRatings[j][0]);
                     classRatingsValues.push(classRatings[j][4]);
+
                     var tr = document.createElement('tr');
                     var classPositionTd = document.createElement('td');
                     if (j == 0) {
@@ -511,18 +530,20 @@ Functional Description:
                     else {
                         classPositionTd.innerHTML = j+1;
                     }
+
                     tr.appendChild(classPositionTd);
-                    console.log(classRatings);
+
                     let csvContent = "data:text/csv;charset=utf-8,";
                     classRatings.forEach(function (rowArray) {
                         let classRatings = rowArray.join(",");
                         csvContent += classRatings + "\r\n";
                     });
                     encodedUri = encodeURI(csvContent);
-                  //  window.open(encodedUri);
-                    document.getElementById("downloadCSV").addEventListener("click", function () {
+
+                    document.getElementById("downloadCSV1").addEventListener("click", function () {
                         downloadCSV()
                     });
+
                     var classNameTd = document.createElement('td');
                     classNameTd.innerHTML = classRatings[j][0];
                     tr.appendChild(classNameTd);
@@ -545,12 +566,15 @@ Functional Description:
                     table.appendChild(tr);
                 }
             }
+
             function downloadCSV() {
                 window.open(encodedUri);
             }
+
             function downloadCSVI() {
                 window.open(encodedUrii);
             }
+
             function getCookie(cname) {
                 var name = cname + "=";
                 var decodedCookie = decodeURIComponent(document.cookie);
@@ -566,6 +590,7 @@ Functional Description:
                 }
                 return "";
             }
+
             function logout() {
                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';

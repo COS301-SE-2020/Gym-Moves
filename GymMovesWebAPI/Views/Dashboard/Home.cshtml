@@ -239,9 +239,9 @@ Functional Description:
                             </div>
 
                         </div>
-                      <div align="center" class="form-group">
-                        <button id="downloadCSV">Download Chart Data as CSV</button>
-                          </div>
+                        <div align="center" class="form-group">
+                            <button type="button" class="btn button-colour" id="downloadCSV" >Download Chart Data as CSV</button>
+                        </div>
                     </div>
                 </div>
 
@@ -366,6 +366,13 @@ Functional Description:
 
             }
 
+            function downloadCSV() {
+
+                window.open(encodedUri);
+            }
+
+            var csvArray = [];
+
 
             async function loadAll() {
 
@@ -392,7 +399,23 @@ Functional Description:
                         values.push(registered / all * 100);
                         values.push(notRegistered / all * 100);
 
+                        csvArray.push(["Registered", registered / all * 100]);
+                        csvArray.push(["Not registered", notRegistered / all * 100]);
+
                         createChart(labelsForGraph, values);
+
+                        document.getElementById("downloadCSV").addEventListener("click", function () {
+                            downloadCSV()
+                        });
+
+                        let csvContent = "data:text/csv;charset=utf-8,";
+
+                        csvArray.forEach(function (rowArray) {
+                            let csvArray = rowArray.join(",");
+                            csvContent += csvArray + "\r\n";
+                        });
+
+                        encodedUri = encodeURI(csvContent);
 
                     },
                     error: function (result) {
