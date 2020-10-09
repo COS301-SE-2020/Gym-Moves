@@ -1,48 +1,43 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
+    <link rel="icon" href="@Url.Content("~/assets/images/dumbbell-128x128-1.png")">
 
-        <title>Class Attendance Statistics</title>
+    <title>Class Attendance Statistics</title>
 
-        <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
-        <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
-              rel="stylesheet">
-        <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
-        <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/assets/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i")"
+          rel="stylesheet">
+    <link href="@Url.Content("~/assets/css/sb-admin-2.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/assets/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
 
-        <style>
-               
-            .navbar_background {          
-                background-color: #7341e6;             
-                color: white;           
+    <style>
+            .navbar_background {
+                background-color: #7341e6;
+                color: white;
             }
-
             @@font-face {
                 font-family: 'Lastwaerk';
                 src: url("@Url.Content("~/assets/lastwaerk.ttf")") format('truetype');
             }
-
             tbody tr:nth-child(odd){
                 background-color : #eeebea;
             }
-
             table {
                 border-collapse: collapse;
             }
-
             table, th, td {
                 border: none !important;
             }
-
             .modal {
                 display: none; /* Hidden by default */
                 position: fixed; /* Stay in place */
@@ -56,7 +51,6 @@
                 background-color: rgb(0,0,0); /* Fallback color */
                 background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
             }
-
             /* Modal Content */
             .modal-content {
                 background-color: #fefefe;
@@ -65,7 +59,6 @@
                 border: 1px solid #888;
                 width: 80%;
             }
-
             /* The Close Button */
             .close {
                 color: #aaaaaa;
@@ -73,280 +66,273 @@
                 font-size: 28px;
                 font-weight: bold;
             }
-
             .close:hover,
             .close:focus {
                 color: #000;
                 text-decoration: none;
-                cursor: pointer;    
+                cursor: pointer;
             }
-            #downloadCSV {
-                background-color: #7341E6;
-                color: white;
+            .button-colour {
+                background-color: #7341E6 !important;
+                color: white !important;
+                margin-bottom: 50px;
             }
+    </style>
 
-        </style>
+</head>
 
-    </head>
+<body id="page-top" onload="getAllClasses()">
 
-    <body id="page-top" onload="getAllClasses()">
-
-        <script>
+    <script>
             if (document.cookie == "") {
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
-        </script>
+    </script>
 
-        <div id="wrapper">
+    <div id="wrapper">
 
-            <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
+        <ul class="navbar-nav sidebar sidebar-dark accordion navbar_background" id="accordionSidebar">
 
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
-                    <div class="sidebar-brand-icon">
-                        <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
-                    </div>
-                    <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href=#>
+                <div class="sidebar-brand-icon">
+                    <img src="@Url.Content("~/assets/images/logo.png")" height="30px" alt="dumbbell">
+                </div>
+                <div class="sidebar-brand-text mx-3">Gym Moves</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/home")">
+                    <span>Home</span>
                 </a>
+            </li>
 
-                <hr class="sidebar-divider my-0">
+            <li class="nav-item active">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <span>Dashboard</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
+                        <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
+                        <a class="collapse-item" href=#>Class Attendance</a>
+                    </div>
+                </div>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Content("~/dashboard/home")">
-                        <span>Home</span>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
+                    <span>Upload database</span>
+                </a>
+            </li>
 
-                <li class="nav-item active">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                        <span>Dashboard</span>
-                    </a>
-                    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="@Url.Content("~/dashboard/GymTraffic")">Gym Traffic</a>
-                            <a class="collapse-item" href="@Url.Content("~/dashboard/Ratings")">Gym Ratings</a>
-                            <a class="collapse-item" href=#>Class Attendance</a>
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+                        Class Attendance Statistics
+                    </div>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div id="cards" class="row" style="padding-left: 50px; padding-right: 50px;">
+
+                    <div class="col-xl-3 col-md-6 mb-4" id="cardOne">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Most Attended</div>
+                                        <div id="firstClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div id="firstClassValue" style="font-size: 0.8em; width: 80px;"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Content("~/dashboard/AddMembers")">
-                        <span>Upload database</span>
-                    </a>
-                </li>
+                    <div class="col-xl-3 col-md-6 mb-4" id="cardTwo">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Second Most Attended</div>
+                                        <div id="secondClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div id="secondClassValue" style="font-size: 0.8em; width: 80px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <hr class="sidebar-divider d-none d-md-block">
-
-                <div class="text-center d-none d-md-inline">
-                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                    <div class="col-xl-3 col-md-6 mb-4" id="cardThree">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Third Most Attended</div>
+                                        <div id="thirdClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div id="thirdClassValue" style="font-size: 0.8em; width: 80px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-            </ul>
-
-            <div id="content-wrapper" class="d-flex flex-column">
-
-                <div id="content">
-
-                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-
-                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
-                            Class Attendance Statistics
-                        </div>
-
-                        <ul class="navbar-nav ml-auto">
-
-                            <div class="topbar-divider d-none d-sm-block"></div>
-
-                            <li class="nav-item dropdown no-arrow">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img class="img-profile rounded-circle" src="@Url.Content("~/assets/images/profile.png")">
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout()">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Logout
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <div id="cards" class="row" style="padding-left: 50px; padding-right: 50px;">
-
-                        <div class="col-xl-3 col-md-6 mb-4" id="cardOne">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Most Attended</div>
-                                            <div id="firstClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div id="firstClassValue" style="font-size: 0.8em; width: 80px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                <div style="padding-left: 50px; padding-right: 50px;">
+                    <div class="card shadow mb-4" id="classTable">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class Name</th>
+                                            <th>Class Instructor</th>
+                                            <th>Class Time</th>
+                                            <th>Class Day</th>
+                                            <th>Attendance Average</th>
+                                            <th>See statistics</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attendanceData">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4" id="cardTwo">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Second Most Attended</div>
-                                            <div id="secondClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div id="secondClassValue" style="font-size: 0.8em; width: 80px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; width:300px;">
+                    <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Line Graph
+                    </a>
+
+                    <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#" id="line">Line Graph</a>
+                        <a class="dropdown-item" href="#" id="bar">Bar Graph</a>
+                    </div>
+                </div>
+
+                <div align="center" id="lineGraph" style="display: none; padding-left: 50px; padding-right: 50px;">
+                    <div class="card shadow mb-4">
+
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary" id="classNameLine"></h6>
+                            <a onclick="showAllClassesTable()" style="cursor: pointer;">
+                                <i class="text-gray-400" style="text-decoration: underline;"> Back to all classes</i>
+                            </a>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4" id="cardThree">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Third Most Attended</div>
-                                            <div id="thirdClass" class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div id="thirdClassValue" style="font-size: 0.8em; width: 80px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card-body">
+                            <div class="chart-area" id="lineChart">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn button-colour" id="downloadCSV1">Download Chart Data as CSV</button>
+                </div>
+
+                <div align="center" id="barGraph" style="display: none; padding-left: 50px; padding-right: 50px;">
+                    <div class="card shadow mb-4">
+
+
+
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary" id="classNameBar"></h6>
+                            <a onclick="showAllClassesTable()" style="cursor: pointer;">
+                                <i class="text-gray-400" style="text-decoration: underline;"> Back to all classes</i>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="chart-area" id="barChart">
                             </div>
                         </div>
                     </div>
 
-                    <div style="padding-left: 50px; padding-right: 50px;">
-                        <div class="card shadow mb-4" id="classTable">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Class Name</th>
-                                                <th>Class Instructor</th>
-                                                <th>Class Time</th>
-                                                <th>Class Day</th>
-                                                <th>Attendance Average</th>
-                                                <th>See statistics</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="attendanceData">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="button" class="btn button-colour" id="downloadCSV2">Download Chart Data as CSV</button>
 
-                    <div class="dropdown" style="padding-left: 50px; padding-bottom: 20px; width:300px;">
-                        <a class="btn btn-secondary dropdown-toggle" style=" background-color: #7341e6;" href="#" role="button" id="type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Line Graph
-                        </a>
-
-                        <div class="dropdown-menu col-xl-3 col-md-6 mb-4" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#" id="line">Line Graph</a>
-                            <a class="dropdown-item" href="#" id="bar">Bar Graph</a>
-                        </div>
-                    </div>
-
-                    <div align="center" id="lineGraph" style="display: none; padding-left: 50px; padding-right: 50px;">
-                        <div class="card shadow mb-4">
-
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary" id="classNameLine"></h6>
-                                <a onclick="showAllClassesTable()" style="cursor: pointer;">
-                                    <i class="text-gray-400" style="text-decoration: underline;"> Back to all classes</i>
-                                </a>
-                            </div>
-
-                            <div class="card-body">
-                                <div class="chart-area" id="lineChart">
-                                </div>
-                            </div>
-                        </div>
-                        <button id="downloadCSV">Download Chart Data as CSV</button>
-                    </div>
-
-                    <div align="center" id="barGraph" style="display: none; padding-left: 50px; padding-right: 50px;">
-                        <div class="card shadow mb-4">
-
-
-
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary" id="classNameBar"></h6>
-                                <a onclick="showAllClassesTable()" style="cursor: pointer;">
-                                    <i class="text-gray-400" style="text-decoration: underline;"> Back to all classes</i>
-                                </a>
-                            </div>
-
-                            <div class="card-body">
-                                <div class="chart-area" id="barChart">
-                                </div>
-                            </div>
-                        </div>
-                        <button id="downloadCSV">Download Chart Data as CSV</button>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="alertModal" class="modal">
-            <div class="modal-content">
-                <span align="right" class="close">&times;</span>
-                <h4 id="modalHeading"></h4>
-                <br />
-                <p id="message"></p>
-            </div>
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <span align="right" class="close">&times;</span>
+            <h4 id="modalHeading"></h4>
+            <br />
+            <p id="message"></p>
         </div>
+    </div>
 
 
-        <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
-        <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
-        <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
-        <script src="@Url.Content("~/assets/js/demo/chart-bar-demo.js")"></script>
-        <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/jquery-easing/jquery.easing.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/sb-admin-2.min.js")"></script>
+    <script src="@Url.Content("~/assets/vendor/chart.js/Chart.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/demo/chart-bar-demo.js")"></script>
+    <script src="@Url.Content("~/assets/js/demo/chart-area-demo.js")"></script>
 
 
-        <script>
-
+    <script>
             var encodedUri;
             var username = getCookie("username").split(",")[0];
             var gymId =  getCookie("gymId").split(",")[0];
-
             document.getElementById("type").style.display = "none";
-
             var modal = document.getElementById("alertModal");
             var span = document.getElementsByClassName("close")[0];
             var modalMessage = document.getElementById("message");
-
             modal.style.display = "none";
-
             span.onclick = function () {
                 modal.style.display = "none";
             }
-
             var allClasses;
             var classAttendanceRecordsInIdOrder = [];
             var classAttendanceValuesInIdOrder = [];
             var instructors;
-           
             async function getAllClasses() {
-
                 jQuery.ajax({
                     url: "@Url.Content("~/api/classes/gymlist?gymId=")" + gymId,
                     type: "GET",
@@ -356,14 +342,11 @@
                             showAllClasses();
                         }
                         else {
-
                             document.getElementById("cardOne").style.display = "none";
                             document.getElementById("cardTwo").style.display = "none";
                             document.getElementById("cardThree").style.display = "none";
-
                             var table = document.getElementById("classTable");
                             table.style.display = "none";
-
                             modalMessage.innerHTML = "There are currently no classes at your gym!";
                             modal.style.display = "block";
                         }
@@ -374,9 +357,7 @@
                     }
                 });
             }
-
             async function showAllClasses() {
-
                 for (var i = 0; i < allClasses.length; i++) {
                     await jQuery.ajax({
                         url: "@Url.Content("~/api/classes/getAttendanceForClass?classId=")" + allClasses[i].classId,
@@ -394,49 +375,32 @@
                             modalMessage.innerHTML = "Oh no! <br /> " + result.responseText;
                             modal.style.display = "block";
                         }
-
                     });
                 }
-
                 var sum;
-
                 //gets total attendance value for each class
                 for (var ids = 0; ids < classAttendanceRecordsInIdOrder.length; ids++) {
                     sum = 0;
-
                     for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[ids].length; classInside++) {
                         sum += classAttendanceRecordsInIdOrder[ids][classInside].numberOfStudents /
                             classAttendanceRecordsInIdOrder[ids][classInside].capacity;
                     }
-
                     classAttendanceValuesInIdOrder.push(sum / classAttendanceRecordsInIdOrder[ids].length);
                 }
-
                 // order in terms of attendance percentages
                 for (let i = 0; i < classAttendanceValuesInIdOrder.length; i++) {
-
                     for (let j = 0; j < classAttendanceValuesInIdOrder.length; j++) {
-
                         if (classAttendanceValuesInIdOrder[j] > classAttendanceValuesInIdOrder[j + 1]) {
-
                             let tmp = classAttendanceValuesInIdOrder[j];
                             let tmpOther = classAttendanceRecordsInIdOrder[j];
-
                             classAttendanceValuesInIdOrder[j] = classAttendanceValuesInIdOrder[j + 1];
                             classAttendanceRecordsInIdOrder[j] = classAttendanceRecordsInIdOrder[j + 1];
-
                             classAttendanceValuesInIdOrder[j + 1] = tmp;
                             classAttendanceRecordsInIdOrder[j + 1] = tmpOther;
-
-                 
-
-
                         }
                     }
                 }
-
                 showTopThreeClassesCards();
-
                  await jQuery.ajax({
                     url: "@Url.Content("~/api/user/allInstructors?gymId=")" + gymId,
                     type: "GET",
@@ -450,49 +414,32 @@
                     }
                 });
             }
-
             async function showTopThreeClassesCards() {
-
                 if (classAttendanceRecordsInIdOrder.length > 0) {
-
                     var classId = classAttendanceRecordsInIdOrder[classAttendanceRecordsInIdOrder.length - 1][0].classId;
-
-
                     for (var i = 0; i < allClasses.length; i++) {
-
                         if (allClasses[i].classId == classId) {
                             document.getElementById("firstClass").innerHTML = allClasses[i].name;
                             document.getElementById("firstClassValue").innerHTML =
                                 (classAttendanceValuesInIdOrder[classAttendanceValuesInIdOrder.length - 1] * 100).toFixed(2).toString() + "% average";
-
                         }
                     }
-
                     if (classAttendanceRecordsInIdOrder.length > 1) {
-
                         classId = classAttendanceRecordsInIdOrder[classAttendanceRecordsInIdOrder.length - 2][0].classId;
-
                         for (var i = 0; i < allClasses.length; i++) {
-
                             if (allClasses[i].classId == classId) {
                                 document.getElementById("secondClass").innerHTML = allClasses[i].name;
-                                document.getElementById("secondClass").innerHTML =
+                                document.getElementById("secondClassValue").innerHTML =
                                     (classAttendanceValuesInIdOrder[classAttendanceValuesInIdOrder.length - 2] * 100).toFixed(2).toString() + "% average";
-
                             }
                         }
-
                         if (classAttendanceRecordsInIdOrder.length > 2) {
-
                             classId = classAttendanceRecordsInIdOrder[classAttendanceRecordsInIdOrder.length - 3][0].classId;
-
                             for (var i = 0; i < allClasses.length; i++) {
-
                                 if (allClasses[i].classId == classId) {
                                     document.getElementById("thirdClass").innerHTML = allClasses[i].name;
-                                    document.getElementById("thirdClass").innerHTML =
+                                    document.getElementById("thirdClassValue").innerHTML =
                                         (classAttendanceValuesInIdOrder[classAttendanceValuesInIdOrder.length - 3] * 100).toFixed(2).toString() + "% average";
-
                                 }
                             }
                         }
@@ -510,79 +457,46 @@
                     document.getElementById("cardTwo").style.display = "none";
                     document.getElementById("cardThree").style.display = "none";
                 }
-
-
-
-           //     for (var i = 0; i < classAttendanceRecordsInIdOrder.length; i++) {
-             //       for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[i].length; classInside++) {
-               //         result.push([classAttendanceValuesInIdOrder[i][classInside].capacity, allClasses[i].name, allClasses[i].classId, classAttendanceValuesInIdOrder[i][classInside].date, classAttendanceRecordsInIdOrder[i][classInside].numberOfStudents]);
-                 //       console.log(result);
-                   // }
-                //}
-
-               
             }
-
             function downloadCSV() {
-
                 window.open(encodedUri);
             }
-
             function showTableOfClasses() {
-
                 var tableBody = document.getElementById("attendanceData");
                 var sum;
-
                 tableBody.innerHTML = "";
-
                 for (var ids = 0; ids < classAttendanceRecordsInIdOrder.length; ids++) {
                     sum = 0;
-
                     for (var classInside = 0; classInside < classAttendanceRecordsInIdOrder[ids].length; classInside++) {
                         sum += classAttendanceRecordsInIdOrder[ids][classInside].numberOfStudents / classAttendanceRecordsInIdOrder[ids][classInside].capacity;
                     }
-
                     var index;
-
                     for (var x = 0; x < allClasses.length; x++) {
                         if (classAttendanceRecordsInIdOrder[ids][0].classId == allClasses[x].classId) {
                              index = x;
                             break;
                         }
                     }
-
                     var tr = document.createElement('tr');
-
                     var name_td = document.createElement('td');
                     name_td.appendChild(document.createTextNode(allClasses[index].name));
                     tr.appendChild(name_td);
-
                     var instructor_td = document.createElement('td');
-
                     for (var i = 0; i < instructors.length; i++) {
                         if (instructors[i].username == allClasses[index].instructor) {
                             instructor_td.appendChild(document.createTextNode(instructors[i].name + " " + instructors[i].surname));
                         }
                     }
-
-
                     tr.appendChild(instructor_td);
-
                     var startTime_td = document.createElement('td');
                     startTime_td.appendChild(document.createTextNode(allClasses[index].startTime));
                     tr.appendChild(startTime_td);
-
                     var day_td = document.createElement('td');
                     day_td.appendChild(document.createTextNode(allClasses[index].day));
                     tr.appendChild(day_td);
-
-
                     var average_td = document.createElement('td');
                     average_td.appendChild(document.createTextNode((sum / classAttendanceRecordsInIdOrder[ids].length * 100).toFixed(2) + "%"));
                     tr.appendChild(average_td);
-
-                   
-
                     var link_td = document.createElement('td');
                     var a = document.createElement('a');
                     a.setAttribute('onclick', "showDetailsOfOneClass(" + ids + ")");
@@ -590,21 +504,15 @@
                     a.href = '#';
                     link_td.appendChild(a);
                     tr.appendChild(link_td);
-
                     tableBody.appendChild(tr);
-
                     var lineCanvas = document.createElement('canvas');
                     var barCanvas = document.createElement('canvas');
                     lineCanvas.id = "lineCanvas" + ids;
                     barCanvas.id = "barCanvas" + ids;
-
                     document.getElementById("lineChart").appendChild(lineCanvas);
                     document.getElementById("barChart").appendChild(barCanvas);
-
                 }
-
             }
-
             var csvArray = [];
             function showAllClassesTable() {
                 var table = document.getElementById("classTable");
@@ -658,6 +566,15 @@
                             createLineChart(type + canvasId, labelsForGraph, values, name);
                         }
                     }
+                    document.getElementById("downloadCSV1").addEventListener("click", function () {
+                        downloadCSV()
+                    });
+                    let csvContent = "data:text/csv;charset=utf-8,";
+                    csvArray.forEach(function (rowArray) {
+                        let csvArray = rowArray.join(",");
+                        csvContent += csvArray + "\r\n";
+                    });
+                    encodedUri = encodeURI(csvContent);
                 }
                 else {
                     // show graph area
@@ -682,6 +599,15 @@
                             createBarChart(type + canvasId, labelsForGraph, values, name);
                         }
                     }
+                    document.getElementById("downloadCSV2").addEventListener("click", function () {
+                        downloadCSV()
+                    });
+                    let csvContent = "data:text/csv;charset=utf-8,";
+                    csvArray.forEach(function (rowArray) {
+                        let csvArray = rowArray.join(",");
+                        csvContent += csvArray + "\r\n";
+                    });
+                    encodedUri = encodeURI(csvContent);
                 }
                 // make sure on correct graph shows
                 for (var i = 0; i < document.getElementById("attendanceData").childNodes.length; i++) {
@@ -694,22 +620,7 @@
                         canvas.style.display = "block";
                     }
                 }
-                console.log(csvArray);
-                document.getElementById("downloadCSV").addEventListener("click", function () {
-                    downloadCSV()
-                });
-
-                let csvContent = "data:text/csv;charset=utf-8,";
-
-                csvArray.forEach(function (rowArray) {
-                    let csvArray = rowArray.join(",");
-                    csvContent += csvArray + "\r\n";
-                });
-
-                encodedUri = encodeURI(csvContent);
             }
-
-
             document.getElementById("line").onclick = function () {
                 document.getElementById("type").innerHTML = "Line Graph";
                 document.getElementById("barGraph").style.display = "none";
@@ -720,36 +631,26 @@
                 document.getElementById("lineGraph").style.display = "none";
                 showDetailsOfOneClass(currentRow);
             }
-
-
-
             function getCookie(cname) {
-
                 var name = cname + "=";
                 var decodedCookie = decodeURIComponent(document.cookie);
                 var ca = decodedCookie.split(';');
-
                 for (var i = 0; i < ca.length; i++) {
-
                     var c = ca[i];
                     while (c.charAt(0) == ' ') {
                         c = c.substring(1);
                     }
-
                     if (c.indexOf(name) == 0) {
                         return c.substring(name.length, c.length);
                     }
                 }
-
                 return "";
             }
-
             function logout() {
                 document.cookie = 'gymId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
                 window.location.href = "@Url.Content("~/ManagerLogin")";
             }
-
-        </script>
-    </body>
+    </script>
+</body>
 </html>
